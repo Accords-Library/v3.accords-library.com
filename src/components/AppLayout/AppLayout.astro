@@ -1,0 +1,96 @@
+---
+import Html from "./components/Html.astro";
+import Topbar from "./components/Topbar.astro";
+import Footer from "./components/Footer.astro";
+
+interface Props {
+  breadcrumb?: { name: string; slug: string }[];
+  title?: string;
+  description?: string;
+  illustration?: string;
+}
+
+const {
+  title = "Accord’s Library",
+  description,
+  illustration,
+  breadcrumb = [],
+} = Astro.props;
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<Html title={title}>
+  <header>
+    <Topbar breadcrumb={breadcrumb} />
+    <div id="header-content">
+      <div id="header-left">
+        <slot name="header-title">
+          <h1>{title}</h1>
+        </slot>
+        <slot name="header-description">
+          <p>{description}</p>
+        </slot>
+      </div>
+      <div id="image-container"></div>
+    </div>
+  </header>
+  <main><slot name="main" /></main>
+  <Footer withLinks={breadcrumb.length > 0} />
+</Html>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style define:vars={{ illustration: `url(${illustration})` }}>
+  header {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    & > #header-content {
+      display: grid;
+      grid-template-columns: auto 1fr;
+
+      & > #header-left {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        place-items: flex-start;
+
+        & > h1 {
+          font-family: var(--font-serif);
+          font-size: 48px;
+        }
+
+        & > p {
+          max-width: 35em;
+        }
+      }
+
+      & > #image-container {
+        background-image: var(--illustration);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: right center;
+        mask-image: linear-gradient(
+          to left,
+          rgba(0, 0, 0, 1) 50%,
+          transparent 80%
+        );
+
+        @media (max-width: 60rem) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  main {
+    padding-top: 96px;
+    padding-bottom: 128px;
+  }
+</style>

@@ -1,0 +1,159 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  withLinks: boolean;
+}
+
+const { withLinks } = Astro.props;
+---
+
+<footer>
+  <div id="nav">
+    <p class="font-serif">Accord’s Library</p>
+    <a href="/"><Icon name="accords" />Home</a>
+    <a href="/timeline"
+      ><Icon name="material-symbols:calendar-month-outline" />Timeline</a
+    >
+    <a href="https://gallery.accords-library.com/posts"
+      ><Icon name="material-symbols:perm-media-outline" />Gallery</a
+    >
+    <a href="/videos"><Icon name="material-symbols:movie-outline" />Videos</a>
+    <a href="/archives"
+      ><Icon name="material-symbols:folder-zip-outline" />Web archives</a
+    >
+  </div>
+  <div id="license">
+    This website’s content is made available under <a
+      href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA</a
+    > unless otherwise noted.
+    <a
+      href="https://creativecommons.org/licenses/by-sa/4.0/"
+      id="common-creative"
+      aria-label="CC-BY-SA 4.0 License"
+    >
+      <Icon name="creative-commons-brands" />
+      <Icon name="creative-commons-by-brands" />
+      <Icon name="creative-commons-sa-brands" />
+    </a>
+    {
+      withLinks && (
+        <div id="socials">
+          <a href="/discord">
+            <Icon name="discord-brands" />
+          </a>
+          <a href="https://twitter.com/AccordsLibrary">
+            <Icon name="x-brands" />
+          </a>
+          <a href="https://github.com/Accords-Library">
+            <Icon name="github-brands" />
+          </a>
+          <a href="/contact">
+            <Icon name="material-symbols:mail-outline" />
+          </a>
+        </div>
+      )
+    }
+  </div>
+  <div id="copyright">
+    <strong>Accord’s Library</strong> is not affiliated with or endorsed by <strong
+      >SQUARE ENIX CO. LTD</strong
+    >. All game assets and promotional materials belongs to <strong
+      >© SQUARE ENIX CO. LTD</strong
+    >.
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--color-base-1000);
+    padding-top: 32px;
+    display: flex;
+    place-content: center;
+    gap: clamp(24px, 12px + 2vw, 64px);
+    font-size: 14px;
+
+    & > div {
+      max-width: 20em;
+    }
+
+    & > #nav {
+      display: flex;
+      flex-direction: row;
+
+      & > p {
+        font-weight: 700;
+      }
+    }
+
+    & > #license {
+      border-left: 1px solid var(--color-base-1000);
+      padding-left: 1em;
+
+      & > #common-creative {
+        display: flex;
+        justify-content: flex-start;
+        gap: 0.2em;
+        margin-top: 8px;
+
+        & > svg {
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      & > #socials {
+        display: flex;
+        gap: 24px;
+        margin-top: 24px;
+
+        & > a > svg {
+          width: 24px;
+          height: 24px;
+        }
+      }
+    }
+
+    & > #copyright {
+      border-left: 1px solid var(--color-base-1000);
+      padding-left: 1em;
+    }
+
+    @media (max-width: 35rem) {
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+
+      & > div {
+        max-width: unset;
+      }
+
+      & > #license {
+        & > #common-creative {
+          place-content: center;
+          gap: clamp(4px, 2vw, 8px);
+
+          & > svg {
+            width: clamp(16px, 6vw, 24px);
+            height: clamp(16px, 6vw, 24px);
+          }
+        }
+
+        & > #socials {
+          place-content: center;
+          gap: clamp(24px, 8vw, 48px);
+
+          & > a > svg {
+            width: clamp(24px, 8vw, 48px);
+            height: clamp(24px, 8vw, 48px);
+          }
+        }
+      }
+
+      & > #copyright {
+        border: none;
+        padding-left: unset;
+      }
+    }
+  }
+</style>

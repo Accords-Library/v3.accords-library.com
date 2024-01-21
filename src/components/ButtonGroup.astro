@@ -1,0 +1,46 @@
+---
+import Button from "components/Button.astro";
+
+interface Props {
+  buttons: Parameters<typeof Button>[0][];
+}
+
+const { buttons } = Astro.props;
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<div class="button-group">
+  {buttons.map((button) => <Button {...button} />)}
+</div>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style is:global>
+  .button-group {
+    display: flex;
+    gap: 0;
+
+    & > button:first-child {
+      border-top-left-radius: 9999px;
+      border-bottom-left-radius: 9999px;
+      border-right: unset;
+      padding-right: 0.5em;
+    }
+
+    & > button {
+      border-radius: 0;
+    }
+
+    & > button:last-child {
+      border-top-right-radius: 9999px;
+      border-bottom-right-radius: 9999px;
+      border-left: unset;
+      padding-left: 0.5em;
+    }
+  }
+</style>

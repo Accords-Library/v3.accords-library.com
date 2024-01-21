@@ -1,0 +1,94 @@
+---
+import AppLayout from "components/AppLayout/AppLayout.astro";
+import FolderCard from "./_components/FolderCard.astro";
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<AppLayout
+  breadcrumb={[
+    { name: "Drakengard", slug: "drakengard" },
+    { name: "Testing a long name", slug: "long" },
+    { name: "More stuff", slug: "more" },
+  ]}
+  title="Drakengard"
+  description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  illustration="/img/categories/light/dod.png"
+>
+  <div id="main" slot="main">
+    <FolderCard
+      title="Games"
+      icon="material-symbols:stadia-controller-outline"
+      href="/drakengard/games"
+    />
+    <FolderCard
+      title="Guidebooks"
+      icon="material-symbols:menu-book-outline"
+      href="/drakengard/guidebooks"
+    />
+    <FolderCard
+      title="Manga"
+      icon="material-symbols:menu-book-outline"
+      href="/drakengard/manga"
+    />
+    <FolderCard
+      title="Novels"
+      icon="material-symbols:menu-book-outline"
+      href="/drakengard/novels"
+    />
+    <FolderCard
+      title="Novellas"
+      icon="material-symbols:menu-book-outline"
+      href="/drakengard/novellas "
+    />
+    <FolderCard
+      title="Characters"
+      icon="material-symbols:person-outline"
+      href="/drakengard/characters"
+    />
+    <FolderCard
+      title="Places"
+      icon="material-symbols:location-on-outline"
+      href="/drakengard/places"
+    />
+    <FolderCard
+      title="Enemies"
+      icon="material-symbols:sentiment-extremely-dissatisfied-outline"
+      href="/drakengard/enemies"
+    />
+    <FolderCard
+      title="Terms"
+      icon="material-symbols:indeterminate-question-box"
+      href="/drakengard/terms"
+    />
+    <FolderCard
+      title="Weapons"
+      icon="material-symbols:swords-outline"
+      href="/drakengard/weapons"
+    />
+    <FolderCard
+      title="Timeline"
+      icon="material-symbols:calendar-month-outline"
+      href="/drakengard/timeline"
+    />
+    <FolderCard
+      title="News"
+      icon="material-symbols:newspaper"
+      href="/drakengard/news"
+    />
+  </div>
+</AppLayout>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  #main {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 0.7rem 1rem;
+  }
+</style>

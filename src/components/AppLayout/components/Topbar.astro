@@ -1,0 +1,201 @@
+---
+import { Icon } from "astro-icon/components";
+import Button from "components/Button.astro";
+import ButtonGroup from "components/ButtonGroup.astro";
+
+interface Props {
+  breadcrumb: { name: string; slug: string }[];
+}
+
+const { breadcrumb } = Astro.props;
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<nav id="topbar">
+  <div id="breadcrumb" class="hide-scrollbar">
+    {
+      breadcrumb.length > 0 && (
+        <>
+          <a href="/">
+            <Icon name="accords" /> Home
+          </a>
+          {breadcrumb.map(({ name, slug }) => (
+            <>
+              <Icon name="material-symbols:arrow-forward-ios" />
+              <a href={slug}>{name}</a>
+            </>
+          ))}
+        </>
+      )
+    }
+  </div>
+  <div id="toolbar">
+    <Button icon="material-symbols:search" ariaLabel="Search on this website" />
+    <div class="separator"></div>
+    <Button
+      class="xs-not"
+      icon="material-symbols:sunny-outline"
+      ariaLabel="Switch between dark/light mode"
+    />
+    <ButtonGroup
+      buttons={[
+        {
+          icon: "material-symbols:text-decrease",
+          ariaLabel: "Decrease text size",
+        },
+        {
+          icon: "material-symbols:text-increase",
+          ariaLabel: "Increase text size",
+        },
+      ]}
+    />
+    <Button
+      class="s-only"
+      icon={[
+        "material-symbols:translate",
+        "material-symbols:currency-exchange",
+      ]}
+      ariaLabel="Select preferred language/currency"
+    />
+    <Button
+      class="m-only s-not"
+      icon="material-symbols:translate"
+      ariaLabel="Select preferred language"
+    />
+    <Button
+      class="m-only s-not"
+      icon="material-symbols:currency-exchange"
+      ariaLabel="Select preferred currency"
+    />
+    <Button
+      class="m-not"
+      icon="material-symbols:translate"
+      title="EN"
+      ariaLabel="Select preferred language"
+    />
+    <Button
+      class="m-not"
+      icon="material-symbols:currency-exchange"
+      title="USD"
+      ariaLabel="Select preferred currency"
+    />
+  </div>
+</nav>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap-reverse;
+    gap: 32px 64px;
+
+    & > #breadcrumb {
+      display: flex;
+      place-items: center;
+      overflow-x: scroll;
+
+      & > svg {
+        flex-shrink: 0;
+      }
+
+      & > a {
+        text-decoration: none;
+        flex-shrink: 0;
+        padding: 0.2em 0.5em;
+        padding-bottom: 0.3em;
+        border-radius: 12px;
+
+        transition: 150ms background-color;
+
+        &:hover {
+          background-color: var(--color-elevation-1);
+        }
+
+        &:active {
+          background-color: var(--color-elevation-2);
+        }
+
+        &:last-child {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    & > #toolbar {
+      flex-grow: 1;
+      display: flex;
+      gap: clamp(4px, 4px + 1vw, 12px);
+      place-items: center;
+      justify-content: flex-end;
+
+      @media (max-width: 28rem) {
+        justify-content: center;
+      }
+
+      @media (max-width: 22rem) {
+        justify-content: space-between;
+        gap: 0;
+      }
+
+      & > .separator {
+        width: 1px;
+        height: 2em;
+        background-color: var(--color-base-700);
+
+        @media (max-width: 30rem) {
+          display: none;
+        }
+      }
+    }
+  }
+</style>
+
+<style is:global>
+  nav#topbar > #toolbar {
+    & > .m-only,
+    & > .s-only {
+      display: none;
+    }
+
+    @media (max-width: 40rem) {
+      & > .m-only {
+        display: flex;
+      }
+
+      & > .m-not {
+        display: none;
+      }
+
+      @media (max-width: 28rem) {
+        & > .s-only {
+          display: flex;
+        }
+
+        & > .s-not {
+          display: none;
+        }
+      }
+
+      @media (max-width: 25rem) {
+        & > .xs-not {
+          display: none;
+        }
+      }
+    }
+  }
+</style>
+
+<script is:inline>
+  const breadcrumbElem = document.querySelector("nav#topbar > #breadcrumb");
+  breadcrumbElem.scrollTo({
+    left: breadcrumbElem.scrollWidth,
+    behavior: "instant",
+  });
+</script>

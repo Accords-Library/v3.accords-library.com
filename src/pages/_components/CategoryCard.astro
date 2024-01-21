@@ -1,0 +1,51 @@
+---
+interface Props {
+  img?: { light: string; dark: string };
+  name: string;
+  href: string;
+}
+
+const { img, name, href } = Astro.props;
+---
+
+<a href={href} aria-label={name} class="keycap">
+  {img === undefined ? <p>{name}</p> : <div />}
+</a>
+
+<style
+  define:vars={{
+    "light-image": `url(${img?.light})`,
+    "dark-image": `url(${img?.dark})`,
+  }}
+>
+  a {
+    font-size: 24px;
+    font-weight: 400;
+    text-decoration: none;
+    display: grid;
+    place-items: center;
+
+    padding: 24px;
+    padding-bottom: 32px;
+    border-radius: 12px;
+
+    user-select: none;
+
+    & > div {
+      @media (prefers-color-scheme: light) {
+        background-image: var(--light-image);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        background-image: var(--dark-image);
+      }
+
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      aspect-ratio: 2;
+      height: 100%;
+      width: 100%;
+    }
+  }
+</style>

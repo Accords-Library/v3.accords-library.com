@@ -1,0 +1,46 @@
+---
+import { Icon } from "astro-icon/components";
+interface Props {
+  title: string;
+  icon: string;
+  href: string;
+}
+
+const { icon, title, href } = Astro.props;
+---
+
+<a href={href} class="keycap">
+  <Icon name={icon} />
+  <div id="right">
+    <h3>{title}</h3>
+  </div>
+</a>
+
+<style>
+  a {
+    display: flex;
+    place-items: center;
+    gap: 16px;
+    color: var(--color-base-1000);
+    padding: 24px;
+    padding-top: 12px;
+    border-radius: 12px;
+    text-decoration: none;
+
+    & > svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    & > #right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+
+      & > h3 {
+        font-size: 24px;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,351 @@
+---
+import { Icon } from "astro-icon/components";
+import AppLayout from "components/AppLayout/AppLayout.astro";
+import Button from "components/Button.astro";
+import LinkCard from "./_components/LinkCard.astro";
+import CategoryCard from "./_components/CategoryCard.astro";
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<AppLayout title="Accord’s Library" illustration="/img/bg-home.webp">
+  <div id="title" slot="header-title">
+    <Icon name="accords" />
+    <div>
+      <h1 class="font-serif">Accord’s Library</h1>
+      <p>Discover • Archive • Translate • Analyze</p>
+    </div>
+  </div>
+  <div id="description" slot="header-description">
+    <p>
+      We aim at archiving and translating all of <strong>Yoko Taro</strong>’s
+      works.<br />Yoko Taro is a Japanese video game director and scenario
+      writer. He is best-known for his involvement with the <strong>NieR</strong
+      > and <strong>Drakengard</strong> series. To complement his games, Yoko
+      Taro likes to publish side materials in the form of books, anime, manga,
+      audio books, novellas, even theater plays.<br />These media can be very
+      difficult to find. His work goes all the way back to 2003. Most of it was
+      released solely in Japanese, and sometimes in short supply. So this is
+      what we do here: <strong>discover, archive, translate, and analyze</strong
+      >.
+    </p>
+    <Button title="Read more about us" icon="material-symbols:left-click" />
+  </div>
+
+  <Fragment slot="main">
+    <div id="main">
+      <section id="library">
+        <h2>The Library</h2>
+        <p>
+          Here you will find a list of IPs Yoko Taro worked on. Select one to
+          discover all the media/content/articles that relates to this IP.
+          <strong>Beware there can be spoilers.</strong>
+        </p>
+        <div class="grid">
+          <CategoryCard
+            img={{
+              light: "/img/categories/light/dod.png",
+              dark: "/img/categories/dark/dod.png",
+            }}
+            name="Drakengard"
+            href="/drakengard"
+          />
+          <CategoryCard
+            img={{
+              light: "/img/categories/light/dod2.png",
+              dark: "/img/categories/dark/dod2.png",
+            }}
+            name="Drakengard 2"
+            href="/drakengard-2"
+          />
+          <CategoryCard
+            img={{
+              light: "/img/categories/light/dod3.png",
+              dark: "/img/categories/dark/dod3.png",
+            }}
+            name="Drakengard 3"
+            href="/drakengard-3"
+          />
+          <CategoryCard
+            img={{
+              light: "/img/categories/light/dod1.3.png",
+              dark: "/img/categories/dark/dod1.3.png",
+            }}
+            name="Drakengard 1.3"
+            href="/drakengard-1-3"
+          />
+          <CategoryCard
+            img={{
+              light: "/img/categories/light/nier.png",
+              dark: "/img/categories/dark/nier.png",
+            }}
+            name="NieR"
+            href="/nier"
+          />
+          <CategoryCard
+            img={{
+              light: "/img/categories/light/na.png",
+              dark: "/img/categories/dark/na.png",
+            }}
+            name="NieR:Automata"
+            href="/nier-automata"
+          />
+          <CategoryCard
+            img={{
+              light: "/img/categories/light/nier-rein.png",
+              dark: "/img/categories/dark/nier-rein.png",
+            }}
+            name="NieR Re[in]carnation"
+            href="/nier-rein"
+          />
+          <CategoryCard
+            img={{
+              light: "/img/categories/light/yorha.png",
+              dark: "/img/categories/dark/yorha.png",
+            }}
+            name="YoRHa"
+            href="/yorha"
+          />
+          <CategoryCard
+            img={{
+              light: "/img/categories/light/yorha-boys.png",
+              dark: "/img/categories/dark/yorha-boys.png",
+            }}
+            name="YoRHa Boys"
+            href="/yorha-boys"
+          />
+          <CategoryCard
+            img={{
+              light: "/img/categories/light/sino.png",
+              dark: "/img/categories/dark/sino.png",
+            }}
+            name="SINoALICE"
+            href="/sinoalice"
+          />
+          <CategoryCard
+            img={{
+              light: "/img/categories/light/404gamereset.png",
+              dark: "/img/categories/dark/404gamereset.png",
+            }}
+            name="404 Game Re:Set"
+            href="/404-game-reset"
+          />
+          <CategoryCard
+            img={{
+              light: "/img/categories/light/god-app.png",
+              dark: "/img/categories/dark/god-app.png",
+            }}
+            name="God App"
+            href="/god-app"
+          />
+          <CategoryCard
+            img={{
+              light: "/img/categories/light/voc.png",
+              dark: "/img/categories/dark/voc.png",
+            }}
+            name="Voice of Cards"
+            href="/voice-of-cards"
+          />
+          <CategoryCard name="Others..." href="others" />
+        </div>
+      </section>
+
+      <section>
+        <h2>More content</h2>
+        <p>
+          The NieR and Drakengard series share a common timeline which you can
+          explore it at the link bellow. Also we have gathered thousands of
+          official artworks, videos, and notable web resources.
+          <strong>Beware there can be spoilers.</strong>
+        </p>
+        <div class="grid">
+          <LinkCard
+            icon="material-symbols:calendar-month-outline"
+            title="Timeline"
+            subtitle="8 eras, 358 events"
+            href="/timeline"
+          />
+          <LinkCard
+            icon="material-symbols:perm-media-outline"
+            title="Gallery"
+            subtitle="5,750 images"
+            href="https://gallery.accords-library.com/posts"
+          />
+          <LinkCard
+            icon="material-symbols:movie-outline"
+            title="Videos"
+            subtitle="2,115 videos"
+            href="/videos"
+          />
+          <LinkCard
+            icon="material-symbols:folder-zip-outline"
+            title="Web archives"
+            subtitle="20 archives"
+            href="/archives"
+          />
+        </div>
+      </section>
+
+      <section>
+        <h2>Links</h2>
+        <p>
+          Do you have a <strong>question</strong>? Would like to share something
+          with our
+          <strong>community</strong>? Are you interested in <strong
+            >contributing</strong
+          > to this project? Whatever it is, you should find what you are
+          looking for at the following links.
+        </p>
+        <div class="grid">
+          <LinkCard
+            icon="discord-brands"
+            title="Discord"
+            subtitle="Join the community"
+            href="/discord"
+          />
+          <LinkCard
+            icon="x-brands"
+            title="Twitter"
+            subtitle="Get the latest updates"
+            href="https://twitter.com/AccordsLibrary"
+          />
+          <LinkCard
+            icon="github-brands"
+            title="GitHub"
+            subtitle="Join the technical side"
+            href="https://github.com/Accords-Library"
+          />
+          <LinkCard
+            icon="material-symbols:mail-outline"
+            title="Contact"
+            subtitle="Send us an email"
+            href="/contact"
+          />
+        </div>
+      </section>
+    </div>
+  </Fragment>
+</AppLayout>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  #description {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+
+    & > p {
+      line-height: 1.4;
+      max-width: 35em;
+    }
+
+    @media (max-width: 35rem) {
+      align-items: center;
+
+      @media (max-width: 25rem) {
+        align-items: stretch;
+      }
+    }
+  }
+
+  #title {
+    display: flex;
+    place-items: center;
+    gap: 16px;
+
+    & > svg {
+      width: 64px;
+      height: 64px;
+    }
+
+    & > div {
+      & > h1 {
+        margin: 0;
+        line-height: 1;
+        font-size: 52px;
+        font-weight: 800;
+      }
+
+      & > p {
+        line-height: 1;
+        margin: 0;
+        margin-top: -0.5em;
+        font-size: 21.5px;
+        font-weight: 700;
+      }
+    }
+
+    @media (max-width: 35rem) {
+      flex-direction: column;
+      width: 100%;
+      place-items: center;
+      --container-width: calc((100vw - 48px));
+
+      & > svg {
+        width: calc(var(--container-width) / 3);
+        height: calc(var(--container-width) / 3);
+      }
+
+      & > div {
+        & > h1 {
+          margin: 0;
+          line-height: 1;
+          font-size: calc(var(--container-width) / 9);
+          font-weight: 800;
+        }
+
+        & > p {
+          line-height: 1;
+          margin: 0;
+          margin-top: -0.5em;
+          font-size: calc(var(--container-width) / 21.8);
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  #main {
+    display: grid;
+    gap: 64px;
+
+    & > section {
+      & > h2 {
+        font-family: var(--font-serif);
+        font-size: 28px;
+      }
+
+      & > p {
+        max-width: 35em;
+        line-height: 1.4;
+        padding-top: 8px;
+        padding-bottom: 24px;
+      }
+
+      &#library {
+        & > .grid {
+          @media (max-width: 40rem) {
+            grid-template-columns: 1fr 1fr;
+          }
+
+          @media (max-width: 25rem) {
+            grid-template-columns: 1fr;
+          }
+        }
+      }
+
+      & > .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        column-gap: clamp(6px, 2vmin, 16px);
+        row-gap: clamp(6px + 6px, 2vmin + 6px, 16px);
+      }
+    }
+  }
+</style>
