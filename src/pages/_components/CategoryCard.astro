@@ -18,6 +18,26 @@ const { img, name, href } = Astro.props;
     "dark-image": `url(${img?.dark})`,
   }}
 >
+  :global(html):not(.manual-theme) {
+    a > div {
+      @media (prefers-color-scheme: light) {
+        background-image: var(--light-image);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        background-image: var(--dark-image);
+      }
+    }
+  }
+
+  :global(html).light-theme a > div {
+    background-image: var(--light-image);
+  }
+
+  :global(html).dark-theme a > div {
+    background-image: var(--dark-image);
+  }
+
   a {
     font-size: 24px;
     font-weight: 400;
@@ -32,14 +52,6 @@ const { img, name, href } = Astro.props;
     user-select: none;
 
     & > div {
-      @media (prefers-color-scheme: light) {
-        background-image: var(--light-image);
-      }
-
-      @media (prefers-color-scheme: dark) {
-        background-image: var(--dark-image);
-      }
-
       background-size: contain;
       background-position: center;
       background-repeat: no-repeat;

@@ -11,10 +11,20 @@ const userAgent = Astro.request.headers.get("user-agent") ?? "";
 const parser = new UAParser(userAgent);
 const isIOS = parser.getOS().name === "iOS";
 
+const prefTheme = Astro.cookies.get("al_pref_theme")?.value;
+
 /* -------------------------------------------- HTML -------------------------------------------- */
 ---
 
-<html lang="en">
+<html
+  lang="en"
+  style={{ fontSize: "200%" }}
+  class:list={{
+    "manual-theme": prefTheme !== undefined,
+    "light-theme": prefTheme === "light",
+    "dark-theme": prefTheme === "dark",
+  }}
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -23,6 +33,7 @@ const isIOS = parser.getOS().name === "iOS";
     <!-- Fonts google -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="/css/tippy.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Vollkorn:wght@400;500;600;700;800;900&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap"
       rel="stylesheet"
@@ -49,12 +60,8 @@ const isIOS = parser.getOS().name === "iOS";
 }
 
 <style is:global>
-  :root {
-    --font-serif: "Vollkorn", serif;
-
-    /* Get in between colors with https://colorkit.io/ */
-
-    @media (prefers-color-scheme: light) {
+  html {
+    &.light-theme {
       --color-base-0: #ffffff;
       --color-base-50: #fffaf3;
       --color-base-100: #fff4e6;
@@ -90,7 +97,7 @@ const isIOS = parser.getOS().name === "iOS";
       --texture-dots-blend: multiply;
     }
 
-    @media (prefers-color-scheme: dark) {
+    &.dark-theme {
       --color-base-1000: #ebeae7;
       --color-base-950: #eae5e0;
       --color-base-900: #e8dfd8;
@@ -125,6 +132,85 @@ const isIOS = parser.getOS().name === "iOS";
       --texture-dots: url(/img/paper-dots-dark.webp);
       --texture-dots-blend: overlay;
     }
+
+    &:not(.manual-theme) {
+      /* Get in between colors with https://colorkit.io/ */
+      @media (prefers-color-scheme: light) {
+        --color-base-0: #ffffff;
+        --color-base-50: #fffaf3;
+        --color-base-100: #fff4e6;
+        --color-base-125: #fef0dd;
+        --color-base-150: #fdebd4;
+        --color-base-200: #f7ddc2;
+        --color-base-250: #efcfb0;
+        --color-base-300: #e5be9e;
+        --color-base-350: #ddb08e;
+        --color-base-400: #d3a07c;
+        --color-base-450: #ca926c;
+        --color-base-500: #c0835d;
+        --color-base-550: #b3754f;
+        --color-base-600: #a26a47;
+        --color-base-650: #905e3f;
+        --color-base-700: #805438;
+        --color-base-750: #6e4a31;
+        --color-base-800: #5e402b;
+        --color-base-850: #4d3625;
+        --color-base-900: #3c2d1e;
+        --color-base-950: #2f2419;
+        --color-base-1000: #1f1a13;
+
+        --color-elevation-2: var(--color-base-100);
+        --color-elevation-1: var(--color-base-125);
+        --color-elevation-0: var(--color-base-150);
+
+        --color-shadow: var(--color-base-500);
+        --color-shadow-1: var(--color-base-350);
+        --color-shadow-2: var(--color-base-300);
+
+        --texture-dots: url(/img/paper-dots.webp);
+        --texture-dots-blend: multiply;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        --color-base-1000: #ebeae7;
+        --color-base-950: #eae5e0;
+        --color-base-900: #e8dfd8;
+        --color-base-850: #e4d1c4;
+        --color-base-800: #e0bfaa;
+        --color-base-750: #dcb095;
+        --color-base-700: #d4a07f;
+        --color-base-650: #cb916c;
+        --color-base-600: #bf835d;
+        --color-base-550: #b07751;
+        --color-base-500: #a06b48;
+        --color-base-450: #8f5f40;
+        --color-base-400: #7d5539;
+        --color-base-350: #6b4a33;
+        --color-base-300: #5c412e;
+        --color-base-250: #4a3728;
+        --color-base-200: #3a2d22;
+        --color-base-175: #312820;
+        --color-base-150: #27231e;
+        --color-base-100: #1c1b16;
+        --color-base-50: #11110d;
+        --color-base-0: #000000;
+
+        --color-elevation-2: var(--color-base-200);
+        --color-elevation-1: var(--color-base-175);
+        --color-elevation-0: var(--color-base-150);
+
+        --color-shadow: var(--color-base-0);
+        --color-shadow-1: var(--color-base-0);
+        --color-shadow-2: var(--color-base-50);
+
+        --texture-dots: url(/img/paper-dots-dark.webp);
+        --texture-dots-blend: overlay;
+      }
+    }
+  }
+
+  :root {
+    --font-serif: "Vollkorn", serif;
   }
 
   /* THEMING */
@@ -142,6 +228,10 @@ const isIOS = parser.getOS().name === "iOS";
     padding-left: clamp(24px, 4vw, 64px);
     padding-right: clamp(24px, 4vw, 64px);
     padding-bottom: clamp(24px, 6vmin, 48px);
+    min-height: 100vb;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
   }
 
   h1,
@@ -177,6 +267,18 @@ const isIOS = parser.getOS().name === "iOS";
     background-image: var(--texture-dots);
     background-blend-mode: var(--texture-dots-blend);
     background-repeat: repeat;
+  }
+
+  .pressable-icon {
+    transition: 150ms color;
+
+    &:hover {
+      color: var(--color-base-700);
+    }
+
+    &:active {
+      color: var(--color-base-550);
+    }
   }
 
   .keycap {

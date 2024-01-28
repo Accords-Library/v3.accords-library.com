@@ -2,12 +2,15 @@
 import { Icon } from "astro-icon/components";
 import Button from "components/Button.astro";
 import ButtonGroup from "components/ButtonGroup.astro";
+import Tooltip from "pages/_components/Tooltip.astro";
+import astroConfig from "astro.config";
 
 interface Props {
   breadcrumb: { name: string; slug: string }[];
 }
 
 const { breadcrumb } = Astro.props;
+const currentLocate = Astro.currentLocale ?? "en";
 ---
 
 {
@@ -20,12 +23,21 @@ const { breadcrumb } = Astro.props;
       breadcrumb.length > 0 && (
         <>
           <a href="/">
-            <Icon name="accords" /> Home
+            <>
+              <Icon name="accords" width={16} height={16} />
+              <p>Home</p>
+            </>
           </a>
           {breadcrumb.map(({ name, slug }) => (
             <>
-              <Icon name="material-symbols:arrow-forward-ios" />
-              <a href={slug}>{name}</a>
+              <Icon
+                name="material-symbols:arrow-forward-ios"
+                width={12}
+                height={12}
+              />
+              <a href={slug}>
+                <p>{name}</p>
+              </a>
             </>
           ))}
         </>
@@ -35,20 +47,29 @@ const { breadcrumb } = Astro.props;
   <div id="toolbar">
     <Button icon="material-symbols:search" ariaLabel="Search on this website" />
     <div class="separator"></div>
-    <Button
-      class="xs-not"
-      icon="material-symbols:sunny-outline"
-      ariaLabel="Switch between dark/light mode"
-    />
+    <Tooltip class="xs-not">
+      <Fragment slot="tooltip-content">
+        <a href="?action-theme=dark">Dark</a>
+        <a href="?action-theme=auto">Auto</a>
+        <a href="?action-theme=light">Light</a>
+      </Fragment>
+      <Button
+        icon="material-symbols:sunny-outline"
+        ariaLabel="Switch between dark/light mode"
+      />
+    </Tooltip>
+
     <ButtonGroup
       buttons={[
         {
           icon: "material-symbols:text-decrease",
           ariaLabel: "Decrease text size",
+          href: "?action-fontsize-increase=1",
         },
         {
           icon: "material-symbols:text-increase",
           ariaLabel: "Increase text size",
+          href: "?action-fontsize-decrease=1",
         },
       ]}
     />
@@ -70,12 +91,22 @@ const { breadcrumb } = Astro.props;
       icon="material-symbols:currency-exchange"
       ariaLabel="Select preferred currency"
     />
-    <Button
-      class="m-not"
-      icon="material-symbols:translate"
-      title="EN"
-      ariaLabel="Select preferred language"
-    />
+    <Tooltip class="m-not">
+      <Fragment slot="tooltip-content">
+        {
+          astroConfig.i18n?.locales.map((locale) => (
+            <a href={`?action-lang=${locale}`}>
+              {locale.toString().toUpperCase()}
+            </a>
+          ))
+        }
+      </Fragment>
+      <Button
+        icon="material-symbols:translate"
+        title={currentLocate.toUpperCase()}
+        ariaLabel="Select preferred language"
+      />
+    </Tooltip>
     <Button
       class="m-not"
       icon="material-symbols:currency-exchange"
@@ -108,18 +139,20 @@ const { breadcrumb } = Astro.props;
       & > a {
         text-decoration: none;
         flex-shrink: 0;
-        padding: 0.2em 0.5em;
-        padding-bottom: 0.3em;
-        border-radius: 12px;
+        display: flex;
+        place-items: center;
+        gap: 0.4em;
+        padding: 0.4em 0.6em;
+        border-radius: 9999px;
 
         transition: 150ms background-color;
 
         &:hover {
-          background-color: var(--color-elevation-1);
+          background-color: var(--color-base-250);
         }
 
         &:active {
-          background-color: var(--color-elevation-2);
+          background-color: var(--color-base-300);
         }
 
         &:last-child {
@@ -153,39 +186,35 @@ const { breadcrumb } = Astro.props;
           display: none;
         }
       }
-    }
-  }
-</style>
 
-<style is:global>
-  nav#topbar > #toolbar {
-    & > .m-only,
-    & > .s-only {
-      display: none;
-    }
-
-    @media (max-width: 40rem) {
-      & > .m-only {
-        display: flex;
-      }
-
-      & > .m-not {
+      & > :global(.m-only),
+      & > :global(.s-only) {
         display: none;
       }
 
-      @media (max-width: 28rem) {
-        & > .s-only {
+      @media (max-width: 40rem) {
+        & > :global(.m-only) {
           display: flex;
         }
 
-        & > .s-not {
+        & > :global(.m-not) {
           display: none;
         }
-      }
 
-      @media (max-width: 25rem) {
-        & > .xs-not {
-          display: none;
+        @media (max-width: 28rem) {
+          & > :global(.s-only) {
+            display: flex;
+          }
+
+          & > :global(.s-not) {
+            display: none;
+          }
+        }
+
+        @media (max-width: 25rem) {
+          & > :global(.xs-not) {
+            display: none;
+          }
         }
       }
     }

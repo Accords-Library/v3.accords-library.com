@@ -8,6 +8,8 @@ interface Props {
   title?: string;
   description?: string;
   illustration?: string;
+  illustrationSize?: string;
+  illustrationPosition?: string;
 }
 
 const {
@@ -15,6 +17,8 @@ const {
   description,
   illustration,
   breadcrumb = [],
+  illustrationSize = "contain",
+  illustrationPosition = "center",
 } = Astro.props;
 ---
 
@@ -45,11 +49,17 @@ const {
   /* ------------------------------------------- CSS -------------------------------------------- */
 }
 
-<style define:vars={{ illustration: `url(${illustration})` }}>
+<style
+  define:vars={{
+    illustration: `url(${illustration})`,
+    illustrationSize,
+    illustrationPosition,
+  }}
+>
   header {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 1.5em;
 
     & > #header-content {
       display: grid;
@@ -58,12 +68,13 @@ const {
       & > #header-left {
         display: flex;
         flex-direction: column;
-        gap: 32px;
+        gap: 2em;
         place-items: flex-start;
 
         & > h1 {
           font-family: var(--font-serif);
-          font-size: 48px;
+          font-size: 3em;
+          overflow-wrap: anywhere;
         }
 
         & > p {
@@ -73,9 +84,9 @@ const {
 
       & > #image-container {
         background-image: var(--illustration);
-        background-size: contain;
+        background-size: var(--illustrationSize);
         background-repeat: no-repeat;
-        background-position: right center;
+        background-position: right var(--illustrationPosition);
         mask-image: linear-gradient(
           to left,
           rgba(0, 0, 0, 1) 50%,
@@ -90,7 +101,8 @@ const {
   }
 
   main {
-    padding-top: 96px;
-    padding-bottom: 128px;
+    padding-top: 6em;
+    padding-bottom: 8em;
+    flex-grow: 1;
   }
 </style>

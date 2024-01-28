@@ -22,16 +22,16 @@ const { icon, subtitle, title, href } = Astro.props;
   a {
     display: flex;
     place-items: center;
-    gap: 16px;
+    gap: 1em;
     color: var(--color-base-1000);
-    padding: 24px;
-    padding-top: 12px;
-    border-radius: 12px;
+    padding: 1.5em;
+    padding-top: 0.75em;
+    border-radius: 0.75em;
     text-decoration: none;
 
     & > svg {
-      width: clamp(24px, 6vw + 14px, 48px);
-      height: clamp(24px, 6vw + 14px, 48px);
+      width: clamp(1.5em, 6vw + 0.8em, 3em);
+      height: clamp(1.5em, 6vw + 0.8em, 3em);
     }
 
     & > #right {
@@ -41,7 +41,7 @@ const { icon, subtitle, title, href } = Astro.props;
       gap: 2px;
 
       & > h3 {
-        font-size: 24px;
+        font-size: 2em;
       }
 
       & > p {

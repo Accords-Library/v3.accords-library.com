@@ -2,13 +2,14 @@
 import { Icon } from "astro-icon/components";
 
 interface Props {
+  id?: string;
   title?: string;
   icon?: string | string[];
   class?: string;
   ariaLabel?: string;
 }
 
-const { title, icon, class: className, ariaLabel } = Astro.props;
+const { title, icon, class: className, ariaLabel, id } = Astro.props;
 
 const icons =
   icon === undefined ? [] : typeof icon === "string" ? [icon] : icon;
@@ -19,10 +20,11 @@ const icons =
 }
 
 <button
+  id={id}
   class:list={[{ "with-title": !!title }, className]}
   aria-label={ariaLabel}
 >
-  {icons.map((cIcon) => <Icon name={cIcon} height={24} width={24} />)}
+  {icons.map((cIcon) => <Icon name={cIcon} />)}
   {title}
 </button>
 
@@ -34,17 +36,17 @@ const icons =
   button {
     --foreground-color: var(--color-base-650);
     color: var(--foreground-color);
-    border: 1px solid var(--foreground-color);
+    border: 0.1em solid var(--foreground-color);
     background-color: var(--color-elevation-0);
     border-radius: 9999px;
     padding-left: 1em;
     padding-right: 1em;
-    height: 38px;
+    height: 2.5em;
 
     display: flex;
     place-items: center;
     place-content: center;
-    gap: 10px;
+    gap: 1em;
 
     font-weight: 700;
     font-size: 1em;
@@ -55,27 +57,28 @@ const icons =
       border-color;
     transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
 
+    &.with-title > svg {
+      width: 1.2em;
+      height: 1.2em;
+    }
+
+    svg {
+      width: 1.5em;
+      height: 1.5em;
+    }
+
     &:hover {
       --foreground-color: var(--color-base-1000);
-      box-shadow: inset 0 1px 1px 0px var(--color-shadow-2);
+      box-shadow: inset 0 0.1em 0.1em 0 var(--color-shadow-2);
     }
 
     &:active {
       transition-duration: 75ms;
       --foreground-color: var(--color-base-1000);
       background-color: var(--color-elevation-2);
-      box-shadow: inset 0 1px 1px 1px var(--color-shadow-2);
+      box-shadow: inset 0 0.1em 0.1em 0.1em var(--color-shadow-2);
 
-      & > div {
-        translate: 0 1px;
-      }
-    }
-
-    &.with-title {
-      & > div > svg {
-        width: 18px;
-        height: 18px;
-      }
+      translate: 0 0.1em;
     }
   }
 </style>

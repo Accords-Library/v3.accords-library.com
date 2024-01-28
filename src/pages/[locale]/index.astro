@@ -2,15 +2,20 @@
 import { Icon } from "astro-icon/components";
 import AppLayout from "components/AppLayout/AppLayout.astro";
 import Button from "components/Button.astro";
-import LinkCard from "./_components/LinkCard.astro";
-import CategoryCard from "./_components/CategoryCard.astro";
+import LinkCard from "../_components/LinkCard.astro";
+import CategoryCard from "../_components/CategoryCard.astro";
 ---
 
 {
   /* ------------------------------------------- HTML ------------------------------------------- */
 }
 
-<AppLayout title="Accord’s Library" illustration="/img/bg-home.webp">
+<AppLayout
+  title="Accord’s Library"
+  illustration="/img/bg-home.webp"
+  illustrationSize="100vh"
+  illustrationPosition="20%"
+>
   <div id="title" slot="header-title">
     <Icon name="accords" />
     <div>
@@ -23,13 +28,12 @@ import CategoryCard from "./_components/CategoryCard.astro";
       We aim at archiving and translating all of <strong>Yoko Taro</strong>’s
       works.<br />Yoko Taro is a Japanese video game director and scenario
       writer. He is best-known for his involvement with the <strong>NieR</strong
-      > and <strong>Drakengard</strong> series. To complement his games, Yoko
-      Taro likes to publish side materials in the form of books, anime, manga,
-      audio books, novellas, even theater plays.<br />These media can be very
-      difficult to find. His work goes all the way back to 2003. Most of it was
-      released solely in Japanese, and sometimes in short supply. So this is
-      what we do here: <strong>discover, archive, translate, and analyze</strong
-      >.
+      > and <strong>Drakengard</strong> series. To complement his games, Yoko Taro
+      likes to publish side materials in the form of books, anime, manga, audio books,
+      novellas, even theater plays.<br />These media can be very difficult to
+      find. His work goes all the way back to 2003. Most of it was released
+      solely in Japanese, and sometimes in short supply. So this is what we do
+      here: <strong>discover, archive, translate, and analyze</strong>.
     </p>
     <Button title="Read more about us" icon="material-symbols:left-click" />
   </div>
@@ -195,8 +199,8 @@ import CategoryCard from "./_components/CategoryCard.astro";
           with our
           <strong>community</strong>? Are you interested in <strong
             >contributing</strong
-          > to this project? Whatever it is, you should find what you are
-          looking for at the following links.
+          > to this project? Whatever it is, you should find what you are looking
+          for at the following links.
         </p>
         <div class="grid">
           <LinkCard
@@ -239,6 +243,7 @@ import CategoryCard from "./_components/CategoryCard.astro";
     flex-direction: column;
     gap: 24px;
     align-items: flex-start;
+    margin-bottom: 128px;
 
     & > p {
       line-height: 1.4;
@@ -257,7 +262,7 @@ import CategoryCard from "./_components/CategoryCard.astro";
   #title {
     display: flex;
     place-items: center;
-    gap: 16px;
+    gap: 1em;
 
     & > svg {
       width: 64px;
@@ -314,6 +319,7 @@ import CategoryCard from "./_components/CategoryCard.astro";
   #main {
     display: grid;
     gap: 64px;
+    margin-top: -96px;
 
     & > section {
       & > h2 {
@@ -342,9 +348,9 @@ import CategoryCard from "./_components/CategoryCard.astro";
 
       & > .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        column-gap: clamp(6px, 2vmin, 16px);
-        row-gap: clamp(6px + 6px, 2vmin + 6px, 16px);
+        grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+        column-gap: clamp(6px, 2vmin, 1em);
+        row-gap: clamp(6px + 6px, 2vmin + 6px, 1em);
       }
     }
   }

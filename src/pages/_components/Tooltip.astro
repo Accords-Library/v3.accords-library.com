@@ -1,0 +1,32 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<tippy-tooltip class={className}>
+  <template><slot name="tooltip-content" /></template>
+  <slot />
+</tippy-tooltip>
+
+<script>
+  import tippy from "tippy.js";
+
+  class TippyTooltip extends HTMLElement {
+    constructor() {
+      super();
+
+      tippy(this, {
+        allowHTML: true,
+        content: (ref) =>
+          ref.querySelector(":scope > template")?.innerHTML ?? "",
+        interactive: true,
+        trigger: "click",
+      });
+    }
+  }
+
+  customElements.define("tippy-tooltip", TippyTooltip);
+</script>
