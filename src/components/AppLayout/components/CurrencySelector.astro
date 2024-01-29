@@ -1,0 +1,25 @@
+---
+import Button from "components/Button.astro";
+import Tooltip from "components/Tooltip.astro";
+import { getI18n } from "translations/translations";
+
+interface Props {
+  withTitle?: boolean | undefined;
+  class?: string | undefined;
+}
+
+const { withTitle, class: className } = Astro.props;
+const { t } = await getI18n(Astro.currentLocale!);
+---
+
+<Tooltip trigger="click" class={className}>
+  <Fragment slot="tooltip-content">
+    <a href="?action-currency=usd">USD</a>
+    <a href="?action-currency=eur">EUR</a>
+  </Fragment>
+  <Button
+    icon="material-symbols:currency-exchange"
+    title={withTitle ? "USD" : undefined}
+    ariaLabel={t("header.topbar.currency.tooltip")}
+  />
+</Tooltip>

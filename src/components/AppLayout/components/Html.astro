@@ -94,6 +94,14 @@ const prefTheme = Astro.cookies.get("al_pref_theme")?.value;
 
       --texture-dots: url(/img/paper-dots.webp);
       --texture-dots-blend: multiply;
+
+      & .when-light-theme {
+        display: initial !important;
+      }
+
+      & .when-dark-theme {
+        display: none !important;
+      }
     }
 
     &.dark-theme {
@@ -130,6 +138,14 @@ const prefTheme = Astro.cookies.get("al_pref_theme")?.value;
 
       --texture-dots: url(/img/paper-dots-dark.webp);
       --texture-dots-blend: overlay;
+
+      & .when-light-theme {
+        display: none !important;
+      }
+
+      & .when-dark-theme {
+        display: initial !important;
+      }
     }
 
     &:not(.manual-theme) {
@@ -168,6 +184,14 @@ const prefTheme = Astro.cookies.get("al_pref_theme")?.value;
 
         --texture-dots: url(/img/paper-dots.webp);
         --texture-dots-blend: multiply;
+
+        & .when-light-theme {
+          display: initial !important;
+        }
+
+        & .when-dark-theme {
+          display: none !important;
+        }
       }
 
       @media (prefers-color-scheme: dark) {
@@ -204,12 +228,16 @@ const prefTheme = Astro.cookies.get("al_pref_theme")?.value;
 
         --texture-dots: url(/img/paper-dots-dark.webp);
         --texture-dots-blend: overlay;
+
+        & .when-light-theme {
+          display: none !important;
+        }
+
+        & .when-dark-theme {
+          display: initial !important;
+        }
       }
     }
-  }
-
-  :root {
-    --font-serif: "Vollkorn", serif;
   }
 
   /* THEMING */
@@ -250,6 +278,10 @@ const prefTheme = Astro.cookies.get("al_pref_theme")?.value;
     font-family: "Vollkorn", serif;
   }
 
+  :root {
+    --font-serif: "Vollkorn", serif;
+  }
+
   button,
   body {
     font-family: "Zen Maru Gothic", sans-serif;
@@ -257,7 +289,15 @@ const prefTheme = Astro.cookies.get("al_pref_theme")?.value;
   }
 
   a {
-    color: var(--color-base-1000);
+    color: unset;
+    text-decoration: unset;
+  }
+
+  p {
+    & a {
+      color: var(--color-base-750);
+      text-decoration: underline dotted var(--color-base-650);
+    }
   }
 
   .texture-dots {
@@ -270,6 +310,7 @@ const prefTheme = Astro.cookies.get("al_pref_theme")?.value;
 
   .pressable-icon {
     transition: 150ms color;
+    cursor: pointer;
 
     &:hover {
       color: var(--color-base-700);

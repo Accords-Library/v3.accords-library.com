@@ -1,15 +1,17 @@
 ---
 import { Icon } from "astro-icon/components";
 import Button from "components/Button.astro";
-import Tooltip from "pages/_components/Tooltip.astro";
-import astroConfig from "astro.config";
+import ThemeSelector from "components/AppLayout/components/ThemeSelector.astro";
+import LanguageSelector from "components/AppLayout/components/LanguageSelector.astro";
+import CurrencySelector from "components/AppLayout/components/CurrencySelector.astro";
+import { getI18n } from "translations/translations";
 
 interface Props {
   breadcrumb: { name: string; slug: string }[];
 }
 
 const { breadcrumb } = Astro.props;
-const currentLocate = Astro.currentLocale ?? "en";
+const { t } = await getI18n(Astro.currentLocale!);
 ---
 
 {
@@ -17,79 +19,43 @@ const currentLocate = Astro.currentLocale ?? "en";
 }
 
 <nav id="topbar">
-  <div id="breadcrumb" class="hide-scrollbar">
-    {
-      breadcrumb.length > 0 && (
-        <>
-          <a href="/">
-            <>
-              <Icon name="accords" width={16} height={16} />
-              <p>Home</p>
-            </>
-          </a>
-          {breadcrumb.map(({ name, slug }) => (
-            <>
-              <Icon
-                name="material-symbols:arrow-forward-ios"
-                width={12}
-                height={12}
-              />
-              <a href={slug}>
-                <p>{name}</p>
-              </a>
-            </>
-          ))}
-        </>
-      )
-    }
-  </div>
-  <div id="toolbar">
-    <Button icon="material-symbols:search" ariaLabel="Search on this website" />
-    <div class="separator"></div>
-    <Tooltip>
-      <Fragment slot="tooltip-content">
-        <a href="?action-theme=dark">Dark</a>
-        <a href="?action-theme=auto">Auto</a>
-        <a href="?action-theme=light">Light</a>
-      </Fragment>
-      <Button
-        icon="material-symbols:sunny-outline"
-        ariaLabel="Switch between dark/light mode"
-      />
-    </Tooltip>
-
-    <Button
-      class="m-only"
-      icon="material-symbols:translate"
-      ariaLabel="Select preferred language"
-    />
-    <Button
-      class="m-only"
-      icon="material-symbols:currency-exchange"
-      ariaLabel="Select preferred currency"
-    />
-    <Tooltip class="m-not">
-      <Fragment slot="tooltip-content">
-        {
-          astroConfig.i18n?.locales.map((locale) => (
-            <a href={`?action-lang=${locale}`}>
-              {locale.toString().toUpperCase()}
+  {
+    breadcrumb.length > 0 && (
+      <div id="breadcrumb" class="hide-scrollbar">
+        <a href="/">
+          <>
+            <Icon name="accords" width={16} height={16} />
+            <p>{t("home.title")}</p>
+          </>
+        </a>
+        {breadcrumb.map(({ name, slug }) => (
+          <>
+            <Icon
+              name="material-symbols:arrow-forward-ios"
+              width={12}
+              height={12}
+            />
+            <a href={slug}>
+              <p>{name}</p>
             </a>
-          ))
-        }
-      </Fragment>
-      <Button
-        icon="material-symbols:translate"
-        title={currentLocate.toUpperCase()}
-        ariaLabel="Select preferred language"
-      />
-    </Tooltip>
+          </>
+        ))}
+      </div>
+    )
+  }
+  <div id="toolbar" class="when-js">
     <Button
-      class="m-not"
-      icon="material-symbols:currency-exchange"
-      title="USD"
-      ariaLabel="Select preferred currency"
+      icon="material-symbols:search"
+      ariaLabel={t("header.topbar.search.tooltip")}
     />
+    <div class="separator"></div>
+    <ThemeSelector />
+
+    <LanguageSelector class="m-not" withTitle />
+    <LanguageSelector class="m-only" />
+
+    <CurrencySelector class="m-not" withTitle />
+    <CurrencySelector class="m-only" />
   </div>
 </nav>
 
@@ -141,7 +107,7 @@ const currentLocate = Astro.currentLocale ?? "en";
     & > #toolbar {
       flex-grow: 1;
       display: flex;
-      gap: clamp(4px, 4px + 1vw, 12px);
+      gap: 12px;
       place-items: center;
       justify-content: flex-end;
 
@@ -164,8 +130,7 @@ const currentLocate = Astro.currentLocale ?? "en";
         }
       }
 
-      & > :global(.m-only),
-      & > :global(.s-only) {
+      & > :global(.m-only) {
         display: none;
       }
 
@@ -177,22 +142,6 @@ const currentLocate = Astro.currentLocale ?? "en";
         & > :global(.m-not) {
           display: none;
         }
-
-        @media (max-width: 28rem) {
-          & > :global(.s-only) {
-            display: flex;
-          }
-
-          & > :global(.s-not) {
-            display: none;
-          }
-        }
-
-        @media (max-width: 25rem) {
-          & > :global(.xs-not) {
-            display: none;
-          }
-        }
       }
     }
   }
@@ -200,7 +149,7 @@ const currentLocate = Astro.currentLocale ?? "en";
 
 <script is:inline>
   const breadcrumbElem = document.querySelector("nav#topbar > #breadcrumb");
-  breadcrumbElem.scrollTo({
+  breadcrumbElem?.scrollTo({
     left: breadcrumbElem.scrollWidth,
     behavior: "instant",
   });

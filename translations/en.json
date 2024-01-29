@@ -1,3 +1,42 @@
 {
-  "home_description": "We aim at archiving and translating all of <strong>Yoko Taro</strong>’s works.<br />Yoko Taro is a Japanese video game director and scenario writer. He is best-known for his involvement with the <strong>NieR</strong > and <strong>Drakengard</strong> series. To complement his games, Yoko Taro likes to publish side materials in the form of books, anime, manga, audio books, novellas, even theater plays.<br />These media can be very difficult to find. His work goes all the way back to 2003. Most of it was released solely in Japanese, and sometimes in short supply. So this is what we do here: <strong>discover, archive, translate, and analyze</strong>."
+  "global.siteName": "Accord’s Library",
+  "global.siteSubtitle": "Discover • Archive • Translate • Analyze",
+  "home.title": "Home",
+  "home.description": "We aim at archiving and translating all of <strong>Yoko Taro</strong>’s works.<br />Yoko Taro is a Japanese video game director and scenario writer. He is best-known for his involvement with the <strong>NieR</strong > and <strong>Drakengard</strong> series. To complement his games, Yoko Taro likes to publish side materials in the form of books, anime, manga, audio books, novellas, even theater plays.<br />These media can be very difficult to find. His work goes all the way back to 2003. Most of it was released solely in Japanese, and sometimes in short supply. So this is what we do here: <strong>discover, archive, translate, and analyze</strong>.",
+  "home.aboutUsButton": "Read more about us",
+  "home.librarySection.title": "The Library",
+  "home.librarySection.description": "Here you will find a list of IPs Yoko Taro worked on. Select one to discover all the media/content/articles that relates to this IP. <strong>Beware there can be spoilers.</strong>",
+  "home.moreSection.title": "More content",
+  "home.moreSection.description": "The NieR and Drakengard series share a common timeline which you can explore it at the link bellow. Also we have gathered thousands of official artworks, videos, and notable web resources. <strong>Beware there can be spoilers.</strong>",
+  "home.linksSection.title": "Links",
+  "home.linksSection.description": "Do you have a <strong>question</strong>? Would like to share something with our <strong>community</strong>? Are you interested in <strong>contributing</strong> to this project? Whatever it is, you should find what you are looking for at the following links.",
+
+  "header.topbar.search.tooltip": "Search on this website",
+  "header.topbar.theme.tooltip": "Switch between dark/light mode",
+  "header.topbar.language.tooltip": "Select preferred language",
+  "header.topbar.currency.tooltip": "Select preferred currency",
+
+  "footer.links.home.title": "Home",
+  "footer.links.timeline.title": "Timeline",
+  "footer.links.timeline.subtitle": "{{ eraCount }} era{{ eraCount+,>1{s} }}, {{ eventCount }} event{{ eventCount+,>1{s} }}",
+  "footer.links.gallery.title": "Gallery",
+  "footer.links.gallery.subtitle": "{{ count }} images",
+  "footer.links.videos.title": "Videos",
+  "footer.links.videos.subtitle": "{{ count }} video{{ count+,>1{s} }}",
+  "footer.links.webArchives.title": "Web archives",
+  "footer.links.webArchives.subtitle": "{{ count }} archive{{ count+,>1{s} }}",
+
+  "footer.socials.discord.title": "Discord",
+  "footer.socials.discord.subtitle": "Join the community",
+  "footer.socials.twitter.title": "Twitter",
+  "footer.socials.twitter.subtitle": "Get the latest updates",
+  "footer.socials.github.title": "GitHub",
+  "footer.socials.github.subtitle": "Join the technical side",
+  "footer.socials.contact.title": "Contact",
+  "footer.socials.contact.subtitle": "Send us an email",
+
+  "footer.license.description": "This website’s content is made available under <a href=\"https://creativecommons.org/licenses/by-sa/4.0/\">CC-BY-SA</a> unless otherwise noted.",
+  "footer.license.icons.tooltip": "CC-BY-SA 4.0 License",
+
+  "footer.disclaimer": "<strong>Accord’s Library</strong> is not affiliated with or endorsed by <strong>SQUARE ENIX CO. LTD</strong>. All game assets and promotional materials belongs to <strong>© SQUARE ENIX CO. LTD</strong>."
 }

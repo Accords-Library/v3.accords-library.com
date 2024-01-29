@@ -6,7 +6,7 @@ import LinkCard from "../_components/LinkCard.astro";
 import CategoryCard from "../_components/CategoryCard.astro";
 import { getI18n } from "../../../translations/translations";
 
-const { t } = await getI18n(Astro.currentLocale!);
+const { t, getLocalizedUrl } = await getI18n(Astro.currentLocale!);
 ---
 
 {
@@ -22,24 +22,25 @@ const { t } = await getI18n(Astro.currentLocale!);
   <div id="title" slot="header-title">
     <Icon name="accords" />
     <div>
-      <h1 class="font-serif">Accord’s Library</h1>
-      <p>Discover • Archive • Translate • Analyze</p>
+      <h1 class="font-serif">{t("global.siteName")}</h1>
+      <p>{t("global.siteSubtitle")}</p>
     </div>
   </div>
   <div id="description" slot="header-description">
-    <p set:html={t("home_description")} />
-    <Button title="Read more about us" icon="material-symbols:left-click" />
+    <p set:html={t("home.description")} />
+    <a href={getLocalizedUrl("/about")}>
+      <Button
+        title={t("home.aboutUsButton")}
+        icon="material-symbols:left-click"
+      />
+    </a>
   </div>
 
   <Fragment slot="main">
     <div id="main">
       <section id="library">
-        <h2>The Library</h2>
-        <p>
-          Here you will find a list of IPs Yoko Taro worked on. Select one to
-          discover all the media/content/articles that relates to this IP.
-          <strong>Beware there can be spoilers.</strong>
-        </p>
+        <h2>{t("home.librarySection.title")}</h2>
+        <p set:html={t("home.librarySection.description")} />
         <div class="grid">
           <CategoryCard
             img={{
@@ -47,7 +48,7 @@ const { t } = await getI18n(Astro.currentLocale!);
               dark: "/img/categories/dark/dod.png",
             }}
             name="Drakengard"
-            href="/drakengard"
+            href={getLocalizedUrl("/drakengard")}
           />
           <CategoryCard
             img={{
@@ -55,7 +56,7 @@ const { t } = await getI18n(Astro.currentLocale!);
               dark: "/img/categories/dark/dod2.png",
             }}
             name="Drakengard 2"
-            href="/drakengard-2"
+            href={getLocalizedUrl("/drakengard-2")}
           />
           <CategoryCard
             img={{
@@ -63,7 +64,7 @@ const { t } = await getI18n(Astro.currentLocale!);
               dark: "/img/categories/dark/dod3.png",
             }}
             name="Drakengard 3"
-            href="/drakengard-3"
+            href={getLocalizedUrl("/drakengard-3")}
           />
           <CategoryCard
             img={{
@@ -71,7 +72,7 @@ const { t } = await getI18n(Astro.currentLocale!);
               dark: "/img/categories/dark/dod1.3.png",
             }}
             name="Drakengard 1.3"
-            href="/drakengard-1-3"
+            href={getLocalizedUrl("/drakengard-1-3")}
           />
           <CategoryCard
             img={{
@@ -79,7 +80,7 @@ const { t } = await getI18n(Astro.currentLocale!);
               dark: "/img/categories/dark/nier.png",
             }}
             name="NieR"
-            href="/nier"
+            href={getLocalizedUrl("/nier")}
           />
           <CategoryCard
             img={{
@@ -87,7 +88,7 @@ const { t } = await getI18n(Astro.currentLocale!);
               dark: "/img/categories/dark/na.png",
             }}
             name="NieR:Automata"
-            href="/nier-automata"
+            href={getLocalizedUrl("/nier-automata")}
           />
           <CategoryCard
             img={{
@@ -95,7 +96,7 @@ const { t } = await getI18n(Astro.currentLocale!);
               dark: "/img/categories/dark/nier-rein.png",
             }}
             name="NieR Re[in]carnation"
-            href="/nier-rein"
+            href={getLocalizedUrl("/nier-rein")}
           />
           <CategoryCard
             img={{
@@ -103,7 +104,7 @@ const { t } = await getI18n(Astro.currentLocale!);
               dark: "/img/categories/dark/yorha.png",
             }}
             name="YoRHa"
-            href="/yorha"
+            href={getLocalizedUrl("/yorha")}
           />
           <CategoryCard
             img={{
@@ -111,7 +112,7 @@ const { t } = await getI18n(Astro.currentLocale!);
               dark: "/img/categories/dark/yorha-boys.png",
             }}
             name="YoRHa Boys"
-            href="/yorha-boys"
+            href={getLocalizedUrl("/yorha-boys")}
           />
           <CategoryCard
             img={{
@@ -119,7 +120,7 @@ const { t } = await getI18n(Astro.currentLocale!);
               dark: "/img/categories/dark/sino.png",
             }}
             name="SINoALICE"
-            href="/sinoalice"
+            href={getLocalizedUrl("/sinoalice")}
           />
           <CategoryCard
             img={{
@@ -127,7 +128,7 @@ const { t } = await getI18n(Astro.currentLocale!);
               dark: "/img/categories/dark/404gamereset.png",
             }}
             name="404 Game Re:Set"
-            href="/404-game-reset"
+            href={getLocalizedUrl("/404-game-reset")}
           />
           <CategoryCard
             img={{
@@ -135,7 +136,7 @@ const { t } = await getI18n(Astro.currentLocale!);
               dark: "/img/categories/dark/god-app.png",
             }}
             name="God App"
-            href="/god-app"
+            href={getLocalizedUrl("/god-app")}
           />
           <CategoryCard
             img={{
@@ -143,82 +144,73 @@ const { t } = await getI18n(Astro.currentLocale!);
               dark: "/img/categories/dark/voc.png",
             }}
             name="Voice of Cards"
-            href="/voice-of-cards"
+            href={getLocalizedUrl("/voice-of-cards")}
           />
-          <CategoryCard name="Others..." href="others" />
+          <CategoryCard name="Others..." href={getLocalizedUrl("/others")} />
         </div>
       </section>
 
       <section>
-        <h2>More content</h2>
-        <p>
-          The NieR and Drakengard series share a common timeline which you can
-          explore it at the link bellow. Also we have gathered thousands of
-          official artworks, videos, and notable web resources.
-          <strong>Beware there can be spoilers.</strong>
-        </p>
+        <h2>{t("home.moreSection.title")}</h2>
+        <p set:html={t("home.moreSection.description")} />
         <div class="grid">
           <LinkCard
             icon="material-symbols:calendar-month-outline"
-            title="Timeline"
-            subtitle="8 eras, 358 events"
-            href="/timeline"
+            title={t("footer.links.timeline.title")}
+            subtitle={t("footer.links.timeline.subtitle", {
+              eraCount: 8,
+              eventCount: 358,
+            })}
+            href={getLocalizedUrl("/timeline")}
           />
           <LinkCard
             icon="material-symbols:perm-media-outline"
-            title="Gallery"
-            subtitle="5,750 images"
+            title={t("footer.links.gallery.title")}
+            subtitle={t("footer.links.gallery.subtitle", { count: 5750 })}
             href="https://gallery.accords-library.com/posts"
           />
           <LinkCard
             icon="material-symbols:movie-outline"
-            title="Videos"
-            subtitle="2,115 videos"
-            href="/videos"
+            title={t("footer.links.videos.title")}
+            subtitle={t("footer.links.videos.subtitle", { count: 2115 })}
+            href={getLocalizedUrl("/videos")}
           />
           <LinkCard
             icon="material-symbols:folder-zip-outline"
-            title="Web archives"
-            subtitle="20 archives"
-            href="/archives"
+            title={t("footer.links.webArchives.title")}
+            subtitle={t("footer.links.webArchives.subtitle", { count: 20 })}
+            href={getLocalizedUrl("/archives")}
           />
         </div>
       </section>
 
       <section>
-        <h2>Links</h2>
-        <p>
-          Do you have a <strong>question</strong>? Would like to share something
-          with our
-          <strong>community</strong>? Are you interested in <strong
-            >contributing</strong
-          > to this project? Whatever it is, you should find what you are looking
-          for at the following links.
-        </p>
+        <h2>{t("home.linksSection.title")}</h2>
+        <p set:html={t("home.linksSection.description")} />
         <div class="grid">
           <LinkCard
             icon="discord-brands"
-            title="Discord"
-            subtitle="Join the community"
+            title={t("footer.socials.discord.title")}
+            subtitle={t("footer.socials.discord.subtitle")}
             href="/discord"
           />
           <LinkCard
             icon="x-brands"
-            title="Twitter"
-            subtitle="Get the latest updates"
+            title={t("footer.socials.twitter.title")}
+            subtitle={t("footer.socials.twitter.subtitle")}
             href="https://twitter.com/AccordsLibrary"
           />
           <LinkCard
             icon="github-brands"
-            title="GitHub"
-            subtitle="Join the technical side"
+            title={t("footer.socials.github.title")}
+            subtitle={t("footer.socials.github.subtitle")}
             href="https://github.com/Accords-Library"
           />
           <LinkCard
             icon="material-symbols:mail-outline"
-            title="Contact"
-            subtitle="Send us an email"
-            href="/contact"
+            title={t("footer.socials.contact.title")}
+            subtitle={t("footer.socials.contact.subtitle")}
+            href={getLocalizedUrl("/contact")}
           />
         </div>
       </section>

@@ -3,7 +3,7 @@ import { Icon } from "astro-icon/components";
 
 interface Props {
   id?: string;
-  title?: string;
+  title?: string | undefined;
   icon?: string | string[];
   class?: string;
   ariaLabel?: string;
@@ -23,6 +23,7 @@ const icons =
   id={id}
   class:list={[{ "with-title": !!title }, className]}
   aria-label={ariaLabel}
+  title={ariaLabel}
 >
   {icons.map((cIcon) => <Icon name={cIcon} />)}
   {title}
@@ -62,7 +63,7 @@ const icons =
       height: 1.2em;
     }
 
-    svg {
+    > svg {
       width: 1.5em;
       height: 1.5em;
     }

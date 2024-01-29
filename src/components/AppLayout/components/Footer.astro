@@ -1,38 +1,56 @@
 ---
 import { Icon } from "astro-icon/components";
+import { getI18n } from "translations/translations";
 
 interface Props {
   withLinks: boolean;
 }
 
 const { withLinks } = Astro.props;
+const { t } = await getI18n(Astro.currentLocale!);
+
+const discordLabel = `${t("footer.socials.discord.title")} - ${t(
+  "footer.socials.discord.subtitle"
+)}`;
+
+const twitterLabel = `${t("footer.socials.twitter.title")} - ${t(
+  "footer.socials.twitter.subtitle"
+)}`;
+
+const githubLabel = `${t("footer.socials.github.title")} - ${t(
+  "footer.socials.github.subtitle"
+)}`;
+
+const contactLabel = `${t("footer.socials.contact.title")} - ${t(
+  "footer.socials.contact.subtitle"
+)}`;
 ---
 
 <footer>
   {
     withLinks && (
       <div id="nav">
-        <p class="font-serif">Accord’s Library</p>
+        <p class="font-serif">{t("global.siteName")}</p>
         <div>
           <a href="/">
             <Icon name="accords" />
-            <p>Home</p>
+            <p>{t("footer.links.home.title")}</p>
           </a>
           <a href="/timeline">
             <Icon name="material-symbols:calendar-month-outline" />
-            <p>Timeline</p>
+            <p>{t("footer.links.timeline.title")}</p>
           </a>
           <a href="https://gallery.accords-library.com/posts">
             <Icon name="material-symbols:perm-media-outline" />
-            <p>Gallery</p>
+            <p>{t("footer.links.gallery.title")}</p>
           </a>
           <a href="/videos">
             <Icon name="material-symbols:movie-outline" />
-            <p>Videos</p>
+            <p>{t("footer.links.videos.title")}</p>
           </a>
           <a href="/archives">
             <Icon name="material-symbols:folder-zip-outline" />
-            <p>Web archives</p>
+            <p>{t("footer.links.webArchives.title")}</p>
           </a>
         </div>
       </div>
@@ -40,13 +58,12 @@ const { withLinks } = Astro.props;
   }
   <div id="license" class:list={{ "with-links": withLinks }}>
     <div id="license-section">
-      This website’s content is made available under <a
-        href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA</a
-      > unless otherwise noted.
+      <p set:html={t("footer.license.description")} />
       <a
         href="https://creativecommons.org/licenses/by-sa/4.0/"
         id="common-creative"
-        aria-label="CC-BY-SA 4.0 License"
+        aria-label={t("footer.license.icons.tooltip")}
+        title={t("footer.license.icons.tooltip")}
         class="pressable-icon"
       >
         <Icon name="creative-commons-brands" />
@@ -61,29 +78,33 @@ const { withLinks } = Astro.props;
           <a
             href="/discord"
             class="pressable-icon"
-            aria-label="Join the community"
+            aria-label={discordLabel}
+            title={discordLabel}
           >
             <Icon name="discord-brands" />
           </a>
           <a
             href="https://twitter.com/AccordsLibrary"
             class="pressable-icon"
-            aria-label="Get the latest updates"
+            aria-label={twitterLabel}
+            title={twitterLabel}
           >
             <Icon name="x-brands" />
           </a>
           <a
             href="https://github.com/Accords-Library"
             class="pressable-icon"
-            aria-label="Join the technical side"
+            aria-label={githubLabel}
+            title={githubLabel}
           >
             <Icon name="github-brands" />
           </a>
 
           <a
             href="/contact"
-            aria-label="Send us an email"
             class="pressable-icon"
+            aria-label={contactLabel}
+            title={contactLabel}
           >
             <Icon name="material-symbols:mail-outline" />
           </a>
@@ -91,13 +112,7 @@ const { withLinks } = Astro.props;
       )
     }
   </div>
-  <div id="copyright">
-    <strong>Accord’s Library</strong> is not affiliated with or endorsed by <strong
-      >SQUARE ENIX CO. LTD</strong
-    >. All game assets and promotional materials belongs to <strong
-      >© SQUARE ENIX CO. LTD</strong
-    >.
-  </div>
+  <div id="copyright" set:html={t("footer.disclaimer")} />
 </footer>
 
 <style>

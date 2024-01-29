@@ -1,0 +1,31 @@
+---
+import astroConfig from "astro.config";
+import Button from "components/Button.astro";
+import Tooltip from "components/Tooltip.astro";
+import { getI18n } from "translations/translations";
+
+interface Props {
+  withTitle?: boolean | undefined;
+  class?: string | undefined;
+}
+
+const { withTitle, class:className } = Astro.props;
+
+const currentLocate = Astro.currentLocale ?? "en";
+const { t } = await getI18n(currentLocate);
+---
+
+<Tooltip trigger="click" class={className}>
+  <Fragment slot="tooltip-content">
+    {
+      astroConfig.i18n?.locales.map((locale) => (
+        <a href={`?action-lang=${locale}`}>{locale.toString().toUpperCase()}</a>
+      ))
+    }
+  </Fragment>
+  <Button
+    icon="material-symbols:translate"
+    title={withTitle ? currentLocate.toUpperCase() : undefined}
+    ariaLabel={t("header.topbar.language.tooltip")}
+  />
+</Tooltip>

@@ -1,0 +1,25 @@
+---
+import Button from "components/Button.astro";
+import Tooltip from "components/Tooltip.astro";
+import { getI18n } from "translations/translations";
+
+const { t } = await getI18n(Astro.currentLocale!);
+---
+
+<Tooltip trigger="click">
+  <Fragment slot="tooltip-content">
+    <a href="?action-theme=dark">Dark</a>
+    <a href="?action-theme=auto">Auto</a>
+    <a href="?action-theme=light">Light</a>
+  </Fragment>
+  <Button
+    class="when-light-theme"
+    icon="material-symbols:sunny-outline"
+    ariaLabel={t("header.topbar.theme.tooltip")}
+  />
+  <Button
+    class="when-dark-theme"
+    icon="material-symbols:dark-mode-outline"
+    ariaLabel={t("header.topbar.theme.tooltip")}
+  />
+</Tooltip>

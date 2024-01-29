@@ -1,54 +1,119 @@
-# Astro Starter Kit: Basics
+# Accord's Library
 
-```sh
-npm create astro@latest -- --template basics
-```
+## CSS Utility classes
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+- `when-js`: only display element if JavaScript is available
+- `when-no-js`: only display element if JavaScript is unavailable
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- `when-dark-theme`: only display element if the current theme is dark (manually or automatically)
+- `when-light-theme`: only display element if the current theme is light (manually or automatically)
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+- `hide-scrollbar`: hide the element scrollbar
+- `texture-dots`: add a background paper like texture to the element
 
-## 🚀 Project Structure
+- `font-serif`: by default, everything use sans-serif. Use this class to make the font serif.
 
-Inside of your Astro project, you'll see the following folders and files:
+## CSS Component classes
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+- `pressable-icon`: used to make a SVG/Text look pressable
+- `keycap`: used to make an element look like a pressable keycap
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## CSS Global Variables
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- `--color-base-X`: the current theme colors. X can be between 0 and 1000, available in increments of 50.
+- `--font-serif`: by default, everything use sans-serif. Use this variable to make the font serif.
 
-Any static assets, like images, can be placed in the `public/` directory.
 
-## 🧞 Commands
+## Translations
 
-All commands are run from the root of the project, from a terminal:
+For all the following exemples, the spaces within the double curly braces are important.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-## 👀 Want to learn more?
+### Variables
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Variables allow to embed strings or numbers within a translation.
+In the JSON translation file:
+
+`"home.greeting": "Hello {{ name }}!"`
+
+If then you call:
+
+`t("home.greeting", { name: "John" })`
+
+It will produce
+
+`Hello John!`
+
+### Plural
+
+In the JSON translation file:
+
+`"videos": "{{ count }} video{{ count+,>1{s} }}"`
+
+If then you call:
+
+`t("videos", { count: 0 })`  
+`t("videos", { count: 1 })`  
+`t("videos", { count: 2 })`
+
+It will produce
+
+`0 video`  
+`1 video`  
+`2 videos`
+
+You can provide multiple options inside a plural:
+
+`"videos": "{{ count+,=0{No},=1{One},>1{{{ count }}} }} video{{ count+,>1{s} }}"`
+
+If then you call:
+
+`t("videos", { count: 0 })`  
+`t("videos", { count: 1 })`  
+`t("videos", { count: 2 })`
+
+It will produce
+
+`No video`  
+`One video`  
+`2 videos`
+
+The following operators are supported: =, >, <
+
+### Conditional
+
+In the JSON translation file:
+
+`"returnButton": "Return{{ x?, to {{ x }} }}"`
+
+If then you call:
+
+`t("returnButton", { x: "Home" })`  
+`t("returnButton", { x: undefined })`  
+`t("returnButton", { x: null })`  
+`t("returnButton", { x: "" })`  
+`t("returnButton", { x: 0 })`
+
+It will produce
+
+`Return to Home`  
+`Return`  
+`Return`  
+`Return to 0`
+
+The condition is: `variable !== undefined && variable !== null && variable !== ""`  
+If the condition is met, the first value is used. If not, the second value is used. The first value is required. If the second value is omited, it will be consider as an empty string.
+
+Here's an exemple where the second option is explicit. In the JSON translation file:
+
+`"returnButton": "Return{{ x?, to {{ x }}, back }}"`
+
+If then you call:
+
+`t("returnButton", { x: "Home" })`  
+`t("returnButton", { x: undefined })`
+
+It will produce
+
+`Return to Home`  
+`Return back`

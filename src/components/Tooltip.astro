@@ -1,12 +1,13 @@
 ---
 interface Props {
-  class?: string;
+  class?: string | undefined;
+  trigger?: string | undefined;
 }
 
-const { class: className } = Astro.props;
+const { class: className, trigger = "mouseenter focus" } = Astro.props;
 ---
 
-<tippy-tooltip class={className}>
+<tippy-tooltip class={className} data-tippy-trigger={trigger}>
   <template><slot name="tooltip-content" /></template>
   <slot />
 </tippy-tooltip>
@@ -23,7 +24,6 @@ const { class: className } = Astro.props;
         content: (ref) =>
           ref.querySelector(":scope > template")?.innerHTML ?? "",
         interactive: true,
-        trigger: "click",
       });
     }
   }
