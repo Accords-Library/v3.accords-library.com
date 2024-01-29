@@ -18,7 +18,6 @@ const prefTheme = Astro.cookies.get("al_pref_theme")?.value;
 
 <html
   lang="en"
-  style={{ fontSize: "200%" }}
   class:list={{
     "manual-theme": prefTheme !== undefined,
     "light-theme": prefTheme === "light",

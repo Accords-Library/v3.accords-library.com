@@ -30,7 +30,7 @@ export const langMiddleware = defineMiddleware(
       return redirection(redirectURL);
     }
 
-    if (actionLang && actionLang !== cookiePreferredLocale) {
+    if (actionLang) {
       const pathnameWithoutLocale = url.pathname.substring(
         currentLocale.length + 1
       );

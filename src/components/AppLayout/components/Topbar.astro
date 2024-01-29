@@ -1,7 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
 import Button from "components/Button.astro";
-import ButtonGroup from "components/ButtonGroup.astro";
 import Tooltip from "pages/_components/Tooltip.astro";
 import astroConfig from "astro.config";
 
@@ -47,7 +46,7 @@ const currentLocate = Astro.currentLocale ?? "en";
   <div id="toolbar">
     <Button icon="material-symbols:search" ariaLabel="Search on this website" />
     <div class="separator"></div>
-    <Tooltip class="xs-not">
+    <Tooltip>
       <Fragment slot="tooltip-content">
         <a href="?action-theme=dark">Dark</a>
         <a href="?action-theme=auto">Auto</a>
@@ -59,35 +58,13 @@ const currentLocate = Astro.currentLocale ?? "en";
       />
     </Tooltip>
 
-    <ButtonGroup
-      buttons={[
-        {
-          icon: "material-symbols:text-decrease",
-          ariaLabel: "Decrease text size",
-          href: "?action-fontsize-increase=1",
-        },
-        {
-          icon: "material-symbols:text-increase",
-          ariaLabel: "Increase text size",
-          href: "?action-fontsize-decrease=1",
-        },
-      ]}
-    />
     <Button
-      class="s-only"
-      icon={[
-        "material-symbols:translate",
-        "material-symbols:currency-exchange",
-      ]}
-      ariaLabel="Select preferred language/currency"
-    />
-    <Button
-      class="m-only s-not"
+      class="m-only"
       icon="material-symbols:translate"
       ariaLabel="Select preferred language"
     />
     <Button
-      class="m-only s-not"
+      class="m-only"
       icon="material-symbols:currency-exchange"
       ariaLabel="Select preferred currency"
     />
@@ -182,7 +159,7 @@ const currentLocate = Astro.currentLocale ?? "en";
         height: 2em;
         background-color: var(--color-base-700);
 
-        @media (max-width: 30rem) {
+        @media (max-width: 20rem) {
           display: none;
         }
       }
