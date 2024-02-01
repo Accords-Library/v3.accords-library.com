@@ -49,9 +49,10 @@ const {
   /* ------------------------------------------- CSS -------------------------------------------- */
 }
 
+{/* TODO: Not use CSS image if possible */}
 <style
   define:vars={{
-    illustration: `url(${illustration})`,
+    illustration: illustration ? `url(${illustration})` : "unset",
     illustrationSize,
     illustrationPosition,
   }}
