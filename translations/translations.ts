@@ -1,13 +1,20 @@
+import type { AstroCookies } from "astro";
 import en from "./en.json";
+import fr from "./fr.json";
+import ja from "./ja.json"
+
+import acceptLanguage from 'accept-language';
+import { z } from "zod";
 
 type WordingKeys = keyof typeof en;
+const translationFiles: Record<string, Record<WordingKeys, string>> = {
+  en,
+  fr,
+  ja
+};
 
 export const getI18n = async (locale: string) => {
-  const file = Bun.file(`./translations/${locale}.json`, {
-    type: "application/json",
-  });
-  const content = await file.text();
-  const translations: Record<string, string> = JSON.parse(content);
+  const translations = translationFiles[locale];
 
   const formatWithValues = (
     templateName: string,
@@ -105,7 +112,7 @@ export const getI18n = async (locale: string) => {
 
   return {
     t: (key: WordingKeys, values: Record<string, any> = {}): string => {
-      if (key in translations) {
+      if (translations && key in translations) {
         return formatWithValues(key, translations[key]!, values);
       }
       return `«${key}»`;
@@ -131,4 +138,47 @@ const limitMatchToBalanceCurlyBraces = (
     index++;
   }
   return match.substring(0, index);
+};
+
+export const locales = ["en", "es", "fr", "ja", "pt", "zh"] as const;
+acceptLanguage.languages([...locales]);
+
+export type Locale = (typeof locales)[number];
+
+export const defaultLocale: Locale = "en";
+
+export const getCurrentLocale = (pathname: string): Locale | undefined => {
+  for (const locale of locales) {
+    if (pathname.startsWith(`/${locale}`)) {
+      return locale;
+    }
+  }
+  return undefined;
+};
+
+export const getPreferredLocale = (request: Request): Locale | undefined => {
+  return acceptLanguage.get(request.headers.get("Accept-Language")) as Locale | null ?? undefined;
+};
+
+export const getCookiePreferredLocale = (
+  cookies: AstroCookies
+): string | undefined => {
+  const alPrefLanguages = cookies.get("al_pref_languages");
+
+  try {
+    const json = alPrefLanguages?.json();
+    const result = z.array(z.string()).nonempty().safeParse(json);
+    if (result.success) {
+      for (const value of result.data) {
+        if (locales.includes(value as Locale)) {
+          return value;
+        }
+      }
+    }
+  } catch (e) {
+    console.error(e);
+    return undefined;
+  }
+
+  return undefined;
 };

@@ -20,15 +20,6 @@ export default defineConfig({
       },
     }),
   ],
-  i18n: {
-    defaultLocale: "en",
-    locales: ["en", "es", "fr", "ja", "pt", "zh"],
-    routing: {
-      prefixDefaultLocale: true,
-      redirectToDefaultLocale: false,
-      strategy: "pathname",
-    },
-  },
   server: {
     port: 12499,
     host: true,

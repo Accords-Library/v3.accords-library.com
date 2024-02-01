@@ -13,6 +13,9 @@
 
   "header.topbar.search.tooltip": "Search on this website",
   "header.topbar.theme.tooltip": "Switch between dark/light mode",
+  "header.topbar.theme.dark": "Dark",
+  "header.topbar.theme.auto": "Auto",
+  "header.topbar.theme.light": "Light",
   "header.topbar.language.tooltip": "Select preferred language",
   "header.topbar.currency.tooltip": "Select preferred currency",
 

@@ -3,15 +3,29 @@ import Button from "components/Button.astro";
 import Tooltip from "components/Tooltip.astro";
 import { getI18n } from "translations/translations";
 
-const { t } = await getI18n(Astro.currentLocale!);
+const { currentLocale, currentTheme } = Astro.locals;
+const { t } = await getI18n(currentLocale);
 ---
 
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
 <Tooltip trigger="click">
-  <Fragment slot="tooltip-content">
-    <a href="?action-theme=dark">Dark</a>
-    <a href="?action-theme=auto">Auto</a>
-    <a href="?action-theme=light">Light</a>
-  </Fragment>
+  <div id="content" slot="tooltip-content">
+    <a
+      class:list={{ current: currentTheme === "dark" }}
+      href="?action-theme=dark">{t("header.topbar.theme.dark")}</a
+    >
+    <a
+      class:list={{ current: currentTheme === "auto" }}
+      href="?action-theme=auto">{t("header.topbar.theme.auto")}</a
+    >
+    <a
+      class:list={{ current: currentTheme === "light" }}
+      href="?action-theme=light">{t("header.topbar.theme.light")}</a
+    >
+  </div>
   <Button
     class="when-light-theme"
     icon="material-symbols:sunny-outline"
@@ -23,3 +37,19 @@ const { t } = await getI18n(Astro.currentLocale!);
     ariaLabel={t("header.topbar.theme.tooltip")}
   />
 </Tooltip>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  #content {
+    display: grid;
+    gap: 0.5em;
+
+    & > .current {
+      color: var(--color-base-750);
+      text-decoration: underline 0.08em var(--color-base-650);
+    }
+  }
+</style>

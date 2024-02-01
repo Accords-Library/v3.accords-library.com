@@ -11,7 +11,7 @@ interface Props {
 }
 
 const { breadcrumb } = Astro.props;
-const { t } = await getI18n(Astro.currentLocale!);
+const { t } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {

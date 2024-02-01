@@ -1,6 +1,9 @@
 ---
 import AppLayout from "components/AppLayout/AppLayout.astro";
 import FolderCard from "./_components/FolderCard.astro";
+import { getI18n } from "translations/translations";
+
+const {getLocalizedUrl} = await getI18n(Astro.locals.currentLocale)
 ---
 
 {
@@ -19,62 +22,62 @@ import FolderCard from "./_components/FolderCard.astro";
     <FolderCard
       title="Games"
       icon="material-symbols:stadia-controller-outline"
-      href="/drakengard/games"
+      href={getLocalizedUrl("/drakengard/games")}
     />
     <FolderCard
       title="Guidebooks"
       icon="material-symbols:menu-book-outline"
-      href="/drakengard/guidebooks"
+      href={getLocalizedUrl("/drakengard/guidebooks")}
     />
     <FolderCard
       title="Manga"
       icon="material-symbols:menu-book-outline"
-      href="/drakengard/manga"
+      href={getLocalizedUrl("/drakengard/manga")}
     />
     <FolderCard
       title="Novels"
       icon="material-symbols:menu-book-outline"
-      href="/drakengard/novels"
+      href={getLocalizedUrl("/drakengard/novels")}
     />
     <FolderCard
       title="Novellas"
       icon="material-symbols:menu-book-outline"
-      href="/drakengard/novellas "
+      href={getLocalizedUrl("/drakengard/novellas")}
     />
     <FolderCard
       title="Characters"
       icon="material-symbols:person-outline"
-      href="/drakengard/characters"
+      href={getLocalizedUrl("/drakengard/characters")}
     />
     <FolderCard
       title="Places"
       icon="material-symbols:location-on-outline"
-      href="/drakengard/places"
+      href={getLocalizedUrl("/drakengard/places")}
     />
     <FolderCard
       title="Enemies"
       icon="material-symbols:sentiment-extremely-dissatisfied-outline"
-      href="/drakengard/enemies"
+      href={getLocalizedUrl("/drakengard/enemies")}
     />
     <FolderCard
       title="Terms"
       icon="material-symbols:indeterminate-question-box"
-      href="/drakengard/terms"
+      href={getLocalizedUrl("/drakengard/terms")}
     />
     <FolderCard
       title="Weapons"
       icon="material-symbols:swords-outline"
-      href="/drakengard/weapons"
+      href={getLocalizedUrl("/drakengard/weapons")}
     />
     <FolderCard
       title="Timeline"
       icon="material-symbols:calendar-month-outline"
-      href="/drakengard/timeline"
+      href={getLocalizedUrl("/drakengard/timeline")}
     />
     <FolderCard
       title="News"
       icon="material-symbols:newspaper"
-      href="/drakengard/news"
+      href={getLocalizedUrl("/drakengard/news")}
     />
   </div>
 </AppLayout>

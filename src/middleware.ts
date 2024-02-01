@@ -1,14 +1,18 @@
-import type { AstroCookies } from "astro";
 import { defineMiddleware, sequence } from "astro:middleware";
 import { z } from "zod";
-import astroConfig from "astro.config";
+import {
+  defaultLocale,
+  getCookiePreferredLocale,
+  getCurrentLocale,
+  getPreferredLocale,
+} from "translations/translations";
 
 const cookieThemeSchema = z.enum(["dark", "light", "auto"]);
 
 const getAbsoluteLocaleUrl = (locale: string, url: string) =>
   `/${locale}${url}`;
 
-const redirection = (
+const redirect = (
   redirectURL: string,
   headers: Record<string, string> = {}
 ): Response => {
@@ -19,30 +23,23 @@ const redirection = (
   });
 };
 
-export const langMiddleware = defineMiddleware(
-  ({ cookies, preferredLocale, currentLocale, url }, next) => {
-    const cookiePreferredLocale = getCookiePreferredLocale(cookies);
-    const actionLang = url.searchParams.get("action-lang");
+const localeNegotiator = defineMiddleware(
+  ({ cookies, url, request }, next) => {
+    const currentLocale = getCurrentLocale(url.pathname);
+    const preferredLocale = getPreferredLocale(request);
 
-    if (!currentLocale) {
-      currentLocale = cookiePreferredLocale ?? preferredLocale ?? "en";
-      const redirectURL = getAbsoluteLocaleUrl(currentLocale, url.pathname);
-      return redirection(redirectURL);
+    if (url.pathname.startsWith("/api/")) {
+      return next();
     }
 
-    if (actionLang) {
-      const pathnameWithoutLocale = url.pathname.substring(
-        currentLocale.length + 1
-      );
+    const cookiePreferredLocale = getCookiePreferredLocale(cookies);
+
+    if (!currentLocale) {
       const redirectURL = getAbsoluteLocaleUrl(
-        actionLang,
-        pathnameWithoutLocale
+        cookiePreferredLocale ?? preferredLocale ?? defaultLocale,
+        url.pathname
       );
-      return redirection(redirectURL, {
-        "Set-Cookie": `al_pref_languages=${JSON.stringify([
-          actionLang,
-        ])}; Path=/`,
-      });
+      return redirect(redirectURL);
     }
 
     if (cookiePreferredLocale) {
@@ -54,7 +51,7 @@ export const langMiddleware = defineMiddleware(
           cookiePreferredLocale,
           pathnameWithoutLocale
         );
-        return redirection(redirectURL);
+        return redirect(redirectURL);
       }
     } else if (preferredLocale) {
       if (preferredLocale !== currentLocale) {
@@ -65,60 +62,80 @@ export const langMiddleware = defineMiddleware(
           preferredLocale,
           pathnameWithoutLocale
         );
-        return redirection(redirectURL);
+        return redirect(redirectURL);
       }
     }
+
     return next();
   }
 );
 
-export const headersMiddleware = defineMiddleware(
-  async ({ currentLocale, url }, next) => {
-    const actionTheme = url.searchParams.get("action-theme");
+const handleActionsSearchParams = defineMiddleware(async ({ url }, next) => {
+  // TODO: Verify locale typing
+  const actionLang = url.searchParams.get("action-lang");
+  if (actionLang) {
+    const currentLocale = getCurrentLocale(url.pathname);
+    const pathnameWithoutLocale = currentLocale
+      ? url.pathname.substring(currentLocale.length + 1)
+      : url.pathname;
+    const redirectURL = getAbsoluteLocaleUrl(actionLang, pathnameWithoutLocale);
+    return redirect(redirectURL, {
+      "Set-Cookie": `al_pref_languages=${JSON.stringify([actionLang])}; Path=/`,
+    });
+  }
 
-    const verifiedActionTheme = cookieThemeSchema.safeParse(actionTheme);
+  // TODO: Verify currency typing
+  const actionCurrency = url.searchParams.get("action-currency");
+  if (actionCurrency) {
+    return redirect(url.pathname, {
+      "Set-Cookie": `al_pref_currency=${JSON.stringify(
+        actionCurrency
+      )}; Path=/`,
+    });
+  }
 
-    if (verifiedActionTheme.success) {
-      url.searchParams.delete("action-theme");
-      if (verifiedActionTheme.data === "auto") {
-        return redirection(url.toString(), {
-          "Set-Cookie": `al_pref_theme=; Path=/; Expires=${new Date(0).toUTCString()}`,
-        });
-      }
-      return redirection(url.toString(), {
-        "Set-Cookie": `al_pref_theme=${verifiedActionTheme.data}; Path=/`,
+  const actionTheme = url.searchParams.get("action-theme");
+  const verifiedActionTheme = cookieThemeSchema.safeParse(actionTheme);
+
+  if (verifiedActionTheme.success) {
+    url.searchParams.delete("action-theme");
+    if (verifiedActionTheme.data === "auto") {
+      return redirect(url.pathname, {
+        "Set-Cookie": `al_pref_theme=; Path=/; Expires=${new Date(
+          0
+        ).toUTCString()}`,
       });
     }
+    return redirect(url.pathname, {
+      "Set-Cookie": `al_pref_theme=${verifiedActionTheme.data}; Path=/`,
+    });
+  }
+
+  return next();
+});
+
+const addContentLanguageResponseHeader = defineMiddleware(
+  async ({ url }, next) => {
+    const currentLocale = getCurrentLocale(url.pathname);
 
     const response = await next();
-    if (currentLocale) {
+    if (response.status === 200 && currentLocale) {
       response.headers.set("Content-Language", currentLocale);
     }
     return response;
   }
 );
 
-export const onRequest = sequence(headersMiddleware, langMiddleware);
+const provideLocalsToRequest = defineMiddleware(async ({ url, locals, cookies }, next) => {
+  locals.currentLocale = getCurrentLocale(url.pathname) ?? "en";
+  locals.currentCurrency = cookies.get("al_pref_currency")?.value ?? "usd"
+  locals.currentTheme =  cookies.get("al_pref_theme")?.value ?? "auto"
+  return next();
+});
 
-const getCookiePreferredLocale = (
-  cookies: AstroCookies
-): string | undefined => {
-  const alPrefLanguages = cookies.get("al_pref_languages");
-
-  try {
-    const json = alPrefLanguages?.json();
-    const result = z.array(z.string()).nonempty().safeParse(json);
-    if (result.success) {
-      for (const value of result.data) {
-        if (astroConfig.i18n?.locales.includes(value)) {
-          return value;
-        }
-      }
-    }
-  } catch (e) {
-    console.error(e);
-    return undefined;
-  }
-
-  return undefined;
-};
+export const onRequest = sequence(
+  addContentLanguageResponseHeader,
+  handleActionsSearchParams,
+  localeNegotiator,
+  provideLocalsToRequest
+);

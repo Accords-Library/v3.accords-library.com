@@ -1,31 +1,55 @@
 ---
-import astroConfig from "astro.config";
 import Button from "components/Button.astro";
 import Tooltip from "components/Tooltip.astro";
-import { getI18n } from "translations/translations";
+import { getI18n, locales } from "translations/translations";
 
 interface Props {
   withTitle?: boolean | undefined;
   class?: string | undefined;
 }
 
-const { withTitle, class:className } = Astro.props;
+const { withTitle, class: className } = Astro.props;
 
-const currentLocate = Astro.currentLocale ?? "en";
-const { t } = await getI18n(currentLocate);
+const { currentLocale } = Astro.locals;
+const { t } = await getI18n(currentLocale);
 ---
 
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
 <Tooltip trigger="click" class={className}>
-  <Fragment slot="tooltip-content">
+  <div id="content" slot="tooltip-content">
     {
-      astroConfig.i18n?.locales.map((locale) => (
-        <a href={`?action-lang=${locale}`}>{locale.toString().toUpperCase()}</a>
+      locales.map((locale) => (
+        <a
+          class:list={{ current: locale === currentLocale }}
+          href={`?action-lang=${locale}`}
+        >
+          {locale.toString().toUpperCase()}
+        </a>
       ))
     }
-  </Fragment>
+  </div>
   <Button
     icon="material-symbols:translate"
-    title={withTitle ? currentLocate.toUpperCase() : undefined}
+    title={withTitle ? currentLocale.toUpperCase() : undefined}
     ariaLabel={t("header.topbar.language.tooltip")}
   />
 </Tooltip>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  #content {
+    display: grid;
+    gap: 0.5em;
+
+    & > .current {
+      color: var(--color-base-750);
+      text-decoration: underline 0.08em var(--color-base-650);
+    }
+  }
+</style>

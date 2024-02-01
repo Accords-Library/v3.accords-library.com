@@ -6,7 +6,7 @@ import LinkCard from "../_components/LinkCard.astro";
 import CategoryCard from "../_components/CategoryCard.astro";
 import { getI18n } from "../../../translations/translations";
 
-const { t, getLocalizedUrl } = await getI18n(Astro.currentLocale!);
+const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {
@@ -266,8 +266,8 @@ const { t, getLocalizedUrl } = await getI18n(Astro.currentLocale!);
         line-height: 1;
         margin: 0;
         margin-top: -0.5em;
-        font-size: 21.5px;
-        font-weight: 700;
+        font-size: 21px;
+        font-weight: 600;
       }
     }
 
@@ -309,7 +309,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.currentLocale!);
     & > section {
       & > h2 {
         font-family: var(--font-serif);
-        font-size: 28px;
+        font-size: 30px;
       }
 
       & > p {

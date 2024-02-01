@@ -1,11 +1,45 @@
 {
+  "global.siteName": "Accord’s Library",
+  "global.siteSubtitle": "Discover • Archive • Translate • Analyze",
+  "home.title": "Accueil",
+  "home.description": "Notre objectif est d'archiver et de traduire toutes les œuvres de <strong>Yoko Taro</strong>.<br />Yoko Taro est une réalisatrice et scénariste de jeux vidéo japonaise. Il est surtout connu pour son implication dans les séries <strong>NieR</strong> et <strong>Drakengard</strong>. Pour compléter ses jeux, Yoko Taro aime publier du matériel annexe sous forme de livres, d'animes, de mangas, de livres audio, de romans, voire de pièces de théâtre.<br />Ces médias peuvent être très difficiles à trouver. Son travail remonte à 2003. La majeure partie a été publiée uniquement en japonais, et parfois en quantité limitée. Voici donc ce que nous faisons ici : <strong>découvrir, archiver, traduire et analyser</strong>.",
+  "home.aboutUsButton": "En savoir plus sur nous",
+  "home.librarySection.title": "La bibliothèque",
+  "home.librarySection.description": "Vous trouverez ici une liste des IP sur lesquelles Yoko Taro a travaillé. Sélectionnez-en un pour découvrir tous les médias/contenus/articles liés à cette IP. <strong>Attention, il peut y avoir des spoilers.</strong>",
+  "home.moreSection.title": "Plus de contenu",
+  "home.moreSection.description": "Les séries NieR et Drakengard partagent une chronologie commune que vous pouvez explorer via le lien ci-dessous. Nous avons également rassemblé des milliers d’œuvres d’art officielles, de vidéos et de ressources Web notables. <strong>Attention, il peut y avoir des spoilers.</strong>",
+  "home.linksSection.title": "Liens",
+  "home.linksSection.description": "Avez-vous une <strong>question</strong> ? Vous souhaitez partager quelque chose avec notre <strong>communauté</strong> ? Êtes-vous intéressé à <strong>contribuer</strong> à ce projet ? Quoi qu’il en soit, vous devriez trouver ce que vous cherchez sur les liens suivants.",
+
+  "header.topbar.search.tooltip": "Rechercher sur ce site",
+  "header.topbar.theme.tooltip": "Basculer entre le mode sombre/clair",
+  "header.topbar.theme.dark": "Sombre",
+  "header.topbar.theme.auto": "Auto",
+  "header.topbar.theme.light": "Clair",
+  "header.topbar.language.tooltip": "Sélectionnez la langue préférée",
+  "header.topbar.currency.tooltip": "Sélectionnez la devise préférée",
+
   "footer.links.home.title": "Accueil",
   "footer.links.timeline.title": "Chronologie",
-  "footer.links.timeline.subtitle": "{{eraCount}} époques, {{eventCount}} évenements",
+  "footer.links.timeline.subtitle": "{{ eraCount }} époque{{ eraCount+,>1{s} }}, {{ eventCount }} évenement{{ eventCount+,>1{s} }}",
   "footer.links.gallery.title": "Gallerie",
-  "footer.links.gallery.subtitle": "{{count}} images",
+  "footer.links.gallery.subtitle": "{{ count }} image{{ count+,>1{s} }}",
   "footer.links.videos.title": "Vidéos",
-  "footer.links.videos.subtitle": "{{count}} vidéos",
+  "footer.links.videos.subtitle": "{{ count }} vidéo{{ count+,>1{s} }}",
   "footer.links.webArchives.title": "Archives web",
-  "footer.links.webArchives.subtitle": "{{count}} archives"
+  "footer.links.webArchives.subtitle": "{{ count }} archive{{ count+,>1{s} }}",
+
+  "footer.socials.discord.title": "Discord",
+  "footer.socials.discord.subtitle": "Rejoindre la communauté",
+  "footer.socials.twitter.title": "Twitter",
+  "footer.socials.twitter.subtitle": "Connaitre les dernières nouvelles",
+  "footer.socials.github.title": "GitHub",
+  "footer.socials.github.subtitle": "Rejoindre l'équipe technique",
+  "footer.socials.contact.title": "Contact",
+  "footer.socials.contact.subtitle": "Nous contacter par email",
+
+  "footer.license.description": "Le contenu de ce site Web est disponible sous <a href=\"https://creativecommons.org/licenses/by-sa/4.0/\">CC-BY-SA</a>, sauf indication contraire.",
+  "footer.license.icons.tooltip": "Licence CC-BY-SA 4.0",
+
+  "footer.disclaimer": "<strong>Accord’s Library</strong> n'est ni affiliée ni approuvée par <strong>SQUARE ENIX CO. LTD</strong>. Tous les éléments du jeu et le matériel promotionnel appartiennent à <strong>© SQUARE ENIX CO. LTD</strong>."
 }
