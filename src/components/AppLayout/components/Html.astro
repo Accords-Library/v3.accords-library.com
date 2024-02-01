@@ -1,5 +1,8 @@
 ---
 import UAParser from "ua-parser-js";
+import { ViewTransitions } from "astro:transitions";
+import "@fontsource-variable/vollkorn";
+import "@fontsource-variable/murecho";
 
 interface Props {
   title: string;
@@ -29,14 +32,8 @@ const { currentTheme } = Astro.locals;
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
-    <!-- Fonts google -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="/css/tippy.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Vollkorn:wght@400;500;600;700;800;900&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap"
-      rel="stylesheet"
-    />
+
     <noscript>
       <style>
         .when-js {
@@ -47,6 +44,7 @@ const { currentTheme } = Astro.locals;
         }
       </style>
     </noscript>
+    <ViewTransitions />
   </head>
 
   <body class:list={{ "texture-dots": !isIOS }}>
@@ -101,6 +99,12 @@ const { currentTheme } = Astro.locals;
 
       & .when-dark-theme {
         display: none !important;
+      }
+
+      font-weight: 430;
+
+      strong {
+        font-weight: 600;
       }
     }
 
@@ -192,6 +196,12 @@ const { currentTheme } = Astro.locals;
         & .when-dark-theme {
           display: none !important;
         }
+
+        font-weight: 430;
+
+        strong {
+          font-weight: 600;
+        }
       }
 
       @media (prefers-color-scheme: dark) {
@@ -266,23 +276,27 @@ const { currentTheme } = Astro.locals;
   h6,
   p,
   button {
-    line-height: 1;
     padding: 0;
     margin: 0;
   }
 
+  h1,
+  h2 {
+    font-weight: 800;
+  }
+
   .font-serif {
-    font-family: "Vollkorn", serif;
+    font-family: "Vollkorn Variable", serif;
   }
 
   :root {
-    --font-serif: "Vollkorn", serif;
+    --font-serif: "Vollkorn Variable", serif;
   }
 
   button,
   body {
-    font-family: "Zen Maru Gothic", sans-serif;
-    font-weight: 500;
+    font-family: "Murecho Variable", sans-serif;
+    line-height: 1;
   }
 
   a {
@@ -293,7 +307,7 @@ const { currentTheme } = Astro.locals;
   p {
     & a {
       color: var(--color-base-750);
-      text-decoration: underline dotted var(--color-base-650);
+      text-decoration: underline dotted 0.1em var(--color-base-650);
     }
   }
 
