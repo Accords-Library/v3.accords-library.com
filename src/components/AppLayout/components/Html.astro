@@ -359,3 +359,11 @@ const { currentTheme } = Astro.locals;
     }
   }
 </style>
+
+<script>
+  import htmx from "htmx.org";
+  // On any page navigation, reprocess HTMX
+  document.addEventListener("astro:page-load", () => {
+    htmx.process(document.querySelector("main")!);
+  });
+</script>

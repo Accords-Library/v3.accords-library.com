@@ -14,6 +14,7 @@ const { class: className, trigger = "mouseenter focus" } = Astro.props;
 
 <script>
   import tippy from "tippy.js";
+  import htmx from "htmx.org";
 
   class TippyTooltip extends HTMLElement {
     constructor() {
@@ -24,6 +25,9 @@ const { class: className, trigger = "mouseenter focus" } = Astro.props;
         content: (ref) =>
           ref.querySelector(":scope > template")?.innerHTML ?? "",
         interactive: true,
+        onMount: (instance) => {
+          htmx.process(instance.popper);
+        },
       });
     }
   }

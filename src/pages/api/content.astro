@@ -1,0 +1,59 @@
+---
+import Button from "components/Button.astro";
+import Tooltip from "components/Tooltip.astro";
+import { getI18n, locales } from "translations/translations";
+
+export const partial = true;
+
+interface Props {
+  lang?: string;
+}
+
+const reqUrl = new URL(Astro.request.url);
+const lang = Astro.props.lang ?? reqUrl.searchParams.get("lang")!;
+
+const { t } = await getI18n(lang);
+---
+
+<div class="hx-swap-content">
+  <Tooltip trigger="click" class="when-js">
+    <Button
+      icon="material-symbols:translate"
+      title={lang.toUpperCase()}
+      ariaLabel={t("header.topbar.language.tooltip")}
+    />
+
+    <div id="content" slot="tooltip-content">
+      {
+        locales.map((locale) => (
+          <a
+            class:list={{ current: locale === lang }}
+            hx-get={`/api/content?lang=${locale}`}
+            hx-trigger="click"
+            hx-target="closest .hx-swap-content"
+            hx-swap="outerHTML"
+          >
+            {locale.toString().toUpperCase()}
+          </a>
+        ))
+      }
+    </div>
+  </Tooltip>
+  <div set:html={t("home.description")} />
+</div>
+
+<style>
+  #content {
+    display: grid;
+    gap: 0.5em;
+
+    & > a {
+      cursor: pointer;
+    }
+
+    & > .current {
+      color: var(--color-base-750);
+      text-decoration: underline 0.08em var(--color-base-650);
+    }
+  }
+</style>
