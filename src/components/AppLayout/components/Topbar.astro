@@ -43,19 +43,31 @@ const { t } = await getI18n(Astro.locals.currentLocale);
       </div>
     )
   }
-  <div id="toolbar" class="when-js">
+  <div id="toolbar">
     <Button
       icon="material-symbols:search"
       ariaLabel={t("header.topbar.search.tooltip")}
     />
     <div class="separator"></div>
-    <ThemeSelector />
 
-    <LanguageSelector class="m-not" withTitle />
-    <LanguageSelector class="m-only" />
+    <div class="when-no-js">
+      <a href="/settings">
+        <Button
+          icon="material-symbols:settings-outline"
+          ariaLabel={t("header.topbar.search.tooltip")}
+        />
+      </a>
+    </div>
 
-    <CurrencySelector class="m-not" withTitle />
-    <CurrencySelector class="m-only" />
+    <div class="when-js">
+      <ThemeSelector />
+
+      <LanguageSelector class="m-not" withTitle />
+      <LanguageSelector class="m-only" />
+
+      <CurrencySelector class="m-not" withTitle />
+      <CurrencySelector class="m-only" />
+    </div>
   </div>
 </nav>
 
@@ -130,17 +142,22 @@ const { t } = await getI18n(Astro.locals.currentLocale);
         }
       }
 
-      & > :global(.m-only) {
-        display: none;
-      }
+      & > div.when-js {
+        display: flex;
+        gap: 12px;
 
-      @media (max-width: 40rem) {
         & > :global(.m-only) {
-          display: flex;
+          display: none;
         }
 
-        & > :global(.m-not) {
-          display: none;
+        @media (max-width: 40rem) {
+          & > :global(.m-only) {
+            display: flex;
+          }
+
+          & > :global(.m-not) {
+            display: none;
+          }
         }
       }
     }

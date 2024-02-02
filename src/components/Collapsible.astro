@@ -1,0 +1,62 @@
+---
+
+---
+
+<details>
+  <summary><slot name="header" /></summary>
+  <div class="content">
+    <div class="content2">
+      <slot />
+    </div>
+  </div>
+</details>
+
+<style>
+  details {
+    --foreground-color: var(--color-base-650);
+    color: var(--foreground-color);
+    border: 0.1em solid var(--foreground-color);
+    background-color: var(--color-elevation-0);
+    border-radius: 1.25em;
+
+    transition: all 1s;
+
+    &[open] {
+      & > summary {
+        border-bottom: 1px solid #aaa;
+      }
+
+      & > .content {
+        animation: animate 0.5s forwards;
+      }
+    }
+
+    & > summary {
+      list-style: none;
+      height: 2.5em;
+      padding-left: 1em;
+      padding-right: 1em;
+      display: flex;
+      place-items: center;
+      gap: 1em;
+    }
+
+    & > .content {
+      padding: 1em;
+      display: grid;
+
+      & > .content2 {
+        overflow: hidden;
+      }
+    }
+  }
+
+  @keyframes animate {
+    from {
+      grid-template-rows: 0fr;
+    }
+    to {
+      grid-template-rows: 1fr;
+    }
+  }
+</style>

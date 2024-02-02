@@ -25,6 +25,7 @@ const { t } = await getI18n(currentLocale);
         <a
           class:list={{ current: locale === currentLocale }}
           href={`?action-lang=${locale}`}
+          data-astro-prefetch="tap"
         >
           {locale.toString().toUpperCase()}
         </a>
