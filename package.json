@@ -8,28 +8,29 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "upgrade": "ncu"
+    "upgrade": "ncu",
+    "script:download-payload-sdk": "bun run scripts/download-payload-sdk.ts"
   },
   "dependencies": {
-    "@astrojs/check": "^0.4.1",
+    "@astrojs/check": "^0.5.4",
     "@astrojs/node": "^8.2.0",
     "@fontsource-variable/murecho": "^5.0.17",
     "@fontsource-variable/vollkorn": "^5.0.19",
     "accept-language": "^3.0.18",
-    "astro": "^4.3.0",
-    "astro-icon": "^1.0.4",
-    "htmx.org": "^1.9.10",
+    "astro": "4.3.7",
+    "astro-icon": "^1.1.0",
+    "node-cache": "^5.1.2",
     "tippy.js": "^6.3.7",
     "ua-parser-js": "^1.0.37",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@iconify-json/material-symbols": "^1.1.71",
+    "@iconify-json/material-symbols": "^1.1.72",
     "@types/ua-parser-js": "^0.7.39",
     "astro-meta-tags": "^0.2.1",
     "autoprefixer": "^10.4.17",
-    "bun-types": "^1.0.25",
-    "npm-check-updates": "^16.14.14",
+    "bun-types": "^1.0.26",
+    "npm-check-updates": "^16.14.15",
     "postcss-preset-env": "^9.3.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
