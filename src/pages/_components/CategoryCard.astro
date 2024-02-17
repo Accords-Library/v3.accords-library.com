@@ -1,6 +1,6 @@
 ---
 interface Props {
-  img?: { light: string; dark: string };
+  img?: { light: string; dark: string } | undefined;
   name: string;
   href: string;
 }
@@ -30,7 +30,6 @@ const { img, name, href } = Astro.props;
     place-items: center;
 
     padding: 24px;
-    padding-bottom: 32px;
     border-radius: 12px;
 
     user-select: none;

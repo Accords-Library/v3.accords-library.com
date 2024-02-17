@@ -5,8 +5,8 @@ import Footer from "./components/Footer.astro";
 
 interface Props {
   breadcrumb?: { name: string; slug: string }[];
-  title?: string;
-  description?: string;
+  title?: string | undefined;
+  description?: string | undefined;
   illustration?: string;
   illustrationSize?: string;
   illustrationPosition?: string;
@@ -34,14 +34,17 @@ const {
         <slot name="header-title">
           <h1>{title}</h1>
         </slot>
-        <slot name="header-description">
-          <p>{description}</p>
-        </slot>
+
+        <div id="description">
+          <slot name="header-description">
+            <p>{description}</p>
+          </slot>
+        </div>
       </div>
-      <div id="image-container"></div>
+      {illustration && <div id="image-container" />}
     </div>
   </header>
-  <main><slot name="main" /></main>
+  <main><slot /></main>
   <Footer withLinks={breadcrumb.length > 0} />
 </Html>
 
@@ -78,8 +81,12 @@ const {
           overflow-wrap: anywhere;
         }
 
-        & > p {
+        & > #description {
           max-width: 35em;
+
+          & > p {
+            line-height: 1.4;
+          }
         }
       }
 

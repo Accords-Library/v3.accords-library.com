@@ -3,8 +3,10 @@ import { Icon } from "astro-icon/components";
 import AppLayout from "components/AppLayout/AppLayout.astro";
 import Button from "components/Button.astro";
 import LinkCard from "../_components/LinkCard.astro";
-import CategoryCard from "../_components/CategoryCard.astro";
 import { getI18n } from "../../../translations/translations";
+
+import ChronicleCard from "pages/_components/ChronicleCard.astro";
+import LibraryGrid from "pages/_components/LibraryGrid.astro";
 
 const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
@@ -36,186 +38,142 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     </a>
   </div>
 
-  <Fragment slot="main">
-    <div id="main">
-      <section id="library">
-        <h2>{t("home.librarySection.title")}</h2>
-        <p set:html={t("home.librarySection.description")} />
-        <div class="grid">
-          <CategoryCard
-            img={{
-              light: "/img/categories/light/dod.png",
-              dark: "/img/categories/dark/dod.png",
-            }}
-            name="Drakengard"
-            href={getLocalizedUrl("/drakengard")}
-          />
-          <CategoryCard
-            img={{
-              light: "/img/categories/light/dod2.png",
-              dark: "/img/categories/dark/dod2.png",
-            }}
-            name="Drakengard 2"
-            href={getLocalizedUrl("/drakengard-2")}
-          />
-          <CategoryCard
-            img={{
-              light: "/img/categories/light/dod3.png",
-              dark: "/img/categories/dark/dod3.png",
-            }}
-            name="Drakengard 3"
-            href={getLocalizedUrl("/drakengard-3")}
-          />
-          <CategoryCard
-            img={{
-              light: "/img/categories/light/dod1.3.png",
-              dark: "/img/categories/dark/dod1.3.png",
-            }}
-            name="Drakengard 1.3"
-            href={getLocalizedUrl("/drakengard-1-3")}
-          />
-          <CategoryCard
-            img={{
-              light: "/img/categories/light/nier.png",
-              dark: "/img/categories/dark/nier.png",
-            }}
-            name="NieR"
-            href={getLocalizedUrl("/nier")}
-          />
-          <CategoryCard
-            img={{
-              light: "/img/categories/light/na.png",
-              dark: "/img/categories/dark/na.png",
-            }}
-            name="NieR:Automata"
-            href={getLocalizedUrl("/nier-automata")}
-          />
-          <CategoryCard
-            img={{
-              light: "/img/categories/light/nier-rein.png",
-              dark: "/img/categories/dark/nier-rein.png",
-            }}
-            name="NieR Re[in]carnation"
-            href={getLocalizedUrl("/nier-rein")}
-          />
-          <CategoryCard
-            img={{
-              light: "/img/categories/light/yorha.png",
-              dark: "/img/categories/dark/yorha.png",
-            }}
-            name="YoRHa"
-            href={getLocalizedUrl("/yorha")}
-          />
-          <CategoryCard
-            img={{
-              light: "/img/categories/light/yorha-boys.png",
-              dark: "/img/categories/dark/yorha-boys.png",
-            }}
-            name="YoRHa Boys"
-            href={getLocalizedUrl("/yorha-boys")}
-          />
-          <CategoryCard
-            img={{
-              light: "/img/categories/light/sino.png",
-              dark: "/img/categories/dark/sino.png",
-            }}
-            name="SINoALICE"
-            href={getLocalizedUrl("/sinoalice")}
-          />
-          <CategoryCard
-            img={{
-              light: "/img/categories/light/404gamereset.png",
-              dark: "/img/categories/dark/404gamereset.png",
-            }}
-            name="404 Game Re:Set"
-            href={getLocalizedUrl("/404-game-reset")}
-          />
-          <CategoryCard
-            img={{
-              light: "/img/categories/light/god-app.png",
-              dark: "/img/categories/dark/god-app.png",
-            }}
-            name="God App"
-            href={getLocalizedUrl("/god-app")}
-          />
-          <CategoryCard
-            img={{
-              light: "/img/categories/light/voc.png",
-              dark: "/img/categories/dark/voc.png",
-            }}
-            name="Voice of Cards"
-            href={getLocalizedUrl("/voice-of-cards")}
-          />
-          <CategoryCard name="Others..." href={getLocalizedUrl("/others")} />
-        </div>
-      </section>
+  <div id="main">
+    <section id="library">
+      <h2>{t("home.librarySection.title")}</h2>
+      <p set:html={t("home.librarySection.description")} />
+      <a href={getLocalizedUrl("/search")}>
+        <Button
+          class="section-button"
+          title={t("home.librarySection.button")}
+          icon="material-symbols:browse-outline"
+        />
+      </a>
+      <div class="grid">
+        <LibraryGrid />
+      </div>
+    </section>
 
-      <section>
-        <h2>{t("home.moreSection.title")}</h2>
-        <p set:html={t("home.moreSection.description")} />
-        <div class="grid">
-          <LinkCard
-            icon="material-symbols:calendar-month-outline"
-            title={t("footer.links.timeline.title")}
-            subtitle={t("footer.links.timeline.subtitle", {
-              eraCount: 8,
-              eventCount: 358,
-            })}
-            href={getLocalizedUrl("/timeline")}
-          />
-          <LinkCard
-            icon="material-symbols:perm-media-outline"
-            title={t("footer.links.gallery.title")}
-            subtitle={t("footer.links.gallery.subtitle", { count: 5750 })}
-            href="https://gallery.accords-library.com/posts"
-          />
-          <LinkCard
-            icon="material-symbols:movie-outline"
-            title={t("footer.links.videos.title")}
-            subtitle={t("footer.links.videos.subtitle", { count: 2115 })}
-            href={getLocalizedUrl("/videos")}
-          />
-          <LinkCard
-            icon="material-symbols:folder-zip-outline"
-            title={t("footer.links.webArchives.title")}
-            subtitle={t("footer.links.webArchives.subtitle", { count: 20 })}
-            href={getLocalizedUrl("/archives")}
-          />
-        </div>
-      </section>
+    <section>
+      <h2>{t("home.chroniclesSection.title")}</h2>
+      <p set:html={t("home.chroniclesSection.description")} />
+      <div class="flex">
+        <ChronicleCard
+          pretitle={"Preface"}
+          title={"The Yokoverse"}
+          subtitle={"Start reading the Chronicles here"}
+          href={getLocalizedUrl("/chronicles/preface")}
+        />
+        <ChronicleCard
+          pretitle={"Chapter 1"}
+          title={"Drakengard 3"}
+          subtitle={"A cursed world, and the girl who hated it"}
+          href={getLocalizedUrl("/chronicles/drakengard-3")}
+        />
+        <ChronicleCard
+          pretitle={"Chapter 2"}
+          title={"Drakengard"}
+          subtitle={"Humanity at its lowest"}
+          href={getLocalizedUrl("/chronicles/drakengard")}
+        />
+        <ChronicleCard
+          pretitle={"Chapter 3"}
+          title={"NieR"}
+          subtitle={"The Glory of Mankind comes to an abrupt End"}
+          href={getLocalizedUrl("/chronicles/nier")}
+        />
+        <ChronicleCard
+          pretitle={"Chapter 4"}
+          title={"NieR:Automata"}
+          subtitle={"Protagonists of Meaningless Stories"}
+          href={getLocalizedUrl("/chronicles/nier-automata")}
+        />
+        <ChronicleCard
+          pretitle={"Epilogue"}
+          title={"Appendices"}
+          subtitle={"Protagonists of Meaningless Stories"}
+          href={getLocalizedUrl("/chronicles/nier-automata")}
+        />
+      </div>
+    </section>
 
-      <section>
-        <h2>{t("home.linksSection.title")}</h2>
-        <p set:html={t("home.linksSection.description")} />
-        <div class="grid">
-          <LinkCard
-            icon="discord-brands"
-            title={t("footer.socials.discord.title")}
-            subtitle={t("footer.socials.discord.subtitle")}
-            href="/discord"
-          />
-          <LinkCard
-            icon="x-brands"
-            title={t("footer.socials.twitter.title")}
-            subtitle={t("footer.socials.twitter.subtitle")}
-            href="https://twitter.com/AccordsLibrary"
-          />
-          <LinkCard
-            icon="github-brands"
-            title={t("footer.socials.github.title")}
-            subtitle={t("footer.socials.github.subtitle")}
-            href="https://github.com/Accords-Library"
-          />
-          <LinkCard
-            icon="material-symbols:mail-outline"
-            title={t("footer.socials.contact.title")}
-            subtitle={t("footer.socials.contact.subtitle")}
-            href={getLocalizedUrl("/contact")}
-          />
-        </div>
-      </section>
-    </div>
-  </Fragment>
+    <section>
+      <h2>{t("home.changesSection.title")}</h2>
+      <p set:html={t("home.changesSection.description")} />
+      <a href={getLocalizedUrl("/changelog")}>
+        <Button
+          class="section-button"
+          title={t("home.changesSection.button")}
+          icon="material-symbols:history"
+        />
+      </a>
+    </section>
+
+    <section>
+      <h2>{t("home.moreSection.title")}</h2>
+      <p set:html={t("home.moreSection.description")} />
+      <div class="grid">
+        <LinkCard
+          icon="material-symbols:calendar-month-outline"
+          title={t("footer.links.timeline.title")}
+          subtitle={t("footer.links.timeline.subtitle", {
+            eraCount: 8,
+            eventCount: 358,
+          })}
+          href={getLocalizedUrl("/timeline")}
+        />
+        <LinkCard
+          icon="material-symbols:perm-media-outline"
+          title={t("footer.links.gallery.title")}
+          subtitle={t("footer.links.gallery.subtitle", { count: 5750 })}
+          href="https://gallery.accords-library.com/posts"
+        />
+        <LinkCard
+          icon="material-symbols:movie-outline"
+          title={t("footer.links.videos.title")}
+          subtitle={t("footer.links.videos.subtitle", { count: 2115 })}
+          href={getLocalizedUrl("/videos")}
+        />
+        <LinkCard
+          icon="material-symbols:folder-zip-outline"
+          title={t("footer.links.webArchives.title")}
+          subtitle={t("footer.links.webArchives.subtitle", { count: 20 })}
+          href={getLocalizedUrl("/archives")}
+        />
+      </div>
+    </section>
+
+    <section>
+      <h2>{t("home.linksSection.title")}</h2>
+      <p set:html={t("home.linksSection.description")} />
+      <div class="grid">
+        <LinkCard
+          icon="discord-brands"
+          title={t("footer.socials.discord.title")}
+          subtitle={t("footer.socials.discord.subtitle")}
+          href="/discord"
+        />
+        <LinkCard
+          icon="x-brands"
+          title={t("footer.socials.twitter.title")}
+          subtitle={t("footer.socials.twitter.subtitle")}
+          href="https://twitter.com/AccordsLibrary"
+        />
+        <LinkCard
+          icon="github-brands"
+          title={t("footer.socials.github.title")}
+          subtitle={t("footer.socials.github.subtitle")}
+          href="https://github.com/Accords-Library"
+        />
+        <LinkCard
+          icon="material-symbols:mail-outline"
+          title={t("footer.socials.contact.title")}
+          subtitle={t("footer.socials.contact.subtitle")}
+          href={getLocalizedUrl("/contact")}
+        />
+      </div>
+    </section>
+  </div>
 </AppLayout>
 
 {
@@ -229,11 +187,6 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     gap: 24px;
     align-items: flex-start;
     margin-bottom: 128px;
-
-    & > p {
-      line-height: 1.4;
-      max-width: 35em;
-    }
 
     @media (max-width: 35rem) {
       align-items: center;
@@ -315,8 +268,12 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       & > p {
         max-width: 35em;
         line-height: 1.4;
-        padding-top: 8px;
-        padding-bottom: 24px;
+        margin-top: 8px;
+        margin-bottom: 24px;
+      }
+
+      & > a > :global(.section-button) {
+        margin-bottom: 24px;
       }
 
       &#library {
@@ -336,6 +293,18 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         column-gap: clamp(6px, 2vmin, 16px);
         row-gap: clamp(6px + 6px, 2vmin + 6px, 16px);
+      }
+
+      & > .flex {
+        display: flex;
+        column-gap: clamp(6px, 2vmin, 16px);
+        row-gap: clamp(6px + 6px, 2vmin + 6px, 16px);
+        flex-wrap: wrap;
+
+        @media (max-width: 35rem) {
+          display: grid;
+          grid-template-columns: 1fr;
+        }
       }
     }
   }

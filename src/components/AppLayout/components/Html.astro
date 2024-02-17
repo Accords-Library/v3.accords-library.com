@@ -333,35 +333,27 @@ const { currentTheme } = Astro.locals;
   }
 
   .keycap {
-    transition-duration: 150ms;
-    transition-property: translate, box-shadow, background-color;
-    transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
-
+    --foreground-color: var(--color-base-650);
+    color: var(--foreground-color);
+    border: 0.1rem solid var(--foreground-color);
     background-color: var(--color-elevation-0);
 
-    box-shadow:
-      0 7px 15px -5px var(--color-shadow),
-      inset 0 0 50px var(--color-elevation-2),
-      inset 0 -7px 1px 5px var(--color-shadow-2);
+    transition-duration: 250ms;
+    transition-property: padding-top, box-shadow, background-color, color,
+      border-color;
+    transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
 
     &:hover {
-      box-shadow:
-        0 7px 15px -2px var(--color-shadow),
-        inset 0 0 50px var(--color-elevation-2),
-        inset 0 -7px 1px 5px var(--color-shadow-2);
-
+      --foreground-color: var(--color-base-1000);
+      box-shadow: 0 2px 2px var(--color-shadow-2);
       background-color: var(--color-elevation-1);
     }
 
     &:active {
       transition-duration: 75ms;
-      translate: 0 5px;
+      --foreground-color: var(--color-base-1000);
       background-color: var(--color-elevation-2);
-
-      box-shadow:
-        0 3px 5px -2px var(--color-shadow),
-        inset 0 0 50px var(--color-elevation-2),
-        inset 0 -6px 1px 6px var(--color-shadow-1);
+      box-shadow: 0 6px 12px 2px var(--color-shadow-2);
     }
   }
 
@@ -377,11 +369,3 @@ const { currentTheme } = Astro.locals;
     display: none;
   }
 </style>
-
-<script>
-  import htmx from "htmx.org";
-  // On any page navigation, reprocess HTMX
-  document.addEventListener("astro:page-load", () => {
-    htmx.process(document.querySelector("main")!);
-  });
-</script>

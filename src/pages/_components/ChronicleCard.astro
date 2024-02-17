@@ -1,21 +1,18 @@
 ---
-import { Icon } from "astro-icon/components";
 interface Props {
+  pretitle: string;
   title: string;
-  icon: string;
   subtitle: string;
   href: string;
 }
 
-const { icon, subtitle, title, href } = Astro.props;
+const { pretitle, subtitle, title, href } = Astro.props;
 ---
 
 <a href={href} class="keycap">
-  <Icon name={icon} />
-  <div id="right">
-    <h3>{title}</h3>
-    <p>{subtitle}</p>
-  </div>
+  <p class="pretitle">{pretitle}</p>
+  <h3>{title}</h3>
+  <p>{subtitle}</p>
 </a>
 
 <style>
@@ -34,20 +31,22 @@ const { icon, subtitle, title, href } = Astro.props;
       flex-shrink: 0;
     }
 
-    & > #right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.15em;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.15em;
 
-      & > h3 {
-        font-size: 1.25em;
-      }
+    & > h3 {
+      font-size: 1.5em;
+      margin-bottom: 0.5em;
+    }
 
-      & > p {
-        font-size: 0.8em;
-        margin-left: 2px;
-      }
+    & > .pretitle {
+      font-size: 1em;
+    }
+
+    & > p {
+      font-size: 0.8em;
     }
   }
 </style>

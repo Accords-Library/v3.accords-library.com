@@ -26,6 +26,10 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
 )}`;
 ---
 
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
 <footer>
   {
     withLinks && (
@@ -35,6 +39,18 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
           <a href="/">
             <Icon name="accords" />
             <p>{t("footer.links.home.title")}</p>
+          </a>
+          <a href="/archives">
+            <Icon name="material-symbols:browse-outline" />
+            <p>{"Contents"}</p>
+          </a>
+          <a href="/chronicles">
+            <Icon name="material-symbols:book-2-outline" />
+            <p>{"Chronicles"}</p>
+          </a>
+          <a href="/changelog">
+            <Icon name="material-symbols:history" />
+            <p>{"Changelog"}</p>
           </a>
           <a href="/timeline">
             <Icon name="material-symbols:calendar-month-outline" />
@@ -126,10 +142,17 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
 
     & > div {
       max-width: 20em;
+      flex: 1;
+
+      @media (max-width: 35rem) {
+        max-width: unset;
+      }
     }
 
     & > #nav {
       display: grid;
+      place-content: start;
+      flex: 1.5;
 
       @media (max-width: 35rem) {
         place-items: center;
@@ -155,8 +178,6 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
         margin-left: -0.6em;
 
         @media (max-width: 65rem) {
-          grid-template-columns: 1fr;
-          margin-top: 0.5em;
           gap: unset;
         }
 

@@ -4,33 +4,32 @@ interface Props {
   trigger?: string | undefined;
 }
 
-const { class: className, trigger = "mouseenter focus" } = Astro.props;
+const { class: className, trigger } = Astro.props;
 ---
 
-<tippy-tooltip class={className} data-tippy-trigger={trigger}>
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<tippy-tooltip class={className} trigger={trigger}>
   <template><slot name="tooltip-content" /></template>
   <slot />
 </tippy-tooltip>
 
+{
+  /* ------------------------------------------- JS --------------------------------------------- */
+}
+
 <script>
   import tippy from "tippy.js";
-  import htmx from "htmx.org";
+  import { customElement } from "src/utils/customElements";
 
-  class TippyTooltip extends HTMLElement {
-    constructor() {
-      super();
-
-      tippy(this, {
-        allowHTML: true,
-        content: (ref) =>
-          ref.querySelector(":scope > template")?.innerHTML ?? "",
-        interactive: true,
-        onMount: (instance) => {
-          htmx.process(instance.popper);
-        },
-      });
-    }
-  }
-
-  customElements.define("tippy-tooltip", TippyTooltip);
+  customElement("tippy-tooltip", (elem) => {
+    tippy(elem, {
+      allowHTML: true,
+      content: (ref) => ref.querySelector(":scope > template")?.innerHTML ?? "",
+      interactive: true,
+      trigger: elem.getAttribute("trigger") ?? "mouseenter focus",
+    });
+  });
 </script>

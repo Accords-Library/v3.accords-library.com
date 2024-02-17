@@ -2,11 +2,11 @@
 import { Icon } from "astro-icon/components";
 interface Props {
   title: string;
-  icon: string;
+  icon?: string | undefined;
   href: string;
 }
 
-const { icon, title, href } = Astro.props;
+const { icon = "material-symbols:folder-outline", title, href } = Astro.props;
 ---
 
 <a href={href} class="keycap">
@@ -22,8 +22,7 @@ const { icon, title, href } = Astro.props;
     place-items: center;
     gap: 1em;
     color: var(--color-base-1000);
-    padding: 24px;
-    padding-top: 12px;
+    padding: 12px 24px;
     border-radius: 12px;
     text-decoration: none;
 

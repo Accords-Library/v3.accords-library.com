@@ -1,0 +1,18 @@
+---
+interface Props {
+  wrapper: (props?: any) => any;
+  condition: boolean;
+}
+
+const { wrapper: Wrapper, condition } = Astro.props;
+---
+
+{
+  condition ? (
+    <Wrapper>
+      <slot />
+    </Wrapper>
+  ) : (
+    <slot />
+  )
+}

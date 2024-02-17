@@ -1,0 +1,52 @@
+---
+interface Props {
+  id?: string;
+  class?: string;
+  href: string;
+  method?: "get" | "post" | "delete" | "put";
+}
+
+const { href, method = "get", class: className, id } = Astro.props;
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<maso-actor href={href} method={method} class={className} id={id}>
+  <slot />
+</maso-actor>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  maso-actor {
+    cursor: pointer;
+  }
+</style>
+
+{
+  /* ------------------------------------------- JS --------------------------------------------- */
+}
+
+<script>
+  import { customElement } from "src/utils/customElements";
+
+  customElement("maso-actor", (elem) => {
+    const href = elem.getAttribute("href");
+    const method = elem.getAttribute("method");
+
+    if (!href || !method) return;
+
+    elem.addEventListener("click", async () => {
+      const elementToReplace = elem.closest("maso-target");
+      if (!elementToReplace) return;
+      const result = await fetch(href);
+      if (!result.ok) return;
+      const newContent = await result.text();
+      elementToReplace.outerHTML = newContent;
+    });
+  });
+</script>

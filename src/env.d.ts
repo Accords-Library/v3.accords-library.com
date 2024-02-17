@@ -4,8 +4,8 @@
 
 declare namespace App {
   interface Locals {
-      currentLocale: import("translations/translations").Locale
+      currentLocale: string
       currentTheme: "dark" | "auto" | "light"
-      currentCurrency: "usd" | "eur"
+      currentCurrency: string
   }
 }

@@ -1,7 +1,8 @@
 ---
 import Button from "components/Button.astro";
 import Tooltip from "components/Tooltip.astro";
-import { getI18n, locales } from "translations/translations";
+import { cache } from "src/utils/cachedPayload";
+import { getI18n } from "translations/translations";
 
 interface Props {
   withTitle?: boolean | undefined;
@@ -21,13 +22,13 @@ const { t } = await getI18n(currentLocale);
 <Tooltip trigger="click" class={className}>
   <div id="content" slot="tooltip-content">
     {
-      locales.map((locale) => (
+      cache.locales.map(id => (
         <a
-          class:list={{ current: locale === currentLocale }}
-          href={`?action-lang=${locale}`}
+          class:list={{ current: currentLocale === id }}
+          href={`?action-lang=${id}`}
           data-astro-prefetch="tap"
         >
-          {locale.toString().toUpperCase()}
+          {id}
         </a>
       ))
     }

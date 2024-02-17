@@ -11,7 +11,8 @@ interface Props {
 }
 
 const { breadcrumb } = Astro.props;
-const { t } = await getI18n(Astro.locals.currentLocale);
+const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
+
 ---
 
 {
@@ -44,10 +45,12 @@ const { t } = await getI18n(Astro.locals.currentLocale);
     )
   }
   <div id="toolbar">
-    <Button
-      icon="material-symbols:search"
-      ariaLabel={t("header.topbar.search.tooltip")}
-    />
+    <a href={getLocalizedUrl("/search")}>
+      <Button
+        icon="material-symbols:search"
+        ariaLabel={t("header.topbar.search.tooltip")}
+      />
+    </a>
     <div class="separator"></div>
 
     <div class="when-no-js">

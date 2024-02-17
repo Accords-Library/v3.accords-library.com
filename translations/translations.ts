@@ -1,16 +1,15 @@
-import type { AstroCookies } from "astro";
+import { cache } from "src/utils/cachedPayload";
 import en from "./en.json";
 import fr from "./fr.json";
-import ja from "./ja.json"
+import ja from "./ja.json";
 
-import acceptLanguage from 'accept-language';
-import { z } from "zod";
+import acceptLanguage from "accept-language";
 
 type WordingKeys = keyof typeof en;
 const translationFiles: Record<string, Record<WordingKeys, string>> = {
   en,
   fr,
-  ja
+  ja,
 };
 
 export const getI18n = async (locale: string) => {
@@ -118,6 +117,13 @@ export const getI18n = async (locale: string) => {
       return `«${key}»`;
     },
     getLocalizedUrl: (url: string): string => `/${locale}${url}`,
+    getLocalizedMatch: <T extends { language: string }>(
+      options: T[],
+      fallback: Omit<T, "language">
+    ): Omit<T, "language"> =>
+      options.find(({ language }) => language === locale) ??
+      options.find(({ language }) => language === defaultLocale) ??
+      fallback,
   };
 };
 
@@ -140,15 +146,11 @@ const limitMatchToBalanceCurlyBraces = (
   return match.substring(0, index);
 };
 
-export const locales = ["en", "es", "fr", "ja", "pt", "zh"] as const;
-acceptLanguage.languages([...locales]);
-
-export type Locale = (typeof locales)[number];
-
+export type Locale = string;
 export const defaultLocale: Locale = "en";
 
 export const getCurrentLocale = (pathname: string): Locale | undefined => {
-  for (const locale of locales) {
+  for (const locale of cache.locales) {
     if (pathname.startsWith(`/${locale}`)) {
       return locale;
     }
@@ -156,29 +158,14 @@ export const getCurrentLocale = (pathname: string): Locale | undefined => {
   return undefined;
 };
 
-export const getPreferredLocale = (request: Request): Locale | undefined => {
-  return acceptLanguage.get(request.headers.get("Accept-Language")) as Locale | null ?? undefined;
-};
+export const getBestAcceptedLanguage = (
+  request: Request
+): Locale | undefined => {
+  acceptLanguage.languages(cache.locales);
 
-export const getCookiePreferredLocale = (
-  cookies: AstroCookies
-): string | undefined => {
-  const alPrefLanguages = cookies.get("al_pref_languages");
-
-  try {
-    const json = alPrefLanguages?.json();
-    const result = z.array(z.string()).nonempty().safeParse(json);
-    if (result.success) {
-      for (const value of result.data) {
-        if (locales.includes(value as Locale)) {
-          return value;
-        }
-      }
-    }
-  } catch (e) {
-    console.error(e);
-    return undefined;
-  }
-
-  return undefined;
+  return (
+    (acceptLanguage.get(
+      request.headers.get("Accept-Language")
+    ) as Locale | null) ?? undefined
+  );
 };

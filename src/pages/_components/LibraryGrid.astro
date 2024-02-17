@@ -1,0 +1,24 @@
+---
+import { payload } from "src/shared/payload/payload-sdk";
+import { getI18n } from "translations/translations";
+import CategoryCard from "./CategoryCard.astro";
+
+const folders = await payload.getRootFolders()
+const { getLocalizedUrl, getLocalizedMatch } = await getI18n(
+  Astro.locals.currentLocale
+);
+---
+
+{
+  folders.map(({ slug, translations, darkThumbnail, lightThumbnail }) => (
+    <CategoryCard
+      img={
+        darkThumbnail && lightThumbnail
+          ? { dark: darkThumbnail.url, light: lightThumbnail.url }
+          : undefined
+      }
+      name={getLocalizedMatch(translations, { name: slug }).name}
+      href={getLocalizedUrl(`/folders/${slug}`)}
+    />
+  ))
+}

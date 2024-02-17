@@ -1,0 +1,46 @@
+---
+import type { EndpointFolderPreview } from "src/shared/payload/payload-sdk";
+import FolderCard from "./FolderCard.astro";
+import { getI18n } from "translations/translations";
+
+interface Props {
+  title?: string | undefined;
+  folders: EndpointFolderPreview[];
+}
+
+const { title, folders } = Astro.props;
+
+const { getLocalizedUrl, getLocalizedMatch } = await getI18n(
+  Astro.locals.currentLocale
+);
+---
+
+<div>
+  {title && <h3>{title}</h3>}
+  <section>
+    {
+      folders.map(({ slug, translations, icon }) => (
+        <FolderCard
+          title={getLocalizedMatch(translations, { name: slug }).name}
+          icon={icon ? `material-symbols:${icon}` : undefined}
+          href={getLocalizedUrl(`/folders/${slug}`)}
+        />
+      ))
+    }
+  </section>
+</div>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  h3 {
+    margin-bottom: 1em;
+  }
+  section {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 0.7rem 1rem;
+  }
+</style>

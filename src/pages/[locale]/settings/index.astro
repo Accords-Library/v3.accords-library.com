@@ -1,35 +1,36 @@
 ---
 import AppLayout from "components/AppLayout/AppLayout.astro";
-import { getI18n, locales } from "translations/translations";
+import { cache } from "src/utils/cachedPayload";
+import { getI18n } from "translations/translations";
 
 const { currentLocale, currentTheme, currentCurrency } = Astro.locals;
 const { t } = await getI18n(currentLocale);
 ---
 
 <AppLayout
-  title="Settings"
-  breadcrumb={[{ name: "Settings", slug: "settings" }]}
+  title={t("settings.title")}
+  breadcrumb={[{ name: t("settings.title"), slug: "settings" }]}
 >
-  <div id="main" slot="main">
+  <div id="main">
     <div class="section">
-      <h2>Language</h2>
-      <p>{t("header.topbar.language.tooltip")}</p><br />
+      <h2>{t("settings.language.title")}</h2>
+      <p>{t("settings.language.description")}</p><br />
       {
-        locales.map((locale) => (
+        cache.locales.map((id) => (
           <a
-            class:list={{ current: locale === currentLocale }}
-            href={`?action-lang=${locale}`}
+            class:list={{ current: currentLocale === id }}
+            href={`?action-lang=${id}`}
             data-astro-prefetch="tap"
           >
-            {locale.toString().toUpperCase()}
+            {id}
           </a>
         ))
       }
     </div>
 
     <div class="section">
-      <h2>Theme</h2>
-      <p>{t("header.topbar.theme.tooltip")}</p><br />
+      <h2>{t("settings.theme.title")}</h2>
+      <p>{t("settings.theme.description")}</p><br />
       <a
         class:list={{ current: currentTheme === "dark" }}
         href="?action-theme=dark"
@@ -54,18 +55,19 @@ const { t } = await getI18n(currentLocale);
     </div>
 
     <div class="section">
-      <h2>Currency</h2>
-      <p>{t("header.topbar.currency.tooltip")}</p><br />
-      <a
-        class:list={{ current: currentCurrency === "usd" }}
-        href="?action-currency=usd"
-        data-astro-prefetch="tap">USD</a
-      >
-      <a
-        class:list={{ current: currentCurrency === "eur" }}
-        href="?action-currency=eur"
-        data-astro-prefetch="tap">EUR</a
-      >
+      <h2>{t("settings.theme.title")}</h2>
+      <p>{t("settings.theme.description")}</p><br />
+      {
+        cache.currencies.map((id) => (
+          <a
+            class:list={{ current: currentCurrency === id }}
+            href={`?action-currency=${id}`}
+            data-astro-prefetch="tap"
+          >
+            {id}
+          </a>
+        ))
+      }
     </div>
   </div>
 </AppLayout>

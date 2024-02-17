@@ -1,6 +1,7 @@
 ---
 import Button from "components/Button.astro";
 import Tooltip from "components/Tooltip.astro";
+import { cache } from "src/utils/cachedPayload";
 import { getI18n } from "translations/translations";
 
 interface Props {
@@ -20,14 +21,17 @@ const { currentCurrency } = Astro.locals;
 
 <Tooltip trigger="click" class={className}>
   <div id="content" slot="tooltip-content">
-    <a
-      class:list={{ current: currentCurrency === "usd" }}
-      href="?action-currency=usd">USD</a
-    >
-    <a
-      class:list={{ current: currentCurrency === "eur" }}
-      href="?action-currency=eur">EUR</a
-    >
+    {
+      cache.currencies.map((id) => (
+        <a
+          class:list={{ current: currentCurrency === id }}
+          href={`?action-currency=${id}`}
+          data-astro-prefetch="tap"
+        >
+          {id}
+        </a>
+      ))
+    }
   </div>
   <Button
     icon="material-symbols:currency-exchange"

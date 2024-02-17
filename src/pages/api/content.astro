@@ -1,7 +1,9 @@
 ---
 import Button from "components/Button.astro";
 import Tooltip from "components/Tooltip.astro";
-import { getI18n, locales } from "translations/translations";
+import MasoActor from "components/Maso/MasoActor.astro";
+import MasoTarget from "components/Maso/MasoTarget.astro";
+import { getI18n } from "translations/translations";
 
 export const partial = true;
 
@@ -15,7 +17,11 @@ const lang = Astro.props.lang ?? reqUrl.searchParams.get("lang")!;
 const { t } = await getI18n(lang);
 ---
 
-<div class="hx-swap-content">
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<MasoTarget>
   <Tooltip trigger="click" class="when-js">
     <Button
       icon="material-symbols:translate"
@@ -25,33 +31,30 @@ const { t } = await getI18n(lang);
 
     <div id="content" slot="tooltip-content">
       {
-        locales.map((locale) => (
-          <a
+        ["en", "fr"].map((locale) => (
+          <MasoActor
             class:list={{ current: locale === lang }}
-            hx-get={`/api/content?lang=${locale}`}
-            hx-trigger="click"
-            hx-target="closest .hx-swap-content"
-            hx-swap="outerHTML"
+            href={`/api/content?lang=${locale}`}
           >
             {locale.toString().toUpperCase()}
-          </a>
+          </MasoActor>
         ))
       }
     </div>
   </Tooltip>
   <div set:html={t("home.description")} />
-</div>
+</MasoTarget>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
 
 <style>
   #content {
     display: grid;
     gap: 0.5em;
 
-    & > a {
-      cursor: pointer;
-    }
-
-    & > .current {
+    & > :global(.current) {
       color: var(--color-base-750);
       text-decoration: underline 0.08em var(--color-base-650);
     }

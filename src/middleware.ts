@@ -1,13 +1,18 @@
 import { defineMiddleware, sequence } from "astro:middleware";
-import { z } from "zod";
 import {
   defaultLocale,
-  getCookiePreferredLocale,
   getCurrentLocale,
-  getPreferredLocale,
+  getBestAcceptedLanguage,
 } from "translations/translations";
-
-const cookieThemeSchema = z.enum(["dark", "light", "auto"]);
+import {
+  CookieKeys,
+  getCookieCurrency,
+  getCookieLocale,
+  getCookieTheme,
+  isValidCurrency,
+  isValidLocale,
+  themeSchema,
+} from "src/utils/cookies";
 
 const getAbsoluteLocaleUrl = (locale: string, url: string) =>
   `/${locale}${url}`;
@@ -23,91 +28,74 @@ const redirect = (
   });
 };
 
-const localeNegotiator = defineMiddleware(
-  ({ cookies, url, request }, next) => {
-    const currentLocale = getCurrentLocale(url.pathname);
-    const preferredLocale = getPreferredLocale(request);
+const localeAgnosticPaths = ["/api/"];
 
-    if (url.pathname.startsWith("/api/")) {
-      return next();
-    }
-
-    const cookiePreferredLocale = getCookiePreferredLocale(cookies);
-
-    if (!currentLocale) {
-      const redirectURL = getAbsoluteLocaleUrl(
-        cookiePreferredLocale ?? preferredLocale ?? defaultLocale,
-        url.pathname
-      );
-      return redirect(redirectURL);
-    }
-
-    if (cookiePreferredLocale) {
-      if (cookiePreferredLocale !== currentLocale) {
-        const pathnameWithoutLocale = url.pathname.substring(
-          currentLocale.length + 1
-        );
-        const redirectURL = getAbsoluteLocaleUrl(
-          cookiePreferredLocale,
-          pathnameWithoutLocale
-        );
-        return redirect(redirectURL);
-      }
-    } else if (preferredLocale) {
-      if (preferredLocale !== currentLocale) {
-        const pathnameWithoutLocale = url.pathname.substring(
-          currentLocale.length + 1
-        );
-        const redirectURL = getAbsoluteLocaleUrl(
-          preferredLocale,
-          pathnameWithoutLocale
-        );
-        return redirect(redirectURL);
-      }
-    }
-
+const localeNegotiator = defineMiddleware(({ cookies, url, request }, next) => {
+  if (localeAgnosticPaths.some((prefix) => url.pathname.startsWith(prefix))) {
     return next();
   }
-);
+
+  const currentLocale = getCurrentLocale(url.pathname);
+  const acceptedLocale = getBestAcceptedLanguage(request);
+  const cookieLocale = getCookieLocale(cookies);
+  const bestMatchingLocale = cookieLocale ?? acceptedLocale ?? defaultLocale;
+
+  if (!currentLocale) {
+    const redirectURL = getAbsoluteLocaleUrl(bestMatchingLocale, url.pathname);
+    return redirect(redirectURL);
+  }
+
+  if (currentLocale !== bestMatchingLocale) {
+    const pathnameWithoutLocale = url.pathname.substring(
+      currentLocale.length + 1
+    );
+    const redirectURL = getAbsoluteLocaleUrl(
+      bestMatchingLocale,
+      pathnameWithoutLocale
+    );
+    return redirect(redirectURL);
+  }
+
+  return next();
+});
 
 const handleActionsSearchParams = defineMiddleware(async ({ url }, next) => {
-  // TODO: Verify locale typing
   const actionLang = url.searchParams.get("action-lang");
-  if (actionLang) {
+  if (isValidLocale(actionLang)) {
     const currentLocale = getCurrentLocale(url.pathname);
     const pathnameWithoutLocale = currentLocale
       ? url.pathname.substring(currentLocale.length + 1)
       : url.pathname;
     const redirectURL = getAbsoluteLocaleUrl(actionLang, pathnameWithoutLocale);
     return redirect(redirectURL, {
-      "Set-Cookie": `al_pref_languages=${JSON.stringify([actionLang])}; Path=/`,
+      "Set-Cookie": `${CookieKeys.Languages}=${JSON.stringify([
+        actionLang,
+      ])}; Path=/`,
     });
   }
 
-  // TODO: Verify currency typing
   const actionCurrency = url.searchParams.get("action-currency");
-  if (actionCurrency) {
+  if (isValidCurrency(actionCurrency)) {
     return redirect(url.pathname, {
-      "Set-Cookie": `al_pref_currency=${JSON.stringify(
+      "Set-Cookie": `${CookieKeys.Currency}=${JSON.stringify(
         actionCurrency
       )}; Path=/`,
     });
   }
 
   const actionTheme = url.searchParams.get("action-theme");
-  const verifiedActionTheme = cookieThemeSchema.safeParse(actionTheme);
-
+  const verifiedActionTheme = themeSchema.safeParse(actionTheme);
   if (verifiedActionTheme.success) {
     url.searchParams.delete("action-theme");
     if (verifiedActionTheme.data === "auto") {
       return redirect(url.pathname, {
-        "Set-Cookie": `al_pref_theme=; Path=/; Expires=${new Date(
+        "Set-Cookie": `${CookieKeys.Theme}=; Path=/; Expires=${new Date(
           0
         ).toUTCString()}`,
       });
     }
     return redirect(url.pathname, {
-      "Set-Cookie": `al_pref_theme=${verifiedActionTheme.data}; Path=/`,
+      "Set-Cookie": `${CookieKeys.Theme}=${verifiedActionTheme.data}; Path=/`,
     });
   }
 
@@ -126,12 +114,14 @@ const addContentLanguageResponseHeader = defineMiddleware(
   }
 );
 
-const provideLocalsToRequest = defineMiddleware(async ({ url, locals, cookies }, next) => {
-  locals.currentLocale = getCurrentLocale(url.pathname) ?? "en";
-  locals.currentCurrency = cookies.get("al_pref_currency")?.value ?? "usd"
-  locals.currentTheme =  cookies.get("al_pref_theme")?.value ?? "auto"
-  return next();
-});
+const provideLocalsToRequest = defineMiddleware(
+  async ({ url, locals, cookies }, next) => {
+    locals.currentLocale = getCurrentLocale(url.pathname) ?? "en";
+    locals.currentCurrency = getCookieCurrency(cookies) ?? "USD";
+    locals.currentTheme = getCookieTheme(cookies) ?? "auto";
+    return next();
+  }
+);
 
 export const onRequest = sequence(
   addContentLanguageResponseHeader,
