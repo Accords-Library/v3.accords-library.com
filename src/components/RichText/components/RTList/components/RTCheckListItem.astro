@@ -1,0 +1,40 @@
+---
+import { Icon } from "astro-icon/components";
+import RTNode from "../../RTNode.astro";
+
+interface Props {
+  node: {
+    children: {
+      type: string;
+      version: number;
+      [k: string]: unknown;
+    }[];
+    type: string;
+    version: number;
+    format: number;
+    text: string;
+    listType: string;
+    [k: string]: unknown;
+  };
+}
+
+const { node } = Astro.props;
+---
+
+<li>
+  <Icon
+    name={node.checked
+      ? "material-symbols:check-box"
+      : "material-symbols:check-box-outline-blank"}
+  />
+  {node.children.map((node) => <RTNode node={node} />)}
+</li>
+
+<style>
+  li {
+    &::marker {
+      content: ""
+    }
+    margin-left: -16px;
+  }
+</style>

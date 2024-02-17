@@ -1,0 +1,47 @@
+---
+import ConditionalWrapper from "components/ConditionalWrapper.astro";
+import RTBold from "./components/RTBold.astro";
+import RTItalic from "./components/RTItalic.astro";
+import RTUnderline from "./components/RTUnderline.astro";
+import RTLineThrough from "./components/RTLineThrough.astro";
+import RTSubscript from "./components/RTSubscript.astro";
+import RTSuperscript from "./components/RTSuperscript.astro";
+import RTInlineCode from "./components/RTInlineCode.astro";
+
+interface Props {
+  node: {
+    type: string;
+    version: number;
+    format: number;
+    text: string;
+    [k: string]: unknown;
+  };
+}
+
+const { node } = Astro.props;
+---
+
+<ConditionalWrapper wrapper={RTBold} condition={Boolean(node.format & 1)}>
+  <ConditionalWrapper wrapper={RTItalic} condition={Boolean(node.format & 2)}>
+    <ConditionalWrapper wrapper={RTLineThrough} condition={Boolean(node.format & 4)}>
+      <ConditionalWrapper wrapper={RTUnderline} condition={Boolean(node.format & 8)}>
+        <ConditionalWrapper
+          wrapper={RTInlineCode}
+          condition={Boolean(node.format & 16)}
+        >
+          <ConditionalWrapper
+            wrapper={RTSubscript}
+            condition={Boolean(node.format & 32)}
+          >
+            <ConditionalWrapper
+              wrapper={RTSuperscript}
+              condition={Boolean(node.format & 64)}
+            >
+              {node.text}
+            </ConditionalWrapper>
+          </ConditionalWrapper>
+        </ConditionalWrapper>
+      </ConditionalWrapper>
+    </ConditionalWrapper>
+  </ConditionalWrapper>
+</ConditionalWrapper>

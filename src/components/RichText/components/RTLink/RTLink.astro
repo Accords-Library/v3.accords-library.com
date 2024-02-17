@@ -1,0 +1,45 @@
+---
+import RTError from "../RTError.astro";
+import RTNode from "../RTNode.astro";
+import RTCustomLink from "./components/RTCustomLink.astro";
+import RTInternalLink from "./components/RTInternalLink.astro";
+
+interface Props {
+  node: {
+    type: string;
+    children: {
+      type: string;
+      version: number;
+      [k: string]: unknown;
+    }[];
+    version: number;
+    fields: {
+      linkType: "internal" | "custom";
+      doc: any;
+      url: string;
+      newTab: boolean;
+    };
+    [k: string]: unknown;
+  };
+}
+
+const { node } = Astro.props;
+---
+
+{
+  node.fields.linkType === "custom" ? (
+    <RTCustomLink href={node.fields.url} newTab={node.fields.newTab}>
+      {node.children.map((node) => (
+        <RTNode node={node} />
+      ))}
+    </RTCustomLink>
+  ) : node.fields.linkType === "internal" ? (
+    <RTInternalLink doc={node.fields.doc}>
+      {node.children.map((node) => (
+        <RTNode node={node} />
+      ))}
+    </RTInternalLink>
+  ) : (
+    <RTError node={node} />
+  )
+}

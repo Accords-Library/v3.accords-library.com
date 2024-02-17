@@ -1,0 +1,42 @@
+---
+import RTParagraph from "./RTParagraph.astro";
+import RTList from "./RTList/RTList.astro";
+import RTError from "./RTError.astro";
+import RTText from "./RTText/RTText.astro";
+import RTLink from "./RTLink/RTLink.astro";
+
+interface Props {
+  node: {
+    type: string;
+    version: number;
+    [k: string]: unknown;
+  };
+}
+
+const { node } = Astro.props;
+
+let NodeElement;
+switch (node.type) {
+  case "paragraph":
+    NodeElement = RTParagraph;
+    break;
+
+  case "list":
+    NodeElement = RTList;
+    break;
+
+  case "text":
+    NodeElement = RTText;
+    break;
+
+  case "link":
+    NodeElement = RTLink;
+    break;
+
+  default:
+    NodeElement = RTError;
+    break;
+}
+---
+
+<NodeElement node={node} />

@@ -1,0 +1,23 @@
+---
+import RTNode from "../../RTNode.astro";
+
+interface Props {
+  node: {
+    children: {
+      type: string;
+      version: number;
+      [k: string]: unknown;
+    }[];
+    type: string;
+    version: number;
+    format: number;
+    text: string;
+    listType: string;
+    [k: string]: unknown;
+  };
+}
+
+const { node } = Astro.props;
+---
+
+<li>{node.children.map((node) => <RTNode node={node} />)}</li>

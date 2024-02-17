@@ -1,0 +1,19 @@
+---
+type BasicNode = {
+  type: string;
+  version: number;
+  [k: string]: unknown;
+};
+
+interface Props {
+  node: BasicNode;
+}
+
+const { node } = Astro.props;
+---
+
+<p>
+  {
+    `Unknown node type: ${node.type}. Please contact website technical administrator.`
+  }
+</p>

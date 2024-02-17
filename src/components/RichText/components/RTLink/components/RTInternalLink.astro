@@ -1,0 +1,23 @@
+---
+import { getI18n } from "translations/translations";
+
+interface Props {
+  doc: {
+    relationTo: string;
+    value: any;
+  };
+}
+
+const { doc } = Astro.props;
+const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
+---
+
+{
+  doc.relationTo === "folders" ? (
+    <a href={getLocalizedUrl(`/folders/${doc.value.slug}`)}>
+      <slot />
+    </a>
+  ) : (
+    <p>{`Unknown internal link: ${doc.relationTo}. Please contact website technical administrator.`}</p>
+  )
+}

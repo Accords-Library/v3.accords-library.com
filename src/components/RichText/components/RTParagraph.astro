@@ -1,0 +1,34 @@
+---
+import RTNode from "./RTNode.astro";
+
+interface Props {
+  node: {
+    type: string;
+    version: number;
+    children: {
+      type: string;
+      version: number;
+      [k: string]: unknown;
+    }[];
+    [k: string]: unknown;
+  };
+}
+
+const { node } = Astro.props;
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<p>{node.children.map((node) => <RTNode node={node} />)}</p>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  p {
+    margin-bottom: 1em;
+  }
+</style>

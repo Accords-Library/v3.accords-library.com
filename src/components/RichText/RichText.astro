@@ -1,0 +1,41 @@
+---
+import RTNode from "./components/RTNode.astro";
+
+interface Props {
+  content: {
+    root: {
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+    };
+  };
+}
+
+const { content } = Astro.props;
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<div class="rich-text">
+  {content.root.children.map((node) => <RTNode node={node} />)}
+</div>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  .rich-text {
+    & li[checkbox]::marker {
+      content: "☐";
+    }
+
+    & li[checkbox][checked]::marker {
+      content: "☒";
+    }
+  }
+</style>

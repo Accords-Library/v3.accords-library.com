@@ -1,0 +1,48 @@
+---
+import RTBasicListItem from "./components/RTBasicListItem.astro";
+import RTCheckListItem from "./components/RTCheckListItem.astro";
+
+interface Props {
+  node: {
+    type: string;
+    version: number;
+    format: number;
+    text: string;
+    listType: string;
+    children: {
+      type: string;
+      version: number;
+      [k: string]: unknown;
+    }[];
+    [k: string]: unknown;
+  };
+}
+
+const { node } = Astro.props;
+---
+
+{
+  node.listType === "number" ? (
+    <ol>
+      {node.children.map((node) => (
+        <RTBasicListItem node={node} />
+      ))}
+    </ol>
+  ) : node.listType === "bullet" ? (
+    <ul>
+      {node.children.map((node) => (
+        <RTBasicListItem node={node} />
+      ))}
+    </ul>
+  ) : node.listType === "check" ? (
+    <ul>
+      {node.children.map((node) => (
+        <RTCheckListItem node={node} />
+      ))}
+    </ul>
+  ) : (
+    <p>
+      {`Unknown list type: ${node.listType}. Please contact website technical administrator.`}
+    </p>
+  )
+}
