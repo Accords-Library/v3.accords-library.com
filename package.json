@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "upgrade": "ncu",
-    "script:download-payload-sdk": "bun run scripts/download-payload-sdk.ts"
+    "script:download-payload-sdk": "bun run scripts/download-payload-sdk.ts",
+    "script:download-currencies": "bun run scripts/download-currencies.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.5.4",
