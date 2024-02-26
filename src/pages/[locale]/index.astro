@@ -17,9 +17,9 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 
 <AppLayout
   title="Accord’s Library"
-  illustration="/img/bg-home.webp"
-  illustrationSize="60vw"
-  illustrationPosition="20%"
+  backgroundIllustration="/img/bg-home2.webp"
+  hideFooterLinks
+  hideHomeButton
 >
   <div id="title" slot="header-title">
     <Icon name="accords" />
@@ -29,7 +29,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     </div>
   </div>
   <div id="description" slot="header-description">
-    <p set:html={t("home.description")} />
+    <p set:html={t("home.description")} class="high-contrast-text" />
     <a href={getLocalizedUrl("/about")}>
       <Button
         title={t("home.aboutUsButton")}
@@ -39,7 +39,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
   </div>
 
   <div id="main">
-    <section id="library">
+    <section id="library" class="high-contrast-text">
       <h2>{t("home.librarySection.title")}</h2>
       <p set:html={t("home.librarySection.description")} />
       <a href={getLocalizedUrl("/search")}>
@@ -186,7 +186,16 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     flex-direction: column;
     gap: 24px;
     align-items: flex-start;
+
     margin-bottom: 128px;
+
+    > p {
+      backdrop-filter: blur(5px);
+      padding: 1em;
+      margin: -1em;
+
+      border-radius: 5em;
+    }
 
     @media (max-width: 35rem) {
       align-items: center;
@@ -267,7 +276,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 
       & > p {
         max-width: 35em;
-        line-height: 1.4;
+        line-height: 1.5;
         margin-top: 8px;
         margin-bottom: 24px;
       }

@@ -33,7 +33,7 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
 <footer>
   {
     withLinks && (
-      <div id="nav">
+      <div id="nav" class="when-no-print">
         <p class="font-serif">{t("global.siteName")}</p>
         <div>
           <a href="/">
@@ -41,11 +41,11 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
             <p>{t("footer.links.home.title")}</p>
           </a>
           <a href="/archives">
-            <Icon name="material-symbols:browse-outline" />
+            <Icon name="material-symbols:browse" />
             <p>{"Contents"}</p>
           </a>
           <a href="/chronicles">
-            <Icon name="material-symbols:book-2-outline" />
+            <Icon name="material-symbols:book-2" />
             <p>{"Chronicles"}</p>
           </a>
           <a href="/changelog">
@@ -53,19 +53,19 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
             <p>{"Changelog"}</p>
           </a>
           <a href="/timeline">
-            <Icon name="material-symbols:calendar-month-outline" />
+            <Icon name="material-symbols:calendar-month" />
             <p>{t("footer.links.timeline.title")}</p>
           </a>
           <a href="https://gallery.accords-library.com/posts">
-            <Icon name="material-symbols:perm-media-outline" />
+            <Icon name="material-symbols:perm-media" />
             <p>{t("footer.links.gallery.title")}</p>
           </a>
           <a href="/videos">
-            <Icon name="material-symbols:movie-outline" />
+            <Icon name="material-symbols:movie" />
             <p>{t("footer.links.videos.title")}</p>
           </a>
           <a href="/archives">
-            <Icon name="material-symbols:folder-zip-outline" />
+            <Icon name="material-symbols:folder-zip" />
             <p>{t("footer.links.webArchives.title")}</p>
           </a>
         </div>
@@ -90,7 +90,7 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
 
     {
       withLinks && (
-        <div id="socials">
+        <div id="socials" class="when-no-print">
           <a
             href="/discord"
             class="pressable-icon"
@@ -236,14 +236,16 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
         gap: 3em;
       }
 
-      &.with-links {
-        border-left: 0.1em solid var(--color-base-1000);
-        grid-template-areas: "license" "socials";
+      @media screen {
+        &.with-links {
+          border-left: 0.1em solid var(--color-base-1000);
+          grid-template-areas: "license" "socials";
 
-        @media (max-width: 35rem) {
-          grid-template-areas: "socials" "license";
-          border-left: unset;
-          padding-left: unset;
+          @media (max-width: 35rem) {
+            grid-template-areas: "socials" "license";
+            border-left: unset;
+            padding-left: unset;
+          }
         }
       }
 

@@ -1,5 +1,5 @@
 ---
-import RTError from "../RTError.astro";
+import type { RichTextContext } from "src/utils/richText";
 import RTNode from "../RTNode.astro";
 import RTCustomLink from "./components/RTCustomLink.astro";
 import RTInternalLink from "./components/RTInternalLink.astro";
@@ -21,25 +21,26 @@ interface Props {
     };
     [k: string]: unknown;
   };
+  context: RichTextContext;
 }
 
-const { node } = Astro.props;
+const { node, context } = Astro.props;
 ---
 
 {
   node.fields.linkType === "custom" ? (
     <RTCustomLink href={node.fields.url} newTab={node.fields.newTab}>
       {node.children.map((node) => (
-        <RTNode node={node} />
+        <RTNode node={node} context={context} />
       ))}
     </RTCustomLink>
   ) : node.fields.linkType === "internal" ? (
     <RTInternalLink doc={node.fields.doc}>
       {node.children.map((node) => (
-        <RTNode node={node} />
+        <RTNode node={node} context={context} />
       ))}
     </RTInternalLink>
   ) : (
-    <RTError node={node} />
+    <p>{`Unknown link type: ${node.fields.linkType}. Please contact website technical administrator.`}</p>
   )
 }

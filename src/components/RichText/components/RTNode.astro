@@ -1,9 +1,10 @@
 ---
 import RTParagraph from "./RTParagraph.astro";
 import RTList from "./RTList/RTList.astro";
-import RTError from "./RTError.astro";
 import RTText from "./RTText/RTText.astro";
 import RTLink from "./RTLink/RTLink.astro";
+import RTBlock from "./RTBlock/RTBlock.astro";
+import type { RichTextContext } from "src/utils/richText";
 
 interface Props {
   node: {
@@ -11,9 +12,10 @@ interface Props {
     version: number;
     [k: string]: unknown;
   };
+  context: RichTextContext;
 }
 
-const { node } = Astro.props;
+const { node, context } = Astro.props;
 
 let NodeElement;
 switch (node.type) {
@@ -33,10 +35,16 @@ switch (node.type) {
     NodeElement = RTLink;
     break;
 
-  default:
-    NodeElement = RTError;
+  case "block":
+    NodeElement = RTBlock;
     break;
 }
 ---
 
-<NodeElement node={node} />
+{
+  NodeElement ? (
+    <NodeElement node={node} context={context} />
+  ) : (
+    <p>{`Unknown node type: ${node.type}. Please contact website technical administrator.`}</p>
+  )
+}

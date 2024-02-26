@@ -1,0 +1,44 @@
+---
+import Html from "./components/Html.astro";
+import Topbar from "./components/Topbar.astro";
+import Footer from "./components/Footer.astro";
+import type { ComponentProps } from "astro/types";
+
+interface Props {
+  parentPages?: ComponentProps<typeof Topbar>["parentPages"];
+  metaTitle?: string;
+  hideFooterLinks?: boolean;
+}
+
+const { metaTitle, hideFooterLinks = false, parentPages } = Astro.props;
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<Html title={metaTitle}>
+  <header>
+    <Topbar parentPages={parentPages} />
+  </header>
+  <main><slot /></main>
+  <Footer withLinks={!hideFooterLinks} />
+</Html>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+  }
+
+  main {
+    padding-top: 1em;
+    padding-bottom: 8em;
+    flex-grow: 1;
+  }
+</style>

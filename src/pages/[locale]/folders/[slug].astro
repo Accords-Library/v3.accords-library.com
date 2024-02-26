@@ -6,7 +6,9 @@ import RichText from "components/RichText/RichText.astro";
 import FoldersSection from "./_components/FoldersSection.astro";
 
 const { slug } = Astro.params;
-const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
+const { getLocalizedMatch, getLocalizedUrl } = await getI18n(
+  Astro.locals.currentLocale
+);
 
 if (!slug) {
   return Astro.redirect("/en/404");
@@ -16,7 +18,7 @@ const folder = await payload.getFolder(slug);
 const meta = getLocalizedMatch(folder.translations, { name: slug });
 
 // TODO: handle folder not found
-// TODO: handle rich text description
+// TODO: send description as RichTextContent instead of string
 // TODO: handle light and dark illustration for applayout
 ---
 
@@ -25,7 +27,6 @@ const meta = getLocalizedMatch(folder.translations, { name: slug });
 }
 
 <AppLayout title={meta.name}>
-
   {
     meta.description && (
       <div slot="header-description">
@@ -33,26 +34,49 @@ const meta = getLocalizedMatch(folder.translations, { name: slug });
       </div>
     )
   }
+  <div id="main">
+    {
+      folder.sections.type === "single" ? (
+        <FoldersSection folders={folder.sections.subfolders} />
+      ) : (
+        <div id="sections">
+          {folder.sections.sections.map(({ subfolders, translations }) => (
+            <FoldersSection
+              folders={subfolders}
+              title={
+                getLocalizedMatch<{
+                  language: string;
+                  name: string | undefined;
+                }>(translations, { name: undefined }).name
+              }
+            />
+          ))}
+        </div>
+      )
+    }
 
-  {
-    folder.sections.type === "single" ? (
-      <FoldersSection folders={folder.sections.subfolders} />
-    ) : (
-      <div id="sections">
-        {folder.sections.sections.map(({ subfolders, translations }) => (
-          <FoldersSection
-            folders={subfolders}
-            title={
-              getLocalizedMatch<{
-                language: string;
-                name: string | undefined;
-              }>(translations, { name: undefined }).name
-            }
-          />
-        ))}
-      </div>
-    )
-  }
+    <div>
+      {
+        folder.files.map(({ relationTo, value }) => {
+          if (relationTo === "contents") {
+            return (
+              <a
+                class="pressable"
+                href={getLocalizedUrl(`/contents/${value.slug}`)}
+              >
+                {value.slug}
+              </a>
+            );
+          }
+          return (
+            <a href={getLocalizedUrl(`/library-item/${value.slug}`)}>
+              {value.slug}
+            </a>
+          );
+        })
+      }
+    </div>
+  </div>
 </AppLayout>
 
 {
@@ -60,8 +84,13 @@ const meta = getLocalizedMatch(folder.translations, { name: slug });
 }
 
 <style>
-  #sections {
+  #main {
     display: grid;
-    gap: 2.5em;
+    gap: 4em;
+
+    #sections {
+      display: grid;
+      gap: 2.5em;
+    }
   }
 </style>

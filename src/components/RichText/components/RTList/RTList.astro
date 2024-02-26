@@ -1,4 +1,5 @@
 ---
+import type { RichTextContext } from "src/utils/richText";
 import RTBasicListItem from "./components/RTBasicListItem.astro";
 import RTCheckListItem from "./components/RTCheckListItem.astro";
 
@@ -6,38 +7,42 @@ interface Props {
   node: {
     type: string;
     version: number;
-    format: number;
-    text: string;
     listType: string;
     children: {
       type: string;
       version: number;
       [k: string]: unknown;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
     }[];
     [k: string]: unknown;
   };
+  context: RichTextContext;
 }
 
-const { node } = Astro.props;
+const { node, context } = Astro.props;
 ---
 
 {
   node.listType === "number" ? (
     <ol>
       {node.children.map((node) => (
-        <RTBasicListItem node={node} />
+        <RTBasicListItem node={node} context={context} />
       ))}
     </ol>
   ) : node.listType === "bullet" ? (
     <ul>
       {node.children.map((node) => (
-        <RTBasicListItem node={node} />
+        <RTBasicListItem node={node} context={context} />
       ))}
     </ul>
   ) : node.listType === "check" ? (
     <ul>
       {node.children.map((node) => (
-        <RTCheckListItem node={node} />
+        <RTCheckListItem node={node} context={context} />
       ))}
     </ul>
   ) : (

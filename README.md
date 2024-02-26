@@ -8,26 +8,28 @@
 - `when-dark-theme`: only display element if the current theme is dark (manually or automatically)
 - `when-light-theme`: only display element if the current theme is light (manually or automatically)
 
+- `when-no-print`: only display when not printing
+
 - `hide-scrollbar`: hide the element scrollbar
 - `texture-dots`: add a background paper like texture to the element
 
 - `font-serif`: by default, everything use sans-serif. Use this class to make the font serif.
+- `high-contrast-text`: add a shadow around the text to increase perceived contrast.
+- `prose`: apply typography rules. Useful for main text content
 
 ## CSS Component classes
 
 - `pressable-icon`: used to make a SVG/Text look pressable
-- `keycap`: used to make an element look like a pressable keycap
+- `pressable`: used to make a container look pressable 
 
 ## CSS Global Variables
 
 - `--color-base-X`: the current theme colors. X can be between 0 and 1000, available in increments of 50.
 - `--font-serif`: by default, everything use sans-serif. Use this variable to make the font serif.
 
-
 ## Translations
 
 For all the following exemples, the spaces within the double curly braces are important.
-
 
 ### Variables
 

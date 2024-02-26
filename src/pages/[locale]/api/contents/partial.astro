@@ -1,0 +1,216 @@
+---
+import RichText from "components/RichText/RichText.astro";
+import { payload } from "src/shared/payload/payload-sdk";
+import { getI18n } from "translations/translations";
+import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
+import Metadata from "pages/[locale]/api/contents/_components/Metadata.astro";
+import MasoTarget from "components/Maso/MasoTarget.astro";
+
+import AppLayoutBackgroundImg from "components/AppLayout/components/AppLayoutBackgroundImg.astro";
+import LangCredits from "./_components/LangCredits.astro";
+
+export const partial = true;
+
+interface Props {
+  lang?: string;
+  slug?: string;
+}
+
+const reqUrl = new URL(Astro.request.url);
+const lang = Astro.props.lang ?? reqUrl.searchParams.get("lang")!;
+const slug = Astro.props.slug ?? reqUrl.searchParams.get("slug")!;
+
+const { getLocalizedUrl, formatCategory, formatContentType } = await getI18n(
+  Astro.locals.currentLocale
+);
+
+const { getLocalizedMatch } = await getI18n(lang);
+
+const content = await payload.getContent(slug);
+const translation = getLocalizedMatch(content.translations, {
+  title: slug,
+  format: {},
+  sourceLanguage: "",
+});
+---
+
+<MasoTarget>
+  {content.thumbnail && <AppLayoutBackgroundImg src={content.thumbnail.url} />}
+
+  <div id="layout">
+    <div id="left">
+      <AppLayoutTitle
+        title={translation.title}
+        pretitle={translation.pretitle}
+        subtitle={translation.subtitle}
+      />
+
+      {
+        content.thumbnail && (
+          <img
+            id="thumbnail"
+            class="when-not-large"
+            src={content.thumbnail.url}
+            width={content.thumbnail.width}
+            height={content.thumbnail.height}
+          />
+        )
+      }
+
+      {
+        translation.summary && (
+          <div id="summary" class="high-contrast-text">
+            <RichText content={translation.summary} />
+          </div>
+        )
+      }
+
+      {
+        (content.type || content.categories.length > 0) && (
+          <div class="meta-container">
+            {content.type && (
+              <Metadata
+                icon="material-symbols:shape-line-outline"
+                title="Type"
+                values={[formatContentType(content.type)]}
+              />
+            )}
+
+            <Metadata
+              icon="material-symbols:workspaces-outline"
+              title="Categories"
+              values={content.categories.map((id) =>
+                formatCategory(id, "default")
+              )}
+            />
+          </div>
+        )
+      }
+
+      <div class="when-not-large meta-container">
+        <LangCredits
+          currentLang={lang}
+          availableLanguages={content.translations.map(
+            ({ language }) => language
+          )}
+          getPartialUrl={(lang) =>
+            getLocalizedUrl(`/api/contents/partial?lang=${lang}&slug=${slug}`)}
+          translators={translation.format.text?.translators}
+          transcribers={translation.format.text?.transcribers}
+          proofreaders={translation.format.text?.proofreaders}
+        />
+      </div>
+
+      {
+        translation.format.text && (
+          <>
+            <hr />
+            <div id="text">
+              <RichText content={translation.format.text.content} />
+            </div>
+          </>
+        )
+      }
+    </div>
+
+    <div id="right" class="when-large">
+      {
+        content.thumbnail && (
+          <img
+            id="thumbnail"
+            src={content.thumbnail.url}
+            width={content.thumbnail.width}
+            height={content.thumbnail.height}
+          />
+        )
+      }
+
+      <div class="meta-container">
+        <LangCredits
+          currentLang={lang}
+          availableLanguages={content.translations.map(
+            ({ language }) => language
+          )}
+          getPartialUrl={(lang) =>
+            getLocalizedUrl(`/api/contents/partial?lang=${lang}&slug=${slug}`)}
+          translators={translation.format.text?.translators}
+          transcribers={translation.format.text?.transcribers}
+          proofreaders={translation.format.text?.proofreaders}
+        />
+      </div>
+    </div>
+  </div>
+</MasoTarget>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  #layout {
+    display: grid;
+    justify-content: space-between;
+    container-type: inline-size;
+
+    @media (min-width: 80rem) {
+      grid-template-columns: 35rem 35rem;
+    }
+
+    & > #left {
+      & > #thumbnail {
+        width: 100%;
+        max-width: 35rem;
+        height: auto;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px -10px var(--color-shadow);
+        margin-block: 2em;
+      }
+
+      & > #summary {
+        backdrop-filter: blur(5px);
+        padding: 1.5em;
+        margin: -1.5em;
+        margin-block: 1em;
+        border-radius: 3em;
+      }
+
+      hr {
+        border: none;
+        border-top: 3px dotted var(--color-base-500);
+        margin-block: 3em;
+      }
+    }
+
+    & > #right {
+      & > #thumbnail {
+        width: 100%;
+        height: auto;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px -10px var(--color-shadow);
+      }
+    }
+  }
+
+  .meta-container {
+    @media (max-width: 35rem) {
+      margin-block: 5em;
+      gap: 2em;
+    }
+
+    margin-block: 2em;
+    display: grid;
+    gap: 1em;
+  }
+
+  .when-large {
+    @media (max-width: 80rem) {
+      display: none !important;
+    }
+  }
+
+  .when-not-large {
+    @media (min-width: 80rem) {
+      display: none !important;
+    }
+  }
+</style>

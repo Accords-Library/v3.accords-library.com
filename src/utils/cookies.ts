@@ -30,9 +30,7 @@ export const getCookieCurrency = (
   cookies: AstroCookies
 ): string | undefined => {
   const cookieValue = cookies.get(CookieKeys.Currency)?.value;
-  return isValidCurrency(cookieValue)
-    ? cookieValue
-    : undefined;
+  return isValidCurrency(cookieValue) ? cookieValue : undefined;
 };
 
 export const getCookieTheme = (
@@ -53,4 +51,6 @@ export const isValidCurrency = (
 export const isValidLocale = (
   locale: string | null | undefined
 ): locale is string =>
-  locale !== null && locale != undefined && cache.locales.includes(locale);
+  locale !== null &&
+  locale != undefined &&
+  cache.locales.map(({ id }) => id).includes(locale);

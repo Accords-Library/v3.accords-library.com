@@ -1,41 +1,26 @@
 ---
+import type { RichTextContent } from "src/shared/payload/payload-sdk";
 import RTNode from "./components/RTNode.astro";
+import RTProse from "./components/RTProse.astro";
+import { type RichTextContext, defaultContext } from "src/utils/richText";
+import ConditionalWrapper from "components/ConditionalWrapper.astro";
 
 interface Props {
-  content: {
-    root: {
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-    };
-  };
+  content: RichTextContent;
+  context?: RichTextContext;
 }
 
-const { content } = Astro.props;
+const { content, context = defaultContext } = Astro.props;
 ---
 
 {
   /* ------------------------------------------- HTML ------------------------------------------- */
 }
 
-<div class="rich-text">
-  {content.root.children.map((node) => <RTNode node={node} />)}
-</div>
-
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
-
-<style>
-  .rich-text {
-    & li[checkbox]::marker {
-      content: "☐";
-    }
-
-    & li[checkbox][checked]::marker {
-      content: "☒";
-    }
+<ConditionalWrapper condition={context.depth === 1} wrapper={RTProse}>
+  {
+    content.root.children.map((node) => (
+      <RTNode node={node} context={context} />
+    ))
   }
-</style>
+</ConditionalWrapper>

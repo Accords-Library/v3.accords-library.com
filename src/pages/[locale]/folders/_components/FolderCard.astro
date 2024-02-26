@@ -9,7 +9,7 @@ interface Props {
 const { icon = "material-symbols:folder-outline", title, href } = Astro.props;
 ---
 
-<a href={href} class="keycap">
+<a href={href} class="pressable">
   <Icon name={icon} />
   <div id="right">
     <h3>{title}</h3>

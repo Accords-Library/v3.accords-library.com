@@ -5,45 +5,49 @@ import ThemeSelector from "components/AppLayout/components/ThemeSelector.astro";
 import LanguageSelector from "components/AppLayout/components/LanguageSelector.astro";
 import CurrencySelector from "components/AppLayout/components/CurrencySelector.astro";
 import { getI18n } from "translations/translations";
+import Tooltip from "components/Tooltip.astro";
 
 interface Props {
-  breadcrumb: { name: string; slug: string }[];
+  parentPages?: { name: string; slug: string; type: string }[] | undefined;
+  hideHomeButton?: boolean;
 }
 
-const { breadcrumb } = Astro.props;
-const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
+const { parentPages = [], hideHomeButton = false } = Astro.props;
 
+const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {
   /* ------------------------------------------- HTML ------------------------------------------- */
 }
 
-<nav id="topbar">
+<nav id="topbar" class="when-no-print">
   {
-    breadcrumb.length > 0 && (
-      <div id="breadcrumb" class="hide-scrollbar">
+    (!hideHomeButton || parentPages.length > 0) && (
+      <div id="breadcrumb" class="hide-scrollbar high-contrast-text">
         <a href="/">
-          <>
-            <Icon name="accords" width={16} height={16} />
-            <p>{t("home.title")}</p>
-          </>
+          <Icon name="material-symbols:home" width={16} height={16} />
+          <p>{t("home.title")}</p>
         </a>
-        {breadcrumb.map(({ name, slug }) => (
-          <>
-            <Icon
-              name="material-symbols:arrow-forward-ios"
-              width={12}
-              height={12}
-            />
-            <a href={slug}>
-              <p>{name}</p>
-            </a>
-          </>
-        ))}
+
+        {parentPages.length > 0 && (
+          <Tooltip trigger="click">
+            <div slot="tooltip-content">
+              <p>This content is part of these pages:</p>
+              <p>NieR / Concert</p>
+              <p>NieR:Automata / Concert</p>
+              <p>NieR:Theatrical Orchestra Concert 12020 Bluray</p>
+            </div>
+            <div>
+              <Icon name="material-symbols:keyboard-return" />
+              <p>4 parent pages</p>
+            </div>
+          </Tooltip>
+        )}
       </div>
     )
   }
+
   <div id="toolbar">
     <a href={getLocalizedUrl("/search")}>
       <Button
@@ -89,19 +93,25 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       display: flex;
       place-items: center;
       overflow-x: scroll;
+      gap: 8px;
+      margin-left: -0.8em;
 
       & > svg {
         flex-shrink: 0;
       }
 
-      & > a {
+      & > a,
+      & > :global(tippy-tooltip > div) {
         text-decoration: none;
         flex-shrink: 0;
         display: flex;
         place-items: center;
         gap: 0.4em;
-        padding: 0.4em 0.6em;
+        padding: 0.7em 0.8em;
         border-radius: 9999px;
+        cursor: pointer;
+
+        backdrop-filter: blur(10px);
 
         transition: 150ms background-color;
 
@@ -111,10 +121,6 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 
         &:active {
           background-color: var(--color-base-300);
-        }
-
-        &:last-child {
-          text-decoration: underline;
         }
       }
     }

@@ -1,0 +1,41 @@
+---
+import RichText from "components/RichText/RichText.astro";
+import type { RichTextContent } from "src/shared/payload/payload-sdk";
+import type { RichTextContext } from "src/utils/richText";
+
+interface Props {
+  block: {
+    id: string;
+    content: RichTextContent;
+    blockType: string;
+    blockName: string;
+  };
+  context: RichTextContext;
+}
+
+const { block, context } = Astro.props;
+---
+
+<p>{block.blockName}</p>
+<div>
+  <RichText content={block.content} context={context} />
+</div>
+
+<style>
+  p {
+    color: var(--color-base-650);
+    font-weight: 500;
+  }
+
+  @media (max-width: 35rem) {
+    p {
+      grid-column: 1;
+      margin-bottom: -1em;
+    }
+
+    div {
+      grid-column: 1;
+      margin-bottom: 1em;
+    }
+  }
+</style>

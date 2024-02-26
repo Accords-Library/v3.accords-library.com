@@ -1,0 +1,94 @@
+---
+import MasoActor from "components/Maso/MasoActor.astro";
+import Tooltip from "components/Tooltip.astro";
+import Button from "components/Button.astro";
+import { getI18n } from "translations/translations";
+import Metadata from "pages/[locale]/api/contents/_components/Metadata.astro";
+
+interface Props {
+  currentLang: string;
+  getPartialUrl: (locale: string) => string;
+  availableLanguages: string[];
+  translators?: string[] | undefined;
+  transcribers?: string[] | undefined;
+  proofreaders?: string[] | undefined;
+}
+
+const {
+  currentLang,
+  getPartialUrl,
+  availableLanguages,
+  translators = [],
+  transcribers = [],
+  proofreaders = [],
+} = Astro.props;
+
+const { formatLocale, formatRecorder } = await getI18n(
+  Astro.locals.currentLocale
+);
+---
+
+{
+  availableLanguages.length > 1 && (
+    <div id="lang-selector" class="when-js when-no-print">
+      <Tooltip trigger="click">
+        <Button
+          icon="material-symbols:translate"
+          title={currentLang.toUpperCase()}
+        />
+
+        <div id="tooltip-content" slot="tooltip-content">
+          {availableLanguages.map((id) => (
+            <MasoActor
+              class:list={{ current: id === currentLang }}
+              href={getPartialUrl(id)}
+            >
+              {formatLocale(id)}
+            </MasoActor>
+          ))}
+        </div>
+      </Tooltip>
+      <p class="high-contrast-text">This content is available is {availableLanguages.length} languages.</p>
+    </div>
+  )
+}
+
+<Metadata
+  icon="material-symbols:person-outline"
+  title="Translators"
+  values={translators.map((id) => formatRecorder(id))}
+/>
+
+<Metadata
+  icon="material-symbols:person-edit-outline"
+  title="Transcribers"
+  values={transcribers.map((id) => formatRecorder(id))}
+/>
+
+<Metadata
+  icon="material-symbols:person-check-outline"
+  title="Proofreaders"
+  values={proofreaders.map((id) => formatRecorder(id))}
+/>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  #lang-selector {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+
+    #tooltip-content {
+      display: grid;
+      gap: 0.5em;
+
+      & > .current {
+        color: var(--color-base-750);
+        text-decoration: underline 0.08em var(--color-base-650);
+      }
+    }
+  }
+</style>

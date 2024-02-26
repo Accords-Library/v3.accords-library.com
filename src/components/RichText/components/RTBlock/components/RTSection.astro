@@ -1,0 +1,43 @@
+---
+import RichText from "components/RichText/RichText.astro";
+import type { RichTextContent } from "src/shared/payload/payload-sdk";
+import type { RichTextContext } from "src/utils/richText";
+
+interface Props {
+  node: {
+    type: string;
+    version: number;
+    format: number;
+    text: string;
+    [k: string]: unknown;
+    fields: {
+      id: string;
+      blockName: string;
+      blockType: string;
+      lines: RichTextContent;
+    };
+  };
+  context: RichTextContext;
+}
+
+const { node, context } = Astro.props;
+---
+
+{
+  context.depth < 2 ? (
+    <h2>{node.fields.blockName}</h2>
+  ) : context.depth === 2 ? (
+    <h3>{node.fields.blockName}</h3>
+  ) : context.depth === 3 ? (
+    <h4>{node.fields.blockName}</h4>
+  ) : context.depth === 4 ? (
+    <h5>{node.fields.blockName}</h5>
+  ) : (
+    <h6>{node.fields.blockName}</h6>
+  )
+}
+
+<RichText
+  content={node.fields.lines}
+  context={{ ...context, depth: context.depth + 1 }}
+/>

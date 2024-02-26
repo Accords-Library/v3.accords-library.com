@@ -1336,6 +1336,16 @@ export type EndpointFolder = {
       };
   lightThumbnail?: PayloadImage;
   darkThumbnail?: PayloadImage;
+  files: (
+    | {
+        relationTo: "library-items";
+        value: LibraryItem;
+      }
+    | {
+        relationTo: "contents";
+        value: Content;
+      }
+  )[];
 };
 
 export type EndpointFolderPreview = {
@@ -1350,12 +1360,81 @@ export type EndpointFolderPreview = {
   darkThumbnail?: PayloadImage;
 };
 
+export type EndpointContent = {
+  slug: string;
+  thumbnail?: PayloadImage;
+  translations: {
+    language: string;
+    sourceLanguage: string;
+    pretitle?: string;
+    title: string;
+    subtitle?: string;
+    summary?: RichTextContent;
+    format: {
+      text?: {
+        content: RichTextContent;
+        toc: TableOfContentEntry[];
+        transcribers: string[];
+        translators: string[];
+        proofreaders: string[];
+        notes?: RichTextContent;
+      };
+    };
+  }[];
+  categories: string[];
+  type?: string;
+};
+
+export type EndpointRecorder = {
+  id: string;
+  username: string;
+  avatar?: PayloadImage;
+  languages: string[];
+  biographies: {
+    language: string;
+    biography: RichTextContent;
+  }[];
+};
+
+export type EndpointKey = {
+  id: string;
+  name: string;
+  type: Key["type"];
+  translations: {
+    language: string;
+    name: string;
+    short: string;
+  }[];
+};
+
+export type TableOfContentEntry = {
+  prefix: string;
+  title: string;
+  children: TableOfContentEntry[];
+};
+
 export type PayloadImage = {
   url: string;
   width: number;
   height: number;
   mimeType: string;
   filename: string;
+};
+
+export type RichTextContent = {
+  root: {
+    children: {
+      type: string;
+      version: number;
+      [k: string]: unknown;
+    }[];
+    direction: ("ltr" | "rtl") | null;
+    format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+    indent: number;
+    type: string;
+    version: number;
+  };
+  [k: string]: unknown;
 };
 
 export const payload = {
@@ -1371,4 +1450,10 @@ export const payload = {
     await (await request(payloadApiUrl(Collections.Languages, `all`))).json(),
   getCurrencies: async (): Promise<Currency[]> =>
     await (await request(payloadApiUrl(Collections.Currencies, `all`))).json(),
+  getContent: async (slug: string): Promise<EndpointContent> =>
+    await (await request(payloadApiUrl(Collections.Contents, `slug/${slug}`))).json(),
+  getKeys: async (): Promise<EndpointKey[]> =>
+    await (await request(payloadApiUrl(Collections.Keys, `all`))).json(),
+  getRecorders: async (): Promise<EndpointRecorder[]> =>
+    await (await request(payloadApiUrl(Collections.Recorders, `all`))).json(),
 };

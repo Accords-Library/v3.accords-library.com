@@ -1,0 +1,41 @@
+---
+interface Props {
+  pretitle?: string | undefined;
+  title: string;
+  subtitle?: string | undefined;
+}
+
+const { title, subtitle, pretitle } = Astro.props;
+---
+
+<h1 class="high-contrast-text">
+  {pretitle && <span id="pretitle">{pretitle}&nbsp;</span>}
+  <span id="title">{title}&nbsp;</span>
+  {subtitle && <span id="subtitle">{subtitle}</span>}
+</h1>
+
+<style>
+  h1 {
+    line-height: 0.8;
+    display: grid;
+    overflow-wrap: anywhere;
+    font-size: clamp(1em, 0.7em + 1.5vw, 2em);
+
+    & > #pretitle {
+      font-family: var(--font-sans-serifs);
+      font-weight: 400;
+      margin-bottom: 0.8em;
+    }
+
+    & > #title {
+      font-family: var(--font-serif);
+      font-size: 200%;
+    }
+
+    & > #subtitle {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      margin-top: 0.5em;
+    }
+  }
+</style>

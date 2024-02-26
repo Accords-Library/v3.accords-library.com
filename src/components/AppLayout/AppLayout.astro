@@ -1,24 +1,37 @@
 ---
 import Html from "./components/Html.astro";
+import AppLayoutBackgroundImg from "./components/AppLayoutBackgroundImg.astro";
 import Topbar from "./components/Topbar.astro";
 import Footer from "./components/Footer.astro";
+import AppLayoutTitle from "./components/AppLayoutTitle.astro";
+import type { ComponentProps } from "astro/types";
 
 interface Props {
-  breadcrumb?: { name: string; slug: string }[];
-  title?: string | undefined;
+  parentPages?: ComponentProps<typeof Topbar>["parentPages"];
+  pretitle?: string | undefined;
+  title: string;
+  subtitle?: string | undefined;
   description?: string | undefined;
   illustration?: string;
   illustrationSize?: string;
   illustrationPosition?: string;
+  backgroundIllustration?: string | undefined;
+  hideFooterLinks?: boolean;
+  hideHomeButton?: boolean;
 }
 
 const {
-  title = "Accord’s Library",
+  title,
+  subtitle,
+  pretitle,
   description,
   illustration,
-  breadcrumb = [],
+  backgroundIllustration,
+  parentPages,
   illustrationSize = "contain",
   illustrationPosition = "center",
+  hideFooterLinks = false,
+  hideHomeButton = false,
 } = Astro.props;
 ---
 
@@ -28,24 +41,38 @@ const {
 
 <Html title={title}>
   <header>
-    <Topbar breadcrumb={breadcrumb} />
-    <div id="header-content">
-      <div id="header-left">
-        <slot name="header-title">
-          <h1>{title}</h1>
-        </slot>
+    {
+      backgroundIllustration && (
+        <AppLayoutBackgroundImg src={backgroundIllustration} />
+      )
+    }
 
-        <div id="description">
-          <slot name="header-description">
-            <p>{description}</p>
-          </slot>
+    <Topbar parentPages={parentPages} hideHomeButton={hideHomeButton} />
+    {
+      (
+        <div id="header-content">
+          <div id="header-left">
+            <slot name="header-title">
+              <AppLayoutTitle
+                pretitle={pretitle}
+                title={title}
+                subtitle={subtitle}
+              />
+            </slot>
+
+            <div class="prose">
+              <slot name="header-description">
+                <p>{description}</p>
+              </slot>
+            </div>
+          </div>
+          {illustration && <div id="image-container" />}
         </div>
-      </div>
-      {illustration && <div id="image-container" />}
-    </div>
+      )
+    }
   </header>
   <main><slot /></main>
-  <Footer withLinks={breadcrumb.length > 0} />
+  <Footer withLinks={!hideFooterLinks} />
 </Html>
 
 {
@@ -74,20 +101,6 @@ const {
         flex-direction: column;
         gap: 2em;
         place-items: flex-start;
-
-        & > h1 {
-          font-family: var(--font-serif);
-          font-size: 3em;
-          overflow-wrap: anywhere;
-        }
-
-        & > #description {
-          max-width: 35em;
-
-          & > p {
-            line-height: 1.4;
-          }
-        }
       }
 
       & > #image-container {

@@ -3,6 +3,7 @@ import Button from "components/Button.astro";
 import Tooltip from "components/Tooltip.astro";
 import { cache } from "src/utils/cachedPayload";
 import { getI18n } from "translations/translations";
+import { formatCurrency } from "src/utils/currencies";
 
 interface Props {
   withTitle?: boolean | undefined;
@@ -28,7 +29,7 @@ const { currentCurrency } = Astro.locals;
           href={`?action-currency=${id}`}
           data-astro-prefetch="tap"
         >
-          {id}
+          {`${id} (${formatCurrency(id)})`}
         </a>
       ))
     }

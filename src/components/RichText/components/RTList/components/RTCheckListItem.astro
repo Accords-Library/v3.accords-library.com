@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components";
 import RTNode from "../../RTNode.astro";
+import type { RichTextContext } from "src/utils/richText";
 
 interface Props {
   node: {
@@ -11,14 +12,12 @@ interface Props {
     }[];
     type: string;
     version: number;
-    format: number;
-    text: string;
-    listType: string;
     [k: string]: unknown;
   };
+  context: RichTextContext;
 }
 
-const { node } = Astro.props;
+const { node, context } = Astro.props;
 ---
 
 <li>
@@ -27,13 +26,13 @@ const { node } = Astro.props;
       ? "material-symbols:check-box"
       : "material-symbols:check-box-outline-blank"}
   />
-  {node.children.map((node) => <RTNode node={node} />)}
+  {node.children.map((node) => <RTNode node={node} context={context} />)}
 </li>
 
 <style>
   li {
     &::marker {
-      content: ""
+      content: "";
     }
     margin-left: -16px;
   }

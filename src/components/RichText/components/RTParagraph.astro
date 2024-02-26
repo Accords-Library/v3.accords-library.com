@@ -1,4 +1,5 @@
 ---
+import type { RichTextContext } from "src/utils/richText";
 import RTNode from "./RTNode.astro";
 
 interface Props {
@@ -12,23 +13,19 @@ interface Props {
     }[];
     [k: string]: unknown;
   };
+  context: RichTextContext;
 }
 
-const { node } = Astro.props;
+const { node, context } = Astro.props;
 ---
 
 {
   /* ------------------------------------------- HTML ------------------------------------------- */
 }
 
-<p>{node.children.map((node) => <RTNode node={node} />)}</p>
+<p>{node.children.map((node) => <RTNode node={node} context={context} />)}</p>
 
 {
   /* ------------------------------------------- CSS -------------------------------------------- */
 }
 
-<style>
-  p {
-    margin-bottom: 1em;
-  }
-</style>

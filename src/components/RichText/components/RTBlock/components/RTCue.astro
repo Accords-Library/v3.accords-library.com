@@ -1,0 +1,27 @@
+---
+import RichText from "components/RichText/RichText.astro";
+import type { RichTextContent } from "src/shared/payload/payload-sdk";
+import type { RichTextContext } from "src/utils/richText";
+
+interface Props {
+  block: {
+    id: string;
+    content: RichTextContent;
+    blockType: string;
+    blockName: string;
+  };
+  context: RichTextContext;
+}
+
+const { block, context } = Astro.props;
+---
+
+<div>
+  <RichText content={block.content} context={context} />
+</div>
+
+<style>
+  div {
+    grid-column: span 2;
+  }
+</style>

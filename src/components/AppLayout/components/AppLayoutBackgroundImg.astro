@@ -1,0 +1,63 @@
+---
+import { getRandomId } from "src/utils/random";
+
+interface Props {
+  src: string;
+  alt?: string;
+  id?: string;
+  class?: string;
+}
+
+const { src, alt } = Astro.props;
+const uniqueId = getRandomId();
+
+const styleNoScript = `
+<style>
+  #${uniqueId} {
+      opacity: 1;
+      transition: unset;
+  }
+</style>`;
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<img id={uniqueId} src={src} alt={alt} class="when-no-print" />
+
+<noscript set:html={styleNoScript} />
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  img {
+    opacity: 0;
+    transition: 3s opacity;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    height: 100vh;
+    object-fit: cover;
+    object-position: 50% 0;
+    width: 100%;
+    mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.3) 0%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+</style>
+
+<script define:vars={{ uniqueId }}>
+  const element = document.getElementById(uniqueId);
+
+  element.addEventListener("load", () => {
+    element.style.opacity = 1;
+  });
+</script>

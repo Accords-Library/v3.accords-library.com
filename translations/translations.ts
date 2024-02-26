@@ -4,6 +4,7 @@ import fr from "./fr.json";
 import ja from "./ja.json";
 
 import acceptLanguage from "accept-language";
+import { KeysTypes } from "src/shared/payload/payload-sdk";
 
 type WordingKeys = keyof typeof en;
 const translationFiles: Record<string, Record<WordingKeys, string>> = {
@@ -109,6 +110,39 @@ export const getI18n = async (locale: string) => {
     return template;
   };
 
+  const getLocalizedMatch = <T extends { language: string }>(
+    options: T[],
+    fallback: Omit<T, "language">
+  ): Omit<T, "language"> & { language?: string } =>
+    options.find(({ language }) => language === locale) ??
+    options.find(({ language }) => language === defaultLocale) ?? {
+      ...fallback,
+    };
+
+  const getLocalizedKey = (
+    keyType: KeysTypes,
+    keyId: string,
+    format: "short" | "default"
+  ) => {
+    const category = cache.keys.find(
+      ({ id, type }) => id === keyId && type === keyType
+    );
+
+    if (!category) {
+      return "UNKNOWN";
+    }
+    if (!category.translations) {
+      return category.name;
+    }
+
+    const translation = getLocalizedMatch(category.translations, {
+      name: category.name,
+      short: category.name,
+    });
+
+    return format === "default" ? translation.name : translation.short;
+  };
+
   return {
     t: (key: WordingKeys, values: Record<string, any> = {}): string => {
       if (translations && key in translations) {
@@ -117,13 +151,24 @@ export const getI18n = async (locale: string) => {
       return `«${key}»`;
     },
     getLocalizedUrl: (url: string): string => `/${locale}${url}`,
-    getLocalizedMatch: <T extends { language: string }>(
-      options: T[],
-      fallback: Omit<T, "language">
-    ): Omit<T, "language"> =>
-      options.find(({ language }) => language === locale) ??
-      options.find(({ language }) => language === defaultLocale) ??
-      fallback,
+    getLocalizedMatch,
+    formatCategory: (
+      id: string,
+      format: "short" | "default" = "default"
+    ): string => getLocalizedKey(KeysTypes.Categories, id, format),
+    formatContentType: (id: string): string =>
+      getLocalizedKey(KeysTypes.Contents, id, "default"),
+    formatRecorder: (recorderId: string): string => {
+      const result = cache.recorders.find(({ id }) => id === recorderId);
+
+      if (!result) {
+        return "UNKNOWN";
+      }
+
+      return result.username;
+    },
+    formatLocale: (code: string): string =>
+      cache.locales.find(({ id }) => id === code)?.name ?? code,
   };
 };
 
@@ -151,8 +196,8 @@ export const defaultLocale: Locale = "en";
 
 export const getCurrentLocale = (pathname: string): Locale | undefined => {
   for (const locale of cache.locales) {
-    if (pathname.startsWith(`/${locale}`)) {
-      return locale;
+    if (pathname.startsWith(`/${locale.id}`)) {
+      return locale.id;
     }
   }
   return undefined;
@@ -161,7 +206,7 @@ export const getCurrentLocale = (pathname: string): Locale | undefined => {
 export const getBestAcceptedLanguage = (
   request: Request
 ): Locale | undefined => {
-  acceptLanguage.languages(cache.locales);
+  acceptLanguage.languages(cache.locales.map(({ id }) => id));
 
   return (
     (acceptLanguage.get(

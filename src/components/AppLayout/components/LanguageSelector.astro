@@ -12,7 +12,7 @@ interface Props {
 const { withTitle, class: className } = Astro.props;
 
 const { currentLocale } = Astro.locals;
-const { t } = await getI18n(currentLocale);
+const { t, formatLocale } = await getI18n(currentLocale);
 ---
 
 {
@@ -22,13 +22,13 @@ const { t } = await getI18n(currentLocale);
 <Tooltip trigger="click" class={className}>
   <div id="content" slot="tooltip-content">
     {
-      cache.locales.map(id => (
+      cache.locales.map(({ id }) => (
         <a
           class:list={{ current: currentLocale === id }}
           href={`?action-lang=${id}`}
           data-astro-prefetch="tap"
         >
-          {id}
+          {formatLocale(id)}
         </a>
       ))
     }

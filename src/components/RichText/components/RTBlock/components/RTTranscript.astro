@@ -1,0 +1,52 @@
+---
+import type { RichTextContext } from "src/utils/richText";
+import RTLine from "./RTLine.astro";
+import RTCue from "./RTCue.astro";
+
+interface Props {
+  node: {
+    type: string;
+    version: number;
+    format: number;
+    text: string;
+    [k: string]: unknown;
+    fields: {
+      id: string;
+      blockName: string;
+      blockType: string;
+      lines: { blockType: string }[];
+    };
+  };
+  context: RichTextContext;
+}
+
+const { node, context } = Astro.props;
+---
+
+<div>
+  {
+    node.fields.lines.map((block) => {
+      switch (block.blockType) {
+        case "lineBlock":
+          return <RTLine block={block} context={context} />;
+
+        case "cueBlock":
+          return <RTCue block={block} context={context} />;
+
+        default:
+          return (
+            <p>{`Unknown block type: ${block.blockType}. Please contact website technical administrator.`}</p>
+          );
+      }
+    })
+  }
+</div>
+
+<style>
+  div {
+    padding-block: 1em;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.5em 2em;
+  }
+</style>

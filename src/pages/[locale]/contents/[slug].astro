@@ -1,0 +1,14 @@
+---
+import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import Content from "src/pages/[locale]/api/contents/partial.astro";
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect("/en/404");
+}
+---
+
+<AppEmptyLayout>
+  <Content slug={slug} lang={Astro.locals.currentLocale} />
+</AppLayout>
