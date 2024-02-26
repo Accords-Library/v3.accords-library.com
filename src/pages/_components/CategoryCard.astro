@@ -16,7 +16,7 @@ const { img, name, href } = Astro.props;
         <img src={img.dark} class="when-dark-theme" alt={name} title={name} />
       </>
     ) : (
-      <p>{name}</p>
+      <div><p>{name}</p></div>
     )
   }
 </a>
@@ -29,16 +29,23 @@ const { img, name, href } = Astro.props;
     display: grid;
     place-items: center;
 
-    padding: 24px;
     border-radius: 12px;
 
     user-select: none;
-    aspect-ratio: 2;
 
     & > img {
       object-fit: contain;
       height: 100%;
       width: 100%;
+      aspect-ratio: 2;
     }
+
+    & > div {
+      aspect-ratio: 2;
+      width: 100%;
+      display: grid;
+      place-content: center;
+    }
+
   }
 </style>
