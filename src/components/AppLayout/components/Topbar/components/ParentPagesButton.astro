@@ -14,18 +14,12 @@ const { parentPages } = Astro.props;
 const { t } = await getI18n(Astro.locals.currentLocale);
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <Tooltip trigger="click">
   <div id="tooltip-content" slot="tooltip-content">
     <p>This content is part of these pages:</p>
-    {
-      parentPages.map((parentPage) => (
-        <ParentPageLink parentPage={parentPage} />
-      ))
-    }
+    {parentPages.map((parentPage) => <ParentPageLink parentPage={parentPage} />)}
   </div>
   <div class="pressable-label">
     <Icon name="material-symbols:keyboard-return" />
@@ -39,9 +33,7 @@ const { t } = await getI18n(Astro.locals.currentLocale);
   </div>
 </Tooltip>
 
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   #tooltip-content {

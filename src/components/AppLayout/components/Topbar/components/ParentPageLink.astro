@@ -7,9 +7,7 @@ interface Props {
 }
 
 const { parentPage } = Astro.props;
-const { getLocalizedMatch, getLocalizedUrl } = await getI18n(
-  Astro.locals.currentLocale
-);
+const { getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 
 const translation = getLocalizedMatch(parentPage.translations);
 
@@ -24,15 +22,11 @@ switch (parentPage.collection) {
 }
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <a href={href}><span>{parentPage.tag}</span>{translation.name}</a>
 
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   a {

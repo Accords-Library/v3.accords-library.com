@@ -27,24 +27,15 @@ const { currentTheme } = Astro.locals;
     "light-theme": currentTheme === "light",
     "dark-theme": currentTheme === "dark",
     "texture-dots": !isIOS,
-  }}
->
+  }}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     <link rel="stylesheet" href="/css/tippy.css" />
-    <meta
-      name="theme-color"
-      media="(prefers-color-scheme: light)"
-      content="#fdebd4"
-    />
-    <meta
-      name="theme-color"
-      media="(prefers-color-scheme: dark)"
-      content="#27231e"
-    />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fdebd4" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#27231e" />
     <link rel="manifest" href="/site.webmanifest" />
 
     <style is:global>
@@ -71,9 +62,7 @@ const { currentTheme } = Astro.locals;
   </body>
 </html>
 
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style is:global>
   html {
@@ -368,8 +357,7 @@ const { currentTheme } = Astro.locals;
     backdrop-filter: blur(10px);
 
     transition-duration: 250ms;
-    transition-property: padding-top, box-shadow, background-color, color,
-      border-color, translate;
+    transition-property: padding-top, box-shadow, background-color, color, border-color, translate;
 
     &:hover {
       --foreground-color: var(--color-base-1000);

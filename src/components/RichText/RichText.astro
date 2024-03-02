@@ -13,14 +13,8 @@ interface Props {
 const { content, context = defaultContext } = Astro.props;
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <ConditionalWrapper condition={context.depth === 1} wrapper={RTProse}>
-  {
-    content.root.children.map((node) => (
-      <RTNode node={node} context={context} />
-    ))
-  }
+  {content.root.children.map((node) => <RTNode node={node} context={context} />)}
 </ConditionalWrapper>

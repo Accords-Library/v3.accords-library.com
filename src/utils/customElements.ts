@@ -1,7 +1,4 @@
-export const customElement = (
-  name: string,
-  constructor?: (elem: HTMLElement) => void
-) => {
+export const customElement = (name: string, constructor?: (elem: HTMLElement) => void) => {
   class CustomElementClass extends HTMLElement {
     constructor() {
       super();

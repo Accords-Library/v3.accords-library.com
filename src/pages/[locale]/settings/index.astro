@@ -7,9 +7,7 @@ const { currentLocale, currentTheme, currentCurrency } = Astro.locals;
 const { t } = await getI18n(currentLocale);
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <AppLayout title={t("settings.title")}>
   <div id="main">
@@ -21,8 +19,7 @@ const { t } = await getI18n(currentLocale);
           <a
             class:list={{ current: currentLocale === id }}
             href={`?action-lang=${id}`}
-            data-astro-prefetch="tap"
-          >
+            data-astro-prefetch="tap">
             {id}
           </a>
         ))
@@ -35,22 +32,19 @@ const { t } = await getI18n(currentLocale);
       <a
         class:list={{ current: currentTheme === "dark" }}
         href="?action-theme=dark"
-        data-astro-prefetch="tap"
-      >
+        data-astro-prefetch="tap">
         {t("global.theme.dark")}
       </a>
       <a
         class:list={{ current: currentTheme === "auto" }}
         href="?action-theme=auto"
-        data-astro-prefetch="tap"
-      >
+        data-astro-prefetch="tap">
         {t("global.theme.auto")}
       </a>
       <a
         class:list={{ current: currentTheme === "light" }}
         href="?action-theme=light"
-        data-astro-prefetch="tap"
-      >
+        data-astro-prefetch="tap">
         {t("global.theme.light")}
       </a>
     </div>
@@ -63,8 +57,7 @@ const { t } = await getI18n(currentLocale);
           <a
             class:list={{ current: currentCurrency === id }}
             href={`?action-currency=${id}`}
-            data-astro-prefetch="tap"
-          >
+            data-astro-prefetch="tap">
             {id}
           </a>
         ))
@@ -73,9 +66,7 @@ const { t } = await getI18n(currentLocale);
   </div>
 </AppLayout>
 
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   .section {

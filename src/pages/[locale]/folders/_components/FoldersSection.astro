@@ -10,14 +10,10 @@ interface Props {
 
 const { title, folders } = Astro.props;
 
-const { getLocalizedUrl, getLocalizedMatch } = await getI18n(
-  Astro.locals.currentLocale
-);
+const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div>
   {title && <h3>{title}</h3>}
@@ -34,9 +30,7 @@ const { getLocalizedUrl, getLocalizedMatch } = await getI18n(
   </section>
 </div>
 
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   h3 {

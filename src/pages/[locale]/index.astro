@@ -10,16 +10,13 @@ import { getI18n } from "src/i18n/i18n";
 const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <AppLayout
   title="Accord’s Library"
   backgroundIllustration="/img/bg-home2.webp"
   hideFooterLinks
-  hideHomeButton
->
+  hideHomeButton>
   <div id="title" slot="header-title">
     <Icon name="accords" />
     <div>
@@ -30,10 +27,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
   <div id="description" slot="header-description">
     <p set:html={t("home.description")} class="high-contrast-text" />
     <a href={getLocalizedUrl("/about")}>
-      <Button
-        title={t("home.aboutUsButton")}
-        icon="material-symbols:left-click"
-      />
+      <Button title={t("home.aboutUsButton")} icon="material-symbols:left-click" />
     </a>
   </div>
 
@@ -175,9 +169,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
   </div>
 </AppLayout>
 
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   #description {

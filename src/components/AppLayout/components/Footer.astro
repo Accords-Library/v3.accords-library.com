@@ -17,18 +17,14 @@ const twitterLabel = `${t("footer.socials.twitter.title")} - ${t(
   "footer.socials.twitter.subtitle"
 )}`;
 
-const githubLabel = `${t("footer.socials.github.title")} - ${t(
-  "footer.socials.github.subtitle"
-)}`;
+const githubLabel = `${t("footer.socials.github.title")} - ${t("footer.socials.github.subtitle")}`;
 
 const contactLabel = `${t("footer.socials.contact.title")} - ${t(
   "footer.socials.contact.subtitle"
 )}`;
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <footer>
   {
@@ -80,8 +76,7 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
         id="common-creative"
         aria-label={t("footer.license.icons.tooltip")}
         title={t("footer.license.icons.tooltip")}
-        class="pressable-icon"
-      >
+        class="pressable-icon">
         <Icon name="creative-commons-brands" />
         <Icon name="creative-commons-by-brands" />
         <Icon name="creative-commons-sa-brands" />
@@ -91,37 +86,25 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
     {
       withLinks && (
         <div id="socials" class="when-no-print">
-          <a
-            href="/discord"
-            class="pressable-icon"
-            aria-label={discordLabel}
-            title={discordLabel}
-          >
+          <a href="/discord" class="pressable-icon" aria-label={discordLabel} title={discordLabel}>
             <Icon name="discord-brands" />
           </a>
           <a
             href="https://twitter.com/AccordsLibrary"
             class="pressable-icon"
             aria-label={twitterLabel}
-            title={twitterLabel}
-          >
+            title={twitterLabel}>
             <Icon name="x-brands" />
           </a>
           <a
             href="https://github.com/Accords-Library"
             class="pressable-icon"
             aria-label={githubLabel}
-            title={githubLabel}
-          >
+            title={githubLabel}>
             <Icon name="github-brands" />
           </a>
 
-          <a
-            href="/contact"
-            class="pressable-icon"
-            aria-label={contactLabel}
-            title={contactLabel}
-          >
+          <a href="/contact" class="pressable-icon" aria-label={contactLabel} title={contactLabel}>
             <Icon name="material-symbols:mail-outline" />
           </a>
         </div>
@@ -131,9 +114,7 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
   <div id="copyright" set:html={t("footer.disclaimer")} />
 </footer>
 
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   footer {

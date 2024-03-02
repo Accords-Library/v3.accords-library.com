@@ -24,10 +24,10 @@ const { node, context } = Astro.props;
     <RTSection node={node} context={context} />
   ) : isBlockNodeTranscriptBlock(node) ? (
     <RTTranscript node={node} context={context} />
-  ) :isBlockNodeSpacerBlock(node) ? (
+  ) : isBlockNodeSpacerBlock(node) ? (
     <RTSpacer node={node} context={context} />
   ) : (
-  <ErrorMessage
+    <ErrorMessage
       title={`Unknown block type: ${node.fields.blockType}`}
       description="Please contact website technical administrator."
     />

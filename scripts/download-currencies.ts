@@ -22,17 +22,9 @@ if (rates.ok) {
 const currencies = await fetch(currenciesUrl);
 
 if (currencies.ok) {
-  writeFileSync(
-    `${OPEN_EXCHANGE_FOLDER}/currencies.json`,
-    await currencies.text(),
-    {
-      encoding: "utf-8",
-    }
-  );
+  writeFileSync(`${OPEN_EXCHANGE_FOLDER}/currencies.json`, await currencies.text(), {
+    encoding: "utf-8",
+  });
 } else {
-  console.error(
-    "Failed to get the currencies",
-    currencies.status,
-    currencies.statusText
-  );
+  console.error("Failed to get the currencies", currencies.status, currencies.statusText);
 }

@@ -5,13 +5,9 @@ import type { AstroCookies } from "astro";
 import { z } from "astro:content";
 import { defaultLocale } from "src/i18n/i18n";
 
-const getAbsoluteLocaleUrl = (locale: string, url: string) =>
-  `/${locale}${url}`;
+const getAbsoluteLocaleUrl = (locale: string, url: string) => `/${locale}${url}`;
 
-const redirect = (
-  redirectURL: string,
-  headers: Record<string, string> = {}
-): Response => {
+const redirect = (redirectURL: string, headers: Record<string, string> = {}): Response => {
   return new Response(undefined, {
     headers: { ...headers, Location: redirectURL },
     status: 302,
@@ -29,8 +25,7 @@ const localeNegotiator = defineMiddleware(({ cookies, url, request }, next) => {
   const currentLocale = getCurrentLocale(url.pathname);
   const acceptedLocale = getBestAcceptedLanguage(request);
   const cookieLocale = getCookieLocale(cookies);
-  const bestMatchingLocale =
-    cookieLocale ?? acceptedLocale ?? currentLocale ?? defaultLocale;
+  const bestMatchingLocale = cookieLocale ?? acceptedLocale ?? currentLocale ?? defaultLocale;
 
   if (!currentLocale) {
     const redirectURL = getAbsoluteLocaleUrl(bestMatchingLocale, url.pathname);
@@ -38,13 +33,8 @@ const localeNegotiator = defineMiddleware(({ cookies, url, request }, next) => {
   }
 
   if (currentLocale !== bestMatchingLocale) {
-    const pathnameWithoutLocale = url.pathname.substring(
-      currentLocale.length + 1
-    );
-    const redirectURL = getAbsoluteLocaleUrl(
-      bestMatchingLocale,
-      pathnameWithoutLocale
-    );
+    const pathnameWithoutLocale = url.pathname.substring(currentLocale.length + 1);
+    const redirectURL = getAbsoluteLocaleUrl(bestMatchingLocale, pathnameWithoutLocale);
     return redirect(redirectURL);
   }
 
@@ -60,18 +50,14 @@ const handleActionsSearchParams = defineMiddleware(async ({ url }, next) => {
       : url.pathname;
     const redirectURL = getAbsoluteLocaleUrl(actionLang, pathnameWithoutLocale);
     return redirect(redirectURL, {
-      "Set-Cookie": `${CookieKeys.Languages}=${JSON.stringify([
-        actionLang,
-      ])}; Path=/`,
+      "Set-Cookie": `${CookieKeys.Languages}=${JSON.stringify([actionLang])}; Path=/`,
     });
   }
 
   const actionCurrency = url.searchParams.get("action-currency");
   if (isValidCurrency(actionCurrency)) {
     return redirect(url.pathname, {
-      "Set-Cookie": `${CookieKeys.Currency}=${JSON.stringify(
-        actionCurrency
-      )}; Path=/`,
+      "Set-Cookie": `${CookieKeys.Currency}=${JSON.stringify(actionCurrency)}; Path=/`,
     });
   }
 
@@ -81,9 +67,7 @@ const handleActionsSearchParams = defineMiddleware(async ({ url }, next) => {
     url.searchParams.delete("action-theme");
     if (verifiedActionTheme.data === "auto") {
       return redirect(url.pathname, {
-        "Set-Cookie": `${CookieKeys.Theme}=; Path=/; Expires=${new Date(
-          0
-        ).toUTCString()}`,
+        "Set-Cookie": `${CookieKeys.Theme}=; Path=/; Expires=${new Date(0).toUTCString()}`,
       });
     }
     return redirect(url.pathname, {
@@ -94,26 +78,22 @@ const handleActionsSearchParams = defineMiddleware(async ({ url }, next) => {
   return next();
 });
 
-const addContentLanguageResponseHeader = defineMiddleware(
-  async ({ url }, next) => {
-    const currentLocale = getCurrentLocale(url.pathname);
+const addContentLanguageResponseHeader = defineMiddleware(async ({ url }, next) => {
+  const currentLocale = getCurrentLocale(url.pathname);
 
-    const response = await next();
-    if (response.status === 200 && currentLocale) {
-      response.headers.set("Content-Language", currentLocale);
-    }
-    return response;
+  const response = await next();
+  if (response.status === 200 && currentLocale) {
+    response.headers.set("Content-Language", currentLocale);
   }
-);
+  return response;
+});
 
-const provideLocalsToRequest = defineMiddleware(
-  async ({ url, locals, cookies }, next) => {
-    locals.currentLocale = getCurrentLocale(url.pathname) ?? "en";
-    locals.currentCurrency = getCookieCurrency(cookies) ?? "USD";
-    locals.currentTheme = getCookieTheme(cookies) ?? "auto";
-    return next();
-  }
-);
+const provideLocalsToRequest = defineMiddleware(async ({ url, locals, cookies }, next) => {
+  locals.currentLocale = getCurrentLocale(url.pathname) ?? "en";
+  locals.currentCurrency = getCookieCurrency(cookies) ?? "USD";
+  locals.currentTheme = getCookieTheme(cookies) ?? "auto";
+  return next();
+});
 
 export const onRequest = sequence(
   addContentLanguageResponseHeader,
@@ -139,9 +119,7 @@ const getBestAcceptedLanguage = (request: Request): string | undefined => {
 
   acceptLanguage.languages(cache.locales.map(({ id }) => id));
 
-  return (
-    acceptLanguage.get(request.headers.get("Accept-Language")) ?? undefined
-  );
+  return acceptLanguage.get(request.headers.get("Accept-Language")) ?? undefined;
 };
 
 /* COOKIES */
@@ -170,31 +148,19 @@ export const getCookieLocale = (cookies: AstroCookies): string | undefined => {
   return undefined;
 };
 
-export const getCookieCurrency = (
-  cookies: AstroCookies
-): string | undefined => {
+export const getCookieCurrency = (cookies: AstroCookies): string | undefined => {
   const cookieValue = cookies.get(CookieKeys.Currency)?.value;
   return isValidCurrency(cookieValue) ? cookieValue : undefined;
 };
 
-export const getCookieTheme = (
-  cookies: AstroCookies
-): z.infer<typeof themeSchema> | undefined => {
+export const getCookieTheme = (cookies: AstroCookies): z.infer<typeof themeSchema> | undefined => {
   const cookieValue = cookies.get(CookieKeys.Theme)?.value;
   const result = themeSchema.safeParse(cookieValue);
   return result.success ? result.data : undefined;
 };
 
-export const isValidCurrency = (
-  currency: string | null | undefined
-): currency is string =>
-  currency !== null &&
-  currency != undefined &&
-  cache.currencies.includes(currency);
+export const isValidCurrency = (currency: string | null | undefined): currency is string =>
+  currency !== null && currency != undefined && cache.currencies.includes(currency);
 
-export const isValidLocale = (
-  locale: string | null | undefined
-): locale is string =>
-  locale !== null &&
-  locale != undefined &&
-  cache.locales.map(({ id }) => id).includes(locale);
+export const isValidLocale = (locale: string | null | undefined): locale is string =>
+  locale !== null && locale != undefined && cache.locales.map(({ id }) => id).includes(locale);

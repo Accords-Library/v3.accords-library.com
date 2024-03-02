@@ -9,9 +9,7 @@ export const getI18n = async (locale: string) => {
     template: string,
     values: Record<string, any>
   ): string => {
-    const limitMatchToBalanceCurlyBraces = (
-      matchArray: RegExpMatchArray
-    ): string => {
+    const limitMatchToBalanceCurlyBraces = (matchArray: RegExpMatchArray): string => {
       // Cut match as soon as curly braces are balanced.
       const match = matchArray[0];
       let curlyCount = 2;
@@ -29,9 +27,7 @@ export const getI18n = async (locale: string) => {
     };
 
     Object.entries(values).forEach(([key, value]) => {
-      if (
-        !template.match(new RegExp(`{{ ${key}\\+|{{ ${key}\\?|{{ ${key} }}`))
-      ) {
+      if (!template.match(new RegExp(`{{ ${key}\\+|{{ ${key}\\?|{{ ${key} }}`))) {
         console.warn(
           "Value",
           key,
@@ -44,9 +40,7 @@ export const getI18n = async (locale: string) => {
       if (typeof value === "number") {
         // Find "plural" tokens
         const matches = [
-          ...template.matchAll(
-            new RegExp(`{{ ${key}\\+,[\\w\\s=>{},]+ }}`, "g")
-          ),
+          ...template.matchAll(new RegExp(`{{ ${key}\\+,[\\w\\s=>{},]+ }}`, "g")),
         ].map(limitMatchToBalanceCurlyBraces);
 
         const handlePlural = (match: string): string => {
@@ -59,23 +53,17 @@ export const getI18n = async (locale: string) => {
             if (!optionValue) continue;
             optionValue = optionValue.substring(0, optionValue.length - 1);
             if (option.startsWith("=")) {
-              const optionConditionValue = Number.parseInt(
-                optionCondition.substring(1)
-              );
+              const optionConditionValue = Number.parseInt(optionCondition.substring(1));
               if (value === optionConditionValue) {
                 return optionValue;
               }
             } else if (option.startsWith(">")) {
-              const optionConditionValue = Number.parseInt(
-                optionCondition.substring(1)
-              );
+              const optionConditionValue = Number.parseInt(optionCondition.substring(1));
               if (value > optionConditionValue) {
                 return optionValue;
               }
             } else if (option.startsWith("<")) {
-              const optionConditionValue = Number.parseInt(
-                optionCondition.substring(1)
-              );
+              const optionConditionValue = Number.parseInt(optionCondition.substring(1));
               if (value < optionConditionValue) {
                 return optionValue;
               }
@@ -90,9 +78,9 @@ export const getI18n = async (locale: string) => {
       }
 
       // Find "conditional" tokens
-      const matches = [
-        ...template.matchAll(new RegExp(`{{ ${key}\\?,[\\w\\s{},]+ }}`, "g")),
-      ].map(limitMatchToBalanceCurlyBraces);
+      const matches = [...template.matchAll(new RegExp(`{{ ${key}\\?,[\\w\\s{},]+ }}`, "g"))].map(
+        limitMatchToBalanceCurlyBraces
+      );
 
       const handleConditional = (match: string): string => {
         match = match.substring(3, match.length - 3);

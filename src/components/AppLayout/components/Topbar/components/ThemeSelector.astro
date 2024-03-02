@@ -7,24 +7,19 @@ const { currentLocale, currentTheme } = Astro.locals;
 const { t } = await getI18n(currentLocale);
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <Tooltip trigger="click">
   <div id="content" slot="tooltip-content">
-    <a
-      class:list={{ current: currentTheme === "dark" }}
-      href="?action-theme=dark">{t("global.theme.dark")}</a
-    >
-    <a
-      class:list={{ current: currentTheme === "auto" }}
-      href="?action-theme=auto">{t("global.theme.auto")}</a
-    >
-    <a
-      class:list={{ current: currentTheme === "light" }}
-      href="?action-theme=light">{t("global.theme.light")}</a
-    >
+    <a class:list={{ current: currentTheme === "dark" }} href="?action-theme=dark">
+      {t("global.theme.dark")}
+    </a>
+    <a class:list={{ current: currentTheme === "auto" }} href="?action-theme=auto">
+      {t("global.theme.auto")}
+    </a>
+    <a class:list={{ current: currentTheme === "light" }} href="?action-theme=light">
+      {t("global.theme.light")}
+    </a>
   </div>
   <Button
     class="when-light-theme"
@@ -38,9 +33,7 @@ const { t } = await getI18n(currentLocale);
   />
 </Tooltip>
 
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   #content {

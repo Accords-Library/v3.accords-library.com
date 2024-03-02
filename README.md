@@ -20,7 +20,7 @@
 ## CSS Component classes
 
 - `pressable-icon`: used to make a SVG/Text look pressable
-- `pressable`: used to make a container look pressable 
+- `pressable`: used to make a container look pressable
 
 ## CSS Global Variables
 

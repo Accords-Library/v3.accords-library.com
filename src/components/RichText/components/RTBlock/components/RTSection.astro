@@ -1,8 +1,6 @@
 ---
 import RichText from "components/RichText/RichText.astro";
-import type {
-  RichTextSectionBlock,
-} from "src/shared/payload/payload-sdk";
+import type { RichTextSectionBlock } from "src/shared/payload/payload-sdk";
 import type { RichTextContext } from "src/utils/richText";
 
 interface Props {
@@ -42,10 +40,7 @@ const { node, context } = Astro.props;
   )
 }
 
-<RichText
-  content={node.fields.content}
-  context={{ ...context, depth: context.depth + 1 }}
-/>
+<RichText content={node.fields.content} context={{ ...context, depth: context.depth + 1 }} />
 
 <style>
   span {

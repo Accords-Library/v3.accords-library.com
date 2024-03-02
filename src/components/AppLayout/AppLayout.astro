@@ -35,17 +35,11 @@ const {
 } = Astro.props;
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <Html title={title}>
   <header>
-    {
-      backgroundIllustration && (
-        <AppLayoutBackgroundImg src={backgroundIllustration} />
-      )
-    }
+    {backgroundIllustration && <AppLayoutBackgroundImg src={backgroundIllustration} />}
 
     <Topbar parentPages={parentPages} hideHomeButton={hideHomeButton} />
     {
@@ -53,11 +47,7 @@ const {
         <div id="header-content">
           <div id="header-left">
             <slot name="header-title">
-              <AppLayoutTitle
-                pretitle={pretitle}
-                title={title}
-                subtitle={subtitle}
-              />
+              <AppLayoutTitle pretitle={pretitle} title={title} subtitle={subtitle} />
             </slot>
 
             <div class="prose">
@@ -75,9 +65,7 @@ const {
   <Footer withLinks={!hideFooterLinks} />
 </Html>
 
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 {/* TODO: Not use CSS image if possible */}
 <style
@@ -108,11 +96,7 @@ const {
         background-size: var(--illustrationSize);
         background-repeat: no-repeat;
         background-position: right var(--illustrationPosition);
-        mask-image: linear-gradient(
-          to left,
-          rgba(0, 0, 0, 1) 50%,
-          transparent 80%
-        );
+        mask-image: linear-gradient(to left, rgba(0, 0, 0, 1) 50%, transparent 80%);
 
         @media (max-width: 60rem) {
           display: none;

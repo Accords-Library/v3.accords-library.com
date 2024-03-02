@@ -12,34 +12,21 @@ interface Props {
   backgroundIllustration?: string | undefined;
 }
 
-const {
-  metaTitle,
-  hideFooterLinks = false,
-  parentPages,
-  backgroundIllustration,
-} = Astro.props;
+const { metaTitle, hideFooterLinks = false, parentPages, backgroundIllustration } = Astro.props;
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <Html title={metaTitle}>
   <header>
-    {
-      backgroundIllustration && (
-        <AppLayoutBackgroundImg src={backgroundIllustration} />
-      )
-    }
+    {backgroundIllustration && <AppLayoutBackgroundImg src={backgroundIllustration} />}
     <Topbar parentPages={parentPages} />
   </header>
   <main><slot /></main>
   <Footer withLinks={!hideFooterLinks} />
 </Html>
 
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   header {

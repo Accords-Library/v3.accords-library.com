@@ -4,34 +4,26 @@ import { Icon } from "astro-icon/components";
 interface Props {
   id?: string;
   title?: string | undefined;
-  icon?: string | string[];
+  icon?: string;
   class?: string;
   ariaLabel?: string;
 }
 
 const { title, icon, class: className, ariaLabel, id } = Astro.props;
-
-const icons =
-  icon === undefined ? [] : typeof icon === "string" ? [icon] : icon;
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <button
   id={id}
   class:list={["pressable", "high-contrast-text", { "with-title": !!title }, className]}
   aria-label={ariaLabel}
-  title={ariaLabel}
->
-  {icons.map((cIcon) => <Icon name={cIcon} />)}
+  title={ariaLabel}>
+  {icon && <Icon name={icon} />}
   {title}
 </button>
 
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   button {
@@ -52,8 +44,7 @@ const icons =
     cursor: pointer;
 
     transition-duration: 250ms;
-    transition-property: padding-top, box-shadow, background-color, color,
-      border-color;
+    transition-property: padding-top, box-shadow, background-color, color, border-color;
 
     &.with-title > svg {
       width: 1.2em;

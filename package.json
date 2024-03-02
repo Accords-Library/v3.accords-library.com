@@ -12,7 +12,8 @@
     "script:download-payload-sdk": "bun run scripts/download-payload-sdk.ts",
     "script:download-currencies": "bun run scripts/download-currencies.ts",
     "script:download-wording-keys": "bun run scripts/download-wording-keys.ts",
-    "precommit": "bun run script:download-wording-keys && bun run script:download-payload-sdk && bun run astro check"
+    "prettier": "prettier --write --list-different --plugin=prettier-plugin-astro .",
+    "precommit": "bun run script:download-wording-keys && bun run script:download-payload-sdk && bun run prettier && bun run astro check"
   },
   "engines": {
     "npm": ">=10.0.0",
@@ -38,6 +39,8 @@
     "bun-types": "^1.0.29",
     "npm-check-updates": "^16.14.15",
     "postcss-preset-env": "^9.4.0",
+    "prettier": "^3.2.5",
+    "prettier-plugin-astro": "^0.13.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }

@@ -13,24 +13,16 @@ interface Props {
 const { currentLang, getPartialUrl, availableLanguages } = Astro.props;
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div id="lang-selector" class="when-js when-no-print">
   <Tooltip trigger="click">
-    <Button
-      icon="material-symbols:translate"
-      title={currentLang.toUpperCase()}
-    />
+    <Button icon="material-symbols:translate" title={currentLang.toUpperCase()} />
 
     <div id="tooltip-content" slot="tooltip-content">
       {
         availableLanguages.map((id) => (
-          <MasoActor
-            class:list={{ current: id === currentLang }}
-            href={getPartialUrl(id)}
-          >
+          <MasoActor class:list={{ current: id === currentLang }} href={getPartialUrl(id)}>
             {formatLocale(id)}
           </MasoActor>
         ))
@@ -42,9 +34,7 @@ const { currentLang, getPartialUrl, availableLanguages } = Astro.props;
   </p>
 </div>
 
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   #lang-selector {

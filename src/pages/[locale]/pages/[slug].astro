@@ -12,13 +12,8 @@ if (page instanceof Response) {
 }
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppEmptyLayout
-  parentPages={page.parentPages}
-  backgroundIllustration={page.thumbnail?.url}
->
+<AppEmptyLayout parentPages={page.parentPages} backgroundIllustration={page.thumbnail?.url}>
   <Page slug={page.slug} lang={Astro.locals.currentLocale} page={page} />
 </AppEmptyLayout>

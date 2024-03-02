@@ -18,9 +18,7 @@ const { parentPages = [], hideHomeButton = false } = Astro.props;
 const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <nav id="topbar" class="when-no-print">
   {
@@ -31,19 +29,14 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
           <p>{t("home.title")}</p>
         </a>
 
-        {parentPages.length > 0 && (
-          <ParentPagesButton parentPages={parentPages} />
-        )}
+        {parentPages.length > 0 && <ParentPagesButton parentPages={parentPages} />}
       </div>
     )
   }
 
   <div id="toolbar" class="hide-scrollbar">
     <a href={getLocalizedUrl("/search")}>
-      <Button
-        icon="material-symbols:search"
-        ariaLabel={t("header.topbar.search.tooltip")}
-      />
+      <Button icon="material-symbols:search" ariaLabel={t("header.topbar.search.tooltip")} />
     </a>
     <div class="separator"></div>
 
@@ -68,9 +61,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
   </div>
 </nav>
 
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   nav {

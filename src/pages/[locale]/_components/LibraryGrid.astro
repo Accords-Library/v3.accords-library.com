@@ -4,14 +4,10 @@ import CategoryCard from "./CategoryCard.astro";
 import { getI18n } from "src/i18n/i18n";
 
 const folders = await payload.getRootFolders();
-const { getLocalizedUrl, getLocalizedMatch } = await getI18n(
-  Astro.locals.currentLocale
-);
+const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
 {
   folders.map(({ slug, translations, darkThumbnail, lightThumbnail }) => (

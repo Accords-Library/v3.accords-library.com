@@ -1,6 +1,4 @@
-export const fetchOr404 = async <T>(
-  promise: () => Promise<T>
-): Promise<T | Response> => {
+export const fetchOr404 = async <T>(promise: () => Promise<T>): Promise<T | Response> => {
   try {
     return await promise();
   } catch {

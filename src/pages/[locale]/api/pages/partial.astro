@@ -28,9 +28,7 @@ const { getLocalizedMatch } = await getI18n(lang);
 const translation = getLocalizedMatch(page.translations);
 ---
 
-{
-  /* ------------------------------------------- HTML ------------------------------------------- */
-}
+{/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <MasoTarget>
   <div id="layout">
@@ -68,19 +66,14 @@ const translation = getLocalizedMatch(page.translations);
           page.translations.length > 1 && (
             <LanguageOverride
               currentLang={lang}
-              availableLanguages={page.translations.map(
-                ({ language }) => language
-              )}
+              availableLanguages={page.translations.map(({ language }) => language)}
               getPartialUrl={(lang) =>
                 getLocalizedUrl(`/api/pages/partial?lang=${lang}&slug=${slug}`)
               }
             />
           )
         }
-        <Credits
-          translators={translation.translators}
-          proofreaders={translation.proofreaders}
-        />
+        <Credits translators={translation.translators} proofreaders={translation.proofreaders} />
       </div>
 
       <div class="when-not-large meta-container">
@@ -110,19 +103,14 @@ const translation = getLocalizedMatch(page.translations);
           page.translations.length > 1 && (
             <LanguageOverride
               currentLang={lang}
-              availableLanguages={page.translations.map(
-                ({ language }) => language
-              )}
+              availableLanguages={page.translations.map(({ language }) => language)}
               getPartialUrl={(lang) =>
                 getLocalizedUrl(`/api/pages/partial?lang=${lang}&slug=${slug}`)
               }
             />
           )
         }
-        <Credits
-          translators={translation.translators}
-          proofreaders={translation.proofreaders}
-        />
+        <Credits translators={translation.translators} proofreaders={translation.proofreaders} />
       </div>
 
       <TableOfContent toc={translation.toc} />
@@ -130,9 +118,7 @@ const translation = getLocalizedMatch(page.translations);
   </div>
 </MasoTarget>
 
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   #layout {
