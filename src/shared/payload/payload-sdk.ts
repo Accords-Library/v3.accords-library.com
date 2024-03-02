@@ -6,6 +6,10 @@
  * and re-run `payload generate:types` to regenerate this file.
  */
 
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RecorderBiographies".
+ */
 export type RecorderBiographies =
   | {
       language: string | Language;
@@ -27,11 +31,14 @@ export type RecorderBiographies =
       id?: string | null;
     }[]
   | null;
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CategoryTranslations".
+ */
 export type CategoryTranslations =
   | {
       language: string | Language;
       name: string;
-      short?: string | null;
       id?: string | null;
     }[]
   | null;
@@ -39,35 +46,39 @@ export type CategoryTranslations =
 export interface Config {
   collections: {
     folders: Folder;
-    FoldersThumbnails: FoldersThumbnail;
+    'folders-thumbnails': FoldersThumbnail;
     'library-items': LibraryItem;
-    contents: Content;
-    'contents-folders': ContentsFolder;
-    posts: Post;
+    pages: Page;
     'chronology-items': ChronologyItem;
     'chronology-eras': ChronologyEra;
     weapons: Weapon;
     'weapons-groups': WeaponsGroup;
     'weapons-thumbnails': WeaponsThumbnail;
-    'contents-thumbnails': ContentsThumbnail;
     'library-items-thumbnails': LibraryItemThumbnail;
     'library-items-scans': LibraryItemScans;
     'library-items-gallery': LibraryItemGallery;
     'recorders-thumbnails': RecordersThumbnail;
-    'posts-thumbnails': PostThumbnail;
     files: File;
-    Notes: Note;
+    notes: Note;
     videos: Video;
     'videos-channels': VideosChannel;
     languages: Language;
     currencies: Currency;
     recorders: Recorder;
     keys: Key;
+    tags: Tag;
+    'tags-groups': TagsGroup;
+    images: Image;
+    wordings: Wording;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   globals: {};
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "folders".
+ */
 export interface Folder {
   id: string;
   slug: string;
@@ -116,14 +127,18 @@ export interface Folder {
             value: string | LibraryItem;
           }
         | {
-            relationTo: 'contents';
-            value: string | Content;
+            relationTo: 'pages';
+            value: string | Page;
           }
       )[]
     | null;
   updatedAt: string;
   createdAt: string;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "folders-thumbnails".
+ */
 export interface FoldersThumbnail {
   id: string;
   updatedAt: string;
@@ -143,20 +158,20 @@ export interface FoldersThumbnail {
       filesize?: number | null;
       filename?: string | null;
     };
-    medium?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
   };
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "languages".
+ */
 export interface Language {
   id: string;
   name: string;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "library-items".
+ */
 export interface LibraryItem {
   id: string;
   itemType?: ('Textual' | 'Audio' | 'Video' | 'Game' | 'Other') | null;
@@ -295,7 +310,7 @@ export interface LibraryItem {
   subitems?: (string | LibraryItem)[] | null;
   contents?:
     | {
-        content: string | Content;
+        content: string | Page;
         pageStart?: number | null;
         pageEnd?: number | null;
         timeStart?: number | null;
@@ -323,6 +338,10 @@ export interface LibraryItem {
   createdAt: string;
   _status?: ('draft' | 'published') | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "library-items-thumbnails".
+ */
 export interface LibraryItemThumbnail {
   id: string;
   libraryItem?: (string | LibraryItem)[] | null;
@@ -361,6 +380,10 @@ export interface LibraryItemThumbnail {
     };
   };
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "library-items-gallery".
+ */
 export interface LibraryItemGallery {
   id: string;
   updatedAt: string;
@@ -390,6 +413,10 @@ export interface LibraryItemGallery {
     };
   };
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recorders".
+ */
 export interface Recorder {
   id: string;
   username: string;
@@ -407,6 +434,10 @@ export interface Recorder {
   lockUntil?: string | null;
   password?: string | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recorders-thumbnails".
+ */
 export interface RecordersThumbnail {
   id: string;
   recorder?: (string | null) | Recorder;
@@ -437,6 +468,10 @@ export interface RecordersThumbnail {
     };
   };
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "library-items-scans".
+ */
 export interface LibraryItemScans {
   id: string;
   updatedAt: string;
@@ -482,6 +517,10 @@ export interface LibraryItemScans {
     };
   };
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "files".
+ */
 export interface File {
   id: string;
   filename: string;
@@ -489,6 +528,10 @@ export interface File {
   updatedAt: string;
   createdAt: string;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "keys".
+ */
 export interface Key {
   id: string;
   name: string;
@@ -505,16 +548,24 @@ export interface Key {
     | 'Wordings';
   translations?: CategoryTranslations;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "currencies".
+ */
 export interface Currency {
   id: string;
 }
-export interface Content {
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
   id: string;
+  type: 'Content' | 'Article' | 'Generic';
   slug: string;
-  thumbnail?: string | ContentsThumbnail | null;
-  categories?: (string | Key)[] | null;
-  type?: (string | null) | Key;
-  libraryItems?: (string | LibraryItem)[] | null;
+  thumbnail?: string | Image | null;
+  tags?: (string | Tag)[] | null;
+  authors?: (string | Recorder)[] | null;
   translations: {
     language: string | Language;
     sourceLanguage: string | Language;
@@ -536,7 +587,7 @@ export interface Content {
       };
       [k: string]: unknown;
     } | null;
-    textContent?: {
+    content: {
       root: {
         children: {
           type: string;
@@ -550,70 +601,25 @@ export interface Content {
         version: number;
       };
       [k: string]: unknown;
-    } | null;
-    textTranscribers?: (string | Recorder)[] | null;
-    textTranslators?: (string | Recorder)[] | null;
-    textProofreaders?: (string | Recorder)[] | null;
-    textNotes?: {
-      root: {
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        type: string;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    video?: (string | null) | File;
-    videoNotes?: {
-      root: {
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        type: string;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    audio?: (string | null) | File;
-    audioNotes?: {
-      root: {
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        type: string;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
+    };
+    transcribers?: (string | Recorder)[] | null;
+    translators?: (string | Recorder)[] | null;
+    proofreaders?: (string | Recorder)[] | null;
     id?: string | null;
   }[];
-  folders?: (string | ContentsFolder)[] | null;
-  previousContents?: (string | Content)[] | null;
-  nextContents?: (string | Content)[] | null;
+  folders?: (string | Folder)[] | null;
+  collectibles?: (string | LibraryItem)[] | null;
   updatedBy: string | Recorder;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
 }
-export interface ContentsThumbnail {
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "images".
+ */
+export interface Image {
   id: string;
-  contents?: (string | Content)[] | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -639,18 +645,15 @@ export interface ContentsThumbnail {
       filesize?: number | null;
       filename?: string | null;
     };
-    medium?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
   };
 }
-export interface ContentsFolder {
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
   id: string;
+  name?: string | null;
   slug: string;
   translations?:
     | {
@@ -659,98 +662,32 @@ export interface ContentsFolder {
         id?: string | null;
       }[]
     | null;
-  subfolders?: (string | ContentsFolder)[] | null;
-  contents?: (string | Content)[] | null;
+  group: string | TagsGroup;
+  updatedAt: string;
+  createdAt: string;
 }
-export interface Post {
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags-groups".
+ */
+export interface TagsGroup {
   id: string;
   slug: string;
-  thumbnail?: string | PostThumbnail | null;
-  authors: (string | Recorder)[];
-  categories?: (string | Key)[] | null;
-  translations: {
-    language: string | Language;
-    sourceLanguage: string | Language;
-    title: string;
-    summary?: {
-      root: {
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        type: string;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    content?: {
-      root: {
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        type: string;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    translators?: (string | Recorder)[] | null;
-    proofreaders?: (string | Recorder)[] | null;
-    id?: string | null;
-  }[];
-  publishedDate: string;
-  hidden?: boolean | null;
-  updatedBy: string | Recorder;
+  icon?: string | null;
+  translations?:
+    | {
+        language: string | Language;
+        name: string;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
-export interface PostThumbnail {
-  id: string;
-  posts?: (string | Post)[] | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  sizes?: {
-    thumb?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    og?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    medium?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "chronology-items".
+ */
 export interface ChronologyItem {
   id: string;
   name?: string | null;
@@ -806,6 +743,10 @@ export interface ChronologyItem {
   createdAt: string;
   _status?: ('draft' | 'published') | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "chronology-eras".
+ */
 export interface ChronologyEra {
   id: string;
   slug: string;
@@ -837,6 +778,10 @@ export interface ChronologyEra {
   updatedAt: string;
   createdAt: string;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "weapons".
+ */
 export interface Weapon {
   id: string;
   slug: string;
@@ -936,6 +881,10 @@ export interface Weapon {
   createdAt: string;
   _status?: ('draft' | 'published') | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "weapons-thumbnails".
+ */
 export interface WeaponsThumbnail {
   id: string;
   weapon?: (string | null) | Weapon;
@@ -982,6 +931,10 @@ export interface WeaponsThumbnail {
     };
   };
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "weapons-groups".
+ */
 export interface WeaponsGroup {
   id: string;
   slug: string;
@@ -994,6 +947,10 @@ export interface WeaponsGroup {
     | null;
   weapons?: (string | Weapon)[] | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "notes".
+ */
 export interface Note {
   id: string;
   note: {
@@ -1014,6 +971,10 @@ export interface Note {
   updatedAt: string;
   createdAt: string;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos".
+ */
 export interface Video {
   id: string;
   uid: string;
@@ -1026,12 +987,31 @@ export interface Video {
   publishedDate: string;
   channel?: (string | null) | VideosChannel;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos-channels".
+ */
 export interface VideosChannel {
   id: string;
   uid: string;
   title: string;
   subscribers?: number | null;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "wordings".
+ */
+export interface Wording {
+  id: string;
+  name: string;
+  translations?: CategoryTranslations;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-preferences".
+ */
 export interface PayloadPreference {
   id: string;
   user: {
@@ -1051,6 +1031,10 @@ export interface PayloadPreference {
   updatedAt: string;
   createdAt: string;
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-migrations".
+ */
 export interface PayloadMigration {
   id: string;
   name?: string | null;
@@ -1058,11 +1042,94 @@ export interface PayloadMigration {
   updatedAt: string;
   createdAt: string;
 }
-
-
-declare module 'payload' {
-  export interface GeneratedTypes extends Config {}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SpacerBlock".
+ */
+export interface SpacerBlock {
+  size: 'Small' | 'Medium' | 'Large' | 'XLarge';
+  blockType: 'spacerBlock';
 }
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LineBlock".
+ */
+export interface LineBlock {
+  content: {
+    root: {
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      type: string;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  blockType: 'lineBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CueBlock".
+ */
+export interface CueBlock {
+  content: {
+    root: {
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      type: string;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  blockType: 'cueBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TranscriptBlock".
+ */
+export interface TranscriptBlock {
+  lines: (LineBlock | CueBlock | SpacerBlock)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'transcriptBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SectionBlock".
+ */
+export interface SectionBlock {
+  content: {
+    root: {
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      type: string;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'sectionBlock';
+}
+
+
 
 /////////////// CONSTANTS ///////////////
 
@@ -1070,9 +1137,6 @@ declare module 'payload' {
 export enum Collections {
   ChronologyEras = "chronology-eras",
   ChronologyItems = "chronology-items",
-  ContentsFolders = "contents-folders",
-  Contents = "contents",
-  ContentsThumbnails = "contents-thumbnails",
   Currencies = "currencies",
   Files = "files",
   Keys = "keys",
@@ -1081,9 +1145,9 @@ export enum Collections {
   LibraryItemsThumbnails = "library-items-thumbnails",
   LibraryItemsScans = "library-items-scans",
   LibraryItemsGallery = "library-items-gallery",
-  Notes = "Notes",
-  Posts = "posts",
-  PostsThumbnails = "posts-thumbnails",
+  Notes = "notes",
+  Pages = "pages",
+  PagesThumbnails = "pages-thumbnails",
   Recorders = "recorders",
   RecordersThumbnails = "recorders-thumbnails",
   VideosChannels = "videos-channels",
@@ -1092,7 +1156,11 @@ export enum Collections {
   WeaponsGroups = "weapons-groups",
   WeaponsThumbnails = "weapons-thumbnails",
   Folders = "folders",
-  FoldersThumbnails = "FoldersThumbnails",
+  FoldersThumbnails = "folders-thumbnails",
+  Tags = "tags",
+  TagsGroups = "tags-groups",
+  Images = "images",
+  Wordings = "wordings"
 }
 
 export enum CollectionGroups {
@@ -1165,9 +1233,195 @@ export enum VideoSources {
   Tumblr = "Tumblr",
 }
 
+export enum PageType {
+  Content = "Content",
+  Article = "Article",
+  Generic = "Generic",
+}
+
+export enum SpacerSizes {
+  Small = "Small",
+  Medium = "Medium",
+  Large = "Large",
+  XLarge = "Extra Large",
+}
+
+/* RICH TEXT */
+
+export type RichTextContent = {
+  root: {
+    children: RichTextNode[];
+    direction: ("ltr" | "rtl") | null;
+    format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+    indent: number;
+    type: string;
+    version: number;
+  };
+  [k: string]: unknown;
+};
+
+export type RichTextNode = {
+  type: string;
+  version: number;
+  [k: string]: unknown;
+};
+
+export interface RichTextNodeWithChildren extends RichTextNode {
+  children: RichTextNode[];
+}
+
+export interface RichTextParagraphNode extends RichTextNodeWithChildren {
+  type: "paragraph";
+  format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+}
+
+export interface RichTextListNode extends RichTextNode {
+  type: "list";
+  children: RichTextNodeWithChildren[];
+  listType: string;
+}
+
+export interface RichTextListNumberNode extends RichTextListNode {
+  listType: "number";
+}
+
+export interface RichTextListBulletNode extends RichTextListNode {
+  listType: "bullet";
+}
+
+export interface RichTextListCheckNode extends RichTextListNode {
+  listType: "check";
+}
+
+export interface RichTextTextNode extends RichTextNode {
+  type: "text";
+  format: number;
+  text: string;
+}
+
+export interface RichTextTabNode extends RichTextNode {
+  type: "tab";
+  format: number;
+}
+
+export interface RichTextLinkNode extends RichTextNodeWithChildren {
+  type: "link";
+  fields: {
+    linkType: "internal" | "custom";
+  };
+}
+
+export interface RichTextLinkInternalNode extends RichTextLinkNode {
+  fields: {
+    linkType: "internal";
+    newTab: boolean;
+    doc: {
+      relationTo: string;
+      value: any;
+    };
+  };
+}
+
+export interface RichTextLinkCustomNode extends RichTextLinkNode {
+  fields: {
+    linkType: "custom";
+    newTab: boolean;
+    url: string;
+  };
+}
+
+export interface RichTextBlockNode extends RichTextNode {
+  type: "block";
+  fields: {
+    blockType: string;
+  };
+}
+
+export interface RichTextSectionBlock extends RichTextBlockNode {
+  fields: SectionBlock & { anchorHash: string };
+}
+
+export interface RichTextTranscriptBlock extends RichTextBlockNode {
+  fields: TranscriptBlock;
+}
+
+export interface RichTextSpacerBlock extends RichTextBlockNode {
+  fields: SpacerBlock;
+}
+
+export const isNodeParagraphNode = (node: RichTextNode): node is RichTextParagraphNode =>
+  node.type === "paragraph";
+
+export const isNodeListNode = (node: RichTextNode): node is RichTextListNode =>
+  node.type === "list";
+
+export const isListNodeNumberListNode = (node: RichTextListNode): node is RichTextListNumberNode =>
+  node.listType === "number";
+
+export const isListNodeBulletListNode = (node: RichTextListNode): node is RichTextListBulletNode =>
+  node.listType === "bullet";
+
+export const isListNodeCheckListNode = (node: RichTextListNode): node is RichTextListCheckNode =>
+  node.listType === "check";
+
+export const isNodeTextNode = (node: RichTextNode): node is RichTextTextNode =>
+  node.type === "text";
+
+export const isNodeTabNode = (node: RichTextNode): node is RichTextTabNode => node.type === "tab";
+
+export const isNodeLinkNode = (node: RichTextNode): node is RichTextLinkNode =>
+  node.type === "link";
+
+export const isLinkNodeInternalLinkNode = (
+  node: RichTextLinkNode
+): node is RichTextLinkInternalNode => node.fields.linkType === "internal";
+
+export const isLinkNodeCustomLinkNode = (node: RichTextLinkNode): node is RichTextLinkCustomNode =>
+  node.fields.linkType === "custom";
+
+export const isNodeBlockNode = (node: RichTextNode): node is RichTextBlockNode =>
+  node.type === "block";
+
+export const isBlockNodeSectionBlock = (node: RichTextBlockNode): node is RichTextSectionBlock =>
+  node.fields.blockType === "sectionBlock";
+
+export const isBlockNodeTranscriptBlock = (
+  node: RichTextBlockNode
+): node is RichTextTranscriptBlock => node.fields.blockType === "transcriptBlock";
+
+export const isBlockNodeSpacerBlock = (node: RichTextBlockNode): node is RichTextSpacerBlock =>
+  node.fields.blockType === "spacerBlock";
+
+/* BLOCKS */
+
+/* TODO: TO BE REMOVED WHEN https://github.com/payloadcms/payload/issues/5216 is closed */
+export interface CueBlock {
+  id?: string | null;
+  blockName?: string | null;
+}
+
+export interface LineBlock {
+  id?: string | null;
+  blockName?: string | null;
+}
+
+export interface GenericBlock {
+  id?: string | null;
+  blockName?: string | null;
+  blockType: string;
+}
+
+export const isBlockCueBlock = (block: GenericBlock): block is CueBlock =>
+  block.blockType === "cueBlock";
+
+export const isBlockLineBlock = (block: GenericBlock): block is LineBlock =>
+  block.blockType === "lineBlock";
+
+export const isBlockSpacerBlock = (block: GenericBlock): block is SpacerBlock =>
+  block.blockType === "spacerBlock";
+
 
 ////////////////// SDK //////////////////
-
 
 import NodeCache from "node-cache";
 
@@ -1192,8 +1446,8 @@ const refreshToken = async () => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      email: process.env.PAYLOAD_USER,
-      password: process.env.PAYLOAD_PASSWORD,
+      email: import.meta.env.PAYLOAD_USER,
+      password: import.meta.env.PAYLOAD_PASSWORD,
     }),
   });
   logResponse(loginResult);
@@ -1232,7 +1486,7 @@ const injectAuth = async (init?: RequestInit): Promise<RequestInit> => ({
 const logResponse = (res: Response) => console.log(res.status, res.statusText, res.url);
 
 const payloadApiUrl = (collection: Collections, endpoint?: string): string =>
-  `${process.env.PAYLOAD_API_URL}/${collection}${endpoint === undefined ? "" : `/${endpoint}`}`;
+  `${import.meta.env.PAYLOAD_API_URL}/${collection}${endpoint === undefined ? "" : `/${endpoint}`}`;
 
 const request = async (url: string, init?: RequestInit): Promise<Response> => {
   const result = await fetch(url, await injectAuth(init));
@@ -1317,14 +1571,7 @@ export type EndpointEra = {
   }[];
 };
 
-export type EndpointFolder = {
-  slug: string;
-  icon?: string;
-  translations: {
-    language: string;
-    name: string;
-    description?: string;
-  }[];
+export type EndpointFolder = EndpointFolderPreview & {
   sections:
     | { type: "single"; subfolders: EndpointFolderPreview[] }
     | {
@@ -1334,8 +1581,6 @@ export type EndpointFolder = {
           subfolders: EndpointFolderPreview[];
         }[];
       };
-  lightThumbnail?: PayloadImage;
-  darkThumbnail?: PayloadImage;
   files: (
     | {
         relationTo: "library-items";
@@ -1344,6 +1589,10 @@ export type EndpointFolder = {
     | {
         relationTo: "contents";
         value: Content;
+      }
+    | {
+        relationTo: "pages";
+        value: Page;
       }
   )[];
 };
@@ -1354,7 +1603,7 @@ export type EndpointFolderPreview = {
   translations: {
     language: string;
     name: string;
-    description?: string;
+    description?: RichTextContent;
   }[];
   lightThumbnail?: PayloadImage;
   darkThumbnail?: PayloadImage;
@@ -1363,6 +1612,7 @@ export type EndpointFolderPreview = {
 export type EndpointContent = {
   slug: string;
   thumbnail?: PayloadImage;
+  tagGroups: TagGroup[];
   translations: {
     language: string;
     sourceLanguage: string;
@@ -1381,8 +1631,6 @@ export type EndpointContent = {
       };
     };
   }[];
-  categories: string[];
-  type?: string;
 };
 
 export type EndpointRecorder = {
@@ -1407,6 +1655,65 @@ export type EndpointKey = {
   }[];
 };
 
+export type EndpointWording = {
+  name: string;
+  translations: {
+    language: string;
+    name: string;
+  }[];
+};
+
+export type EndpointTag = {
+  slug: string;
+  translations: {
+    language: string;
+    name: string;
+  }[];
+  group: string;
+};
+
+export type EndpointTagsGroup = {
+  slug: string;
+  icon?: string;
+  translations: {
+    language: string;
+    name: string;
+  }[];
+  tags: EndpointTag[];
+};
+
+export type EndpointPage = {
+  slug: string;
+  type: PageType;
+  thumbnail?: PayloadImage;
+  authors: string[];
+  tagGroups: TagGroup[];
+  translations: {
+    language: string;
+    sourceLanguage: string;
+    pretitle?: string;
+    title: string;
+    subtitle?: string;
+    summary?: RichTextContent;
+    content: RichTextContent;
+    transcribers: string[];
+    translators: string[];
+    proofreaders: string[];
+    toc: TableOfContentEntry[];
+  }[];
+  status: "draft" | "published";
+  parentPages: ParentPage[];
+};
+
+export type ParentPage = {
+  slug: string;
+  collection: Collections;
+  translations: { language: string; name: string }[];
+  tag: string;
+};
+
+export type TagGroup = { slug: string; icon: string; values: string[] };
+
 export type TableOfContentEntry = {
   prefix: string;
   title: string;
@@ -1419,22 +1726,6 @@ export type PayloadImage = {
   height: number;
   mimeType: string;
   filename: string;
-};
-
-export type RichTextContent = {
-  root: {
-    children: {
-      type: string;
-      version: number;
-      [k: string]: unknown;
-    }[];
-    direction: ("ltr" | "rtl") | null;
-    format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
-    indent: number;
-    type: string;
-    version: number;
-  };
-  [k: string]: unknown;
 };
 
 export const payload = {
@@ -1450,10 +1741,16 @@ export const payload = {
     await (await request(payloadApiUrl(Collections.Languages, `all`))).json(),
   getCurrencies: async (): Promise<Currency[]> =>
     await (await request(payloadApiUrl(Collections.Currencies, `all`))).json(),
-  getContent: async (slug: string): Promise<EndpointContent> =>
-    await (await request(payloadApiUrl(Collections.Contents, `slug/${slug}`))).json(),
   getKeys: async (): Promise<EndpointKey[]> =>
     await (await request(payloadApiUrl(Collections.Keys, `all`))).json(),
+  getWordings: async (): Promise<EndpointKey[]> =>
+    await (await request(payloadApiUrl(Collections.Wordings, `all`))).json(),
   getRecorders: async (): Promise<EndpointRecorder[]> =>
     await (await request(payloadApiUrl(Collections.Recorders, `all`))).json(),
+  getTags: async (): Promise<EndpointTag[]> =>
+    await (await request(payloadApiUrl(Collections.Tags, `all`))).json(),
+  getTagsGroups: async (): Promise<EndpointTagsGroup[]> =>
+    await (await request(payloadApiUrl(Collections.TagsGroups, `all`))).json(),
+  getPage: async (slug: string): Promise<EndpointPage> =>
+    await (await request(payloadApiUrl(Collections.Pages, `slug/${slug}`))).json(),
 };

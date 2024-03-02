@@ -16,7 +16,8 @@ const isIOS = parser.getOS().name === "iOS";
 
 const { currentTheme } = Astro.locals;
 
-/* -------------------------------------------- HTML -------------------------------------------- */
+/* Keep that separator here or else it breaks the HTML 
+----------------------------------------------- HTML -------------------------------------------- */
 ---
 
 <html
@@ -46,8 +47,14 @@ const { currentTheme } = Astro.locals;
     />
     <link rel="manifest" href="/site.webmanifest" />
 
+    <style is:global>
+      .when-no-js {
+        display: none;
+      }
+    </style>
+
     <noscript>
-      <style>
+      <style is:global>
         .when-js {
           display: none !important;
         }
@@ -69,12 +76,6 @@ const { currentTheme } = Astro.locals;
 }
 
 <style is:global>
-  @media print {
-    .when-no-print {
-      display: none !important;
-    }
-  }
-
   html {
     --color-base-0: #ffffff;
     --color-base-50: #fffaf3;
@@ -106,6 +107,8 @@ const { currentTheme } = Astro.locals;
     --color-shadow: var(--color-base-500);
     --color-shadow-1: var(--color-base-350);
     --color-shadow-2: var(--color-base-300);
+
+    --color-critical-error: #940000;
 
     --texture-dots: url(/img/paper-dots.webp);
     --texture-dots-blend: multiply;
@@ -157,6 +160,8 @@ const { currentTheme } = Astro.locals;
         --color-shadow-1: var(--color-base-0);
         --color-shadow-2: var(--color-base-50);
 
+        --color-critical-error: red;
+
         --texture-dots: url(/img/paper-dots-dark.webp);
         --texture-dots-blend: overlay;
 
@@ -170,57 +175,6 @@ const { currentTheme } = Astro.locals;
       }
 
       &:not(.manual-theme) {
-        /* Get in between colors with https://colorkit.io/ */
-        @media (prefers-color-scheme: light) {
-          --color-base-0: #ffffff;
-          --color-base-50: #fffaf3;
-          --color-base-100: #fff4e6;
-          --color-base-125: #fef0dd;
-          --color-base-150: #fdebd4;
-          --color-base-200: #f7ddc2;
-          --color-base-250: #efcfb0;
-          --color-base-300: #e5be9e;
-          --color-base-350: #ddb08e;
-          --color-base-400: #d3a07c;
-          --color-base-450: #ca926c;
-          --color-base-500: #c0835d;
-          --color-base-550: #b3754f;
-          --color-base-600: #a26a47;
-          --color-base-650: #905e3f;
-          --color-base-700: #805438;
-          --color-base-750: #6e4a31;
-          --color-base-800: #5e402b;
-          --color-base-850: #4d3625;
-          --color-base-900: #3c2d1e;
-          --color-base-950: #2f2419;
-          --color-base-1000: #1f1a13;
-
-          --color-elevation-2: var(--color-base-100);
-          --color-elevation-1: var(--color-base-125);
-          --color-elevation-0: var(--color-base-150);
-
-          --color-shadow: var(--color-base-500);
-          --color-shadow-1: var(--color-base-350);
-          --color-shadow-2: var(--color-base-300);
-
-          --texture-dots: url(/img/paper-dots.webp);
-          --texture-dots-blend: multiply;
-
-          & .when-light-theme {
-            display: initial !important;
-          }
-
-          & .when-dark-theme {
-            display: none !important;
-          }
-
-          font-weight: 430;
-
-          strong {
-            font-weight: 600;
-          }
-        }
-
         @media (prefers-color-scheme: dark) {
           --color-base-1000: #ebeae7;
           --color-base-950: #eae5e0;
@@ -252,6 +206,8 @@ const { currentTheme } = Astro.locals;
           --color-shadow: var(--color-base-0);
           --color-shadow-1: var(--color-base-0);
           --color-shadow-2: var(--color-base-50);
+
+          --color-critical-error: red;
 
           --texture-dots: url(/img/paper-dots-dark.webp);
           --texture-dots-blend: overlay;
@@ -341,8 +297,21 @@ const { currentTheme } = Astro.locals;
 
   p {
     & a {
+      transition-duration: 150ms;
+      transition-property: text-decoration-color, color;
+
       color: var(--color-base-750);
       text-decoration: underline dotted 0.1em var(--color-base-650);
+
+      &:hover {
+        color: var(--color-base-850);
+        text-decoration-color: var(--color-base-750);
+      }
+
+      &:active {
+        color: var(--color-base-1000);
+        text-decoration-color: var(--color-base-1000);
+      }
     }
   }
 
@@ -366,6 +335,29 @@ const { currentTheme } = Astro.locals;
 
     &:active {
       color: var(--color-base-550);
+    }
+  }
+
+  .pressable-label {
+    text-decoration: none;
+    flex-shrink: 0;
+    display: flex;
+    place-items: center;
+    gap: 0.4em;
+    padding: 0.7em 0.8em;
+    border-radius: 9999px;
+    cursor: pointer;
+
+    backdrop-filter: blur(10px);
+
+    transition: 150ms background-color;
+
+    &:hover {
+      background-color: var(--color-base-250);
+    }
+
+    &:active {
+      background-color: var(--color-base-300);
     }
   }
 
@@ -396,15 +388,11 @@ const { currentTheme } = Astro.locals;
   }
 
   .hide-scrollbar {
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none;
 
     &::-webkit-scrollbar {
       display: none;
     }
-  }
-
-  .when-no-js {
-    display: none;
   }
 
   .prose {
@@ -425,6 +413,12 @@ const { currentTheme } = Astro.locals;
     > p {
       margin-top: 1.25em;
       margin-bottom: 1.25em;
+
+      > kbd {
+        background-color: var(--color-shadow-2);
+        padding: 0.15em 0.3em;
+        border-radius: 0.3em;
+      }
     }
 
     > h2 {
@@ -443,6 +437,7 @@ const { currentTheme } = Astro.locals;
       margin-top: 2em;
       margin-bottom: 1em;
       line-height: 1;
+      scroll-margin: 1em;
     }
 
     > h2 + h3,
@@ -450,6 +445,18 @@ const { currentTheme } = Astro.locals;
     > h4 + h5,
     > h5 + h6 {
       margin-top: -0.75em;
+    }
+  }
+
+  * {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-base-650) transparent;
+  }
+
+  @media print {
+    .when-no-print {
+      display: none !important;
     }
   }
 </style>

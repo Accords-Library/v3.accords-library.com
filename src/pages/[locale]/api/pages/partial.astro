@@ -1,42 +1,38 @@
 ---
 import RichText from "components/RichText/RichText.astro";
-import { payload } from "src/shared/payload/payload-sdk";
+import { payload, type EndpointPage } from "src/shared/payload/payload-sdk";
 import { getI18n } from "translations/translations";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
-import Metadata from "pages/[locale]/api/contents/_components/Metadata.astro";
 import MasoTarget from "components/Maso/MasoTarget.astro";
-
-import AppLayoutBackgroundImg from "components/AppLayout/components/AppLayoutBackgroundImg.astro";
-import LangCredits from "./_components/LangCredits.astro";
+import TagGroups from "components/TagGroups.astro";
+import TableOfContent from "components/TableOfContent/TableOfContent.astro";
+import LanguageOverride from "components/LanguageOverride.astro";
+import Credits from "components/Credits.astro";
 
 export const partial = true;
 
 interface Props {
   lang?: string;
   slug?: string;
+  page?: EndpointPage;
 }
 
 const reqUrl = new URL(Astro.request.url);
 const lang = Astro.props.lang ?? reqUrl.searchParams.get("lang")!;
 const slug = Astro.props.slug ?? reqUrl.searchParams.get("slug")!;
+const page = Astro.props.page ?? (await payload.getPage(slug));
 
-const { getLocalizedUrl, formatCategory, formatContentType } = await getI18n(
-  Astro.locals.currentLocale
-);
-
+const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 const { getLocalizedMatch } = await getI18n(lang);
 
-const content = await payload.getContent(slug);
-const translation = getLocalizedMatch(content.translations, {
-  title: slug,
-  format: {},
-  sourceLanguage: "",
-});
+const translation = getLocalizedMatch(page.translations, { title: slug });
 ---
 
-<MasoTarget>
-  {content.thumbnail && <AppLayoutBackgroundImg src={content.thumbnail.url} />}
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
 
+<MasoTarget>
   <div id="layout">
     <div id="left">
       <AppLayoutTitle
@@ -46,13 +42,13 @@ const translation = getLocalizedMatch(content.translations, {
       />
 
       {
-        content.thumbnail && (
+        page.thumbnail && (
           <img
             id="thumbnail"
             class="when-not-large"
-            src={content.thumbnail.url}
-            width={content.thumbnail.width}
-            height={content.thumbnail.height}
+            src={page.thumbnail.url}
+            width={page.thumbnail.width}
+            height={page.thumbnail.height}
           />
         )
       }
@@ -65,79 +61,71 @@ const translation = getLocalizedMatch(content.translations, {
         )
       }
 
-      {
-        (content.type || content.categories.length > 0) && (
-          <div class="meta-container">
-            {content.type && (
-              <Metadata
-                icon="material-symbols:shape-line-outline"
-                title="Type"
-                values={[formatContentType(content.type)]}
-              />
-            )}
-
-            <Metadata
-              icon="material-symbols:workspaces-outline"
-              title="Categories"
-              values={content.categories.map((id) =>
-                formatCategory(id, "default")
-              )}
-            />
-          </div>
-        )
-      }
+      <TagGroups tagGroups={page.tagGroups} />
 
       <div class="when-not-large meta-container">
-        <LangCredits
-          currentLang={lang}
-          availableLanguages={content.translations.map(
-            ({ language }) => language
-          )}
-          getPartialUrl={(lang) =>
-            getLocalizedUrl(`/api/contents/partial?lang=${lang}&slug=${slug}`)}
-          translators={translation.format.text?.translators}
-          transcribers={translation.format.text?.transcribers}
-          proofreaders={translation.format.text?.proofreaders}
+        {
+          page.translations.length > 1 && (
+            <LanguageOverride
+              currentLang={lang}
+              availableLanguages={page.translations.map(
+                ({ language }) => language
+              )}
+              getPartialUrl={(lang) =>
+                getLocalizedUrl(`/api/pages/partial?lang=${lang}&slug=${slug}`)
+              }
+            />
+          )
+        }
+        <Credits
+          translators={translation.translators}
+          proofreaders={translation.proofreaders}
         />
       </div>
 
-      {
-        translation.format.text && (
-          <>
-            <hr />
-            <div id="text">
-              <RichText content={translation.format.text.content} />
-            </div>
-          </>
-        )
-      }
+      <div class="when-not-large meta-container">
+        <TableOfContent toc={translation.toc} />
+      </div>
+
+      <hr />
+      <div id="text">
+        <RichText content={translation.content} />
+      </div>
     </div>
 
     <div id="right" class="when-large">
       {
-        content.thumbnail && (
+        page.thumbnail && (
           <img
             id="thumbnail"
-            src={content.thumbnail.url}
-            width={content.thumbnail.width}
-            height={content.thumbnail.height}
+            src={page.thumbnail.url}
+            width={page.thumbnail.width}
+            height={page.thumbnail.height}
           />
         )
       }
 
       <div class="meta-container">
-        <LangCredits
-          currentLang={lang}
-          availableLanguages={content.translations.map(
-            ({ language }) => language
-          )}
-          getPartialUrl={(lang) =>
-            getLocalizedUrl(`/api/contents/partial?lang=${lang}&slug=${slug}`)}
-          translators={translation.format.text?.translators}
-          transcribers={translation.format.text?.transcribers}
-          proofreaders={translation.format.text?.proofreaders}
+        {
+          page.translations.length > 1 && (
+            <LanguageOverride
+              currentLang={lang}
+              availableLanguages={page.translations.map(
+                ({ language }) => language
+              )}
+              getPartialUrl={(lang) =>
+                getLocalizedUrl(`/api/pages/partial?lang=${lang}&slug=${slug}`)
+              }
+            />
+          )
+        }
+        <Credits
+          translators={translation.translators}
+          proofreaders={translation.proofreaders}
         />
       </div>
+
+      <TableOfContent toc={translation.toc} />
     </div>
   </div>
 </MasoTarget>

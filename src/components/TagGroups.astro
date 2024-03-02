@@ -1,0 +1,32 @@
+---
+import TagGroup from "./TagGroup.astro";
+
+interface Props {
+  tagGroups: { slug: string; icon: string; values: string[] }[];
+}
+
+const { tagGroups } = Astro.props;
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<div>{tagGroups.map((tag) => <TagGroup {...tag} />)}</div>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  div {
+    @media (max-width: 35rem) {
+      margin-block: 5em;
+      gap: 2em;
+    }
+
+    margin-block: 2em;
+    display: grid;
+    gap: 1em;
+  }
+</style>

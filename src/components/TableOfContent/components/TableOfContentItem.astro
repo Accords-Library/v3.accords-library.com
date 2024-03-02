@@ -1,0 +1,65 @@
+---
+import type { TableOfContentEntry } from "src/shared/payload/payload-sdk";
+
+interface Props {
+  entry: TableOfContentEntry;
+}
+
+const { entry } = Astro.props;
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<li data-prefix={entry.prefix}>
+  <a href={`#${entry.prefix}`}>{entry.title}</a>
+  {
+    entry.children.length > 0 && (
+      <ol>
+        {entry.children.map((entry) => (
+          <Astro.self entry={entry} />
+        ))}
+      </ol>
+    )
+  }
+</li>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  a {
+    font-weight: 500;
+    text-decoration: underline dotted 0.1em;
+    text-decoration-color: transparent;
+
+    transition-duration: 150ms;
+    transition-property: text-decoration-color, color;
+
+    &:hover {
+      color: var(--color-base-750);
+      text-decoration-color: var(--color-base-650);
+    }
+
+    &:active {
+      color: var(--color-base-650);
+      text-decoration-color: var(--color-base-550);
+    }
+  }
+
+  li {
+    margin-block: 0.5em;
+  }
+
+  li {
+    &::marker {
+      content: attr(data-prefix) "  ";
+      color: var(--color-base-650);
+      margin-right: 1em;
+    }
+
+    line-height: 125%;
+  }
+</style>

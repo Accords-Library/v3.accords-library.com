@@ -25,7 +25,6 @@ const styleNoScript = `
 }
 
 <img id={uniqueId} src={src} alt={alt} class="when-no-print" />
-
 <noscript set:html={styleNoScript} />
 
 {
@@ -36,7 +35,6 @@ const styleNoScript = `
   img {
     opacity: 0;
     transition: 3s opacity;
-
     position: absolute;
     top: 0;
     left: 0;
@@ -53,6 +51,10 @@ const styleNoScript = `
     );
   }
 </style>
+
+{
+  /* ------------------------------------------- JS --------------------------------------------- */
+}
 
 <script define:vars={{ uniqueId }}>
   const element = document.getElementById(uniqueId);

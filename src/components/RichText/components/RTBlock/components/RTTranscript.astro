@@ -1,52 +1,25 @@
 ---
 import type { RichTextContext } from "src/utils/richText";
-import RTLine from "./RTLine.astro";
-import RTCue from "./RTCue.astro";
+import type { RichTextTranscriptBlock } from "src/shared/payload/payload-sdk";
+import Block from "components/Blocks/Block.astro";
 
 interface Props {
-  node: {
-    type: string;
-    version: number;
-    format: number;
-    text: string;
-    [k: string]: unknown;
-    fields: {
-      id: string;
-      blockName: string;
-      blockType: string;
-      lines: { blockType: string }[];
-    };
-  };
+  node: RichTextTranscriptBlock;
   context: RichTextContext;
 }
 
-const { node, context } = Astro.props;
+const { node } = Astro.props;
 ---
 
 <div>
-  {
-    node.fields.lines.map((block) => {
-      switch (block.blockType) {
-        case "lineBlock":
-          return <RTLine block={block} context={context} />;
-
-        case "cueBlock":
-          return <RTCue block={block} context={context} />;
-
-        default:
-          return (
-            <p>{`Unknown block type: ${block.blockType}. Please contact website technical administrator.`}</p>
-          );
-      }
-    })
-  }
+  {node.fields.lines.map((block) => <Block block={block} />)}
 </div>
 
 <style>
   div {
     padding-block: 1em;
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: [name] auto [text] 1fr;
     gap: 1.5em 2em;
   }
 </style>

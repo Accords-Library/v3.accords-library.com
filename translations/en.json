@@ -5,7 +5,7 @@
   "home.description": "We aim at archiving and translating all of <strong>Yoko Taro</strong>’s works.<br />Yoko Taro is a Japanese video game director and scenario writer. He is best-known for his involvement with the <strong>NieR</strong > and <strong>Drakengard</strong> series. To complement his games, Yoko Taro likes to publish side materials in the form of books, anime, manga, audio books, novellas, even theater plays.<br />These media can be very difficult to find. His work goes all the way back to 2003. Most of it was released solely in Japanese, and sometimes in short supply. So this is what we do here: <strong>discover, archive, translate, and analyze</strong>.",
   "home.aboutUsButton": "Read more about us",
   "home.librarySection.title": "The Library",
-  "home.librarySection.description": "Here you will find a list of IPs Yoko Taro worked on. Select one to discover all the media/content/articles that relates to this IP. <strong>Beware there can be spoilers.</strong>",
+  "home.librarySection.description": "Here you will find a list of IPs Yoko Taro worked on. Select one to discover all the media/content/articles that relates to this IP. Alternatively you can also browse all content and use tags and filters to narrow your search. <strong>Beware there can be spoilers.</strong>",
   "home.librarySection.button": "Browse all content",
   "home.chroniclesSection.title": "The Chronicles",
   "home.chroniclesSection.description": "Interested in exploring the Yokoverse lore? Experience all events and content in chronological order. <strong>Beware there can be spoilers.</strong>",
@@ -55,5 +55,7 @@
   "footer.license.description": "This website’s content is made available under <a href=\"https://creativecommons.org/licenses/by-sa/4.0/\">CC-BY-SA</a> unless otherwise noted.",
   "footer.license.icons.tooltip": "CC-BY-SA 4.0 License",
 
-  "footer.disclaimer": "<strong>Accord’s Library</strong> is not affiliated with or endorsed by <strong>SQUARE ENIX CO. LTD</strong>. All game assets and promotional materials belongs to <strong>© SQUARE ENIX CO. LTD</strong>."
+  "footer.disclaimer": "<strong>Accord’s Library</strong> is not affiliated with or endorsed by <strong>SQUARE ENIX CO. LTD</strong>. All game assets and promotional materials belongs to <strong>© SQUARE ENIX CO. LTD</strong>.",
+
+  "header.nav.parentPages.label": "{{ count }} parent page{{ count+,>1{s} }}"
 }

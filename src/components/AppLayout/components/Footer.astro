@@ -131,6 +131,10 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
   <div id="copyright" set:html={t("footer.disclaimer")} />
 </footer>
 
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
 <style>
   footer {
     border-top: 0.1em solid var(--color-base-1000);
@@ -251,6 +255,7 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
 
       & > #license-section {
         grid-area: license;
+        line-height: 1.2;
 
         & > #common-creative {
           display: flex;
@@ -288,6 +293,7 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
 
         @media (max-width: 35rem) {
           place-content: center;
+          flex-wrap: wrap;
           gap: clamp(24px, 8vw, 48px);
 
           & > a > svg {
@@ -301,6 +307,7 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
     & > #copyright {
       border-left: 0.1em solid var(--color-base-1000);
       padding-left: 1em;
+      line-height: 1.2;
 
       @media (max-width: 35rem) {
         border: none;

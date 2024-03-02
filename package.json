@@ -10,15 +10,20 @@
     "astro": "astro",
     "upgrade": "ncu",
     "script:download-payload-sdk": "bun run scripts/download-payload-sdk.ts",
-    "script:download-currencies": "bun run scripts/download-currencies.ts"
+    "script:download-currencies": "bun run scripts/download-currencies.ts",
+    "script:download-wording-keys": "bun run scripts/download-wording-keys.ts"
+  },
+  "engines": {
+    "npm": ">=10.0.0",
+    "node": ">=19.7.0"
   },
   "dependencies": {
-    "@astrojs/check": "^0.5.4",
-    "@astrojs/node": "^8.2.0",
+    "@astrojs/check": "^0.5.6",
+    "@astrojs/node": "^8.2.1",
     "@fontsource-variable/murecho": "^5.0.17",
     "@fontsource-variable/vollkorn": "^5.0.19",
     "accept-language": "^3.0.18",
-    "astro": "4.3.7",
+    "astro": "4.4.6",
     "astro-icon": "^1.1.0",
     "node-cache": "^5.1.2",
     "tippy.js": "^6.3.7",
@@ -26,13 +31,13 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@iconify-json/material-symbols": "^1.1.72",
+    "@iconify-json/material-symbols": "^1.1.73",
     "@types/ua-parser-js": "^0.7.39",
     "astro-meta-tags": "^0.2.1",
     "autoprefixer": "^10.4.17",
-    "bun-types": "^1.0.26",
+    "bun-types": "^1.0.29",
     "npm-check-updates": "^16.14.15",
-    "postcss-preset-env": "^9.3.0",
+    "postcss-preset-env": "^9.4.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   }

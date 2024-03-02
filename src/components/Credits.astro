@@ -1,0 +1,35 @@
+---
+import { getI18n } from "translations/translations";
+import Metadata from "./Metadata.astro";
+
+interface Props {
+  translators?: string[] | undefined;
+  transcribers?: string[] | undefined;
+  proofreaders?: string[] | undefined;
+}
+
+const { translators = [], transcribers = [], proofreaders = [] } = Astro.props;
+const { formatRecorder } = await getI18n(Astro.locals.currentLocale);
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<Metadata
+  icon="material-symbols:person-outline"
+  title="Translators"
+  values={translators.map((id) => formatRecorder(id))}
+/>
+
+<Metadata
+  icon="material-symbols:person-edit-outline"
+  title="Transcribers"
+  values={transcribers.map((id) => formatRecorder(id))}
+/>
+
+<Metadata
+  icon="material-symbols:person-check-outline"
+  title="Proofreaders"
+  values={proofreaders.map((id) => formatRecorder(id))}
+/>

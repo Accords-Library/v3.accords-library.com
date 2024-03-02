@@ -1,0 +1,52 @@
+---
+import { Collections, type ParentPage } from "src/shared/payload/payload-sdk";
+import { getI18n } from "translations/translations";
+
+interface Props {
+  parentPage: ParentPage;
+}
+
+const { parentPage } = Astro.props;
+const { getLocalizedMatch, getLocalizedUrl } = await getI18n(
+  Astro.locals.currentLocale
+);
+
+const translation = getLocalizedMatch(parentPage.translations, {
+  name: parentPage.slug,
+});
+
+let href = "";
+switch (parentPage.collection) {
+  case Collections.Folders:
+    href = getLocalizedUrl(`/folders/${parentPage.slug}`);
+    break;
+
+  default:
+    break;
+}
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<a href={href}><span>{parentPage.tag}</span>{translation.name}</a>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  a {
+    display: flex;
+    place-items: center;
+
+    & > span {
+      background-color: var(--color-base-250);
+      border-radius: 9999px;
+      padding: 0.5em 0.6em;
+      margin-right: 0.5em;
+      font-size: 80%;
+    }
+  }
+</style>

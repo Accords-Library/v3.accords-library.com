@@ -10,6 +10,10 @@ interface Props {
 const { icon, subtitle, title, href } = Astro.props;
 ---
 
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
 <a href={href} class="pressable">
   <Icon name={icon} />
   <div id="right">
@@ -17,6 +21,10 @@ const { icon, subtitle, title, href } = Astro.props;
     <p>{subtitle}</p>
   </div>
 </a>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
 
 <style>
   a {

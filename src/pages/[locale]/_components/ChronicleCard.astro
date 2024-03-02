@@ -9,11 +9,19 @@ interface Props {
 const { pretitle, subtitle, title, href } = Astro.props;
 ---
 
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
 <a href={href} class="pressable">
   <p class="pretitle">{pretitle}</p>
   <h3>{title}</h3>
   <p>{subtitle}</p>
 </a>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
 
 <style>
   a {

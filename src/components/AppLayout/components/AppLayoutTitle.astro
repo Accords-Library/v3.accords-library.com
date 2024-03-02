@@ -8,11 +8,19 @@ interface Props {
 const { title, subtitle, pretitle } = Astro.props;
 ---
 
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
 <h1 class="high-contrast-text">
   {pretitle && <span id="pretitle">{pretitle}&nbsp;</span>}
   <span id="title">{title}&nbsp;</span>
   {subtitle && <span id="subtitle">{subtitle}</span>}
 </h1>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
 
 <style>
   h1 {

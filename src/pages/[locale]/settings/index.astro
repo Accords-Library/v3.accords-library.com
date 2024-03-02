@@ -7,6 +7,10 @@ const { currentLocale, currentTheme, currentCurrency } = Astro.locals;
 const { t } = await getI18n(currentLocale);
 ---
 
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
 <AppLayout title={t("settings.title")}>
   <div id="main">
     <div class="section">
@@ -68,6 +72,10 @@ const { t } = await getI18n(currentLocale);
     </div>
   </div>
 </AppLayout>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
 
 <style>
   .section {

@@ -11,6 +11,6 @@
 }
 
 <script>
-  class MasoTarget extends HTMLElement {}
-  customElements.define("maso-target", MasoTarget);
+  import { customElement } from "src/utils/customElements";
+  customElement("maso-target");
 </script>

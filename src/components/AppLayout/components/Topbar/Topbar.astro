@@ -1,14 +1,15 @@
 ---
 import { Icon } from "astro-icon/components";
 import Button from "components/Button.astro";
-import ThemeSelector from "components/AppLayout/components/ThemeSelector.astro";
-import LanguageSelector from "components/AppLayout/components/LanguageSelector.astro";
-import CurrencySelector from "components/AppLayout/components/CurrencySelector.astro";
+import ThemeSelector from "./components/ThemeSelector.astro";
+import LanguageSelector from "./components/LanguageSelector.astro";
+import CurrencySelector from "./components/CurrencySelector.astro";
 import { getI18n } from "translations/translations";
-import Tooltip from "components/Tooltip.astro";
+import type { ParentPage } from "src/shared/payload/payload-sdk";
+import ParentPagesButton from "./components/ParentPagesButton.astro";
 
 interface Props {
-  parentPages?: { name: string; slug: string; type: string }[] | undefined;
+  parentPages?: ParentPage[] | undefined;
   hideHomeButton?: boolean;
 }
 
@@ -24,31 +25,20 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 <nav id="topbar" class="when-no-print">
   {
     (!hideHomeButton || parentPages.length > 0) && (
-      <div id="breadcrumb" class="hide-scrollbar high-contrast-text">
-        <a href="/">
+      <div id="left" class="hide-scrollbar high-contrast-text">
+        <a href="/" class="pressable-label">
           <Icon name="material-symbols:home" width={16} height={16} />
           <p>{t("home.title")}</p>
         </a>
 
         {parentPages.length > 0 && (
-          <Tooltip trigger="click">
-            <div slot="tooltip-content">
-              <p>This content is part of these pages:</p>
-              <p>NieR / Concert</p>
-              <p>NieR:Automata / Concert</p>
-              <p>NieR:Theatrical Orchestra Concert 12020 Bluray</p>
-            </div>
-            <div>
-              <Icon name="material-symbols:keyboard-return" />
-              <p>4 parent pages</p>
-            </div>
-          </Tooltip>
+          <ParentPagesButton parentPages={parentPages} />
         )}
       </div>
     )
   }
 
-  <div id="toolbar">
+  <div id="toolbar" class="hide-scrollbar">
     <a href={getLocalizedUrl("/search")}>
       <Button
         icon="material-symbols:search"
@@ -89,39 +79,15 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     flex-wrap: wrap-reverse;
     gap: 32px 64px;
 
-    & > #breadcrumb {
+    & > #left {
       display: flex;
       place-items: center;
       overflow-x: scroll;
       gap: 8px;
       margin-left: -0.8em;
 
-      & > svg {
+      & > :global(*) {
         flex-shrink: 0;
-      }
-
-      & > a,
-      & > :global(tippy-tooltip > div) {
-        text-decoration: none;
-        flex-shrink: 0;
-        display: flex;
-        place-items: center;
-        gap: 0.4em;
-        padding: 0.7em 0.8em;
-        border-radius: 9999px;
-        cursor: pointer;
-
-        backdrop-filter: blur(10px);
-
-        transition: 150ms background-color;
-
-        &:hover {
-          background-color: var(--color-base-250);
-        }
-
-        &:active {
-          background-color: var(--color-base-300);
-        }
       }
     }
 
@@ -131,6 +97,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       gap: 12px;
       place-items: center;
       justify-content: flex-end;
+      overflow-x: scroll;
 
       @media (max-width: 28rem) {
         justify-content: center;
@@ -138,7 +105,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 
       @media (max-width: 22rem) {
         justify-content: space-between;
-        gap: 0;
+        gap: 12px;
       }
 
       & > .separator {
@@ -172,11 +139,3 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     }
   }
 </style>
-
-<script is:inline>
-  const breadcrumbElem = document.querySelector("nav#topbar > #breadcrumb");
-  breadcrumbElem?.scrollTo({
-    left: breadcrumbElem.scrollWidth,
-    behavior: "instant",
-  });
-</script>

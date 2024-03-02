@@ -115,7 +115,8 @@ export const getI18n = async (locale: string) => {
     fallback: Omit<T, "language">
   ): Omit<T, "language"> & { language?: string } =>
     options.find(({ language }) => language === locale) ??
-    options.find(({ language }) => language === defaultLocale) ?? {
+    options.find(({ language }) => language === defaultLocale) ??
+    options[0] ?? {
       ...fallback,
     };
 
@@ -152,6 +153,16 @@ export const getI18n = async (locale: string) => {
     },
     getLocalizedUrl: (url: string): string => `/${locale}${url}`,
     getLocalizedMatch,
+    formatTag: (id: string): string => {
+      const tag = cache.tags.find(({ slug }) => slug === id);
+      if (!tag) return "UNKNOWN";
+      return getLocalizedMatch(tag.translations, { name: tag.slug }).name;
+    },
+    formatTagsGroup: (id: string): string => {
+      const tag = cache.tagsGroups.find(({ slug }) => slug === id);
+      if (!tag) return "UNKNOWN";
+      return getLocalizedMatch(tag.translations, { name: tag.slug }).name;
+    },
     formatCategory: (
       id: string,
       format: "short" | "default" = "default"
@@ -206,11 +217,12 @@ export const getCurrentLocale = (pathname: string): Locale | undefined => {
 export const getBestAcceptedLanguage = (
   request: Request
 ): Locale | undefined => {
+  const header = request.headers.get("Accept-Language");
+  if (!header) return;
+
   acceptLanguage.languages(cache.locales.map(({ id }) => id));
 
   return (
-    (acceptLanguage.get(
-      request.headers.get("Accept-Language")
-    ) as Locale | null) ?? undefined
+    acceptLanguage.get(request.headers.get("Accept-Language")) ?? undefined
   );
 };

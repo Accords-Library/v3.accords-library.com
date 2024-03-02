@@ -4,21 +4,20 @@ import { payload } from "src/shared/payload/payload-sdk";
 import { getI18n } from "translations/translations";
 import RichText from "components/RichText/RichText.astro";
 import FoldersSection from "./_components/FoldersSection.astro";
+import { fetchOr404 } from "src/utils/responses";
+import ErrorMessage from "components/ErrorMessage.astro";
 
 const { slug } = Astro.params;
 const { getLocalizedMatch, getLocalizedUrl } = await getI18n(
   Astro.locals.currentLocale
 );
 
-if (!slug) {
-  return Astro.redirect("/en/404");
+const folder = await fetchOr404(() => payload.getFolder(slug!));
+if (folder instanceof Response) {
+  return folder;
 }
-
-const folder = await payload.getFolder(slug);
 const meta = getLocalizedMatch(folder.translations, { name: slug });
 
-// TODO: handle folder not found
-// TODO: send description as RichTextContent instead of string
 // TODO: handle light and dark illustration for applayout
 ---
 
@@ -30,7 +29,7 @@ const meta = getLocalizedMatch(folder.translations, { name: slug });
   {
     meta.description && (
       <div slot="header-description">
-        <RichText content={JSON.parse(meta.description)} />
+        <RichText content={meta.description} />
       </div>
     )
   }
@@ -58,21 +57,38 @@ const meta = getLocalizedMatch(folder.translations, { name: slug });
     <div>
       {
         folder.files.map(({ relationTo, value }) => {
-          if (relationTo === "contents") {
-            return (
-              <a
-                class="pressable"
-                href={getLocalizedUrl(`/contents/${value.slug}`)}
-              >
-                {value.slug}
-              </a>
-            );
+          switch (relationTo) {
+            case "contents":
+              return (
+                <a
+                  class="pressable"
+                  href={getLocalizedUrl(`/contents/${value.slug}`)}
+                >
+                  {value.slug}
+                </a>
+              );
+
+            case "library-items":
+              return <p>Library item not supported yet! {value.slug}</p>;
+
+            case "pages":
+              return (
+                <a
+                  class="pressable"
+                  href={getLocalizedUrl(`/pages/${value.slug}`)}
+                >
+                  {value.slug}
+                </a>
+              );
+
+            default:
+              return (
+                <ErrorMessage
+                  title={`Unknown file type: ${relationTo}`}
+                  description="Please contact website technical administrator."
+                />
+              );
           }
-          return (
-            <a href={getLocalizedUrl(`/library-item/${value.slug}`)}>
-              {value.slug}
-            </a>
-          );
         })
       }
     </div>

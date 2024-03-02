@@ -1,0 +1,18 @@
+---
+import type { SpacerBlock } from "src/shared/payload/payload-sdk";
+
+interface Props {
+  block: SpacerBlock;
+}
+
+const { block } = Astro.props;
+
+const spaceSizeToRem: Record<SpacerBlock["size"], number> = {
+  Small: 1,
+  Medium: 2,
+  Large: 4,
+  XLarge: 8,
+};
+---
+
+<div style={`height: ${spaceSizeToRem[block.size]}rem`}></div>

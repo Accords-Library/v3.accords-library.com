@@ -5,46 +5,47 @@ import RTText from "./RTText/RTText.astro";
 import RTLink from "./RTLink/RTLink.astro";
 import RTBlock from "./RTBlock/RTBlock.astro";
 import type { RichTextContext } from "src/utils/richText";
+import {
+  isNodeBlockNode,
+  isNodeLinkNode,
+  isNodeListNode,
+  isNodeParagraphNode,
+  isNodeTabNode,
+  isNodeTextNode,
+  type RichTextNode,
+} from "src/shared/payload/payload-sdk";
+import RTTab from "./RTTab.astro";
+import ErrorMessage from "components/ErrorMessage.astro";
 
 interface Props {
-  node: {
-    type: string;
-    version: number;
-    [k: string]: unknown;
-  };
+  node: RichTextNode;
   context: RichTextContext;
 }
 
 const { node, context } = Astro.props;
-
-let NodeElement;
-switch (node.type) {
-  case "paragraph":
-    NodeElement = RTParagraph;
-    break;
-
-  case "list":
-    NodeElement = RTList;
-    break;
-
-  case "text":
-    NodeElement = RTText;
-    break;
-
-  case "link":
-    NodeElement = RTLink;
-    break;
-
-  case "block":
-    NodeElement = RTBlock;
-    break;
-}
 ---
 
 {
-  NodeElement ? (
-    <NodeElement node={node} context={context} />
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+{
+  isNodeParagraphNode(node) ? (
+    <RTParagraph node={node} context={context} />
+  ) : isNodeListNode(node) ? (
+    <RTList node={node} context={context} />
+  ) : isNodeTextNode(node) ? (
+    <RTText node={node} context={context} />
+  ) : isNodeLinkNode(node) ? (
+    <RTLink node={node} context={context} />
+  ) : isNodeBlockNode(node) ? (
+    <RTBlock node={node} context={context} />
+  ) : isNodeTabNode(node) ? (
+    <RTTab />
   ) : (
-    <p>{`Unknown node type: ${node.type}. Please contact website technical administrator.`}</p>
+    <ErrorMessage
+      title={`Unknown node type: ${node.type}`}
+      description="Please contact website technical administrator."
+    />
   )
 }

@@ -1,0 +1,25 @@
+---
+import Metadata from "components/Metadata.astro";
+import { getI18n } from "translations/translations";
+
+interface Props {
+  slug: string;
+  icon: string;
+  values: string[];
+}
+
+const { icon, slug, values } = Astro.props;
+const { formatTag, formatTagsGroup } = await getI18n(
+  Astro.locals.currentLocale
+);
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<Metadata
+  icon={icon}
+  title={formatTagsGroup(slug)}
+  values={values.map(formatTag)}
+/>

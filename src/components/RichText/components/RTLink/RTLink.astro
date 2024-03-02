@@ -3,24 +3,15 @@ import type { RichTextContext } from "src/utils/richText";
 import RTNode from "../RTNode.astro";
 import RTCustomLink from "./components/RTCustomLink.astro";
 import RTInternalLink from "./components/RTInternalLink.astro";
+import {
+  isLinkNodeCustomLinkNode,
+  isLinkNodeInternalLinkNode,
+  type RichTextLinkNode,
+} from "src/shared/payload/payload-sdk";
+import ErrorMessage from "components/ErrorMessage.astro";
 
 interface Props {
-  node: {
-    type: string;
-    children: {
-      type: string;
-      version: number;
-      [k: string]: unknown;
-    }[];
-    version: number;
-    fields: {
-      linkType: "internal" | "custom";
-      doc: any;
-      url: string;
-      newTab: boolean;
-    };
-    [k: string]: unknown;
-  };
+  node: RichTextLinkNode;
   context: RichTextContext;
 }
 
@@ -28,19 +19,22 @@ const { node, context } = Astro.props;
 ---
 
 {
-  node.fields.linkType === "custom" ? (
+  isLinkNodeCustomLinkNode(node) ? (
     <RTCustomLink href={node.fields.url} newTab={node.fields.newTab}>
       {node.children.map((node) => (
         <RTNode node={node} context={context} />
       ))}
     </RTCustomLink>
-  ) : node.fields.linkType === "internal" ? (
+  ) : isLinkNodeInternalLinkNode(node) ? (
     <RTInternalLink doc={node.fields.doc}>
       {node.children.map((node) => (
         <RTNode node={node} context={context} />
       ))}
     </RTInternalLink>
   ) : (
-    <p>{`Unknown link type: ${node.fields.linkType}. Please contact website technical administrator.`}</p>
+    <ErrorMessage
+      title={`Unknown link type: ${node.fields.linkType}`}
+      description="Please contact website technical administrator."
+    />
   )
 }

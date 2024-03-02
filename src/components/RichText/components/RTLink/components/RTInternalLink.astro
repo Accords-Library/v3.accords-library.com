@@ -1,4 +1,5 @@
 ---
+import ErrorMessage from "components/ErrorMessage.astro";
 import { getI18n } from "translations/translations";
 
 interface Props {
@@ -18,6 +19,9 @@ const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       <slot />
     </a>
   ) : (
-    <p>{`Unknown internal link: ${doc.relationTo}. Please contact website technical administrator.`}</p>
+    <ErrorMessage
+      title={`Unknown internal link: ${doc.relationTo}`}
+      description="Please contact website technical administrator."
+    />
   )
 }

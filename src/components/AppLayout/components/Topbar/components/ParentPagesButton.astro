@@ -1,0 +1,51 @@
+---
+import Tooltip from "components/Tooltip.astro";
+import type { ParentPage } from "src/shared/payload/payload-sdk";
+import ParentPageLink from "./ParentPageLink.astro";
+import { Icon } from "astro-icon/components";
+import { getI18n } from "translations/translations";
+
+interface Props {
+  parentPages: ParentPage[];
+}
+
+const { parentPages } = Astro.props;
+
+const { t } = await getI18n(Astro.locals.currentLocale);
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<Tooltip trigger="click">
+  <div id="tooltip-content" slot="tooltip-content">
+    <p>This content is part of these pages:</p>
+    {
+      parentPages.map((parentPage) => (
+        <ParentPageLink parentPage={parentPage} />
+      ))
+    }
+  </div>
+  <div class="pressable-label">
+    <Icon name="material-symbols:keyboard-return" />
+    <p>
+      {
+        t("header.nav.parentPages.label", {
+          count: parentPages.length,
+        })
+      }
+    </p>
+  </div>
+</Tooltip>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  #tooltip-content {
+    display: grid;
+    gap: 1em;
+  }
+</style>

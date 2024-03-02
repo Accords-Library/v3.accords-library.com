@@ -12,6 +12,10 @@ const { icon, title, values } = Astro.props;
 if (values.length === 0) return;
 ---
 
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
 <div id="container">
   <div id="title">
     <Icon name={icon} width={24} height={24} />
@@ -22,13 +26,17 @@ if (values.length === 0) return;
   </div>
 </div>
 
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
 <style>
   #container {
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 0.5em 1em;
     align-items: center;
-    
+
     @media (max-width: 35em) {
       grid-template-columns: 1fr;
     }

@@ -2,24 +2,16 @@
 import type { RichTextContext } from "src/utils/richText";
 import RTBasicListItem from "./components/RTBasicListItem.astro";
 import RTCheckListItem from "./components/RTCheckListItem.astro";
+import {
+  isListNodeBulletListNode,
+  isListNodeCheckListNode,
+  isListNodeNumberListNode,
+  type RichTextListNode,
+} from "src/shared/payload/payload-sdk";
+import ErrorMessage from "components/ErrorMessage.astro";
 
 interface Props {
-  node: {
-    type: string;
-    version: number;
-    listType: string;
-    children: {
-      type: string;
-      version: number;
-      [k: string]: unknown;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-    }[];
-    [k: string]: unknown;
-  };
+  node: RichTextListNode;
   context: RichTextContext;
 }
 
@@ -27,27 +19,28 @@ const { node, context } = Astro.props;
 ---
 
 {
-  node.listType === "number" ? (
+  isListNodeNumberListNode(node) ? (
     <ol>
       {node.children.map((node) => (
         <RTBasicListItem node={node} context={context} />
       ))}
     </ol>
-  ) : node.listType === "bullet" ? (
+  ) : isListNodeBulletListNode(node) ? (
     <ul>
       {node.children.map((node) => (
         <RTBasicListItem node={node} context={context} />
       ))}
     </ul>
-  ) : node.listType === "check" ? (
+  ) : isListNodeCheckListNode(node) ? (
     <ul>
       {node.children.map((node) => (
         <RTCheckListItem node={node} context={context} />
       ))}
     </ul>
   ) : (
-    <p>
-      {`Unknown list type: ${node.listType}. Please contact website technical administrator.`}
-    </p>
+    <ErrorMessage
+      title={`Unknown list link: ${node.listType}`}
+      description="Please contact website technical administrator."
+    />
   )
 }

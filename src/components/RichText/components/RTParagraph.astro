@@ -1,18 +1,10 @@
 ---
 import type { RichTextContext } from "src/utils/richText";
 import RTNode from "./RTNode.astro";
+import type { RichTextParagraphNode } from "src/shared/payload/payload-sdk";
 
 interface Props {
-  node: {
-    type: string;
-    version: number;
-    children: {
-      type: string;
-      version: number;
-      [k: string]: unknown;
-    }[];
-    [k: string]: unknown;
-  };
+  node: RichTextParagraphNode;
   context: RichTextContext;
 }
 
@@ -23,9 +15,12 @@ const { node, context } = Astro.props;
   /* ------------------------------------------- HTML ------------------------------------------- */
 }
 
-<p>{node.children.map((node) => <RTNode node={node} context={context} />)}</p>
-
 {
-  /* ------------------------------------------- CSS -------------------------------------------- */
+  node.children.length > 0 && (
+    <p style={`text-align: ${node.format};`}>
+      {node.children.map((node) => (
+        <RTNode node={node} context={context} />
+      ))}
+    </p>
+  )
 }
-

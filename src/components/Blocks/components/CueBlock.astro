@@ -1,0 +1,28 @@
+---
+import RichText from "components/RichText/RichText.astro";
+import type { CueBlock } from "src/shared/payload/payload-sdk";
+
+interface Props {
+  block: CueBlock;
+}
+
+const { block } = Astro.props;
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<div>
+  <RichText content={block.content} />
+</div>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  div {
+    grid-column: span 2;
+  }
+</style>

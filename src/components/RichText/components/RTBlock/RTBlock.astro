@@ -2,41 +2,34 @@
 import type { RichTextContext } from "src/utils/richText";
 import RTSection from "./components/RTSection.astro";
 import RTTranscript from "./components/RTTranscript.astro";
+import {
+  isBlockNodeSectionBlock,
+  isBlockNodeSpacerBlock,
+  isBlockNodeTranscriptBlock,
+  type RichTextBlockNode,
+} from "src/shared/payload/payload-sdk";
+import ErrorMessage from "components/ErrorMessage.astro";
+import RTSpacer from "./components/RTSpacer.astro";
 
 interface Props {
-  node: {
-    type: string;
-    version: number;
-    format: number;
-    text: string;
-    [k: string]: unknown;
-    fields: {
-      id: string;
-      blockName: string;
-      blockType: string;
-    };
-  };
+  node: RichTextBlockNode;
   context: RichTextContext;
 }
 
 const { node, context } = Astro.props;
-
-let NodeElement;
-switch (node.fields.blockType) {
-  case "sectionBlock":
-    NodeElement = RTSection;
-    break;
-
-  case "transcriptBlock":
-    NodeElement = RTTranscript;
-    break;
-}
 ---
 
 {
-  NodeElement ? (
-    <NodeElement node={node} context={context} />
+  isBlockNodeSectionBlock(node) ? (
+    <RTSection node={node} context={context} />
+  ) : isBlockNodeTranscriptBlock(node) ? (
+    <RTTranscript node={node} context={context} />
+  ) :isBlockNodeSpacerBlock(node) ? (
+    <RTSpacer node={node} context={context} />
   ) : (
-    <p>{`Unknown block type: ${node.fields.blockType}. Please contact website technical administrator.`}</p>
+  <ErrorMessage
+      title={`Unknown block type: ${node.fields.blockType}`}
+      description="Please contact website technical administrator."
+    />
   )
 }

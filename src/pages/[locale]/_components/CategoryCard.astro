@@ -8,6 +8,10 @@ interface Props {
 const { img, name, href } = Astro.props;
 ---
 
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
 <a href={href} aria-label={name} class="pressable">
   {
     img ? (
@@ -16,10 +20,16 @@ const { img, name, href } = Astro.props;
         <img src={img.dark} class="when-dark-theme" alt={name} title={name} />
       </>
     ) : (
-      <div><p>{name}</p></div>
+      <div>
+        <p>{name}</p>
+      </div>
     )
   }
 </a>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
 
 <style>
   a {
@@ -46,6 +56,5 @@ const { img, name, href } = Astro.props;
       display: grid;
       place-content: center;
     }
-
   }
 </style>

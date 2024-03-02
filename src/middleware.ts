@@ -38,7 +38,8 @@ const localeNegotiator = defineMiddleware(({ cookies, url, request }, next) => {
   const currentLocale = getCurrentLocale(url.pathname);
   const acceptedLocale = getBestAcceptedLanguage(request);
   const cookieLocale = getCookieLocale(cookies);
-  const bestMatchingLocale = cookieLocale ?? acceptedLocale ?? defaultLocale;
+  const bestMatchingLocale =
+    cookieLocale ?? acceptedLocale ?? currentLocale ?? defaultLocale;
 
   if (!currentLocale) {
     const redirectURL = getAbsoluteLocaleUrl(bestMatchingLocale, url.pathname);

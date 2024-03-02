@@ -20,6 +20,7 @@ export default defineConfig({
       },
     }),
   ],
+  devToolbar: { enabled: false },
   server: {
     port: 12499,
     host: true,

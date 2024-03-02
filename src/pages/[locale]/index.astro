@@ -2,11 +2,10 @@
 import { Icon } from "astro-icon/components";
 import AppLayout from "components/AppLayout/AppLayout.astro";
 import Button from "components/Button.astro";
-import LinkCard from "../_components/LinkCard.astro";
 import { getI18n } from "../../../translations/translations";
-
-import ChronicleCard from "pages/_components/ChronicleCard.astro";
-import LibraryGrid from "pages/_components/LibraryGrid.astro";
+import LibraryGrid from "./_components/LibraryGrid.astro";
+import ChronicleCard from "./_components/ChronicleCard.astro";
+import LinkCard from "./_components/LinkCard.astro";
 
 const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
@@ -46,7 +45,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
         <Button
           class="section-button"
           title={t("home.librarySection.button")}
-          icon="material-symbols:browse-outline"
+          icon="material-symbols:browse"
         />
       </a>
       <div class="grid">

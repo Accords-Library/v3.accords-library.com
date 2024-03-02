@@ -1,0 +1,38 @@
+---
+import RichText from "components/RichText/RichText.astro";
+import type { LineBlock } from "src/shared/payload/payload-sdk";
+
+interface Props {
+  block: LineBlock;
+}
+
+const { block } = Astro.props;
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<div id="line">
+  <p>{block.blockName}</p>
+  <div>
+    <RichText content={block.content} />
+  </div>
+</div>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  #line {
+    display: grid;
+    grid-column: span 2;
+    grid-template-columns: subgrid;
+
+    p {
+      color: var(--color-base-650);
+      font-weight: 500;
+    }
+  }
+</style>
