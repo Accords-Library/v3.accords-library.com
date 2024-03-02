@@ -1587,10 +1587,6 @@ export type EndpointFolder = EndpointFolderPreview & {
         value: LibraryItem;
       }
     | {
-        relationTo: "contents";
-        value: Content;
-      }
-    | {
         relationTo: "pages";
         value: Page;
       }
@@ -1607,30 +1603,6 @@ export type EndpointFolderPreview = {
   }[];
   lightThumbnail?: PayloadImage;
   darkThumbnail?: PayloadImage;
-};
-
-export type EndpointContent = {
-  slug: string;
-  thumbnail?: PayloadImage;
-  tagGroups: TagGroup[];
-  translations: {
-    language: string;
-    sourceLanguage: string;
-    pretitle?: string;
-    title: string;
-    subtitle?: string;
-    summary?: RichTextContent;
-    format: {
-      text?: {
-        content: RichTextContent;
-        toc: TableOfContentEntry[];
-        transcribers: string[];
-        translators: string[];
-        proofreaders: string[];
-        notes?: RichTextContent;
-      };
-    };
-  }[];
 };
 
 export type EndpointRecorder = {
@@ -1741,9 +1713,7 @@ export const payload = {
     await (await request(payloadApiUrl(Collections.Languages, `all`))).json(),
   getCurrencies: async (): Promise<Currency[]> =>
     await (await request(payloadApiUrl(Collections.Currencies, `all`))).json(),
-  getKeys: async (): Promise<EndpointKey[]> =>
-    await (await request(payloadApiUrl(Collections.Keys, `all`))).json(),
-  getWordings: async (): Promise<EndpointKey[]> =>
+  getWordings: async (): Promise<EndpointWording[]> =>
     await (await request(payloadApiUrl(Collections.Wordings, `all`))).json(),
   getRecorders: async (): Promise<EndpointRecorder[]> =>
     await (await request(payloadApiUrl(Collections.Recorders, `all`))).json(),

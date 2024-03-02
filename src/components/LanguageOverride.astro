@@ -2,7 +2,7 @@
 import MasoActor from "components/Maso/MasoActor.astro";
 import Tooltip from "components/Tooltip.astro";
 import Button from "components/Button.astro";
-import { getI18n } from "translations/translations";
+import { formatLocale } from "src/utils/format";
 
 interface Props {
   currentLang: string;
@@ -11,7 +11,6 @@ interface Props {
 }
 
 const { currentLang, getPartialUrl, availableLanguages } = Astro.props;
-const { formatLocale } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {

@@ -1,13 +1,13 @@
 ---
 import RichText from "components/RichText/RichText.astro";
 import { payload, type EndpointPage } from "src/shared/payload/payload-sdk";
-import { getI18n } from "translations/translations";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import MasoTarget from "components/Maso/MasoTarget.astro";
 import TagGroups from "components/TagGroups.astro";
 import TableOfContent from "components/TableOfContent/TableOfContent.astro";
 import LanguageOverride from "components/LanguageOverride.astro";
 import Credits from "components/Credits.astro";
+import { getI18n } from "src/i18n/i18n";
 
 export const partial = true;
 
@@ -25,7 +25,7 @@ const page = Astro.props.page ?? (await payload.getPage(slug));
 const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 const { getLocalizedMatch } = await getI18n(lang);
 
-const translation = getLocalizedMatch(page.translations, { title: slug });
+const translation = getLocalizedMatch(page.translations);
 ---
 
 {

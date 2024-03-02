@@ -1,11 +1,11 @@
 ---
 import AppLayout from "components/AppLayout/AppLayout.astro";
 import { payload } from "src/shared/payload/payload-sdk";
-import { getI18n } from "translations/translations";
 import RichText from "components/RichText/RichText.astro";
 import FoldersSection from "./_components/FoldersSection.astro";
 import { fetchOr404 } from "src/utils/responses";
 import ErrorMessage from "components/ErrorMessage.astro";
+import { getI18n } from "src/i18n/i18n";
 
 const { slug } = Astro.params;
 const { getLocalizedMatch, getLocalizedUrl } = await getI18n(
@@ -16,7 +16,7 @@ const folder = await fetchOr404(() => payload.getFolder(slug!));
 if (folder instanceof Response) {
   return folder;
 }
-const meta = getLocalizedMatch(folder.translations, { name: slug });
+const meta = getLocalizedMatch(folder.translations);
 
 // TODO: handle light and dark illustration for applayout
 ---
@@ -46,7 +46,7 @@ const meta = getLocalizedMatch(folder.translations, { name: slug });
                 getLocalizedMatch<{
                   language: string;
                   name: string | undefined;
-                }>(translations, { name: undefined }).name
+                }>(translations).name
               }
             />
           ))}
@@ -58,16 +58,6 @@ const meta = getLocalizedMatch(folder.translations, { name: slug });
       {
         folder.files.map(({ relationTo, value }) => {
           switch (relationTo) {
-            case "contents":
-              return (
-                <a
-                  class="pressable"
-                  href={getLocalizedUrl(`/contents/${value.slug}`)}
-                >
-                  {value.slug}
-                </a>
-              );
-
             case "library-items":
               return <p>Library item not supported yet! {value.slug}</p>;
 

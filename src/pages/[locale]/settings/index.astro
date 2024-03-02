@@ -1,7 +1,7 @@
 ---
 import AppLayout from "components/AppLayout/AppLayout.astro";
+import { getI18n } from "src/i18n/i18n";
 import { cache } from "src/utils/cachedPayload";
-import { getI18n } from "translations/translations";
 
 const { currentLocale, currentTheme, currentCurrency } = Astro.locals;
 const { t } = await getI18n(currentLocale);
@@ -37,21 +37,21 @@ const { t } = await getI18n(currentLocale);
         href="?action-theme=dark"
         data-astro-prefetch="tap"
       >
-        {t("header.topbar.theme.dark")}
+        {t("global.theme.dark")}
       </a>
       <a
         class:list={{ current: currentTheme === "auto" }}
         href="?action-theme=auto"
         data-astro-prefetch="tap"
       >
-        {t("header.topbar.theme.auto")}
+        {t("global.theme.auto")}
       </a>
       <a
         class:list={{ current: currentTheme === "light" }}
         href="?action-theme=light"
         data-astro-prefetch="tap"
       >
-        {t("header.topbar.theme.light")}
+        {t("global.theme.light")}
       </a>
     </div>
 

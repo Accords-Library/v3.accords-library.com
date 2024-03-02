@@ -2,10 +2,10 @@
 import { Icon } from "astro-icon/components";
 import AppLayout from "components/AppLayout/AppLayout.astro";
 import Button from "components/Button.astro";
-import { getI18n } from "../../../translations/translations";
 import LibraryGrid from "./_components/LibraryGrid.astro";
 import ChronicleCard from "./_components/ChronicleCard.astro";
 import LinkCard from "./_components/LinkCard.astro";
+import { getI18n } from "src/i18n/i18n";
 
 const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---

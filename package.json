@@ -11,7 +11,8 @@
     "upgrade": "ncu",
     "script:download-payload-sdk": "bun run scripts/download-payload-sdk.ts",
     "script:download-currencies": "bun run scripts/download-currencies.ts",
-    "script:download-wording-keys": "bun run scripts/download-wording-keys.ts"
+    "script:download-wording-keys": "bun run scripts/download-wording-keys.ts",
+    "precommit": "bun run script:download-wording-keys && bun run script:download-payload-sdk && bun run astro check"
   },
   "engines": {
     "npm": ">=10.0.0",
@@ -27,8 +28,7 @@
     "astro-icon": "^1.1.0",
     "node-cache": "^5.1.2",
     "tippy.js": "^6.3.7",
-    "ua-parser-js": "^1.0.37",
-    "zod": "^3.22.4"
+    "ua-parser-js": "^1.0.37"
   },
   "devDependencies": {
     "@iconify-json/material-symbols": "^1.1.73",

@@ -1,5 +1,5 @@
 ---
-import { getI18n } from "translations/translations";
+import { formatRecorder } from "src/utils/format";
 import Metadata from "./Metadata.astro";
 
 interface Props {
@@ -9,7 +9,6 @@ interface Props {
 }
 
 const { translators = [], transcribers = [], proofreaders = [] } = Astro.props;
-const { formatRecorder } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {

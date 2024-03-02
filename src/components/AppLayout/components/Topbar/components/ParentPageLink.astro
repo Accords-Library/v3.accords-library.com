@@ -1,6 +1,6 @@
 ---
+import { getI18n } from "src/i18n/i18n";
 import { Collections, type ParentPage } from "src/shared/payload/payload-sdk";
-import { getI18n } from "translations/translations";
 
 interface Props {
   parentPage: ParentPage;
@@ -11,9 +11,7 @@ const { getLocalizedMatch, getLocalizedUrl } = await getI18n(
   Astro.locals.currentLocale
 );
 
-const translation = getLocalizedMatch(parentPage.translations, {
-  name: parentPage.slug,
-});
+const translation = getLocalizedMatch(parentPage.translations);
 
 let href = "";
 switch (parentPage.collection) {
