@@ -6,9 +6,11 @@ import FoldersSection from "./_components/FoldersSection.astro";
 import { fetchOr404 } from "src/utils/responses";
 import ErrorMessage from "components/ErrorMessage.astro";
 import { getI18n } from "src/i18n/i18n";
+import CollectiblePreview from "components/Previews/CollectiblePreview.astro";
+import PagePreview from "components/Previews/PagePreview.astro";
 
 const { slug } = Astro.params;
-const { getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
+const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 
 const folder = await fetchOr404(() => payload.getFolder(slug!));
 if (folder instanceof Response) {
@@ -50,19 +52,15 @@ const meta = getLocalizedMatch(folder.translations);
       )
     }
 
-    <div>
+    <div id="files">
       {
         folder.files.map(({ relationTo, value }) => {
           switch (relationTo) {
-            case "library-items":
-              return <p>Library item not supported yet! {value.slug}</p>;
+            case "collectibles":
+              return <CollectiblePreview collectible={value} />;
 
             case "pages":
-              return (
-                <a class="pressable" href={getLocalizedUrl(`/pages/${value.slug}`)}>
-                  {value.slug}
-                </a>
-              );
+              return <PagePreview page={value} />;
 
             default:
               return (
@@ -85,9 +83,16 @@ const meta = getLocalizedMatch(folder.translations);
     display: grid;
     gap: 4em;
 
-    #sections {
+    & > #sections {
       display: grid;
       gap: 2.5em;
+    }
+
+    & > #files {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: clamp(6px, 2vmin, 16px);
+      place-items: start;
     }
   }
 </style>

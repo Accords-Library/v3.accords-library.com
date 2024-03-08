@@ -1,0 +1,106 @@
+---
+import { Icon } from "astro-icon/components";
+import { getI18n } from "src/i18n/i18n";
+import type { EndpointCollectible } from "src/shared/payload/payload-sdk";
+
+interface Props {
+  urls: EndpointCollectible["urls"];
+  releaseDate?: string | undefined;
+  price?: boolean;
+}
+
+const { price = false, urls, releaseDate } = Astro.props;
+const { t } = await getI18n(Astro.locals.currentLocale);
+
+const title = (() => {
+  if (urls.length > 0) return t("collectibles.availability.available");
+
+  if (price) {
+    if (!releaseDate) return t("collectibles.availability.notAvailable");
+    const release = new Date(releaseDate);
+    if (release > new Date()) {
+      return t("collectibles.availability.notAvailable.future");
+    } else {
+      return t("collectibles.availability.notAvailable.past");
+    }
+  }
+
+  return t("collectibles.availability.notAvailable.noPrice");
+})();
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<div id="container">
+  <div id="title">
+    <Icon name="material-symbols:shopping-cart-outline" width={24} height={24} />
+    <p>{title}</p>
+  </div>
+
+  {
+    urls.length > 0 && (
+      <div id="values">
+        {urls.map(({ label, url }) => (
+          <a target="_blank" rel="noopener noreferrer" href={url}>
+            {label}
+          </a>
+        ))}
+      </div>
+    )
+  }
+</div>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  #container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5em 1em;
+    align-items: center;
+
+    @media (max-width: 35em) {
+      grid-template-columns: 1fr;
+    }
+
+    & > #title {
+      display: flex;
+      place-items: center;
+      gap: 8px;
+
+      & > p {
+        font-size: 1.5em;
+        font-weight: 600;
+      }
+    }
+
+    & > #values {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 0.35em;
+
+      & > a {
+        border: 1px solid var(--color-base-1000);
+        border-radius: 9999px;
+        padding-top: 0.15em;
+        padding-bottom: 0.25em;
+        padding-inline: 0.6em;
+        backdrop-filter: blur(10px);
+
+        transition-duration: 150ms;
+        transition-property: border-color, color;
+
+        &:hover {
+          color: var(--color-base-750);
+          border-color: var(--color-base-750);
+        }
+
+        &:active {
+          color: var(--color-base-650);
+          border-color: var(--color-base-650);
+        }
+      }
+    }
+  }
+</style>

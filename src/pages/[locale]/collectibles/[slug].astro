@@ -1,0 +1,269 @@
+---
+import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
+import RichText from "components/RichText/RichText.astro";
+import TagGroups from "components/TagGroups.astro";
+import { getI18n } from "src/i18n/i18n";
+import { payload } from "src/shared/payload/payload-sdk";
+import { fetchOr404 } from "src/utils/responses";
+import ImageTile from "./_components/ImageTile.astro";
+import PriceInfo from "./_components/PriceInfo.astro";
+import SizeInfo from "./_components/SizeInfo.astro";
+import ReleaseDateInfo from "./_components/ReleaseDateInfo.astro";
+import PageInfo from "./_components/PageInfo.astro";
+import AvailabilityInfo from "./_components/AvailabilityInfo.astro";
+import WeightInfo from "./_components/WeightInfo.astro";
+import SubitemSection from "./_components/SubitemSection.astro";
+import ContentsSection from "./_components/ContentsSection/ContentsSection.astro";
+
+const { slug } = Astro.params;
+const { getLocalizedMatch, t } = await getI18n(Astro.locals.currentLocale);
+
+const collectible = await fetchOr404(() => payload.getCollectible(slug!));
+if (collectible instanceof Response) {
+  return collectible;
+}
+
+const {
+  translations,
+  thumbnail,
+  size,
+  price,
+  releaseDate,
+  pageInfo,
+  urls,
+  weight,
+  backgroundImage,
+  gallery,
+  scans,
+  subitems,
+  parentPages,
+  tagGroups,
+  contents,
+} = collectible;
+
+const translation = getLocalizedMatch(translations);
+
+const galleryFirstImage = gallery[0];
+const scansFirstImage = scans[0];
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<AppEmptyLayout
+  parentPages={parentPages}
+  backgroundIllustration={backgroundImage?.url ?? thumbnail?.url}>
+  <div id="layout">
+    <div id="left">
+      <AppLayoutTitle
+        title={translation.title}
+        pretitle={translation.pretitle}
+        subtitle={translation.subtitle}
+      />
+
+      <div id="images" class="when-not-large">
+        {
+          thumbnail && (
+            <img
+              id="thumbnail"
+              src={thumbnail.url}
+              width={thumbnail.width}
+              height={thumbnail.height}
+            />
+          )
+        }
+
+        <div id="gallery-scans" class="when-no-print">
+          {
+            galleryFirstImage && (
+              <ImageTile
+                image={galleryFirstImage.url}
+                title="Gallery"
+                subtitle={`${gallery.length} images`}
+              />
+            )
+          }
+
+          {
+            scansFirstImage && (
+              <ImageTile
+                image={scansFirstImage.url}
+                title="Scans"
+                subtitle={`${scans.length} images`}
+              />
+            )
+          }
+        </div>
+      </div>
+
+      {
+        translation.description && (
+          <div id="summary" class="high-contrast-text">
+            <RichText content={translation.description} />
+          </div>
+        )
+      }
+
+      <TagGroups tagGroups={tagGroups}>
+        {releaseDate && <ReleaseDateInfo releaseDate={releaseDate} />}
+
+        {price && <PriceInfo price={price} />}
+
+        <AvailabilityInfo urls={urls} price={price !== undefined} releaseDate={releaseDate} />
+
+        {size && <SizeInfo size={size} />}
+
+        {weight && <WeightInfo weight={weight} />}
+
+        {pageInfo && <PageInfo pageInfo={pageInfo} />}
+      </TagGroups>
+
+      {subitems.length > 0 && <SubitemSection subitems={subitems} />}
+
+      {contents.length > 0 && <ContentsSection contents={contents} />}
+    </div>
+
+    <div id="right" class="when-large">
+      <div id="images">
+        <div id="gallery-scans" class="when-no-print">
+          {
+            galleryFirstImage && (
+              <ImageTile
+                image={galleryFirstImage.url}
+                title={t("collectibles.gallery")}
+                subtitle={t("collectibles.imageCount", { count: gallery.length })}
+              />
+            )
+          }
+
+          {
+            scansFirstImage && (
+              <ImageTile
+                image={scansFirstImage.url}
+                title={t("collectibles.scans")}
+                subtitle={t("collectibles.imageCount", { count: scans.length })}
+              />
+            )
+          }
+        </div>
+
+        {
+          thumbnail && (
+            <img
+              id="thumbnail"
+              src={thumbnail.url}
+              width={thumbnail.width}
+              height={thumbnail.height}
+            />
+          )
+        }
+      </div>
+    </div>
+  </div>
+</AppEmptyLayout>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  #layout {
+    display: grid;
+    justify-content: space-between;
+    container-type: inline-size;
+
+    @media (min-width: 80rem) {
+      grid-template-columns: 35rem 35rem;
+    }
+
+    & > #left {
+      & > #images {
+        display: grid;
+        place-content: start;
+        place-items: start;
+        margin-block: 2em;
+        gap: clamp(1em, 0.5em + 3vw, 2em);
+        grid-template-columns: 1fr;
+
+        @media (max-width: 23rem) {
+          gap: 2.5em;
+        }
+
+        @media (min-width: 52rem) {
+          grid-template-columns: 35rem 10rem;
+        }
+
+        & > #thumbnail {
+          width: 100%;
+          height: auto;
+          box-shadow: 0 5px 20px -10px var(--color-shadow);
+          max-width: 35rem;
+        }
+
+        & > #gallery-scans {
+          display: flex;
+          max-width: 35rem;
+          flex-direction: column;
+          gap: 2.5em;
+          width: 100%;
+
+          > :global(div) {
+            aspect-ratio: 2 / 1;
+          }
+
+          @media (min-width: 23rem) {
+            gap: clamp(1em, 0.5em + 3vw, 2em);
+            flex-direction: row;
+
+            > :global(div) {
+              aspect-ratio: 1 / 1;
+            }
+
+            @media (min-width: 52rem) {
+              max-width: 15rem;
+              flex-direction: column;
+            }
+          }
+        }
+      }
+
+      & > #summary {
+        backdrop-filter: blur(5px);
+        padding: 1.5em;
+        margin: -1.5em;
+        margin-block: 1em;
+        border-radius: 3em;
+      }
+    }
+
+    & > #right {
+      & > #images {
+        display: grid;
+        grid-template-columns: 10rem 1fr;
+        gap: 1em;
+
+        & > #gallery-scans {
+          display: flex;
+          flex-direction: column;
+          gap: 1em;
+        }
+
+        & > #thumbnail {
+          width: 100%;
+          height: auto;
+          box-shadow: 0 5px 20px -10px var(--color-shadow);
+        }
+      }
+    }
+  }
+
+  .when-large {
+    @media (max-width: 80rem) {
+      display: none !important;
+    }
+  }
+
+  .when-not-large {
+    @media (min-width: 80rem) {
+      display: none !important;
+    }
+  }
+</style>

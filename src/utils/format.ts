@@ -12,3 +12,23 @@ export const formatRecorder = (recorderId: string): string => {
 
   return result.username;
 };
+
+export const formatInlineTitle = ({
+  pretitle,
+  title,
+  subtitle,
+}: {
+  pretitle?: string | undefined;
+  title: string;
+  subtitle?: string | undefined;
+}): string => {
+  let result = "";
+  if (pretitle) {
+    result += `${pretitle}: `;
+  }
+  result += title;
+  if (subtitle) {
+    result += ` — ${subtitle}`;
+  }
+  return result;
+};

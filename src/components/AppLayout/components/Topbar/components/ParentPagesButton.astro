@@ -18,6 +18,7 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 
 <Tooltip trigger="click">
   <div id="tooltip-content" slot="tooltip-content">
+    {/* TODO: Translate */}
     <p>This content is part of these pages:</p>
     {parentPages.map((parentPage) => <ParentPageLink parentPage={parentPage} />)}
   </div>

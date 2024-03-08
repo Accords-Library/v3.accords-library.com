@@ -38,19 +38,12 @@ const { currentTheme } = Astro.locals;
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#27231e" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <style is:global>
-      .when-no-js {
-        display: none;
-      }
-    </style>
-
     <noscript>
       <style is:global>
         .when-js {
           display: none !important;
-        }
-        .when-no-js {
-          display: initial !important;
+          visibility: none !important;
+          opacity: 0 !important;
         }
       </style>
     </noscript>
@@ -224,10 +217,17 @@ const { currentTheme } = Astro.locals;
     .high-contrast-text {
       text-shadow: 0 0 0.6em var(--color-elevation-0);
     }
+
+    body {
+      margin: clamp(12px, 3vmin, 24px) clamp(24px, 4vw, 64px);
+    }
   }
 
   html {
+    position: relative;
     color: var(--color-base-1000);
+    min-height: 100vb;
+    display: flex;
 
     @media screen {
       background-color: var(--color-base-150);
@@ -235,8 +235,7 @@ const { currentTheme } = Astro.locals;
   }
 
   body {
-    margin: clamp(12px, 3vmin, 24px) clamp(24px, 4vw, 64px);
-    min-height: 100vb;
+    flex: 1;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -324,6 +323,24 @@ const { currentTheme } = Astro.locals;
 
     &:active {
       color: var(--color-base-550);
+    }
+  }
+
+  .pressable-link {
+    text-decoration: underline dotted 0.1em;
+    text-decoration-color: transparent;
+
+    transition-duration: 150ms;
+    transition-property: text-decoration-color, color;
+
+    &:hover {
+      color: var(--color-base-750);
+      text-decoration-color: var(--color-base-650);
+    }
+
+    &:active {
+      color: var(--color-base-650);
+      text-decoration-color: var(--color-base-550);
     }
   }
 
@@ -448,3 +465,13 @@ const { currentTheme } = Astro.locals;
     }
   }
 </style>
+
+{/* ------------------------------------------- JS --------------------------------------------- */}
+
+<script is:inline>
+  Array.from(document.querySelectorAll(".when-no-js")).forEach((node) => node.remove());
+
+  document.addEventListener("astro:before-swap", ({ newDocument }) => {
+    Array.from(newDocument.querySelectorAll(".when-no-js")).forEach((node) => node.remove());
+  });
+</script>

@@ -1,27 +1,25 @@
 ---
 import { Icon } from "astro-icon/components";
+import { getI18n } from "src/i18n/i18n";
 
 interface Props {
-  icon: string;
-  title: string;
-  values: string[];
+  releaseDate: string;
 }
 
-const { icon, title, values } = Astro.props;
+const { releaseDate } = Astro.props;
 
-if (values.length === 0) return;
+const { formatDate, t } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div id="container">
   <div id="title">
-    <Icon name={icon} width={24} height={24} />
-    <p>{title}</p>
+    <Icon name="material-symbols:calendar-month-outline" width={24} height={24} />
+    <p>{t("collectibles.releaseDate")}</p>
   </div>
-  <div id="values">
-    {values.map((value) => <div>{value}</div>)}
-  </div>
+
+  <p>{formatDate(new Date(releaseDate))}</p>
 </div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
@@ -45,23 +43,11 @@ if (values.length === 0) return;
       & > p {
         font-size: 1.5em;
         font-weight: 600;
-        translate: 0px -0.1em;
       }
     }
 
-    & > #values {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-
-      & > div {
-        border: 1px solid var(--color-base-1000);
-        border-radius: 9999px;
-        padding-top: 0.15em;
-        padding-bottom: 0.25em;
-        padding-inline: 0.6em;
-        backdrop-filter: blur(10px);
-      }
+    & > p {
+      margin-top: 0.5em;
     }
   }
 </style>

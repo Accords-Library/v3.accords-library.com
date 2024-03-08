@@ -1,0 +1,91 @@
+---
+import { Icon } from "astro-icon/components";
+import { getI18n } from "src/i18n/i18n";
+
+interface Props {
+  size: {
+    width: number;
+    height: number;
+    thickness?: number;
+  };
+}
+
+const { size } = Astro.props;
+
+const { formatInches, formatMillimeters, t } = await getI18n(Astro.locals.currentLocale);
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<div id="size">
+  <div id="title">
+    <Icon name="material-symbols:measuring-tape-outline" width={24} height={24} />
+    <p>{t("collectibles.size")}</p>
+  </div>
+
+  <div id="values">
+    <div>
+      <p>{t("collectibles.size.width")}</p>
+      <p>{formatMillimeters(size.width)}</p>
+      <p>{formatInches(size.width)}</p>
+    </div>
+    <div>
+      <p>{t("collectibles.size.height")}</p>
+      <p>{formatMillimeters(size.height)}</p>
+      <p>{formatInches(size.height)}</p>
+    </div>
+    {
+      size.thickness && (
+        <div>
+          <p>{t("collectibles.size.thickness")}</p>
+          <p>{formatMillimeters(size.thickness)}</p>
+          <p>{formatInches(size.thickness)}</p>
+        </div>
+      )
+    }
+  </div>
+</div>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  #size {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1em 2em;
+    align-items: start;
+
+    @media (max-width: 35em) {
+      grid-template-columns: 1fr;
+    }
+
+    & > #title {
+      display: flex;
+      place-items: center;
+      gap: 8px;
+
+      & > p {
+        font-size: 1.5em;
+        font-weight: 600;
+        translate: 0px -0.1em;
+      }
+    }
+
+    & > #values {
+      display: flex;
+      gap: 1em 1.5em;
+
+      & > div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6em;
+
+        & > p:first-child {
+          font-size: 120%;
+          font-weight: 500;
+          margin-top: 3px;
+        }
+      }
+    }
+  }
+</style>

@@ -76,9 +76,13 @@ const translation = getLocalizedMatch(page.translations);
         <Credits translators={translation.translators} proofreaders={translation.proofreaders} />
       </div>
 
-      <div class="when-not-large meta-container">
-        <TableOfContent toc={translation.toc} />
-      </div>
+      {
+        translation.toc.length > 0 && (
+          <div class="when-not-large meta-container">
+            <TableOfContent toc={translation.toc} />
+          </div>
+        )
+      }
 
       <hr />
       <div id="text">
@@ -110,10 +114,14 @@ const translation = getLocalizedMatch(page.translations);
             />
           )
         }
-        <Credits translators={translation.translators} proofreaders={translation.proofreaders} />
+        <Credits
+          translators={translation.translators}
+          transcribers={translation.transcribers}
+          proofreaders={translation.proofreaders}
+        />
       </div>
 
-      <TableOfContent toc={translation.toc} />
+      {translation.toc.length > 0 && <TableOfContent toc={translation.toc} />}
     </div>
   </div>
 </MasoTarget>

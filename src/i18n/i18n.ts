@@ -138,5 +138,48 @@ export const getI18n = async (locale: string) => {
     return getLocalizedMatch(tag.translations).name;
   };
 
-  return { t, getLocalizedMatch, getLocalizedUrl, formatTag, formatTagsGroup };
+  const formatPrice = (price: { amount: number; currency: string }): string =>
+    price.amount.toLocaleString(locale, { style: "currency", currency: price.currency });
+
+  const formatDate = (date: Date): string =>
+    date.toLocaleDateString(locale, { dateStyle: "medium" });
+
+  const formatInches = (sizeInMm: number): string => {
+    return (
+      (sizeInMm * 0.039370078740157).toLocaleString(locale, { maximumFractionDigits: 2 }) + " in"
+    );
+  };
+
+  const formatMillimeters = (sizeInMm: number): string => {
+    return sizeInMm.toLocaleString(locale, { maximumFractionDigits: 0 }) + " mm";
+  };
+
+  const formatPounds = (weightInGrams: number): string => {
+    return (
+      (weightInGrams * 0.002204623).toLocaleString(locale, { maximumFractionDigits: 2 }) + " lb"
+    );
+  };
+
+  const formatGrams = (weightInGrams: number): string => {
+    return weightInGrams.toLocaleString(locale, { maximumFractionDigits: 0 }) + " g";
+  };
+
+  const formatNumber = (number: number, options?: Intl.NumberFormatOptions): string => {
+    return number.toLocaleString(locale, options);
+  };
+
+  return {
+    t,
+    getLocalizedMatch,
+    getLocalizedUrl,
+    formatTag,
+    formatTagsGroup,
+    formatPrice,
+    formatDate,
+    formatInches,
+    formatPounds,
+    formatGrams,
+    formatMillimeters,
+    formatNumber,
+  };
 };

@@ -1,0 +1,73 @@
+---
+import { getI18n } from "src/i18n/i18n";
+import type { EndpointCollectiblePreview } from "src/shared/payload/payload-sdk";
+
+interface Props {
+  collectible: EndpointCollectiblePreview;
+}
+
+const { getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
+
+const {
+  collectible: { slug, translations, thumbnail },
+} = Astro.props;
+
+const { title, pretitle, subtitle } = getLocalizedMatch(translations);
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<a href={getLocalizedUrl(`/collectibles/${slug}`)} class="pressable">
+  {
+    thumbnail && (
+      <img src={thumbnail.url} width={thumbnail.width} height={thumbnail.height} alt="" />
+    )
+  }
+
+  <p>
+    {pretitle && <span id="pretitle">{pretitle}&nbsp;</span>}
+    <span id="title">{title}&nbsp;</span>
+    {subtitle && <span id="subtitle">{subtitle}</span>}
+  </p>
+</a>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  a {
+    padding: 1em;
+    border-radius: 1em;
+    color: var(--color-base-1000);
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 1em;
+  }
+
+  p {
+    line-height: 0.8;
+    display: grid;
+    overflow-wrap: anywhere;
+    font-size: clamp(0.5em, 0.35em + 0.75vw, 1em);
+    font-weight: 800;
+
+    & > #pretitle {
+      font-family: var(--font-sans-serifs);
+      font-weight: 400;
+      margin-bottom: 0.8em;
+    }
+
+    & > #title {
+      font-family: var(--font-serif);
+      font-size: 200%;
+    }
+
+    & > #subtitle {
+      font-family: var(--font-serif);
+      font-weight: 600;
+      margin-top: 0.5em;
+    }
+  }
+</style>

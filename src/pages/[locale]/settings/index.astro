@@ -2,6 +2,8 @@
 import AppLayout from "components/AppLayout/AppLayout.astro";
 import { getI18n } from "src/i18n/i18n";
 import { cache } from "src/utils/cachedPayload";
+import { formatCurrency } from "src/utils/currencies";
+import { formatLocale } from "src/utils/format";
 
 const { currentLocale, currentTheme, currentCurrency } = Astro.locals;
 const { t } = await getI18n(currentLocale);
@@ -20,7 +22,7 @@ const { t } = await getI18n(currentLocale);
             class:list={{ current: currentLocale === id }}
             href={`?action-lang=${id}`}
             data-astro-prefetch="tap">
-            {id}
+            {formatLocale(id)}
           </a>
         ))
       }
@@ -50,15 +52,15 @@ const { t } = await getI18n(currentLocale);
     </div>
 
     <div class="section">
-      <h2>{t("settings.theme.title")}</h2>
-      <p>{t("settings.theme.description")}</p><br />
+      <h2>{t("settings.currency.title")}</h2>
+      <p>{t("settings.currency.description")}</p><br />
       {
         cache.currencies.map((id) => (
           <a
             class:list={{ current: currentCurrency === id }}
             href={`?action-currency=${id}`}
             data-astro-prefetch="tap">
-            {id}
+            {`${id} (${formatCurrency(id)})`}
           </a>
         ))
       }
@@ -72,6 +74,7 @@ const { t } = await getI18n(currentLocale);
   .section {
     display: flex;
     flex-direction: column;
+    align-items: start;
     gap: 0.5em;
 
     & > .current {

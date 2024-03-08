@@ -1,0 +1,93 @@
+---
+import ErrorMessage from "components/ErrorMessage.astro";
+import RichText from "components/RichText/RichText.astro";
+import { getI18n } from "src/i18n/i18n";
+import type { EndpointCollectible } from "src/shared/payload/payload-sdk";
+import { formatInlineTitle } from "src/utils/format";
+
+interface Props {
+  content: EndpointCollectible["contents"][number];
+}
+
+const { getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
+const {
+  content: { content, range },
+} = Astro.props;
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<div id="row">
+  <div id="title">
+    {
+      content.relationTo === "generic-contents" ? (
+        <p>{getLocalizedMatch(content.value.translations).name}</p>
+      ) : content.relationTo === "pages" ? (
+        <a href={getLocalizedUrl(`/pages/${content.value.slug}`)} class="pressable-link">
+          {formatInlineTitle(getLocalizedMatch(content.value.translations))}
+        </a>
+      ) : (
+        <ErrorMessage
+          title="Unknown content type"
+          description="Please contact website technical administrator."
+        />
+      )
+    }
+  </div>
+
+  <div id="dots"></div>
+
+  <div id="range">
+    {
+      range && (
+        <>
+          {range.type === "pageRange" ? (
+            range.start
+          ) : range.type === "timeRange" ? (
+            range.start
+          ) : range.type === "other" ? (
+            <RichText content={getLocalizedMatch(range.translations).note} />
+          ) : (
+            <ErrorMessage
+              title="Unknown range type"
+              description="Please contact website technical administrator."
+            />
+          )}
+        </>
+      )
+    }
+  </div>
+</div>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  #row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1em;
+    align-items: center;
+    padding: 1em;
+    border-radius: 1em;
+    box-shadow: 0 1px 2px 0 var(--color-shadow-2);
+
+    backdrop-filter: blur(10px);
+    background-color: color-mix(in srgb, var(--color-elevation-2) 50%, transparent);
+
+    border-top: 1px solid var(--color-elevation-2);
+
+    & > #title {
+      padding-bottom: 0.2em;
+    }
+
+    & > #dots {
+      width: 100%;
+      min-width: clamp(1em, 0.5em + 5vw, 5em);
+      border-bottom: 0.15em dotted var(--color-base-500);
+      height: 0.6em;
+    }
+
+    # > #range {
+    }
+  }
+</style>

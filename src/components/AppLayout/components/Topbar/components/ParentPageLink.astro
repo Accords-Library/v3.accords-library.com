@@ -17,12 +17,19 @@ switch (parentPage.collection) {
     href = getLocalizedUrl(`/folders/${parentPage.slug}`);
     break;
 
+  case Collections.Collectibles:
+    href = getLocalizedUrl(`/collectibles/${parentPage.slug}`);
+    break;
+
   default:
+    href = "/404";
     break;
 }
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
+
+{/* TODO: Not use the tag but actual translation */}
 
 <a href={href}><span>{parentPage.tag}</span>{translation.name}</a>
 

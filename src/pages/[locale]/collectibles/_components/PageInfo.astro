@@ -1,0 +1,87 @@
+---
+import { Icon } from "astro-icon/components";
+import { getI18n } from "src/i18n/i18n";
+import {
+  CollectibleBindingTypes,
+  CollectiblePageOrders,
+  type EndpointCollectible,
+} from "src/shared/payload/payload-sdk";
+
+interface Props {
+  pageInfo: NonNullable<EndpointCollectible["pageInfo"]>;
+}
+
+const {
+  pageInfo: { pageCount, bindingType, pageOrder },
+} = Astro.props;
+
+const { t } = await getI18n(Astro.locals.currentLocale);
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<div id="container">
+  <div id="title">
+    <Icon name="material-symbols:note-stack-outline" width={24} height={24} />
+    <p>{t("collectibles.bookFormat")}</p>
+  </div>
+
+  <div id="values">
+    <p>{t("collectibles.bookFormat.pageCount", { count: pageCount })}</p>
+    {
+      bindingType && (
+        <p>
+          {t(
+            bindingType === CollectibleBindingTypes.Hardcover
+              ? "collectibles.bookFormat.binding.hardcover"
+              : "collectibles.bookFormat.binding.paperback"
+          )}
+        </p>
+      )
+    }
+    {
+      pageOrder && (
+        <p>
+          {t(
+            pageOrder === CollectiblePageOrders.LeftToRight
+              ? "collectibles.bookFormat.binding.readingDirection.leftToRight"
+              : "collectibles.bookFormat.binding.readingDirection.rightToLeft"
+          )}
+        </p>
+      )
+    }
+  </div>
+</div>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  #container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5em 1em;
+    align-items: start;
+
+    @media (max-width: 35em) {
+      grid-template-columns: 1fr;
+    }
+
+    & > #title {
+      display: flex;
+      place-items: center;
+      gap: 8px;
+
+      & > p {
+        font-size: 1.5em;
+        font-weight: 600;
+      }
+    }
+
+    & > #values {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+      margin-top: 0.5em;
+    }
+  }
+</style>

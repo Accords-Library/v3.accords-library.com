@@ -11,7 +11,7 @@ const { entry } = Astro.props;
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <li data-prefix={entry.prefix}>
-  <a href={`#${entry.prefix}`}>{entry.title}</a>
+  <a href={`#${entry.prefix}`} class="pressable-link">{entry.title}</a>
   {
     entry.children.length > 0 && (
       <ol>
@@ -28,21 +28,6 @@ const { entry } = Astro.props;
 <style>
   a {
     font-weight: 500;
-    text-decoration: underline dotted 0.1em;
-    text-decoration-color: transparent;
-
-    transition-duration: 150ms;
-    transition-property: text-decoration-color, color;
-
-    &:hover {
-      color: var(--color-base-750);
-      text-decoration-color: var(--color-base-650);
-    }
-
-    &:active {
-      color: var(--color-base-650);
-      text-decoration-color: var(--color-base-550);
-    }
   }
 
   li {
