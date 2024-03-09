@@ -73,7 +73,11 @@ const translation = getLocalizedMatch(page.translations);
             />
           )
         }
-        <Credits translators={translation.translators} proofreaders={translation.proofreaders} />
+        <Credits
+          translators={translation.translators}
+          proofreaders={translation.proofreaders}
+          authors={page.authors}
+        />
       </div>
 
       {
@@ -118,6 +122,7 @@ const translation = getLocalizedMatch(page.translations);
           translators={translation.translators}
           transcribers={translation.transcribers}
           proofreaders={translation.proofreaders}
+          authors={page.authors}
         />
       </div>
 

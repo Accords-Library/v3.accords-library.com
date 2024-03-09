@@ -74,4 +74,8 @@ export type WordingKey =
   | "collectibles.imageCount"
   | "header.topbar.settings.tooltip"
   | "collectibles.contents"
-  | "collectibles.weight";
+  | "collectibles.weight"
+  | "global.credits.transcribers"
+  | "global.credits.translators"
+  | "global.credits.proofreaders"
+  | "global.credits.authors";

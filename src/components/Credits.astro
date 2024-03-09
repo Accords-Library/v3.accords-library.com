@@ -1,32 +1,41 @@
 ---
 import type { EndpointRecorder } from "src/shared/payload/payload-sdk";
 import Metadata from "./Metadata.astro";
+import { getI18n } from "src/i18n/i18n";
 
 interface Props {
   translators?: EndpointRecorder[] | undefined;
   transcribers?: EndpointRecorder[] | undefined;
   proofreaders?: EndpointRecorder[] | undefined;
+  authors?: EndpointRecorder[] | undefined;
 }
 
-const { translators = [], transcribers = [], proofreaders = [] } = Astro.props;
+const { translators = [], transcribers = [], proofreaders = [], authors = [] } = Astro.props;
+const { t } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <Metadata
   icon="material-symbols:person-outline"
-  title="Translators"
+  title={t("global.credits.translators")}
   values={translators.map(({ username }) => username)}
 />
 
 <Metadata
   icon="material-symbols:person-edit-outline"
-  title="Transcribers"
+  title={t("global.credits.transcribers")}
   values={transcribers.map(({ username }) => username)}
 />
 
 <Metadata
   icon="material-symbols:person-check-outline"
-  title="Proofreaders"
+  title={t("global.credits.proofreaders")}
   values={proofreaders.map(({ username }) => username)}
+/>
+
+<Metadata
+  icon="material-symbols:person-check-outline"
+  title={t("global.credits.authors")}
+  values={authors.map(({ username }) => username)}
 />
