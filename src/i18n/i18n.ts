@@ -126,18 +126,6 @@ export const getI18n = async (locale: string) => {
 
   const getLocalizedUrl = (url: string): string => `/${locale}${url}`;
 
-  const formatTag = (id: string): string => {
-    const tag = cache.tags.find(({ slug }) => slug === id);
-    if (!tag) return "UNKNOWN";
-    return getLocalizedMatch(tag.translations).name;
-  };
-
-  const formatTagsGroup = (id: string): string => {
-    const tag = cache.tagsGroups.find(({ slug }) => slug === id);
-    if (!tag) return "UNKNOWN";
-    return getLocalizedMatch(tag.translations).name;
-  };
-
   const formatPrice = (price: { amount: number; currency: string }): string =>
     price.amount.toLocaleString(locale, { style: "currency", currency: price.currency });
 
@@ -172,8 +160,6 @@ export const getI18n = async (locale: string) => {
     t,
     getLocalizedMatch,
     getLocalizedUrl,
-    formatTag,
-    formatTagsGroup,
     formatPrice,
     formatDate,
     formatInches,

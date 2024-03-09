@@ -1,24 +1,14 @@
-import {
-  payload,
-  type Language,
-  type EndpointTag,
-  type EndpointTagsGroup,
-  type EndpointWording,
-} from "src/shared/payload/payload-sdk";
+import { payload, type Language, type EndpointWording } from "src/shared/payload/payload-sdk";
 
 type Cache = {
   locales: Language[];
   currencies: string[];
   wordings: EndpointWording[];
-  tags: EndpointTag[];
-  tagsGroups: EndpointTagsGroup[];
 };
 
 const fetchNewData = async (): Promise<Cache> => ({
   locales: await payload.getLanguages(),
   currencies: (await payload.getCurrencies()).map(({ id }) => id),
-  tags: await payload.getTags(),
-  tagsGroups: await payload.getTagsGroups(),
   wordings: await payload.getWordings(),
 });
 

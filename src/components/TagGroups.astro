@@ -1,8 +1,9 @@
 ---
+import type { EndpointTagsGroup } from "src/shared/payload/payload-sdk";
 import TagGroup from "./TagGroup.astro";
 
 interface Props {
-  tagGroups: { slug: string; icon: string; values: string[] }[];
+  tagGroups: EndpointTagsGroup[];
 }
 
 const { tagGroups } = Astro.props;
@@ -11,7 +12,7 @@ const { tagGroups } = Astro.props;
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div>
-  {tagGroups.map((tag) => <TagGroup {...tag} />)}
+  {tagGroups.map((tag) => <TagGroup tagGroup={tag} />)}
   <slot />
 </div>
 

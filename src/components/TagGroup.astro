@@ -1,17 +1,22 @@
 ---
 import Metadata from "components/Metadata.astro";
 import { getI18n } from "src/i18n/i18n";
+import type { EndpointTagsGroup } from "src/shared/payload/payload-sdk";
 
 interface Props {
-  slug: string;
-  icon: string;
-  values: string[];
+  tagGroup: EndpointTagsGroup;
 }
 
-const { icon, slug, values } = Astro.props;
-const { formatTag, formatTagsGroup } = await getI18n(Astro.locals.currentLocale);
+const {
+  tagGroup: { icon, translations, tags },
+} = Astro.props;
+const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<Metadata icon={icon} title={formatTagsGroup(slug)} values={values.map(formatTag)} />
+<Metadata
+  icon={icon}
+  title={getLocalizedMatch(translations).name}
+  values={tags.map(({ translations }) => getLocalizedMatch(translations).name)}
+/>
