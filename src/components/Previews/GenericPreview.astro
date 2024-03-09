@@ -1,0 +1,132 @@
+---
+import type { EndpointTagsGroup, PayloadImage } from "src/shared/payload/payload-sdk";
+import ConditionalWrapper from "../ConditionalWrapper.astro";
+import Link from "../Link.astro";
+import InlineTagGroups from "pages/[locale]/collectibles/_components/ContentsSection/InlineTagGroups.astro";
+
+interface Props {
+  thumbnail?: PayloadImage | undefined;
+  pretitle?: string | undefined;
+  title: string;
+  subtitle?: string | undefined;
+  href?: string | undefined;
+  tagGroups?: EndpointTagsGroup[];
+  disableRoundedTop?: boolean;
+}
+
+const {
+  thumbnail,
+  title,
+  pretitle,
+  subtitle,
+  href,
+  tagGroups = [],
+  disableRoundedTop = false,
+} = Astro.props;
+---
+
+<ConditionalWrapper condition={href !== undefined} wrapper={Link} props={{ href: href! }}>
+  <div id="card" class:list={{ "rounded-top": !disableRoundedTop }}>
+    {
+      thumbnail && (
+        <img src={thumbnail.url} width={thumbnail.width} height={thumbnail.height} alt="" />
+      )
+    }
+
+    <div>
+      <p>
+        {pretitle && <span id="pretitle">{pretitle}&nbsp;</span>}
+        <span id="title">{title}&nbsp;</span>
+        {subtitle && <span id="subtitle">{subtitle}</span>}
+      </p>
+
+      {
+        tagGroups.length > 0 && (
+          <>
+            {subtitle && <hr />}
+            <div id="tags">
+              <InlineTagGroups tagGroups={tagGroups} />
+            </div>
+          </>
+        )
+      }
+    </div>
+  </div>
+</ConditionalWrapper>
+
+<style>
+  #card {
+    box-shadow: 0 1px 2px 0 var(--color-shadow-2);
+
+    backdrop-filter: blur(10px);
+    background-color: color-mix(in srgb, var(--color-elevation-2) 50%, transparent);
+
+    border: 1px solid var(--color-base-300);
+
+    &.rounded-top {
+      border-radius: 1em;
+      overflow: hidden;
+    }
+
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
+
+    transition-duration: 150ms;
+    transition-property: border-color, box-shadow;
+
+    &:hover {
+      border-color: var(--color-base-650);
+      box-shadow: 0 2px 2px var(--color-shadow-2);
+    }
+
+    &:active {
+      border-color: var(--color-base-1000);
+      box-shadow: 0 6px 12px 2px var(--color-shadow-2);
+    }
+
+    & > img {
+      width: 100%;
+      height: auto;
+    }
+
+    & > div {
+      padding: 1em;
+      padding-top: 1.5em;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2em;
+
+      & > p {
+        line-height: 0.8;
+        display: grid;
+        overflow-wrap: anywhere;
+        font-size: clamp(0.5em, 0.35em + 0.75vw, 1em);
+        font-weight: 800;
+
+        & > #pretitle {
+          font-family: var(--font-sans-serifs);
+          font-weight: 400;
+          margin-bottom: 0.8em;
+        }
+
+        & > #title {
+          font-family: var(--font-serif);
+          font-size: 200%;
+        }
+
+        & > #subtitle {
+          font-family: var(--font-serif);
+          font-weight: 600;
+          margin-top: 0.5em;
+        }
+      }
+
+      & > hr {
+        border: none;
+        border-top: 2px dotted var(--color-base-500);
+        width: 100%;
+        margin: unset;
+      }
+    }
+  }
+</style>

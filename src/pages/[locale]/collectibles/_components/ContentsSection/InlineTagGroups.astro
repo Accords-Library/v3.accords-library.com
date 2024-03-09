@@ -1,0 +1,52 @@
+---
+import { Icon } from "astro-icon/components";
+import { getI18n } from "src/i18n/i18n";
+import type { EndpointTagsGroup } from "src/shared/payload/payload-sdk";
+
+interface Props {
+  tagGroups: EndpointTagsGroup[];
+}
+
+const { tagGroups } = Astro.props;
+const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<div id="tags">
+  {
+    tagGroups.map(({ icon, translations, tags }) => (
+      <div>
+        <Icon name={icon} />
+        <p>{getLocalizedMatch(translations).name}</p>
+        <div>{tags.map(({ translations }) => getLocalizedMatch(translations).name).join(", ")}</div>
+      </div>
+    ))
+  }
+</div>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  #tags {
+    display: flex;
+    gap: 0.5em 1.5em;
+    flex-wrap: wrap;
+
+    & > div {
+      font-weight: 400;
+      font-size: 80%;
+      display: flex;
+      gap: 0.5em;
+
+      & > p {
+        color: var(--color-base-750);
+      }
+
+      & > svg {
+        color: var(--color-base-750);
+        flex-shrink: 0;
+      }
+    }
+  }
+</style>
