@@ -1,6 +1,5 @@
 import {
   payload,
-  type EndpointRecorder,
   type Language,
   type EndpointTag,
   type EndpointTagsGroup,
@@ -10,16 +9,14 @@ import {
 type Cache = {
   locales: Language[];
   currencies: string[];
-  recorders: EndpointRecorder[];
+  wordings: EndpointWording[];
   tags: EndpointTag[];
   tagsGroups: EndpointTagsGroup[];
-  wordings: EndpointWording[];
 };
 
 const fetchNewData = async (): Promise<Cache> => ({
   locales: await payload.getLanguages(),
   currencies: (await payload.getCurrencies()).map(({ id }) => id),
-  recorders: await payload.getRecorders(),
   tags: await payload.getTags(),
   tagsGroups: await payload.getTagsGroups(),
   wordings: await payload.getWordings(),

@@ -1491,7 +1491,7 @@ export type EndpointPagePreview = {
   slug: string;
   type: PageType;
   thumbnail?: PayloadImage;
-  authors: string[];
+  authors: EndpointRecorder[];
   tagGroups: TagGroup[];
   translations: {
     language: string;
@@ -1508,9 +1508,9 @@ export type EndpointPage = EndpointPagePreview & {
     sourceLanguage: string;
     summary?: RichTextContent;
     content: RichTextContent;
-    transcribers: string[];
-    translators: string[];
-    proofreaders: string[];
+    transcribers: EndpointRecorder[];
+    translators: EndpointRecorder[];
+    proofreaders: EndpointRecorder[];
     toc: TableOfContentEntry[];
   })[];
   parentPages: ParentPage[];

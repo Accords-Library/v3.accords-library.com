@@ -1,11 +1,11 @@
 ---
-import { formatRecorder } from "src/utils/format";
+import type { EndpointRecorder } from "src/shared/payload/payload-sdk";
 import Metadata from "./Metadata.astro";
 
 interface Props {
-  translators?: string[] | undefined;
-  transcribers?: string[] | undefined;
-  proofreaders?: string[] | undefined;
+  translators?: EndpointRecorder[] | undefined;
+  transcribers?: EndpointRecorder[] | undefined;
+  proofreaders?: EndpointRecorder[] | undefined;
 }
 
 const { translators = [], transcribers = [], proofreaders = [] } = Astro.props;
@@ -16,17 +16,17 @@ const { translators = [], transcribers = [], proofreaders = [] } = Astro.props;
 <Metadata
   icon="material-symbols:person-outline"
   title="Translators"
-  values={translators.map((id) => formatRecorder(id))}
+  values={translators.map(({ username }) => username)}
 />
 
 <Metadata
   icon="material-symbols:person-edit-outline"
   title="Transcribers"
-  values={transcribers.map((id) => formatRecorder(id))}
+  values={transcribers.map(({ username }) => username)}
 />
 
 <Metadata
   icon="material-symbols:person-check-outline"
   title="Proofreaders"
-  values={proofreaders.map((id) => formatRecorder(id))}
+  values={proofreaders.map(({ username }) => username)}
 />
