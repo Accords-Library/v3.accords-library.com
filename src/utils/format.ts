@@ -1,3 +1,11 @@
+import {
+  isNodeLinkNode,
+  isNodeListNode,
+  isNodeParagraphNode,
+  isNodeTextNode,
+  type RichTextContent,
+  type RichTextNode,
+} from "src/shared/payload/payload-sdk";
 import { cache } from "src/utils/cachedPayload";
 
 export const formatLocale = (code: string): string =>
@@ -21,4 +29,21 @@ export const formatInlineTitle = ({
     result += ` — ${subtitle}`;
   }
   return result;
+};
+
+export const formatRichTextToString = (content: RichTextContent): string => {
+  const formatNode = (node: RichTextNode): string => {
+    if (isNodeParagraphNode(node)) {
+      return node.children.map(formatNode).join("");
+    } else if (isNodeListNode(node)) {
+      return "LIST";
+    } else if (isNodeTextNode(node)) {
+      return node.text;
+    } else if (isNodeLinkNode(node)) {
+      return node.children.map(formatNode).join("");
+    }
+    return "";
+  };
+
+  return content.root.children.map(formatNode).join("\n\n");
 };

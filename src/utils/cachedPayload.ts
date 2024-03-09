@@ -19,7 +19,7 @@ export const refreshWordings = async () => {
 };
 
 export const refreshCurrencies = async () => {
-  cache.currencies = (await  payload.getCurrencies()).map(({ id }) => id)
+  cache.currencies = (await payload.getCurrencies()).map(({ id }) => id);
 };
 
 export const refreshLocales = async () => {
