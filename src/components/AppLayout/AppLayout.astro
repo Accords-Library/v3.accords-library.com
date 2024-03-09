@@ -7,9 +7,10 @@ import AppLayoutTitle from "./components/AppLayoutTitle.astro";
 import type { ComponentProps } from "astro/types";
 
 interface Props {
+  openGraph?: ComponentProps<typeof Html>["openGraph"];
   parentPages?: ComponentProps<typeof Topbar>["parentPages"];
   pretitle?: string | undefined;
-  title: string;
+  title?: string;
   subtitle?: string | undefined;
   description?: string | undefined;
   illustration?: string;
@@ -21,6 +22,7 @@ interface Props {
 }
 
 const {
+  openGraph,
   title,
   subtitle,
   pretitle,
@@ -37,7 +39,7 @@ const {
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<Html title={title}>
+<Html openGraph={openGraph}>
   <header>
     {backgroundIllustration && <AppLayoutBackgroundImg src={backgroundIllustration} />}
 
@@ -47,7 +49,7 @@ const {
         <div id="header-content">
           <div id="header-left">
             <slot name="header-title">
-              <AppLayoutTitle pretitle={pretitle} title={title} subtitle={subtitle} />
+              {title && <AppLayoutTitle pretitle={pretitle} title={title} subtitle={subtitle} />}
             </slot>
 
             <div class="prose">

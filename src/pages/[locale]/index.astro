@@ -13,7 +13,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <AppLayout
-  title="Accord’s Library"
+  openGraph={{ title: t("home.title") }}
   backgroundIllustration="/img/background-image.webp"
   hideFooterLinks
   hideHomeButton>

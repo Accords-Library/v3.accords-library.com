@@ -8,14 +8,16 @@ import ErrorMessage from "components/ErrorMessage.astro";
 import { getI18n } from "src/i18n/i18n";
 import CollectiblePreview from "components/Previews/CollectiblePreview.astro";
 import PagePreview from "components/Previews/PagePreview.astro";
+import { formatRichTextToString } from "src/utils/format";
 
 const { slug } = Astro.params;
-const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 
 const folder = await fetchOr404(() => payload.getFolder(slug!));
 if (folder instanceof Response) {
   return folder;
 }
+
+const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 const meta = getLocalizedMatch(folder.translations);
 
 // TODO: handle light and dark illustration for applayout
@@ -23,7 +25,13 @@ const meta = getLocalizedMatch(folder.translations);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppLayout title={meta.name}>
+<AppLayout
+  title={meta.name}
+  openGraph={{
+    title: meta.name,
+    description: meta.description && formatRichTextToString(meta.description),
+    thumbnail: folder.lightThumbnail?.url ?? folder.darkThumbnail?.url,
+  }}>
   {
     meta.description && (
       <div slot="header-description">

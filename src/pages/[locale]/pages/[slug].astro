@@ -1,7 +1,9 @@
 ---
 import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import { getI18n } from "src/i18n/i18n";
 import Page from "src/pages/[locale]/api/pages/partial.astro";
 import { payload } from "src/shared/payload/payload-sdk";
+import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
 
 const { slug } = Astro.params;
@@ -10,11 +12,19 @@ const page = await fetchOr404(() => payload.getPage(slug!));
 if (page instanceof Response) {
   return page;
 }
+
+const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
+const meta = getLocalizedMatch(page.translations);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <AppEmptyLayout
+  openGraph={{
+    title: formatInlineTitle(meta),
+    description: meta.summary && formatRichTextToString(meta.summary),
+    thumbnail: page.thumbnail?.url,
+  }}
   parentPages={page.parentPages}
   backgroundIllustration={page.backgroundImage?.url ?? page.thumbnail?.url}>
   <Page slug={page.slug} lang={Astro.locals.currentLocale} page={page} />

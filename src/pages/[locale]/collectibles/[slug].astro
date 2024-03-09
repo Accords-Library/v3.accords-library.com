@@ -15,6 +15,7 @@ import AvailabilityInfo from "./_components/AvailabilityInfo.astro";
 import WeightInfo from "./_components/WeightInfo.astro";
 import SubitemSection from "./_components/SubitemSection.astro";
 import ContentsSection from "./_components/ContentsSection/ContentsSection.astro";
+import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 
 const { slug } = Astro.params;
 const { getLocalizedMatch, t } = await getI18n(Astro.locals.currentLocale);
@@ -51,6 +52,10 @@ const scansFirstImage = scans[0];
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <AppEmptyLayout
+  openGraph={{
+    title: formatInlineTitle(translation),
+    description: translation.description && formatRichTextToString(translation.description),
+  }}
   parentPages={parentPages}
   backgroundIllustration={backgroundImage?.url ?? thumbnail?.url}>
   <div id="layout">
