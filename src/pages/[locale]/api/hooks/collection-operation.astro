@@ -1,6 +1,6 @@
 ---
 import { Collections } from "src/shared/payload/payload-sdk";
-import { refreshWordings } from "src/utils/cachedPayload";
+import { refreshCurrencies, refreshLocales, refreshWordings } from "src/utils/cachedPayload";
 
 const auth = Astro.request.headers.get("Authorization");
 
@@ -13,6 +13,14 @@ const collectionSlug = Astro.request.headers.get("Collection");
 switch (collectionSlug) {
   case Collections.Wordings:
     await refreshWordings();
+    break;
+
+  case Collections.Currencies:
+    await refreshCurrencies();
+    break;
+
+  case Collections.Languages:
+    await refreshLocales()
     break;
 
   default:

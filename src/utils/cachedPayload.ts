@@ -18,7 +18,10 @@ export const refreshWordings = async () => {
   cache.wordings = await payload.getWordings();
 };
 
-setInterval(async () => {
-  console.log("Refreshing cached Payload data");
-  cache = await fetchNewData();
-}, 1000_000);
+export const refreshCurrencies = async () => {
+  cache.currencies = (await  payload.getCurrencies()).map(({ id }) => id)
+};
+
+export const refreshLocales = async () => {
+  cache.locales = await payload.getLanguages();
+};
