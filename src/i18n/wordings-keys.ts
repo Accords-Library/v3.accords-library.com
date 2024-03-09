@@ -78,4 +78,5 @@ export type WordingKey =
   | "global.credits.transcribers"
   | "global.credits.translators"
   | "global.credits.proofreaders"
-  | "global.credits.authors";
+  | "global.credits.authors"
+  | "pages.tableOfContent";
