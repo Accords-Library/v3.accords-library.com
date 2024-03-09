@@ -4,6 +4,7 @@ import type { ParentPage } from "src/shared/payload/payload-sdk";
 import ParentPageLink from "./ParentPageLink.astro";
 import { Icon } from "astro-icon/components";
 import { getI18n } from "src/i18n/i18n";
+import ReturnToButton from "./ReturnToButton.astro";
 
 interface Props {
   parentPages: ParentPage[];
@@ -16,23 +17,29 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<Tooltip trigger="click">
-  <div id="tooltip-content" slot="tooltip-content">
-    {/* TODO: Translate */}
-    <p>This content is part of these pages:</p>
-    {parentPages.map((parentPage) => <ParentPageLink parentPage={parentPage} />)}
-  </div>
-  <div class="pressable-label">
-    <Icon name="material-symbols:keyboard-return" />
-    <p>
-      {
-        t("header.nav.parentPages.label", {
-          count: parentPages.length,
-        })
-      }
-    </p>
-  </div>
-</Tooltip>
+{
+  parentPages.length === 1 && parentPages[0] ? (
+    <ReturnToButton parentPage={parentPages[0]} />
+  ) : (
+    <Tooltip trigger="click">
+      <div id="tooltip-content" slot="tooltip-content">
+        {/* TODO: Translate */}
+        <p>{t("header.nav.parentPages.tooltip")}</p>
+        {parentPages.map((parentPage) => (
+          <ParentPageLink parentPage={parentPage} />
+        ))}
+      </div>
+      <div class="pressable-label">
+        <Icon name="material-symbols:keyboard-return" />
+        <p>
+          {t("header.nav.parentPages.label", {
+            count: parentPages.length,
+          })}
+        </p>
+      </div>
+    </Tooltip>
+  )
+}
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 

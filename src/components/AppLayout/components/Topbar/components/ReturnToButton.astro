@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import { getI18n } from "src/i18n/i18n";
 import { Collections, type ParentPage } from "src/shared/payload/payload-sdk";
 
@@ -32,39 +33,33 @@ switch (parentPage.collection) {
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<a href={href}><div>{collectionLabel}</div><p>{translation.name}</p></a>
+<a href={href}>
+  <div class="pressable-label">
+    <Icon name="material-symbols:keyboard-return" />
+    <p>
+      <span>{collectionLabel}</span>
+      {translation.name}
+    </p>
+  </div>
+</a>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  a {
-    display: flex;
-    place-items: center;
-    gap: 0.5em;
+  div {
+    height: 16px;
 
     & > p {
-      text-decoration: underline dotted 0.1em;
-      text-decoration-color: transparent;
+      display: flex;
+      place-items: center;
+      gap: 0.5em;
 
-      transition-duration: 150ms;
-      transition-property: text-decoration-color, color;
-    }
-
-    &:hover > p {
-      color: var(--color-base-750);
-      text-decoration-color: var(--color-base-650);
-    }
-
-    &:active > p {
-      color: var(--color-base-650);
-      text-decoration-color: var(--color-base-550);
-    }
-
-    & > div {
-      background-color: var(--color-base-300);
-      border-radius: 9999px;
-      padding: 0.5em 0.6em;
-      font-size: 80%;
+      span {
+        border: 1px solid var(--color-base-1000);
+        border-radius: 9999px;
+        padding: 0.3em 0.5em;
+        font-size: 80%;
+      }
     }
   }
 </style>

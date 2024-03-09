@@ -79,4 +79,7 @@ export type WordingKey =
   | "global.credits.translators"
   | "global.credits.proofreaders"
   | "global.credits.authors"
-  | "pages.tableOfContent";
+  | "pages.tableOfContent"
+  | "header.nav.parentPages.collections.folder"
+  | "header.nav.parentPages.collections.collectible"
+  | "header.nav.parentPages.tooltip";
