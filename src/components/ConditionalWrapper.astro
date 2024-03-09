@@ -1,17 +1,18 @@
 ---
-interface Props {
-  wrapper: (props?: any) => any;
+interface Props<T extends Record<string, any>> {
+  wrapper: (props: T) => any;
+  props?: T;
   condition: boolean;
 }
 
-const { wrapper: Wrapper, condition } = Astro.props;
+const { wrapper: Wrapper, condition, props } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 {
   condition ? (
-    <Wrapper>
+    <Wrapper {...props}>
       <slot />
     </Wrapper>
   ) : (

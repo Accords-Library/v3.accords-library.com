@@ -4,6 +4,9 @@ import RichText from "components/RichText/RichText.astro";
 import { getI18n } from "src/i18n/i18n";
 import type { EndpointCollectible } from "src/shared/payload/payload-sdk";
 import { formatInlineTitle } from "src/utils/format";
+import InlineTagGroups from "./InlineTagGroups.astro";
+import ConditionalWrapper from "components/ConditionalWrapper.astro";
+import Link from "components/Link.astro";
 
 interface Props {
   content: EndpointCollectible["contents"][number];
@@ -13,71 +16,116 @@ const { getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.curren
 const {
   content: { content, range },
 } = Astro.props;
+
+const href =
+  content.relationTo === "pages" ? getLocalizedUrl(`/pages/${content.value.slug}`) : undefined;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<div id="row">
-  <div id="title">
+<ConditionalWrapper condition={href !== undefined} wrapper={Link} props={{ href: href! }}>
+  <div id="row">
+    <div id="title">
+      {
+        content.relationTo === "generic-contents" ? (
+          <p>{getLocalizedMatch(content.value.translations).name}</p>
+        ) : content.relationTo === "pages" ? (
+          <p>{formatInlineTitle(getLocalizedMatch(content.value.translations))}</p>
+        ) : (
+          <ErrorMessage
+            title="Unknown content type"
+            description="Please contact website technical administrator."
+          />
+        )
+      }
+    </div>
+
+    <div id="dots"></div>
+
+    <div id="range">
+      {
+        range && (
+          <>
+            {range.type === "pageRange" ? (
+              range.start
+            ) : range.type === "timeRange" ? (
+              range.start
+            ) : range.type === "other" ? (
+              <RichText content={getLocalizedMatch(range.translations).note} />
+            ) : (
+              <ErrorMessage
+                title="Unknown range type"
+                description="Please contact website technical administrator."
+              />
+            )}
+          </>
+        )
+      }
+    </div>
+
     {
-      content.relationTo === "generic-contents" ? (
-        <p>{getLocalizedMatch(content.value.translations).name}</p>
-      ) : content.relationTo === "pages" ? (
-        <a href={getLocalizedUrl(`/pages/${content.value.slug}`)} class="pressable-link">
-          {formatInlineTitle(getLocalizedMatch(content.value.translations))}
-        </a>
-      ) : (
-        <ErrorMessage
-          title="Unknown content type"
-          description="Please contact website technical administrator."
-        />
+      content.relationTo === "pages" && content.value.tagGroups.length > 0 && (
+        <div id="tags">
+          <InlineTagGroups tagGroups={content.value.tagGroups} />
+        </div>
       )
     }
   </div>
-
-  <div id="dots"></div>
-
-  <div id="range">
-    {
-      range && (
-        <>
-          {range.type === "pageRange" ? (
-            range.start
-          ) : range.type === "timeRange" ? (
-            range.start
-          ) : range.type === "other" ? (
-            <RichText content={getLocalizedMatch(range.translations).note} />
-          ) : (
-            <ErrorMessage
-              title="Unknown range type"
-              description="Please contact website technical administrator."
-            />
-          )}
-        </>
-      )
-    }
-  </div>
-</div>
+</ConditionalWrapper>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
+  :global(a) > #row {
+    transition-duration: 150ms;
+    transition-property: border-color, box-shadow;
+
+    & > #title {
+      transition-duration: 150ms;
+      transition-property: text-decoration-color, color;
+
+      text-decoration: underline dotted 0.1em;
+      text-decoration-color: transparent;
+    }
+
+    &:hover {
+      border-color: var(--color-base-650);
+      box-shadow: 0 2px 2px var(--color-shadow-2);
+
+      & > #title {
+        color: var(--color-base-750);
+        text-decoration-color: var(--color-base-650);
+      }
+    }
+
+    &:active {
+      border-color: var(--color-base-1000);
+      box-shadow: 0 6px 12px 2px var(--color-shadow-2);
+
+      & > #title {
+        color: var(--color-base-1000);
+        text-decoration-color: var(--color-base-1000);
+      }
+    }
+  }
+
   #row {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 1em;
-    align-items: center;
-    padding: 1em;
     border-radius: 1em;
     box-shadow: 0 1px 2px 0 var(--color-shadow-2);
 
     backdrop-filter: blur(10px);
     background-color: color-mix(in srgb, var(--color-elevation-2) 50%, transparent);
 
-    border-top: 1px solid var(--color-elevation-2);
+    border: 1px solid var(--color-base-300);
+    padding: 1.5em;
+
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1em;
+    align-items: center;
 
     & > #title {
-      padding-bottom: 0.2em;
+      font-weight: 600;
     }
 
     & > #dots {
@@ -87,7 +135,8 @@ const {
       height: 0.6em;
     }
 
-    # > #range {
+    & > #tags {
+      grid-column: span 2;
     }
   }
 </style>
