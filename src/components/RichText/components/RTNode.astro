@@ -7,6 +7,7 @@ import RTBlock from "./RTBlock/RTBlock.astro";
 import type { RichTextContext } from "src/utils/richText";
 import {
   isNodeBlockNode,
+  isNodeLinebreakNode,
   isNodeLinkNode,
   isNodeListNode,
   isNodeParagraphNode,
@@ -16,6 +17,7 @@ import {
 } from "src/shared/payload/payload-sdk";
 import RTTab from "./RTTab.astro";
 import ErrorMessage from "components/ErrorMessage.astro";
+import RTLinebreak from "./RTLinebreak.astro";
 
 interface Props {
   node: RichTextNode;
@@ -34,6 +36,8 @@ const { node, context } = Astro.props;
     <RTList node={node} context={context} />
   ) : isNodeTextNode(node) ? (
     <RTText node={node} context={context} />
+  ) : isNodeLinebreakNode(node) ? (
+    <RTLinebreak node={node} context={context} />
   ) : isNodeLinkNode(node) ? (
     <RTLink node={node} context={context} />
   ) : isNodeBlockNode(node) ? (

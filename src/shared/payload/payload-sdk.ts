@@ -1137,6 +1137,10 @@ export interface RichTextListCheckNode extends RichTextListNode {
   listType: "check";
 }
 
+export interface RichTextLinebreakNode extends RichTextNode {
+  type: "linebreak";
+}
+
 export interface RichTextTextNode extends RichTextNode {
   type: "text";
   format: number;
@@ -1207,6 +1211,9 @@ export const isListNodeBulletListNode = (node: RichTextListNode): node is RichTe
 
 export const isListNodeCheckListNode = (node: RichTextListNode): node is RichTextListCheckNode =>
   node.listType === "check";
+
+export const isNodeLinebreakNode = (node: RichTextNode): node is RichTextLinebreakNode =>
+  node.type === "linebreak";
 
 export const isNodeTextNode = (node: RichTextNode): node is RichTextTextNode =>
   node.type === "text";

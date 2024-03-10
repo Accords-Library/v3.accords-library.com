@@ -4,6 +4,7 @@
 
 - [Collectibles] Create page for gallery
 - [Collectibles] Create page for scans
+- Rich text, handle linebreak node type, remove spacer
 
 ## Long term
 
