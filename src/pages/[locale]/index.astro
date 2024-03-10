@@ -26,7 +26,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
   </div>
   <div id="description" slot="header-description">
     <p set:html={t("home.description")} class="high-contrast-text" />
-    <a href={getLocalizedUrl("/about")}>
+    <a href={getLocalizedUrl("/about")} class="DEV_TODO">
       <Button title={t("home.aboutUsButton")} icon="material-symbols:left-click" />
     </a>
   </div>
@@ -35,7 +35,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     <section id="library" class="high-contrast-text">
       <h2>{t("home.librarySection.title")}</h2>
       <p set:html={t("home.librarySection.description")} />
-      <a href={getLocalizedUrl("/search")}>
+      <a href={getLocalizedUrl("/search")} class="DEV_TODO">
         <Button
           class="section-button"
           title={t("home.librarySection.button")}
@@ -47,7 +47,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       </div>
     </section>
 
-    <section>
+    <section class="DEV_TODO">
       <h2>{t("home.chroniclesSection.title")}</h2>
       <p set:html={t("home.chroniclesSection.description")} />
       <div class="flex">
@@ -90,7 +90,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       </div>
     </section>
 
-    <section>
+    <section class="DEV_TODO">
       <h2>{t("home.changesSection.title")}</h2>
       <p set:html={t("home.changesSection.description")} />
       <a href={getLocalizedUrl("/changelog")}>
@@ -102,7 +102,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       </a>
     </section>
 
-    <section>
+    <section class="DEV_TODO">
       <h2>{t("home.moreSection.title")}</h2>
       <p set:html={t("home.moreSection.description")} />
       <div class="grid">
@@ -158,12 +158,14 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
           subtitle={t("footer.socials.github.subtitle")}
           href="https://github.com/Accords-Library"
         />
-        <LinkCard
-          icon="material-symbols:mail-outline"
-          title={t("footer.socials.contact.title")}
-          subtitle={t("footer.socials.contact.subtitle")}
-          href={getLocalizedUrl("/contact")}
-        />
+        <div class="DEV_TODO">
+          <LinkCard
+            icon="material-symbols:mail-outline"
+            title={t("footer.socials.contact.title")}
+            subtitle={t("footer.socials.contact.subtitle")}
+            href={getLocalizedUrl("/contact")}
+          />
+        </div>
       </div>
     </section>
   </div>

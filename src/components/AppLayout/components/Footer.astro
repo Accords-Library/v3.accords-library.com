@@ -36,19 +36,19 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
             <Icon name="accords" />
             <p>{t("footer.links.home.title")}</p>
           </a>
-          <a href="/archives">
+          <a href="/archives" class="DEV_TODO">
             <Icon name="material-symbols:browse" />
             <p>{"Contents"}</p>
           </a>
-          <a href="/chronicles">
+          <a href="/chronicles" class="DEV_TODO">
             <Icon name="material-symbols:book-2" />
             <p>{"Chronicles"}</p>
           </a>
-          <a href="/changelog">
+          <a href="/changelog" class="DEV_TODO">
             <Icon name="material-symbols:history" />
             <p>{"Changelog"}</p>
           </a>
-          <a href="/timeline">
+          <a href="/timeline" class="DEV_TODO">
             <Icon name="material-symbols:calendar-month" />
             <p>{t("footer.links.timeline.title")}</p>
           </a>
@@ -56,11 +56,11 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
             <Icon name="material-symbols:perm-media" />
             <p>{t("footer.links.gallery.title")}</p>
           </a>
-          <a href="/videos">
+          <a href="/videos" class="DEV_TODO">
             <Icon name="material-symbols:movie" />
             <p>{t("footer.links.videos.title")}</p>
           </a>
-          <a href="/archives">
+          <a href="/archives" class="DEV_TODO">
             <Icon name="material-symbols:folder-zip" />
             <p>{t("footer.links.webArchives.title")}</p>
           </a>
@@ -104,7 +104,11 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
             <Icon name="github-brands" />
           </a>
 
-          <a href="/contact" class="pressable-icon" aria-label={contactLabel} title={contactLabel}>
+          <a
+            href="/contact"
+            class="pressable-icon DEV_TODO"
+            aria-label={contactLabel}
+            title={contactLabel}>
             <Icon name="material-symbols:mail-outline" />
           </a>
         </div>
