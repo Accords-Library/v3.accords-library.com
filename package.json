@@ -9,11 +9,11 @@
     "preview": "astro preview",
     "astro": "astro",
     "upgrade": "ncu",
-    "script:download-payload-sdk": "bun run scripts/download-payload-sdk.ts",
-    "script:download-currencies": "bun run scripts/download-currencies.ts",
-    "script:download-wording-keys": "bun run scripts/download-wording-keys.ts",
+    "script:download-payload-sdk": "npm run scripts/download-payload-sdk.ts",
+    "script:download-currencies": "npm run scripts/download-currencies.ts",
+    "script:download-wording-keys": "npm run scripts/download-wording-keys.ts",
     "prettier": "prettier --write --list-different --plugin=prettier-plugin-astro .",
-    "precommit": "bun run script:download-wording-keys && bun run script:download-payload-sdk && bun run prettier && bun run astro check"
+    "precommit": "npm run script:download-wording-keys && npm run script:download-payload-sdk && npm run prettier && npm run astro check"
   },
   "engines": {
     "npm": ">=10.0.0",
