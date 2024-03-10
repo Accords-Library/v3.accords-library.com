@@ -1,8 +1,7 @@
 ---
 import type { EndpointTagsGroup, PayloadImage } from "src/shared/payload/payload-sdk";
-import ConditionalWrapper from "../ConditionalWrapper.astro";
-import Link from "../Link.astro";
 import InlineTagGroups from "pages/[locale]/collectibles/_components/ContentsSection/InlineTagGroups.astro";
+import Card from "components/Card.astro";
 
 interface Props {
   thumbnail?: PayloadImage | undefined;
@@ -25,8 +24,8 @@ const {
 } = Astro.props;
 ---
 
-<ConditionalWrapper condition={href !== undefined} wrapper={Link} props={{ href: href! }}>
-  <div id="card" class:list={{ "rounded-top": !disableRoundedTop }}>
+<Card href={href} disableRoundedTop={disableRoundedTop}>
+  <div id="card">
     {
       thumbnail && (
         <img src={thumbnail.url} width={thumbnail.width} height={thumbnail.height} alt="" />
@@ -52,38 +51,25 @@ const {
       }
     </div>
   </div>
-</ConditionalWrapper>
+</Card>
 
 <style>
+  :global(a > #card) {
+    & > #card > div > p > #title {
+      transition-duration: 150ms;
+      transition-property: color;
+    }
+
+    &:hover > #card > div > p {
+      color: var(--color-base-750);
+    }
+
+    &:active > #card > div > p {
+      color: var(--color-base-1000);
+    }
+  }
+
   #card {
-    box-shadow: 0 1px 2px 0 var(--color-shadow-2);
-
-    backdrop-filter: blur(10px);
-    background-color: color-mix(in srgb, var(--color-elevation-2) 50%, transparent);
-
-    border: 1px solid var(--color-base-300);
-
-    &.rounded-top {
-      border-radius: 1em;
-      overflow: hidden;
-    }
-
-    border-bottom-left-radius: 1em;
-    border-bottom-right-radius: 1em;
-
-    transition-duration: 150ms;
-    transition-property: border-color, box-shadow;
-
-    &:hover {
-      border-color: var(--color-base-650);
-      box-shadow: 0 2px 2px var(--color-shadow-2);
-    }
-
-    &:active {
-      border-color: var(--color-base-1000);
-      box-shadow: 0 6px 12px 2px var(--color-shadow-2);
-    }
-
     & > img {
       width: 100%;
       height: auto;

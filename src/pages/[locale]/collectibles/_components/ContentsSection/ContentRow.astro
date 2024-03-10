@@ -5,8 +5,7 @@ import { getI18n } from "src/i18n/i18n";
 import type { EndpointCollectible } from "src/shared/payload/payload-sdk";
 import { formatInlineTitle } from "src/utils/format";
 import InlineTagGroups from "./InlineTagGroups.astro";
-import ConditionalWrapper from "components/ConditionalWrapper.astro";
-import Link from "components/Link.astro";
+import Card from "components/Card.astro";
 
 interface Props {
   content: EndpointCollectible["contents"][number];
@@ -23,7 +22,7 @@ const href =
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<ConditionalWrapper condition={href !== undefined} wrapper={Link} props={{ href: href! }}>
+<Card href={href}>
   <div id="row">
     <div id="title">
       {
@@ -71,15 +70,12 @@ const href =
       )
     }
   </div>
-</ConditionalWrapper>
+</Card>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  :global(a) > #row {
-    transition-duration: 150ms;
-    transition-property: border-color, box-shadow;
-
+  :global(a > #card) > #row {
     & > #title {
       transition-duration: 150ms;
       transition-property: text-decoration-color, color;
@@ -88,35 +84,18 @@ const href =
       text-decoration-color: transparent;
     }
 
-    &:hover {
-      border-color: var(--color-base-650);
-      box-shadow: 0 2px 2px var(--color-shadow-2);
-
-      & > #title {
-        color: var(--color-base-750);
-        text-decoration-color: var(--color-base-650);
-      }
+    &:hover > #title {
+      color: var(--color-base-750);
+      text-decoration-color: var(--color-base-650);
     }
 
-    &:active {
-      border-color: var(--color-base-1000);
-      box-shadow: 0 6px 12px 2px var(--color-shadow-2);
-
-      & > #title {
-        color: var(--color-base-1000);
-        text-decoration-color: var(--color-base-1000);
-      }
+    &:active > #title {
+      color: var(--color-base-1000);
+      text-decoration-color: var(--color-base-1000);
     }
   }
 
   #row {
-    border-radius: 1em;
-    box-shadow: 0 1px 2px 0 var(--color-shadow-2);
-
-    backdrop-filter: blur(10px);
-    background-color: color-mix(in srgb, var(--color-elevation-2) 50%, transparent);
-
-    border: 1px solid var(--color-base-300);
     padding: 1.5em;
 
     display: grid;

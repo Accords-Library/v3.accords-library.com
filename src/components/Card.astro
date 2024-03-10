@@ -1,0 +1,52 @@
+---
+import ConditionalWrapper from "./ConditionalWrapper.astro";
+import Link from "./Link.astro";
+
+interface Props {
+  href?: string | undefined;
+  disableRoundedTop?: boolean;
+}
+
+const { href, disableRoundedTop = false } = Astro.props;
+---
+
+<ConditionalWrapper condition={href !== undefined} wrapper={Link} props={{ href: href! }}>
+  <div id="card" class:list={{ "rounded-top": !disableRoundedTop }}>
+    <slot />
+  </div>
+</ConditionalWrapper>
+
+<style>
+  #card {
+    backdrop-filter: blur(10px);
+
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
+
+    &.rounded-top {
+      border-radius: 1em;
+      overflow: hidden;
+    }
+
+    border: 1px solid var(--color-base-300);
+    box-shadow: 0 1px 2px 0 var(--color-shadow-2);
+    background-color: color-mix(in srgb, var(--color-elevation-2) 30%, transparent);
+  }
+
+  :global(a) > #card {
+    transition-duration: 150ms;
+    transition-property: border-color, box-shadow, background-color;
+
+    &:hover {
+      border-color: var(--color-base-650);
+      box-shadow: 0 2px 2px var(--color-shadow-2);
+      background-color: color-mix(in srgb, var(--color-elevation-2) 80%, transparent);
+    }
+
+    &:active {
+      border-color: var(--color-base-1000);
+      box-shadow: 0 6px 12px 2px var(--color-shadow-2);
+      background-color: var(--color-elevation-2);
+    }
+  }
+</style>
