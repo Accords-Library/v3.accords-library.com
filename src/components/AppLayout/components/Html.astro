@@ -4,6 +4,7 @@ import { ViewTransitions } from "astro:transitions";
 import "@fontsource-variable/vollkorn";
 import "@fontsource-variable/murecho";
 import { getI18n } from "src/i18n/i18n";
+import AppLayoutSpinner from "./AppLayoutSpinner.astro";
 
 interface Props {
   openGraph?:
@@ -116,6 +117,8 @@ const { currentTheme } = Astro.locals;
   <body>
     <slot />
   </body>
+
+  <AppLayoutSpinner />
 </html>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}

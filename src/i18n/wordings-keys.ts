@@ -83,4 +83,5 @@ export type WordingKey =
   | "header.nav.parentPages.collections.folder"
   | "header.nav.parentPages.collections.collectible"
   | "header.nav.parentPages.tooltip"
-  | "global.meta.description";
+  | "global.meta.description"
+  | "global.loading";
