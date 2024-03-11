@@ -14,7 +14,13 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 
 <AppLayout
   openGraph={{ title: t("home.title") }}
-  backgroundIllustration="/img/background-image.webp"
+  backgroundImage={{
+    url: "/img/background-image.webp",
+    filename: "background-image",
+    height: 2279,
+    width: 1920,
+    mimeType: "image/webp",
+  }}
   hideFooterLinks
   hideHomeButton>
   <div id="title" slot="header-title">
@@ -102,36 +108,39 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       </a>
     </section>
 
-    <section class="DEV_TODO">
+    <section>
       <h2>{t("home.moreSection.title")}</h2>
       <p set:html={t("home.moreSection.description")} />
       <div class="grid">
-        <LinkCard
-          icon="material-symbols:calendar-month-outline"
-          title={t("footer.links.timeline.title")}
-          subtitle={t("footer.links.timeline.subtitle", {
-            eraCount: 8,
-            eventCount: 358,
-          })}
-          href={getLocalizedUrl("/timeline")}
-        />
+        <div class="DEV_TODO">
+          <LinkCard
+            icon="material-symbols:calendar-month-outline"
+            title={t("footer.links.timeline.title")}
+            subtitle={t("footer.links.timeline.subtitle", {
+              eraCount: 8,
+              eventCount: 358,
+            })}
+            href={getLocalizedUrl("/timeline")}
+          />
+          <LinkCard
+            icon="material-symbols:movie-outline"
+            title={t("footer.links.videos.title")}
+            subtitle={t("footer.links.videos.subtitle", { count: 2115 })}
+            href={getLocalizedUrl("/videos")}
+          />
+          <LinkCard
+            icon="material-symbols:folder-zip-outline"
+            title={t("footer.links.webArchives.title")}
+            subtitle={t("footer.links.webArchives.subtitle", { count: 20 })}
+            href={getLocalizedUrl("/archives")}
+          />
+        </div>
+
         <LinkCard
           icon="material-symbols:perm-media-outline"
           title={t("footer.links.gallery.title")}
           subtitle={t("footer.links.gallery.subtitle", { count: 5750 })}
           href="https://gallery.accords-library.com/posts"
-        />
-        <LinkCard
-          icon="material-symbols:movie-outline"
-          title={t("footer.links.videos.title")}
-          subtitle={t("footer.links.videos.subtitle", { count: 2115 })}
-          href={getLocalizedUrl("/videos")}
-        />
-        <LinkCard
-          icon="material-symbols:folder-zip-outline"
-          title={t("footer.links.webArchives.title")}
-          subtitle={t("footer.links.webArchives.subtitle", { count: 20 })}
-          href={getLocalizedUrl("/archives")}
         />
       </div>
     </section>

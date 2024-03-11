@@ -26,6 +26,6 @@ const meta = getLocalizedMatch(page.translations);
     thumbnail: page.thumbnail?.url,
   }}
   parentPages={page.parentPages}
-  backgroundIllustration={page.backgroundImage?.url ?? page.thumbnail?.url}>
+  backgroundImage={page.backgroundImage ?? page.thumbnail}>
   <Page slug={page.slug} lang={Astro.locals.currentLocale} page={page} />
 </AppEmptyLayout>

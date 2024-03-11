@@ -1,23 +1,33 @@
 ---
+import type { PayloadImage } from "src/shared/payload/payload-sdk";
 import { getRandomId } from "src/utils/random";
 
 interface Props {
-  src: string;
-  alt?: string;
-  id?: string;
-  class?: string;
+  img: PayloadImage;
 }
 
-const { src, alt } = Astro.props;
+const {
+  img: { url, width, height },
+} = Astro.props;
 const uniqueId = getRandomId();
+
+const style = `
+@media (max-aspect-ratio: ${width}/${height}) {
+  #${uniqueId} {
+      mask-image: linear-gradient( to bottom, rgba(0 0 0 / 30%) 0%, transparent 100% );
+  }
+}
+`;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<img id={uniqueId} src={src} alt={alt} class="when-no-print when-js" />
-<img src={src} alt={alt} class="when-no-print when-no-js" />
+<img id={uniqueId} src={url} class="when-no-print when-js" />
+<img src={url} class="when-no-print when-no-js" />
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style set:html={style} is:inline></style>
 
 <style>
   img {
@@ -28,25 +38,21 @@ const uniqueId = getRandomId();
     bottom: 0;
 
     width: 100%;
-    height: 100vh;
+    height: auto;
+    max-height: 100%;
 
     object-fit: cover;
     object-position: 50% 0;
 
     z-index: -1;
 
-    mask-image: linear-gradient(to bottom, rgba(0 0 0 / 30%) 0%, transparent 100%);
-
-    @media (min-width: 110vh) {
-      mask-image: linear-gradient(
-        to bottom,
-        rgba(0 0 0 / 30%) 0%,
-        rgba(0 0 0 / 5%) 100vh,
-        transparent 100%
-      );
-      height: 100%;
-      max-height: 100vw;
-    }
+    mask-image: linear-gradient(
+      to bottom,
+      rgba(0 0 0 / 30%) 0%,
+      rgba(0 0 0 / 5%) 100vh,
+      rgba(0 0 0 / 5%) 80%,
+      transparent 100%
+    );
 
     user-select: none;
 
@@ -59,7 +65,7 @@ const uniqueId = getRandomId();
 
 {/* ------------------------------------------- JS --------------------------------------------- */}
 
-<script define:vars={{ uniqueId }}>
+<script define:vars={{ uniqueId }} is:inline>
   const element = document.getElementById(uniqueId);
 
   element.addEventListener("load", () => {

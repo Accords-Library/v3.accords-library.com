@@ -2,7 +2,7 @@
 import Html from "./components/Html.astro";
 import Topbar from "./components/Topbar/Topbar.astro";
 import Footer from "./components/Footer.astro";
-import type { ParentPage } from "src/shared/payload/payload-sdk";
+import type { ParentPage, PayloadImage } from "src/shared/payload/payload-sdk";
 import AppLayoutBackgroundImg from "./components/AppLayoutBackgroundImg.astro";
 import type { ComponentProps } from "astro/types";
 
@@ -10,17 +10,17 @@ interface Props {
   openGraph?: ComponentProps<typeof Html>["openGraph"];
   parentPages?: ParentPage[];
   hideFooterLinks?: boolean;
-  backgroundIllustration?: string | undefined;
+  backgroundImage?: PayloadImage | undefined;
 }
 
-const { openGraph, hideFooterLinks = false, parentPages, backgroundIllustration } = Astro.props;
+const { openGraph, hideFooterLinks = false, parentPages, backgroundImage } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <Html openGraph={openGraph}>
   <header>
-    {backgroundIllustration && <AppLayoutBackgroundImg src={backgroundIllustration} />}
+    {backgroundImage && <AppLayoutBackgroundImg img={backgroundImage} />}
     <Topbar parentPages={parentPages} />
   </header>
   <main><slot /></main>

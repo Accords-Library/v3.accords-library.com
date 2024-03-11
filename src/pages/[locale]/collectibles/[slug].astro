@@ -57,7 +57,7 @@ const scansFirstImage = scans[0];
     description: translation.description && formatRichTextToString(translation.description),
   }}
   parentPages={parentPages}
-  backgroundIllustration={backgroundImage?.url ?? thumbnail?.url}>
+  backgroundImage={backgroundImage ?? thumbnail}>
   <div id="layout">
     <div id="left">
       <AppLayoutTitle
