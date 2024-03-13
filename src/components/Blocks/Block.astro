@@ -3,13 +3,11 @@ import {
   isBlockLineBlock,
   type GenericBlock,
   isBlockCueBlock,
-  isBlockSpacerBlock,
 } from "src/shared/payload/payload-sdk";
 
 import LineBlock from "./components/LineBlock.astro";
 import CueBlock from "./components/CueBlock.astro";
 import ErrorMessage from "components/ErrorMessage.astro";
-import SpacerBlock from "./components/SpacerBlock.astro";
 
 interface Props {
   block: GenericBlock;
@@ -25,8 +23,6 @@ const { block } = Astro.props;
     <LineBlock block={block} />
   ) : isBlockCueBlock(block) ? (
     <CueBlock block={block} />
-  ) : isBlockSpacerBlock(block) ? (
-    <SpacerBlock block={block} />
   ) : (
     <ErrorMessage
       title={`Unknown block type: ${block.blockType}`}
