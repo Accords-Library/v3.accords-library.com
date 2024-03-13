@@ -48,9 +48,6 @@ export interface Config {
     pages: Page;
     'chronology-items': ChronologyItem;
     'chronology-eras': ChronologyEra;
-    weapons: Weapon;
-    'weapons-groups': WeaponsGroup;
-    'weapons-thumbnails': WeaponsThumbnail;
     'recorders-thumbnails': RecordersThumbnail;
     notes: Note;
     videos: Video;
@@ -64,6 +61,7 @@ export interface Config {
     wordings: Wording;
     collectibles: Collectible;
     'generic-contents': GenericContent;
+    'background-images': BackgroundImage;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -195,7 +193,7 @@ export interface Collectible {
     } | null;
     id?: string | null;
   }[];
-  backgroundImage?: string | Image | null;
+  backgroundImage?: string | BackgroundImage | null;
   gallery?:
     | {
         image: string | Image;
@@ -415,6 +413,31 @@ export interface TagsGroup {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "background-images".
+ */
+export interface BackgroundImage {
+  id: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  sizes?: {
+    thumb?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "recorders".
  */
 export interface Recorder {
@@ -484,7 +507,7 @@ export interface Page {
   slug: string;
   type: 'Content' | 'Post' | 'Generic';
   thumbnail?: string | Image | null;
-  backgroundImage?: string | Image | null;
+  backgroundImage?: string | BackgroundImage | null;
   tags?: (string | Tag)[] | null;
   authors?: (string | Recorder)[] | null;
   translations: {
@@ -643,173 +666,6 @@ export interface ChronologyEra {
   events?: (string | ChronologyItem)[] | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "weapons".
- */
-export interface Weapon {
-  id: string;
-  slug: string;
-  thumbnail?: string | WeaponsThumbnail | null;
-  group?: (string | null) | WeaponsGroup;
-  appearances: {
-    translations: {
-      language: string | Language;
-      sourceLanguage: string | Language;
-      name: string;
-      description?: {
-        root: {
-          children: {
-            type: string;
-            version: number;
-            [k: string]: unknown;
-          }[];
-          direction: ('ltr' | 'rtl') | null;
-          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-          indent: number;
-          type: string;
-          version: number;
-        };
-        [k: string]: unknown;
-      } | null;
-      level1?: {
-        root: {
-          children: {
-            type: string;
-            version: number;
-            [k: string]: unknown;
-          }[];
-          direction: ('ltr' | 'rtl') | null;
-          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-          indent: number;
-          type: string;
-          version: number;
-        };
-        [k: string]: unknown;
-      } | null;
-      level2?: {
-        root: {
-          children: {
-            type: string;
-            version: number;
-            [k: string]: unknown;
-          }[];
-          direction: ('ltr' | 'rtl') | null;
-          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-          indent: number;
-          type: string;
-          version: number;
-        };
-        [k: string]: unknown;
-      } | null;
-      level3?: {
-        root: {
-          children: {
-            type: string;
-            version: number;
-            [k: string]: unknown;
-          }[];
-          direction: ('ltr' | 'rtl') | null;
-          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-          indent: number;
-          type: string;
-          version: number;
-        };
-        [k: string]: unknown;
-      } | null;
-      level4?: {
-        root: {
-          children: {
-            type: string;
-            version: number;
-            [k: string]: unknown;
-          }[];
-          direction: ('ltr' | 'rtl') | null;
-          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-          indent: number;
-          type: string;
-          version: number;
-        };
-        [k: string]: unknown;
-      } | null;
-      transcribers?: (string | Recorder)[] | null;
-      translators?: (string | Recorder)[] | null;
-      proofreaders?: (string | Recorder)[] | null;
-      id?: string | null;
-    }[];
-    id?: string | null;
-  }[];
-  updatedBy: string | Recorder;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "weapons-thumbnails".
- */
-export interface WeaponsThumbnail {
-  id: string;
-  weapon?: (string | null) | Weapon;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  sizes?: {
-    thumb?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    og?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    small?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    medium?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "weapons-groups".
- */
-export interface WeaponsGroup {
-  id: string;
-  slug: string;
-  translations?:
-    | {
-        language: string | Language;
-        name: string;
-        id?: string | null;
-      }[]
-    | null;
-  weapons?: (string | Weapon)[] | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1011,9 +867,6 @@ export enum Collections {
   RecordersThumbnails = "recorders-thumbnails",
   VideosChannels = "videos-channels",
   Videos = "videos",
-  Weapons = "weapons",
-  WeaponsGroups = "weapons-groups",
-  WeaponsThumbnails = "weapons-thumbnails",
   Folders = "folders",
   FoldersThumbnails = "folders-thumbnails",
   Tags = "tags",
@@ -1142,6 +995,16 @@ export interface RichTextLinebreakNode extends RichTextNode {
   type: "linebreak";
 }
 
+export interface RichTextUploadNode extends RichTextNode {
+  type: "upload";
+  relationTo: string;
+}
+
+export interface RichTextUploadImageNode extends RichTextUploadNode {
+  relationTo: "images" | "background-images";
+  value: Image;
+}
+
 export interface RichTextTextNode extends RichTextNode {
   type: "text";
   format: number;
@@ -1201,6 +1064,12 @@ export interface RichTextSpacerBlock extends RichTextBlockNode {
 export const isNodeParagraphNode = (node: RichTextNode): node is RichTextParagraphNode =>
   node.type === "paragraph";
 
+export const isNodeUploadNode = (node: RichTextNode): node is RichTextUploadNode =>
+  node.type === "upload";
+
+export const isUploadNodeImageNode = (node: RichTextUploadNode): node is RichTextUploadImageNode =>
+  node.relationTo === "images" || node.relationTo === "background-images";
+
 export const isNodeListNode = (node: RichTextNode): node is RichTextListNode =>
   node.type === "list";
 
@@ -1248,11 +1117,15 @@ export const isBlockNodeSpacerBlock = (node: RichTextBlockNode): node is RichTex
 
 /* TODO: TO BE REMOVED WHEN https://github.com/payloadcms/payload/issues/5216 is closed */
 export interface CueBlock {
+  content: RichTextContent;
+  blockType: 'cueBlock';
   id?: string | null;
   blockName?: string | null;
 }
 
 export interface LineBlock {
+  content: RichTextContent;
+  blockType: 'lineBlock';
   id?: string | null;
   blockName?: string | null;
 }
@@ -1353,43 +1226,6 @@ const request = async (url: string, init?: RequestInit): Promise<Response> => {
 
 // SDK and Types
 
-export type EndpointWeapon = EndpointBasicWeapon & {
-  appearances: {
-    categories: string[];
-    translations: {
-      language: string;
-      sourceLanguage: string;
-      name: string;
-      description?: string;
-      level1?: string;
-      level2?: string;
-      level3?: string;
-      level4?: string;
-      transcribers: string[];
-      translators: string[];
-      proofreaders: string[];
-    }[];
-  }[];
-  group?: {
-    slug: string;
-    translations: { language: string; name: string }[];
-    weapons: EndpointBasicWeapon[];
-  };
-};
-
-export type EndpointBasicWeapon = {
-  slug: string;
-  type: string;
-  categories: string[];
-  translations: { language: string; name: string; aliases: string[] }[];
-  images?: {
-    previewCard: PayloadImage;
-    thumbnailHeader: PayloadImage;
-    lightBox: PayloadImage;
-    openGraph: PayloadImage;
-  };
-};
-
 export type EndpointEra = {
   slug: string;
   startingYear: number;
@@ -1397,7 +1233,7 @@ export type EndpointEra = {
   translations: {
     language: string;
     title: string;
-    description?: string;
+    description?: RichTextContent;
   }[];
   items: {
     date: {
@@ -1410,16 +1246,13 @@ export type EndpointEra = {
         language: string;
         sourceLanguage: string;
         title?: string;
-        description?: string;
-        notes?: string;
-        transcribers: string[];
-        translators: string[];
-        proofreaders: string[];
+        description?: RichTextContent;
+        notes?: RichTextContent;
+        transcribers: EndpointRecorder[];
+        translators: EndpointRecorder[];
+        proofreaders: EndpointRecorder[];
       }[];
     }[];
-    createdAt: Date;
-    updatedAt: Date;
-    updatedBy: string;
   }[];
 };
 
@@ -1621,8 +1454,6 @@ export type PayloadImage = {
 };
 
 export const payload = {
-  getWeapon: async (slug: string): Promise<EndpointWeapon> =>
-    await (await request(payloadApiUrl(Collections.Weapons, `slug/${slug}`))).json(),
   getEras: async (): Promise<EndpointEra[]> =>
     await (await request(payloadApiUrl(Collections.ChronologyEras, `all`))).json(),
   getRootFolders: async (): Promise<EndpointFolderPreview[]> =>
@@ -1637,10 +1468,6 @@ export const payload = {
     await (await request(payloadApiUrl(Collections.Wordings, `all`))).json(),
   getRecorders: async (): Promise<EndpointRecorder[]> =>
     await (await request(payloadApiUrl(Collections.Recorders, `all`))).json(),
-  getTags: async (): Promise<EndpointTag[]> =>
-    await (await request(payloadApiUrl(Collections.Tags, `all`))).json(),
-  getTagsGroups: async (): Promise<EndpointTagsGroup[]> =>
-    await (await request(payloadApiUrl(Collections.TagsGroups, `all`))).json(),
   getPage: async (slug: string): Promise<EndpointPage> =>
     await (await request(payloadApiUrl(Collections.Pages, `slug/${slug}`))).json(),
   getCollectible: async (slug: string): Promise<EndpointCollectible> =>
