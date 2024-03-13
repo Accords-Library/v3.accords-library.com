@@ -3,7 +3,7 @@ import { payload } from "src/shared/payload/payload-sdk";
 import CategoryCard from "./CategoryCard.astro";
 import { getI18n } from "src/i18n/i18n";
 
-const folders = await payload.getRootFolders();
+const folders = await payload.getHomeFolders();
 const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 ---
 

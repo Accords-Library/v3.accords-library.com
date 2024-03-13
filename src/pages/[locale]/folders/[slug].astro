@@ -28,7 +28,6 @@ const meta = getLocalizedMatch(folder.translations);
   openGraph={{
     title: meta.name,
     description: meta.description && formatRichTextToString(meta.description),
-    thumbnail: folder.lightThumbnail?.url ?? folder.darkThumbnail?.url,
   }}>
   {
     meta.description && (

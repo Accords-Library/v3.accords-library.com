@@ -43,29 +43,244 @@ export type CategoryTranslations = {
 
 export interface Config {
   collections: {
-    folders: Folder;
-    'folders-thumbnails': FoldersThumbnail;
     pages: Page;
+    collectibles: Collectible;
+    folders: Folder;
     'chronology-items': ChronologyItem;
     'chronology-eras': ChronologyEra;
-    'recorders-thumbnails': RecordersThumbnail;
     notes: Note;
+    images: Image;
+    'background-images': BackgroundImage;
+    'recorders-thumbnails': RecordersThumbnail;
     videos: Video;
     'videos-channels': VideosChannel;
-    languages: Language;
-    currencies: Currency;
-    recorders: Recorder;
     tags: Tag;
     'tags-groups': TagsGroup;
-    images: Image;
+    recorders: Recorder;
+    languages: Language;
+    currencies: Currency;
     wordings: Wording;
-    collectibles: Collectible;
     'generic-contents': GenericContent;
-    'background-images': BackgroundImage;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  globals: {};
+  globals: {
+    'home-folders': HomeFolder;
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: string;
+  slug: string;
+  type: 'Content' | 'Post' | 'Generic';
+  thumbnail?: string | Image | null;
+  backgroundImage?: string | BackgroundImage | null;
+  tags?: (string | Tag)[] | null;
+  authors?: (string | Recorder)[] | null;
+  translations: {
+    language: string | Language;
+    sourceLanguage: string | Language;
+    pretitle?: string | null;
+    title: string;
+    subtitle?: string | null;
+    summary?: {
+      root: {
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        type: string;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    content: {
+      root: {
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        type: string;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    transcribers?: (string | Recorder)[] | null;
+    translators?: (string | Recorder)[] | null;
+    proofreaders?: (string | Recorder)[] | null;
+    id?: string | null;
+  }[];
+  folders?: (string | Folder)[] | null;
+  collectibles?: (string | Collectible)[] | null;
+  updatedBy: string | Recorder;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "images".
+ */
+export interface Image {
+  id: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  sizes?: {
+    thumb?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    og?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "background-images".
+ */
+export interface BackgroundImage {
+  id: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  sizes?: {
+    thumb?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: string;
+  name?: string | null;
+  slug: string;
+  translations: {
+    language: string | Language;
+    name: string;
+    id?: string | null;
+  }[];
+  group: string | TagsGroup;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "languages".
+ */
+export interface Language {
+  id: string;
+  name: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags-groups".
+ */
+export interface TagsGroup {
+  id: string;
+  slug: string;
+  icon?: string | null;
+  translations: {
+    language: string | Language;
+    name: string;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recorders".
+ */
+export interface Recorder {
+  id: string;
+  username: string;
+  avatar?: string | RecordersThumbnail | null;
+  languages?: (string | Language)[] | null;
+  biographies?: RecorderBiographies;
+  role?: ('Admin' | 'Recorder' | 'Api')[] | null;
+  anonymize: boolean;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recorders-thumbnails".
+ */
+export interface RecordersThumbnail {
+  id: string;
+  recorder?: (string | null) | Recorder;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  sizes?: {
+    thumb?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    square?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -75,30 +290,26 @@ export interface Folder {
   id: string;
   slug: string;
   icon?: string | null;
-  lightThumbnail?: string | FoldersThumbnail | null;
-  darkThumbnail?: string | FoldersThumbnail | null;
-  translations?:
-    | {
-        language: string | Language;
-        name: string;
-        description?: {
-          root: {
-            children: {
-              type: string;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            type: string;
-            version: number;
-          };
+  translations: {
+    language: string | Language;
+    name: string;
+    description?: {
+      root: {
+        children: {
+          type: string;
+          version: number;
           [k: string]: unknown;
-        } | null;
-        id?: string | null;
-      }[]
-    | null;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        type: string;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    id?: string | null;
+  }[];
   sections?:
     | {
         translations?:
@@ -126,39 +337,6 @@ export interface Folder {
     | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "folders-thumbnails".
- */
-export interface FoldersThumbnail {
-  id: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  sizes?: {
-    thumb?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "languages".
- */
-export interface Language {
-  id: string;
-  name: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -347,216 +525,10 @@ export interface Collectible {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "images".
- */
-export interface Image {
-  id: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  sizes?: {
-    thumb?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    og?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tags".
- */
-export interface Tag {
-  id: string;
-  name?: string | null;
-  slug: string;
-  translations: {
-    language: string | Language;
-    name: string;
-    id?: string | null;
-  }[];
-  group: string | TagsGroup;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tags-groups".
- */
-export interface TagsGroup {
-  id: string;
-  slug: string;
-  icon?: string | null;
-  translations: {
-    language: string | Language;
-    name: string;
-    id?: string | null;
-  }[];
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "background-images".
- */
-export interface BackgroundImage {
-  id: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  sizes?: {
-    thumb?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "recorders".
- */
-export interface Recorder {
-  id: string;
-  username: string;
-  avatar?: string | RecordersThumbnail | null;
-  languages?: (string | Language)[] | null;
-  biographies?: RecorderBiographies;
-  role?: ('Admin' | 'Recorder' | 'Api')[] | null;
-  anonymize: boolean;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "recorders-thumbnails".
- */
-export interface RecordersThumbnail {
-  id: string;
-  recorder?: (string | null) | Recorder;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  sizes?: {
-    thumb?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    square?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "currencies".
  */
 export interface Currency {
   id: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pages".
- */
-export interface Page {
-  id: string;
-  slug: string;
-  type: 'Content' | 'Post' | 'Generic';
-  thumbnail?: string | Image | null;
-  backgroundImage?: string | BackgroundImage | null;
-  tags?: (string | Tag)[] | null;
-  authors?: (string | Recorder)[] | null;
-  translations: {
-    language: string | Language;
-    sourceLanguage: string | Language;
-    pretitle?: string | null;
-    title: string;
-    subtitle?: string | null;
-    summary?: {
-      root: {
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        type: string;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    content: {
-      root: {
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        type: string;
-        version: number;
-      };
-      [k: string]: unknown;
-    };
-    transcribers?: (string | Recorder)[] | null;
-    translators?: (string | Recorder)[] | null;
-    proofreaders?: (string | Recorder)[] | null;
-    id?: string | null;
-  }[];
-  folders?: (string | Folder)[] | null;
-  collectibles?: (string | Collectible)[] | null;
-  updatedBy: string | Recorder;
-  updatedAt: string;
-  createdAt: string;
-  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -764,11 +736,20 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "SpacerBlock".
+ * via the `definition` "home-folders".
  */
-export interface SpacerBlock {
-  size: 'Small' | 'Medium' | 'Large' | 'Extra Large';
-  blockType: 'spacerBlock';
+export interface HomeFolder {
+  id: string;
+  folders?:
+    | {
+        lightThumbnail?: string | Image | null;
+        darkThumbnail?: string | Image | null;
+        folder: string | Folder;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -819,7 +800,7 @@ export interface CueBlock {
  * via the `definition` "TranscriptBlock".
  */
 export interface TranscriptBlock {
-  lines: (LineBlock | CueBlock | SpacerBlock)[];
+  lines: (LineBlock | CueBlock)[];
   id?: string | null;
   blockName?: string | null;
   blockType: 'transcriptBlock';
@@ -868,7 +849,6 @@ export enum Collections {
   VideosChannels = "videos-channels",
   Videos = "videos",
   Folders = "folders",
-  FoldersThumbnails = "folders-thumbnails",
   Tags = "tags",
   TagsGroups = "tags-groups",
   Images = "images",
@@ -876,6 +856,7 @@ export enum Collections {
   Collectibles = "collectibles",
   GenericContents = "generic-contents",
   BackgroundImages = "background-images",
+  HomeFolders = "home-folders",
 }
 
 export enum CollectionGroups {
@@ -935,13 +916,6 @@ export enum PageType {
   Content = "Content",
   Post = "Post",
   Generic = "Generic",
-}
-
-export enum SpacerSizes {
-  Small = "Small",
-  Medium = "Medium",
-  Large = "Large",
-  XLarge = "Extra Large",
 }
 
 /* RICH TEXT */
@@ -1057,10 +1031,6 @@ export interface RichTextTranscriptBlock extends RichTextBlockNode {
   fields: TranscriptBlock;
 }
 
-export interface RichTextSpacerBlock extends RichTextBlockNode {
-  fields: SpacerBlock;
-}
-
 export const isNodeParagraphNode = (node: RichTextNode): node is RichTextParagraphNode =>
   node.type === "paragraph";
 
@@ -1110,9 +1080,6 @@ export const isBlockNodeTranscriptBlock = (
   node: RichTextBlockNode
 ): node is RichTextTranscriptBlock => node.fields.blockType === "transcriptBlock";
 
-export const isBlockNodeSpacerBlock = (node: RichTextBlockNode): node is RichTextSpacerBlock =>
-  node.fields.blockType === "spacerBlock";
-
 /* BLOCKS */
 
 /* TODO: TO BE REMOVED WHEN https://github.com/payloadcms/payload/issues/5216 is closed */
@@ -1141,10 +1108,6 @@ export const isBlockCueBlock = (block: GenericBlock): block is CueBlock =>
 
 export const isBlockLineBlock = (block: GenericBlock): block is LineBlock =>
   block.blockType === "lineBlock";
-
-export const isBlockSpacerBlock = (block: GenericBlock): block is SpacerBlock =>
-  block.blockType === "spacerBlock";
-
 
 ////////////////// SDK //////////////////
 
@@ -1210,8 +1173,8 @@ const injectAuth = async (init?: RequestInit): Promise<RequestInit> => ({
 
 const logResponse = (res: Response) => console.log(res.status, res.statusText, res.url);
 
-const payloadApiUrl = (collection: Collections, endpoint?: string): string =>
-  `${import.meta.env.PAYLOAD_API_URL}/${collection}${endpoint === undefined ? "" : `/${endpoint}`}`;
+const payloadApiUrl = (collection: Collections, endpoint?: string, isGlobal?: boolean): string =>
+  `${import.meta.env.PAYLOAD_API_URL}/${isGlobal === undefined ? "" : "globals/"}${collection}${endpoint === undefined ? "" : `/${endpoint}`}`;
 
 const request = async (url: string, init?: RequestInit): Promise<Response> => {
   const result = await fetch(url, await injectAuth(init));
@@ -1256,6 +1219,16 @@ export type EndpointEra = {
   }[];
 };
 
+export type EndpointFolderPreview = {
+  slug: string;
+  icon?: string;
+  translations: {
+    language: string;
+    name: string;
+    description?: RichTextContent;
+  }[];
+};
+
 export type EndpointFolder = EndpointFolderPreview & {
   sections:
     | { type: "single"; subfolders: EndpointFolderPreview[] }
@@ -1278,14 +1251,7 @@ export type EndpointFolder = EndpointFolderPreview & {
   )[];
 };
 
-export type EndpointFolderPreview = {
-  slug: string;
-  icon?: string;
-  translations: {
-    language: string;
-    name: string;
-    description?: RichTextContent;
-  }[];
+export type EndpointHomeFolder = EndpointFolderPreview & {
   lightThumbnail?: PayloadImage;
   darkThumbnail?: PayloadImage;
 };
@@ -1456,8 +1422,8 @@ export type PayloadImage = {
 export const payload = {
   getEras: async (): Promise<EndpointEra[]> =>
     await (await request(payloadApiUrl(Collections.ChronologyEras, `all`))).json(),
-  getRootFolders: async (): Promise<EndpointFolderPreview[]> =>
-    await (await request(payloadApiUrl(Collections.Folders, `root`))).json(),
+  getHomeFolders: async (): Promise<EndpointHomeFolder[]> =>
+    await (await request(payloadApiUrl(Collections.HomeFolders, `all`, true))).json(),
   getFolder: async (slug: string): Promise<EndpointFolder> =>
     await (await request(payloadApiUrl(Collections.Folders, `slug/${slug}`))).json(),
   getLanguages: async (): Promise<Language[]> =>
