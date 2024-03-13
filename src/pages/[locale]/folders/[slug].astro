@@ -19,8 +19,6 @@ if (folder instanceof Response) {
 
 const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 const meta = getLocalizedMatch(folder.translations);
-
-// TODO: handle light and dark illustration for applayout
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
