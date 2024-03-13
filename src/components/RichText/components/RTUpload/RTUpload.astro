@@ -1,0 +1,24 @@
+---
+import { isUploadNodeImageNode, type RichTextUploadNode } from "src/shared/payload/payload-sdk";
+import type { RichTextContext } from "src/utils/richText";
+import RTImage from "./components/RTImage.astro";
+import ErrorMessage from "components/ErrorMessage.astro";
+
+interface Props {
+  node: RichTextUploadNode;
+  context: RichTextContext;
+}
+
+const { node, context } = Astro.props;
+---
+
+{
+  isUploadNodeImageNode(node) ? (
+    <RTImage node={node} context={context} />
+  ) : (
+    <ErrorMessage
+      title={`Unknown upload collection: ${node.relationTo}`}
+      description="Please contact website technical administrator."
+    />
+  )
+}

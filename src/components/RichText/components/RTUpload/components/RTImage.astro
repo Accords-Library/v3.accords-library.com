@@ -1,0 +1,23 @@
+---
+import { type RichTextUploadImageNode } from "src/shared/payload/payload-sdk";
+import type { RichTextContext } from "src/utils/richText";
+
+interface Props {
+  node: RichTextUploadImageNode;
+  context: RichTextContext;
+}
+
+const { node } = Astro.props;
+---
+
+<img src={node.value.url} />
+
+<style>
+  img {
+    width: 100%;
+    height: auto;
+    margin-block: 3em;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px -10px var(--color-shadow);
+  }
+</style>

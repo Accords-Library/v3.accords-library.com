@@ -13,11 +13,13 @@ import {
   isNodeParagraphNode,
   isNodeTabNode,
   isNodeTextNode,
+  isNodeUploadNode,
   type RichTextNode,
 } from "src/shared/payload/payload-sdk";
 import RTTab from "./RTTab.astro";
 import ErrorMessage from "components/ErrorMessage.astro";
 import RTLinebreak from "./RTLinebreak.astro";
+import RTUpload from "./RTUpload/RTUpload.astro";
 
 interface Props {
   node: RichTextNode;
@@ -44,6 +46,8 @@ const { node, context } = Astro.props;
     <RTBlock node={node} context={context} />
   ) : isNodeTabNode(node) ? (
     <RTTab />
+  ) : isNodeUploadNode(node) ? (
+    <RTUpload node={node} context={context} />
   ) : (
     <ErrorMessage
       title={`Unknown node type: ${node.type}`}
