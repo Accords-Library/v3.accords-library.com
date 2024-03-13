@@ -19,7 +19,7 @@ const { t } = await getI18n(currentLocale);
       {
         cache.locales.map(({ id }) => (
           <a
-            class:list={{ current: currentLocale === id }}
+            class:list={{ current: currentLocale === id, "pressable-link": true }}
             href={`?action-lang=${id}`}
             data-astro-prefetch="tap">
             {formatLocale(id)}
@@ -32,19 +32,19 @@ const { t } = await getI18n(currentLocale);
       <h2>{t("settings.theme.title")}</h2>
       <p>{t("settings.theme.description")}</p><br />
       <a
-        class:list={{ current: currentTheme === "dark" }}
+        class:list={{ current: currentTheme === "dark", "pressable-link": true }}
         href="?action-theme=dark"
         data-astro-prefetch="tap">
         {t("global.theme.dark")}
       </a>
       <a
-        class:list={{ current: currentTheme === "auto" }}
+        class:list={{ current: currentTheme === "auto", "pressable-link": true }}
         href="?action-theme=auto"
         data-astro-prefetch="tap">
         {t("global.theme.auto")}
       </a>
       <a
-        class:list={{ current: currentTheme === "light" }}
+        class:list={{ current: currentTheme === "light", "pressable-link": true }}
         href="?action-theme=light"
         data-astro-prefetch="tap">
         {t("global.theme.light")}
@@ -57,7 +57,7 @@ const { t } = await getI18n(currentLocale);
       {
         cache.currencies.map((id) => (
           <a
-            class:list={{ current: currentCurrency === id }}
+            class:list={{ current: currentCurrency === id, "pressable-link": true }}
             href={`?action-currency=${id}`}
             data-astro-prefetch="tap">
             {`${id} (${formatCurrency(id)})`}
