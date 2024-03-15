@@ -1,0 +1,61 @@
+---
+import type { RichTextContext } from "src/utils/richText";
+import { BreakBlockType, type RichTextBreakBlock } from "src/shared/payload/payload-sdk";
+import ErrorMessage from "components/ErrorMessage.astro";
+
+interface Props {
+  node: RichTextBreakBlock;
+  context: RichTextContext;
+}
+
+const { node } = Astro.props;
+---
+
+{
+  node.fields.type === BreakBlockType.space ? (
+    <>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+    </>
+  ) : node.fields.type === BreakBlockType.sceneBreak ? (
+    <p>***</p>
+  ) : node.fields.type === BreakBlockType.dottedLine ? (
+    <hr class="dotted" />
+  ) : node.fields.type === BreakBlockType.solidLine ? (
+    <hr class="solid" />
+  ) : (
+    <ErrorMessage
+      title={`Unknown break block type: ${node.fields.type}`}
+      description="Please contact website technical administrator."
+    />
+  )
+}
+
+<style>
+  p {
+    margin-block: 4rem;
+    text-align: center;
+    font-size: 2em;
+    color: var(--color-base-600);
+    letter-spacing: 1em;
+  }
+  hr {
+    border: none;
+    border-top-color: var(--color-base-500);
+    width: 100%;
+    margin-block: 4rem;
+
+    &.dotted {
+      border-top-style: dotted;
+      border-top-width: 3px;
+    }
+
+    &.solid {
+      border-top-style: solid;
+      border-top-width: 1px;
+    }
+  }
+</style>

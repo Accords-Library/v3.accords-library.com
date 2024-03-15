@@ -3,11 +3,13 @@ import type { RichTextContext } from "src/utils/richText";
 import RTSection from "./components/RTSection.astro";
 import RTTranscript from "./components/RTTranscript.astro";
 import {
+  isBlockNodeBreakBlock,
   isBlockNodeSectionBlock,
   isBlockNodeTranscriptBlock,
   type RichTextBlockNode,
 } from "src/shared/payload/payload-sdk";
 import ErrorMessage from "components/ErrorMessage.astro";
+import RTBreak from "./components/RTBreak.astro";
 
 interface Props {
   node: RichTextBlockNode;
@@ -22,6 +24,8 @@ const { node, context } = Astro.props;
     <RTSection node={node} context={context} />
   ) : isBlockNodeTranscriptBlock(node) ? (
     <RTTranscript node={node} context={context} />
+  ) : isBlockNodeBreakBlock(node) ? (
+    <RTBreak node={node} context={context} />
   ) : (
     <ErrorMessage
       title={`Unknown block type: ${node.fields.blockType}`}

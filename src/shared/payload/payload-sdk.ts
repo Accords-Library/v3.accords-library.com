@@ -797,10 +797,20 @@ export interface CueBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BreakBlock".
+ */
+export interface BreakBlock {
+  type: 'Scene break' | 'Empty space' | 'Solid line' | 'Dotted line';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'breakBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "TranscriptBlock".
  */
 export interface TranscriptBlock {
-  lines: (LineBlock | CueBlock)[];
+  lines: (LineBlock | CueBlock | BreakBlock)[];
   id?: string | null;
   blockName?: string | null;
   blockType: 'transcriptBlock';
@@ -872,6 +882,13 @@ export enum LanguageCodes {
   es = "Spanish",
   "pt-br" = "Portuguese",
   "zh" = "Chinese",
+}
+
+export enum BreakBlockType {
+  sceneBreak = "Scene break",
+  space = "Empty space",
+  solidLine = "Solid line",
+  dottedLine = "Dotted line",
 }
 
 export enum CollectibleBindingTypes {
@@ -1031,6 +1048,10 @@ export interface RichTextTranscriptBlock extends RichTextBlockNode {
   fields: TranscriptBlock;
 }
 
+export interface RichTextBreakBlock extends RichTextBlockNode {
+  fields: BreakBlock;
+}
+
 export const isNodeParagraphNode = (node: RichTextNode): node is RichTextParagraphNode =>
   node.type === "paragraph";
 
@@ -1080,19 +1101,22 @@ export const isBlockNodeTranscriptBlock = (
   node: RichTextBlockNode
 ): node is RichTextTranscriptBlock => node.fields.blockType === "transcriptBlock";
 
+export const isBlockNodeBreakBlock = (node: RichTextBlockNode): node is RichTextBreakBlock =>
+  node.fields.blockType === "breakBlock";
+
 /* BLOCKS */
 
 /* TODO: TO BE REMOVED WHEN https://github.com/payloadcms/payload/issues/5216 is closed */
 export interface CueBlock {
   content: RichTextContent;
-  blockType: 'cueBlock';
+  blockType: "cueBlock";
   id?: string | null;
   blockName?: string | null;
 }
 
 export interface LineBlock {
   content: RichTextContent;
-  blockType: 'lineBlock';
+  blockType: "lineBlock";
   id?: string | null;
   blockName?: string | null;
 }
@@ -1108,6 +1132,7 @@ export const isBlockCueBlock = (block: GenericBlock): block is CueBlock =>
 
 export const isBlockLineBlock = (block: GenericBlock): block is LineBlock =>
   block.blockType === "lineBlock";
+
 
 ////////////////// SDK //////////////////
 
@@ -1408,6 +1433,8 @@ export type EndpointCollectible = EndpointCollectiblePreview & {
 export type TableOfContentEntry = {
   prefix: string;
   title: string;
+  type: "sceneBreak" | "break" | "section";
+  index: number;
   children: TableOfContentEntry[];
 };
 

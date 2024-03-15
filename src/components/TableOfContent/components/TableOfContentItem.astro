@@ -1,4 +1,5 @@
 ---
+import { getI18n } from "src/i18n/i18n";
 import type { TableOfContentEntry } from "src/shared/payload/payload-sdk";
 
 interface Props {
@@ -6,12 +7,28 @@ interface Props {
 }
 
 const { entry } = Astro.props;
+
+const { t } = await getI18n(Astro.locals.currentLocale);
+
+const title = (() => {
+  switch (entry.type) {
+    case "sceneBreak":
+      return entry.title || t("pages.tableOfContent.sceneBreak", { index: entry.index });
+
+    case "break":
+      return entry.title || t("pages.tableOfContent.break", { index: entry.index });
+
+    case "section":
+    default:
+      return entry.title;
+  }
+})();
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <li data-prefix={entry.prefix}>
-  <a href={`#${entry.prefix}`} class="pressable-link table-of-content-item">{entry.title}</a>
+  <a href={`#${entry.prefix}`} class="pressable-link table-of-content-item">{title}</a>
   {
     entry.children.length > 0 && (
       <ol>

@@ -4,12 +4,13 @@
 
 - [Payload] Fix SDK endpoint not working in prod
 - [Folder] Add parent pages
-- Support for scene break blocks
 - Add hover/active styling for settings options in topbar + language override
 - Highlight currently selected language option in language override tooltip
+- Save cookies for longer than just the session
 
 ## Mid term
 
+- Support for nameless section
 - [Collectibles] Create page for gallery
 - [Collectibles] Create page for scans
 - When the tags overflow, the tag group name should be align start (see http://localhost:12499/en/pages/magnitude-negative-chapter-1)
@@ -29,3 +30,8 @@
 - Global search function
   - Convert Rich text to simple text for indexing and open graph purposes
 - Anonymous comments
+
+## Bonus
+
+- Static HTML site export for archival
+- Secret Terminal mode
