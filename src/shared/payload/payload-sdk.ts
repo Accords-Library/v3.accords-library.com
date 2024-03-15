@@ -797,6 +797,16 @@ export interface CueBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TranscriptBlock".
+ */
+export interface TranscriptBlock {
+  lines: (LineBlock | CueBlock)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'transcriptBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "BreakBlock".
  */
 export interface BreakBlock {
@@ -804,16 +814,6 @@ export interface BreakBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'breakBlock';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "TranscriptBlock".
- */
-export interface TranscriptBlock {
-  lines: (LineBlock | CueBlock | BreakBlock)[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'transcriptBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1041,7 +1041,8 @@ export interface RichTextBlockNode extends RichTextNode {
 }
 
 export interface RichTextSectionBlock extends RichTextBlockNode {
-  fields: SectionBlock & { anchorHash: string };
+  fields: SectionBlock;
+  anchorHash: string;
 }
 
 export interface RichTextTranscriptBlock extends RichTextBlockNode {
@@ -1050,6 +1051,7 @@ export interface RichTextTranscriptBlock extends RichTextBlockNode {
 
 export interface RichTextBreakBlock extends RichTextBlockNode {
   fields: BreakBlock;
+  anchorHash: string;
 }
 
 export const isNodeParagraphNode = (node: RichTextNode): node is RichTextParagraphNode =>

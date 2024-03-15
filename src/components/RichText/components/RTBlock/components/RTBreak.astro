@@ -21,11 +21,11 @@ const { node } = Astro.props;
       <br />
     </>
   ) : node.fields.type === BreakBlockType.sceneBreak ? (
-    <p>***</p>
+    <p id={node.anchorHash}>***</p>
   ) : node.fields.type === BreakBlockType.dottedLine ? (
-    <hr class="dotted" />
+    <hr id={node.anchorHash} class="dotted" />
   ) : node.fields.type === BreakBlockType.solidLine ? (
-    <hr class="solid" />
+    <hr id={node.anchorHash} class="solid" />
   ) : (
     <ErrorMessage
       title={`Unknown break block type: ${node.fields.type}`}
@@ -41,12 +41,14 @@ const { node } = Astro.props;
     font-size: 2em;
     color: var(--color-base-600);
     letter-spacing: 1em;
+    scroll-margin-block: 4rem;
   }
   hr {
     border: none;
     border-top-color: var(--color-base-500);
     width: 100%;
     margin-block: 4rem;
+    scroll-margin-block: 4rem;
 
     &.dotted {
       border-top-style: dotted;

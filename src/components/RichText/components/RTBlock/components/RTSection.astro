@@ -13,28 +13,28 @@ const { node, context } = Astro.props;
 
 {
   context.depth < 2 ? (
-    <h2 id={node.fields.anchorHash}>
-      <span>{`${node.fields.anchorHash} `}</span>
+    <h2 id={node.anchorHash}>
+      <span>{`${node.anchorHash} `}</span>
       {node.fields.blockName}
     </h2>
   ) : context.depth === 2 ? (
-    <h3 id={node.fields.anchorHash}>
-      <span>{`${node.fields.anchorHash} `}</span>
+    <h3 id={node.anchorHash}>
+      <span>{`${node.anchorHash} `}</span>
       {node.fields.blockName}
     </h3>
   ) : context.depth === 3 ? (
-    <h4 id={node.fields.anchorHash}>
-      <span>{`${node.fields.anchorHash} `}</span>
+    <h4 id={node.anchorHash}>
+      <span>{`${node.anchorHash} `}</span>
       {node.fields.blockName}
     </h4>
   ) : context.depth === 4 ? (
-    <h5 id={node.fields.anchorHash}>
-      <span>{`${node.fields.anchorHash} `}</span>
+    <h5 id={node.anchorHash}>
+      <span>{`${node.anchorHash} `}</span>
       {node.fields.blockName}
     </h5>
   ) : (
-    <h6 id={node.fields.anchorHash}>
-      <span>{`${node.fields.anchorHash} `}</span>
+    <h6 id={node.anchorHash}>
+      <span>{`${node.anchorHash} `}</span>
       {node.fields.blockName}
     </h6>
   )
