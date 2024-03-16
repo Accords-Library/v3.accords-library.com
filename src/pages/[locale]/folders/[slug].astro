@@ -28,7 +28,8 @@ const meta = getLocalizedMatch(folder.translations);
   openGraph={{
     title: meta.name,
     description: meta.description && formatRichTextToString(meta.description),
-  }}>
+  }}
+  parentPages={folder.parentPages}>
   {
     meta.description && (
       <div slot="header-description">

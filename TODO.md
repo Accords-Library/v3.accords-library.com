@@ -3,7 +3,6 @@
 ## Short term
 
 - [Payload] Fix SDK endpoint not working in prod
-- [Folder] Add parent pages
 - Add hover/active styling for settings options in topbar + language override
 - Highlight currently selected language option in language override tooltip
 - Save cookies for longer than just the session
@@ -28,6 +27,7 @@
 - Contact page
 - About us page
 - Global search function
+  - Consider official search plugin for payload https://payloadcms.com/docs/plugins/search
   - Convert Rich text to simple text for indexing and open graph purposes
 - Anonymous comments
 
