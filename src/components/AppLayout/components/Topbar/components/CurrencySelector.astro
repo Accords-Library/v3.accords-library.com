@@ -23,7 +23,10 @@ const { currentCurrency } = Astro.locals;
     {
       cache.currencies.map((id) => (
         <a
-          class:list={{ current: currentCurrency === id }}
+          class:list={{
+            current: currentCurrency === id,
+            "pressable-link": true,
+          }}
           href={`?action-currency=${id}`}
           data-astro-prefetch="tap">
           {`${id} (${formatCurrency(id)})`}

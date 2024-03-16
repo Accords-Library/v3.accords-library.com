@@ -3,6 +3,7 @@ import MasoActor from "components/Maso/MasoActor.astro";
 import Tooltip from "components/Tooltip.astro";
 import Button from "components/Button.astro";
 import { formatLocale } from "src/utils/format";
+import { getI18n } from "src/i18n/i18n";
 
 interface Props {
   currentLang: string;
@@ -11,6 +12,7 @@ interface Props {
 }
 
 const { currentLang, getPartialUrl, availableLanguages } = Astro.props;
+const { t } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -22,16 +24,21 @@ const { currentLang, getPartialUrl, availableLanguages } = Astro.props;
     <div id="tooltip-content" slot="tooltip-content">
       {
         availableLanguages.map((id) => (
-          <MasoActor class:list={{ current: id === currentLang }} href={getPartialUrl(id)}>
-            {formatLocale(id)}
+          <MasoActor href={getPartialUrl(id)}>
+            <p class:list={{ current: id === currentLang, "pressable-link": true }}>
+              {formatLocale(id)}
+            </p>
           </MasoActor>
         ))
       }
     </div>
   </Tooltip>
   <p class="high-contrast-text">
-    {/* TODO: Translate this wording */}
-    This content is available is {availableLanguages.length} languages.
+    {
+      t("global.languageOverride.availableLanguages", {
+        count: availableLanguages.length,
+      })
+    }
   </p>
 </div>
 
@@ -47,7 +54,7 @@ const { currentLang, getPartialUrl, availableLanguages } = Astro.props;
       display: grid;
       gap: 0.5em;
 
-      & > .current {
+      & .current {
         color: var(--color-base-750);
         text-decoration: underline 0.08em var(--color-base-650);
       }

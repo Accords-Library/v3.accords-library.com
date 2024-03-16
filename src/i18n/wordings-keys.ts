@@ -86,4 +86,5 @@ export type WordingKey =
   | "global.meta.description"
   | "global.loading"
   | "pages.tableOfContent.sceneBreak"
-  | "pages.tableOfContent.break";
+  | "pages.tableOfContent.break"
+  | "global.languageOverride.availableLanguages";

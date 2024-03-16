@@ -23,7 +23,7 @@ const { t } = await getI18n(currentLocale);
     {
       cache.locales.map(({ id }) => (
         <a
-          class:list={{ current: currentLocale === id }}
+          class:list={{ current: currentLocale === id, "pressable-link": true }}
           href={`?action-lang=${id}`}
           data-astro-prefetch="tap">
           {formatLocale(id)}

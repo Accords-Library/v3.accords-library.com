@@ -2,9 +2,7 @@
 
 ## Short term
 
-- [Payload] Fix SDK endpoint not working in prod
-- Add hover/active styling for settings options in topbar + language override
-- Highlight currently selected language option in language override tooltip
+- [Scripts] Can't run the scripts using node (ts-node?)
 - Save cookies for longer than just the session
 
 ## Mid term

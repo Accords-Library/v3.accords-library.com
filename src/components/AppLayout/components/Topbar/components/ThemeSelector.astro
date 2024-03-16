@@ -11,13 +11,19 @@ const { t } = await getI18n(currentLocale);
 
 <Tooltip trigger="click">
   <div id="content" slot="tooltip-content">
-    <a class:list={{ current: currentTheme === "dark" }} href="?action-theme=dark">
+    <a
+      class:list={{ current: currentTheme === "dark", "pressable-link": true }}
+      href="?action-theme=dark">
       {t("global.theme.dark")}
     </a>
-    <a class:list={{ current: currentTheme === "auto" }} href="?action-theme=auto">
+    <a
+      class:list={{ current: currentTheme === "auto", "pressable-link": true }}
+      href="?action-theme=auto">
       {t("global.theme.auto")}
     </a>
-    <a class:list={{ current: currentTheme === "light" }} href="?action-theme=light">
+    <a
+      class:list={{ current: currentTheme === "light", "pressable-link": true }}
+      href="?action-theme=light">
       {t("global.theme.light")}
     </a>
   </div>
