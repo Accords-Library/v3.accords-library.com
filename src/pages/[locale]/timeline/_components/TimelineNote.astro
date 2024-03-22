@@ -1,0 +1,25 @@
+---
+import { Icon } from "astro-icon/components";
+import RichText from "components/RichText/RichText.astro";
+import Tooltip from "components/Tooltip.astro";
+import { getI18n } from "src/i18n/i18n";
+import type { RichTextContent } from "src/shared/payload/payload-sdk";
+
+interface Props {
+  notes: RichTextContent;
+}
+
+const { notes } = Astro.props;
+
+const { t } = await getI18n(Astro.locals.currentLocale);
+---
+
+<Tooltip trigger="click">
+  <div id="tooltip-content" slot="tooltip-content">
+    <RichText content={notes} />
+  </div>
+  <div class="pressable-label">
+    <Icon name="material-symbols:comment-outline" />
+    <p>{t("timeline.eventFooter.note")}</p>
+  </div>
+</Tooltip>

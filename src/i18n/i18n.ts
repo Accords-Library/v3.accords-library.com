@@ -1,5 +1,7 @@
 import type { WordingKey } from "src/i18n/wordings-keys";
+import type { ChronologyEvent } from "src/shared/payload/payload-sdk";
 import { cache } from "src/utils/cachedPayload";
+import { capitalize } from "src/utils/format";
 
 export const defaultLocale = "en";
 
@@ -105,9 +107,7 @@ export const getI18n = async (locale: string) => {
     return template;
   };
 
-  const getLocalizedMatch = <T extends { language: string }>(
-    options: T[]
-  ): Omit<T, "language"> & { language?: string } =>
+  const getLocalizedMatch = <T extends { language: string }>(options: T[]): T =>
     options.find(({ language }) => language === locale) ??
     options.find(({ language }) => language === defaultLocale) ??
     options[0]!; // We will consider that there will always be at least one option.
@@ -129,8 +129,10 @@ export const getI18n = async (locale: string) => {
   const formatPrice = (price: { amount: number; currency: string }): string =>
     price.amount.toLocaleString(locale, { style: "currency", currency: price.currency });
 
-  const formatDate = (date: Date): string =>
-    date.toLocaleDateString(locale, { dateStyle: "medium" });
+  const formatDate = (
+    date: Date,
+    options: Intl.DateTimeFormatOptions | undefined = { dateStyle: "medium" }
+  ): string => date.toLocaleDateString(locale, options);
 
   const formatInches = (sizeInMm: number): string => {
     return (
@@ -156,6 +158,21 @@ export const getI18n = async (locale: string) => {
     return number.toLocaleString(locale, options);
   };
 
+  const formatTimelineDate = ({ year, month, day }: ChronologyEvent["date"]): string => {
+    const date = new Date();
+    date.setFullYear(year);
+    if (month) date.setMonth(month - 1);
+    if (day) date.setDate(day);
+
+    return capitalize(
+      formatDate(date, {
+        year: "numeric",
+        month: month ? "long" : undefined,
+        day: day ? "numeric" : undefined,
+      })
+    );
+  };
+
   return {
     t,
     getLocalizedMatch,
@@ -167,5 +184,6 @@ export const getI18n = async (locale: string) => {
     formatGrams,
     formatMillimeters,
     formatNumber,
+    formatTimelineDate,
   };
 };

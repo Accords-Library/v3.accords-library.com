@@ -1,0 +1,64 @@
+---
+import MasoTarget from "components/Maso/MasoTarget.astro";
+import TimelineEventTranslation from "pages/[locale]/timeline/_components/TimelineEventTranslation.astro";
+import TimelineLanguageOverride from "pages/[locale]/timeline/_components/TimelineLanguageOverride.astro";
+import TimelineNote from "pages/[locale]/timeline/_components/TimelineNote.astro";
+import TimelineSourcesButton from "pages/[locale]/timeline/_components/TimelineSourcesButton.astro";
+import { getI18n } from "src/i18n/i18n";
+import { payload, type EndpointChronologyEvent } from "src/shared/payload/payload-sdk";
+
+export const partial = true;
+
+interface Props {
+  lang: string;
+  event: EndpointChronologyEvent;
+  id: string;
+  index: number;
+}
+
+const reqUrl = new URL(Astro.request.url);
+const lang = Astro.props.lang ?? reqUrl.searchParams.get("lang")!;
+const id = Astro.props.id ?? reqUrl.searchParams.get("id")!;
+const index = Astro.props.index ?? parseInt(reqUrl.searchParams.get("index")!);
+const event = Astro.props.event ?? (await payload.getChronologyEventByID(id));
+const { sources, translations } = event.events[index]!;
+
+const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
+const { getLocalizedMatch } = await getI18n(lang);
+const { title, description, notes, proofreaders, transcribers, translators } =
+  getLocalizedMatch(translations);
+---
+
+<MasoTarget>
+  <div class="event">
+    <TimelineEventTranslation title={title} description={description} />
+    <div id="bottom" class="when-js when-no-print">
+      {sources.length > 0 && <TimelineSourcesButton sources={sources} />}
+      {notes && <TimelineNote notes={notes} />}
+      <TimelineLanguageOverride
+        availableLanguages={translations.map(({ language }) => language)}
+        currentLang={lang}
+        proofreaders={proofreaders}
+        transcribers={transcribers}
+        translators={translators}
+        getPartialUrl={(locale) =>
+          getLocalizedUrl(`/api/timeline/partial?id=${id}&index=${index}&lang=${locale}`)}
+      />
+    </div>
+  </div>
+</MasoTarget>
+
+<style>
+  .event {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    & > #bottom {
+      display: flex;
+      place-items: start;
+      gap: 0.3em;
+      font-size: 85%;
+    }
+  }
+</style>

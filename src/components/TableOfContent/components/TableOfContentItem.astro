@@ -28,7 +28,7 @@ const title = (() => {
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <li data-prefix={entry.prefix}>
-  <a href={`#${entry.prefix}`} class="pressable-link table-of-content-item">{title}</a>
+  <a href={`#${entry.prefix}`} class="pressable-link">{title}</a>
   {
     entry.children.length > 0 && (
       <ol>
@@ -61,19 +61,3 @@ const title = (() => {
     line-height: 125%;
   }
 </style>
-
-{/* ------------------------------------------- JS --------------------------------------------- */}
-
-<script>
-  document.querySelectorAll(".table-of-content-item").forEach((element) => {
-    const href = element.getAttribute("href")?.substring(1);
-    if (!href) return;
-    const heading = document.getElementById(href);
-    if (!heading) return;
-
-    element.addEventListener("click", (event) => {
-      heading.scrollIntoView({ behavior: "smooth" });
-      event.preventDefault();
-    });
-  });
-</script>

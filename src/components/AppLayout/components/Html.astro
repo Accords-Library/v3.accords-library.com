@@ -499,6 +499,10 @@ const { currentTheme } = Astro.locals;
       font-size: 24px;
     }
 
+    > h4 {
+      font-size: 18px;
+    }
+
     > h2,
     > h3,
     > h4,
@@ -546,5 +550,19 @@ const { currentTheme } = Astro.locals;
 
   document.addEventListener("astro:before-swap", ({ newDocument }) => {
     Array.from(newDocument.querySelectorAll(".when-no-js")).forEach((node) => node.remove());
+  });
+</script>
+
+<script is:inline data-astro-rerun>
+  document.querySelectorAll("a").forEach((element) => {
+    const href = element.getAttribute("href");
+    if (!href || !href.startsWith("#")) return;
+    const heading = document.getElementById(href.substring(1));
+    if (!heading) return;
+
+    element.addEventListener("click", (event) => {
+      heading.scrollIntoView({ behavior: "smooth" });
+      event.preventDefault();
+    });
   });
 </script>

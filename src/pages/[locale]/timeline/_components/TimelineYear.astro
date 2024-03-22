@@ -1,0 +1,53 @@
+---
+import type { EndpointChronologyEvent } from "src/shared/payload/payload-sdk";
+import TimelineEvent from "./TimelineEvent.astro";
+import { getI18n } from "src/i18n/i18n";
+import { dataConfig } from "src/dataConfig";
+
+interface Props {
+  year: number;
+  events: EndpointChronologyEvent[];
+}
+
+const { year, events } = Astro.props;
+const { formatTimelineDate } = await getI18n(Astro.locals.currentLocale);
+---
+
+{dataConfig.timeline.yearsWithABreakBefore.includes(year) && <hr id={`hr-${year}`} />}
+
+<h2 id={year.toString()}>
+  {formatTimelineDate(events.length === 1 ? events[0]!.date : { year })}
+</h2>
+
+<div class="year-container">
+  {events.map((event) => <TimelineEvent event={event} displayDate={events.length > 1} />)}
+</div>
+
+<style>
+  hr {
+    border: none;
+    border-top: 3px dashed var(--color-base-500);
+    margin-block: 5em;
+    scroll-margin-block: 5em;
+  }
+
+  .year-container {
+    border-left: 1px solid var(--color-base-600);
+    padding-left: 1em;
+    padding-block: 1em;
+    margin-bottom: 3em;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+  }
+
+  h2 {
+    padding-bottom: 0.2em;
+    padding-inline: 0.2em;
+    color: var(--color-base-700);
+    border-bottom: 1px solid var(--color-base-600);
+    scroll-margin-block: 1em;
+    width: fit-content;
+  }
+</style>

@@ -47,3 +47,9 @@ export const formatRichTextToString = (content: RichTextContent): string => {
 
   return content.root.children.map(formatNode).join("\n\n");
 };
+
+export const capitalize = (string: string): string => {
+  const [firstLetter, ...otherLetters] = string;
+  if (firstLetter === undefined) return "";
+  return [firstLetter.toUpperCase(), ...otherLetters].join("");
+};

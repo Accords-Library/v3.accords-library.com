@@ -1,0 +1,110 @@
+---
+import { payload } from "src/shared/payload/payload-sdk";
+import { groupBy } from "src/utils/array";
+import TimelineYear from "./_components/TimelineYear.astro";
+import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
+import Card from "components/Card.astro";
+import { getI18n } from "src/i18n/i18n";
+import AppLayoutBackgroundImg from "components/AppLayout/components/AppLayoutBackgroundImg.astro";
+import { dataConfig } from "src/dataConfig";
+
+const events = await payload.getChronologyEvents();
+const groupedEvents = groupBy(events, (event) => event.date.year);
+const { getLocalizedUrl, t, formatTimelineDate } = await getI18n(Astro.locals.currentLocale);
+---
+
+<AppEmptyLayout>
+  <AppLayoutBackgroundImg
+    img={{
+      url: "/img/timeline-background.webp",
+      filename: "timeline-background",
+      width: 2478,
+      height: 4110,
+      mimeType: "image/webp",
+    }}
+  />
+  <AppLayoutTitle title={t("timeline.title")} />
+
+  <div id="summary" class="prose">
+    <p>
+      {t("timeline.description")}
+    </p>
+  </div>
+
+  <div class="card-container">
+    <Card>
+      <div class="card-content prose">
+        <h3>{t("timeline.notes.title")}</h3>
+
+        <p
+          set:html={t("timeline.notes.content", {
+            worldInside: `<a href="${getLocalizedUrl(
+              "/collectibles/world-inside"
+            )}">World Inside</a>`,
+          })}
+        />
+      </div>
+    </Card>
+
+    <Card>
+      <div class="card-content prose">
+        <h3>{t("timeline.priorCataclysmNote.title")}</h3>
+
+        <p
+          set:html={t("timeline.priorCataclysmNote.content", {
+            worldInside: `<a href="${getLocalizedUrl(
+              "/collectibles/world-inside"
+            )}">World Inside</a>`,
+          })}
+        />
+      </div>
+    </Card>
+
+    <Card>
+      <div class="card-content prose jump-card">
+        <h3>{t("timeline.jumpTo")}</h3>
+
+        {
+          dataConfig.timeline.eras.map(({ name, start, end }) => (
+            <p
+              set:html={t(name, {
+                start: `<a href="#${start}">${formatTimelineDate({ year: start })}</a>`,
+                end: `<a href="#${end}">${formatTimelineDate({ year: end })}</a>`,
+              })}
+            />
+          ))
+        }
+      </div>
+    </Card>
+  </div>
+  {groupedEvents.map(({ key, values }) => <TimelineYear year={key} events={values} />)}
+</AppEmptyLayout>
+
+<style>
+  #summary {
+    backdrop-filter: blur(5px);
+    padding: 1.5em;
+    margin: -1.5em;
+    margin-block: 1em;
+    border-radius: 3em;
+    width: fit-content;
+  }
+
+  .card-content {
+    padding: clamp(1em, 4vw, 3em);
+    max-width: 35rem;
+
+    &.jump-card > p {
+      margin-block: 0.2em;
+    }
+  }
+
+  .card-container {
+    margin-top: 2em;
+    margin-bottom: 4em;
+    display: flex;
+    gap: 2em;
+    flex-wrap: wrap;
+  }
+</style>

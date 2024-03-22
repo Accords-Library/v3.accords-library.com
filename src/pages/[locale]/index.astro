@@ -6,6 +6,7 @@ import LibraryGrid from "./_components/LibraryGrid.astro";
 import ChronicleCard from "./_components/ChronicleCard.astro";
 import LinkCard from "./_components/LinkCard.astro";
 import { getI18n } from "src/i18n/i18n";
+import { dataConfig } from "src/dataConfig";
 
 const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
@@ -114,15 +115,6 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       <div class="grid">
         <div class="DEV_TODO">
           <LinkCard
-            icon="material-symbols:calendar-month-outline"
-            title={t("footer.links.timeline.title")}
-            subtitle={t("footer.links.timeline.subtitle", {
-              eraCount: 8,
-              eventCount: 358,
-            })}
-            href={getLocalizedUrl("/timeline")}
-          />
-          <LinkCard
             icon="material-symbols:movie-outline"
             title={t("footer.links.videos.title")}
             subtitle={t("footer.links.videos.subtitle", { count: 2115 })}
@@ -135,6 +127,16 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
             href={getLocalizedUrl("/archives")}
           />
         </div>
+
+        <LinkCard
+          icon="material-symbols:calendar-month-outline"
+          title={t("footer.links.timeline.title")}
+          subtitle={t("footer.links.timeline.subtitle", {
+            eraCount: dataConfig.timeline.eras.length,
+            eventCount: 358,
+          })}
+          href={getLocalizedUrl("/timeline")}
+        />
 
         <LinkCard
           icon="material-symbols:perm-media-outline"

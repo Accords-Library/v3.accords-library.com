@@ -1,0 +1,71 @@
+---
+import type { EndpointRecorder } from "src/shared/payload/payload-sdk";
+import { getI18n } from "src/i18n/i18n";
+
+interface Props {
+  translators?: EndpointRecorder[] | undefined;
+  transcribers?: EndpointRecorder[] | undefined;
+  proofreaders?: EndpointRecorder[] | undefined;
+}
+
+const { translators = [], transcribers = [], proofreaders = [] } = Astro.props;
+const { t } = await getI18n(Astro.locals.currentLocale);
+
+const tagGroups = [];
+
+if (translators.length > 0) {
+  tagGroups.push({
+    name: t("global.credits.translators"),
+    values: translators,
+  });
+}
+
+if (transcribers.length > 0) {
+  tagGroups.push({
+    name: t("global.credits.transcribers"),
+    values: transcribers,
+  });
+}
+
+if (proofreaders.length > 0) {
+  tagGroups.push({
+    name: t("global.credits.proofreaders"),
+    values: proofreaders,
+  });
+}
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<div id="tags">
+  {
+    tagGroups.map(({ name, values }) => (
+      <div>
+        <p>{name}</p>
+        {values.map(({ username }) => username).join(", ")}
+      </div>
+    ))
+  }
+</div>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  #tags {
+    margin-top: 0.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em 1.5em;
+
+    & > div {
+      font-weight: 400;
+      font-size: 80%;
+      display: flex;
+      gap: 0.5em;
+
+      & > p {
+        color: var(--color-base-750);
+      }
+    }
+  }
+</style>
