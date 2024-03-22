@@ -1,7 +1,7 @@
 import type { WordingKey } from "src/i18n/wordings-keys";
-import type { ChronologyEvent } from "src/shared/payload/payload-sdk";
+import type { ChronologyEvent, EndpointSource } from "src/shared/payload/payload-sdk";
 import { cache } from "src/utils/cachedPayload";
-import { capitalize } from "src/utils/format";
+import { capitalize, formatInlineTitle } from "src/utils/format";
 
 export const defaultLocale = "en";
 
@@ -173,6 +173,70 @@ export const getI18n = async (locale: string) => {
     );
   };
 
+  const formatEndpointSource = (source: EndpointSource) => {
+    switch (source.type) {
+      case "url":
+        return {
+          href: source.url,
+          typeLabel: t("global.sources.typeLabel.url"),
+          label: source.label,
+          target: "_blank",
+          rel: "noopener noreferrer",
+        };
+
+      case "collectible":
+        const rangeLabel = (() => {
+          switch (source.range?.type) {
+            case "timestamp":
+              return t("global.sources.typeLabel.collectible.range.timestamp", {
+                page: source.range.timestamp,
+              });
+
+            case "page":
+              return t("global.sources.typeLabel.collectible.range.page", {
+                page: source.range.page,
+              });
+
+            case "custom":
+              return t("global.sources.typeLabel.collectible.range.custom", {
+                note: getLocalizedMatch(source.range.translations).note,
+              });
+
+            case undefined:
+            default:
+              return "";
+          }
+        })();
+
+        return {
+          href: getLocalizedUrl(`/collectibles/${source.collectible.slug}`),
+          typeLabel: t("global.sources.typeLabel.collectible"),
+          label: formatInlineTitle(getLocalizedMatch(source.collectible.translations)) + rangeLabel,
+        };
+
+      case "page":
+        return {
+          href: getLocalizedUrl(`/pages/${source.page.slug}`),
+          typeLabel: t("global.sources.typeLabel.page"),
+          label: formatInlineTitle(getLocalizedMatch(source.page.translations)),
+        };
+
+      case "folder":
+        return {
+          href: getLocalizedUrl(`/folders/${source.folder.slug}`),
+          typeLabel: t("global.sources.typeLabel.folder"),
+          label: getLocalizedMatch(source.folder.translations).name,
+        };
+
+      default:
+        return {
+          href: "/404",
+          label: `Invalid type ${source["type"]}`,
+          typeLabel: "Error",
+        };
+    }
+  };
+
   return {
     t,
     getLocalizedMatch,
@@ -185,5 +249,6 @@ export const getI18n = async (locale: string) => {
     formatMillimeters,
     formatNumber,
     formatTimelineDate,
+    formatEndpointSource,
   };
 };

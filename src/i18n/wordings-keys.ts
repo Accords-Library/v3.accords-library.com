@@ -104,4 +104,11 @@ export type WordingKey =
   | "timeline.year.during"
   | "timeline.eventFooter.languages"
   | "timeline.eventFooter.sources"
-  | "timeline.eventFooter.note";
+  | "timeline.eventFooter.note"
+  | "global.sources.typeLabel.url"
+  | "global.sources.typeLabel.page"
+  | "global.sources.typeLabel.collectible"
+  | "global.sources.typeLabel.folder"
+  | "global.sources.typeLabel.collectible.range.page"
+  | "global.sources.typeLabel.collectible.range.timestamp"
+  | "global.sources.typeLabel.collectible.range.custom";

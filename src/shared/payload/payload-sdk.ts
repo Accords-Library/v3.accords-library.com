@@ -862,9 +862,6 @@ export interface SectionBlock {
   blockType: "sectionBlock";
 }
 
-declare module "payload" {
-  export interface GeneratedTypes extends Config {}
-}
 
 /////////////// CONSTANTS ///////////////
 
@@ -1299,7 +1296,7 @@ export type EndpointFolder = EndpointFolderPreview & {
         value: EndpointPagePreview;
       }
   )[];
-  parentPages: ParentPage[];
+  parentPages: EndpointSource[];
 };
 
 export type EndpointHomeFolder = EndpointFolderPreview & {
@@ -1369,13 +1366,7 @@ export type EndpointPage = EndpointPagePreview & {
     proofreaders: EndpointRecorder[];
     toc: TableOfContentEntry[];
   })[];
-  parentPages: ParentPage[];
-};
-
-export type ParentPage = {
-  slug: string;
-  collection: Collections;
-  translations: { language: string; name: string }[];
+  parentPages: EndpointSource[];
 };
 
 export type EndpointCollectiblePreview = {
@@ -1450,7 +1441,7 @@ export type EndpointCollectible = EndpointCollectiblePreview & {
           }[];
         };
   }[];
-  parentPages: ParentPage[];
+  parentPages: EndpointSource[];
 };
 
 export type TableOfContentEntry = {
@@ -1493,7 +1484,8 @@ export type EndpointSource =
         | { type: "timestamp"; timestamp: string }
         | { type: "custom"; translations: { language: string; note: string }[] };
     }
-  | { type: "page"; page: EndpointPagePreview };
+  | { type: "page"; page: EndpointPagePreview }
+  | { type: "folder"; folder: EndpointFolderPreview };
 
 export type PayloadImage = {
   url: string;
@@ -1523,5 +1515,5 @@ export const payload = {
   getChronologyEvents: async (): Promise<EndpointChronologyEvent[]> =>
     await (await request(payloadApiUrl(Collections.ChronologyEvents, `all`))).json(),
   getChronologyEventByID: async (id: string): Promise<EndpointChronologyEvent> =>
-    await (await request(payloadApiUrl(Collections.ChronologyEvents, id))).json(),
+    await (await request(payloadApiUrl(Collections.ChronologyEvents, `id/${id}`))).json(),
 };

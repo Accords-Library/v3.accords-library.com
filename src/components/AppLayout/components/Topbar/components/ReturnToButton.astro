@@ -1,44 +1,32 @@
 ---
 import { Icon } from "astro-icon/components";
 import { getI18n } from "src/i18n/i18n";
-import { Collections, type ParentPage } from "src/shared/payload/payload-sdk";
+import type { EndpointSource } from "src/shared/payload/payload-sdk";
 
 interface Props {
-  parentPage: ParentPage;
+  parentPage: EndpointSource;
 }
 
 const { parentPage } = Astro.props;
-const { getLocalizedMatch, getLocalizedUrl, t } = await getI18n(Astro.locals.currentLocale);
+const { formatEndpointSource } = await getI18n(Astro.locals.currentLocale);
 
-const translation = getLocalizedMatch(parentPage.translations);
-
-let href = "";
-let collectionLabel = "";
-switch (parentPage.collection) {
-  case Collections.Folders:
-    href = getLocalizedUrl(`/folders/${parentPage.slug}`);
-    collectionLabel = t("header.nav.parentPages.collections.folder");
-    break;
-
-  case Collections.Collectibles:
-    href = getLocalizedUrl(`/collectibles/${parentPage.slug}`);
-    collectionLabel = t("header.nav.parentPages.collections.collectible");
-    break;
-
-  default:
-    href = "/404";
-    break;
-}
+const {
+  href,
+  typeLabel,
+  label,
+  target = undefined,
+  rel = undefined,
+} = formatEndpointSource(parentPage);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<a href={href}>
+<a href={href} target={target} rel={rel}>
   <div class="pressable-label">
     <Icon name="material-symbols:keyboard-return" />
     <p>
-      <span>{collectionLabel}</span>
-      {translation.name}
+      <span>{typeLabel}</span>
+      {label}
     </p>
   </div>
 </a>

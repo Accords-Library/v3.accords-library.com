@@ -8,6 +8,7 @@
 ## Mid term
 
 - Support for nameless section
+- [Timeline] Error if collectible not published?
 - [Collectibles] Create page for gallery
 - [Collectibles] Create page for scans
 - When the tags overflow, the tag group name should be align start (see http://localhost:12499/en/pages/magnitude-negative-chapter-1)
