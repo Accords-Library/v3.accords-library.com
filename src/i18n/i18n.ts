@@ -159,7 +159,7 @@ export const getI18n = async (locale: string) => {
   };
 
   const formatTimelineDate = ({ year, month, day }: ChronologyEvent["date"]): string => {
-    const date = new Date();
+    const date = new Date(0);
     date.setFullYear(year);
     if (month) date.setMonth(month - 1);
     if (day) date.setDate(day);

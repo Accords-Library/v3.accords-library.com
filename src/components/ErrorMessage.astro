@@ -9,23 +9,17 @@ interface Props {
 const { title, description } = Astro.props;
 ---
 
-<div>
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<div class="error-message">
   <Icon name="material-symbols:error-outline" width={32} height={32} />
   <p id="title">{title}</p>
   {description && <p>{description}</p>}
 </div>
 
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
 <style>
-  @keyframes flashingRed {
-    from {
-      background-color: #ff000022;
-    }
-
-    to {
-      background-color: #ff000033;
-    }
-  }
-
   div {
     color: var(--color-critical-error) !important;
     padding: 2em 2em !important;
@@ -33,11 +27,6 @@ const { title, description } = Astro.props;
     border-radius: 1em;
     display: grid;
     place-items: center;
-
-    animation: flashingRed;
-    animation-duration: 0.5s;
-    animation-direction: alternate;
-    animation-iteration-count: infinite;
 
     & > #title {
       font-weight: 600;

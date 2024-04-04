@@ -5,11 +5,11 @@ const timelineEras: { name: WordingKey; start: number; end: number }[] = [
   {
     name: "timeline.eras.drakengard3",
     start: 997,
-    end: 1000,
+    end: 1001,
   },
   {
     name: "timeline.eras.drakengard",
-    start: 1001,
+    start: 1003,
     end: 1099,
   },
   {
@@ -31,7 +31,7 @@ const timelineEras: { name: WordingKey; start: number; end: number }[] = [
 
 export const dataConfig = {
   timeline: {
-    yearsWithABreakBefore: [856, 997, 1001, 1118, 1957, 2003, 2049, 2050, 3361, 3463],
+    yearsWithABreakBefore: [856, 997, 1003, 1118, 1957, 2003, 2049, 2050, 3361, 3463],
     eras: timelineEras,
   },
 };

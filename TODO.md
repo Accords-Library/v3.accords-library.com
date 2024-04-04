@@ -2,13 +2,19 @@
 
 ## Short term
 
-- [Scripts] Can't run the scripts using node (ts-node?)
+- [Timeline] inline links to pages not working (timeline 2026/06)
+- [Timeline] 11940-11 says december on the website.
+- [Home] Have the event count reflect the actual number
 - Save cookies for longer than just the session
+- [Payload] Stop sending Rich text content if it is empty
 
 ## Mid term
 
+- [Scripts] Can't run the scripts using node (ts-node?)
 - Support for nameless section
 - [Timeline] Error if collectible not published?
+- [Timeline] Handle no JS for footers
+- [Timeline] Add details button in footer with credits + last updated / created
 - [Collectibles] Create page for gallery
 - [Collectibles] Create page for scans
 - When the tags overflow, the tag group name should be align start (see http://localhost:12499/en/pages/magnitude-negative-chapter-1)
@@ -16,6 +22,7 @@
 
 ## Long term
 
+- [Timeline] Some filtering options (by source/languages/)
 - The Chronicles
 - The Changelog
 - Grid view (all files)

@@ -29,11 +29,13 @@ const { title, description, notes, proofreaders, transcribers, translators } =
   getLocalizedMatch(translations);
 ---
 
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
 <MasoTarget>
   <div class="event">
     <TimelineEventTranslation title={title} description={description} />
     <div id="bottom" class="when-js when-no-print">
-      {sources.length > 0 && <TimelineSourcesButton sources={sources} />}
+      <TimelineSourcesButton sources={sources} />
       {notes && <TimelineNote notes={notes} />}
       <TimelineLanguageOverride
         availableLanguages={translations.map(({ language }) => language)}
@@ -47,6 +49,8 @@ const { title, description, notes, proofreaders, transcribers, translators } =
     </div>
   </div>
 </MasoTarget>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   .event {
