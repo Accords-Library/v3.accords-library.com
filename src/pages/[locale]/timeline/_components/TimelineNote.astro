@@ -14,6 +14,8 @@ const { notes } = Astro.props;
 const { t } = await getI18n(Astro.locals.currentLocale);
 ---
 
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
 <Tooltip trigger="click">
   <div id="tooltip-content" slot="tooltip-content">
     <RichText content={notes} />

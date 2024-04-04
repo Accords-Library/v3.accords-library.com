@@ -20,12 +20,16 @@ interface Props {
 const { node, context } = Astro.props;
 ---
 
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
 <li>
   <Icon
     name={node.checked ? "material-symbols:check-box" : "material-symbols:check-box-outline-blank"}
   />
   {node.children.map((node) => <RTNode node={node} context={context} />)}
 </li>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   li {

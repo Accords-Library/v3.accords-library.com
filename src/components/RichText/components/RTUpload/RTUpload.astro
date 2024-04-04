@@ -12,6 +12,8 @@ interface Props {
 const { node, context } = Astro.props;
 ---
 
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
 {
   isUploadNodeImageNode(node) ? (
     <RTImage node={node} context={context} />

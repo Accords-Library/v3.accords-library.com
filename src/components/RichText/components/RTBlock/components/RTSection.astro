@@ -11,6 +11,8 @@ interface Props {
 const { node, context } = Astro.props;
 ---
 
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
 {
   context.depth < 2 ? (
     <h2 id={node.anchorHash}>
@@ -41,6 +43,8 @@ const { node, context } = Astro.props;
 }
 
 <RichText content={node.fields.content} context={{ ...context, depth: context.depth + 1 }} />
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   span {

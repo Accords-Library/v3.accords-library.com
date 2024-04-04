@@ -18,6 +18,8 @@ interface Props {
 const { node, context } = Astro.props;
 ---
 
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
 {
   isLinkNodeCustomLinkNode(node) ? (
     <RTCustomLink href={node.fields.url} newTab={node.fields.newTab}>

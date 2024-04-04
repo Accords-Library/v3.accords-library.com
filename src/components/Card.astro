@@ -10,11 +10,15 @@ interface Props {
 const { href, disableRoundedTop = false } = Astro.props;
 ---
 
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
 <ConditionalWrapper condition={href !== undefined} wrapper={Link} props={{ href: href! }}>
   <div id="card" class:list={{ "rounded-top": !disableRoundedTop }}>
     <slot />
   </div>
 </ConditionalWrapper>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   #card {

@@ -18,6 +18,8 @@ interface Props {
 const { node } = Astro.props;
 ---
 
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
 <ConditionalWrapper wrapper={RTBold} condition={Boolean(node.format & 1)}>
   <ConditionalWrapper wrapper={RTItalic} condition={Boolean(node.format & 2)}>
     <ConditionalWrapper wrapper={RTLineThrough} condition={Boolean(node.format & 4)}>

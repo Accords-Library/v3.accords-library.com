@@ -10,10 +10,14 @@ interface Props {
 const { title, description } = Astro.props;
 ---
 
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
 <div>
   {title && <h4>{title}</h4>}
   {description && <RichText content={description} />}
 </div>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   div {

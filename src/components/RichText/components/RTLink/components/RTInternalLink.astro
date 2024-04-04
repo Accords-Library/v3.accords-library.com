@@ -13,6 +13,8 @@ const { doc } = Astro.props;
 const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
 
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
 {
   doc.relationTo === "folders" ? (
     <a href={getLocalizedUrl(`/folders/${doc.value.slug}`)}>

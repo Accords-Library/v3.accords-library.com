@@ -14,6 +14,8 @@ const groupedEvents = groupBy(events, (event) => event.date.year);
 const { getLocalizedUrl, t, formatTimelineDate } = await getI18n(Astro.locals.currentLocale);
 ---
 
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
 <AppEmptyLayout>
   <AppLayoutBackgroundImg
     img={{
@@ -80,6 +82,8 @@ const { getLocalizedUrl, t, formatTimelineDate } = await getI18n(Astro.locals.cu
   </div>
   {groupedEvents.map(({ key, values }) => <TimelineYear year={key} events={values} />)}
 </AppEmptyLayout>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   #summary {

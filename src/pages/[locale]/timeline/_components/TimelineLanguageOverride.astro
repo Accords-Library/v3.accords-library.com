@@ -22,6 +22,8 @@ const { availableLanguages, transcribers, proofreaders, translators, getPartialU
 const { t } = await getI18n(Astro.locals.currentLocale);
 ---
 
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
 <Tooltip trigger="click">
   <div id="tooltip-content" slot="tooltip-content">
     {
@@ -51,6 +53,8 @@ const { t } = await getI18n(Astro.locals.currentLocale);
     </p>
   </div>
 </Tooltip>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   #tooltip-content {

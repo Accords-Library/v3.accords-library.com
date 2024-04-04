@@ -19,6 +19,8 @@ interface Props {
 const { node, context } = Astro.props;
 ---
 
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
 {
   isBlockNodeSectionBlock(node) ? (
     <RTSection node={node} context={context} />

@@ -19,4 +19,6 @@ interface Props {
 const { node, context } = Astro.props;
 ---
 
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
 <li>{node.children.map((node) => <RTNode node={node} context={context} />)}</li>
