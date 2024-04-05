@@ -1,0 +1,32 @@
+---
+import { type RichTextUploadAudioNode } from "src/shared/payload/payload-sdk";
+import type { RichTextContext } from "src/utils/richText";
+
+interface Props {
+  node: RichTextUploadAudioNode;
+  context: RichTextContext;
+}
+
+const { node } = Astro.props;
+---
+
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
+
+<audio controls>
+  <source src={node.value.url} type={node.value.mimeType} />
+</audio>
+
+{
+  /* ------------------------------------------- CSS -------------------------------------------- */
+}
+
+<style>
+  audio {
+    width: 100%;
+    margin-block: 3em;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px -10px var(--color-shadow);
+  }
+</style>

@@ -1,0 +1,29 @@
+---
+import { type RichTextUploadVideoNode } from "src/shared/payload/payload-sdk";
+import type { RichTextContext } from "src/utils/richText";
+
+interface Props {
+  node: RichTextUploadVideoNode;
+  context: RichTextContext;
+}
+
+const { node } = Astro.props;
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<video controls>
+  <source src={node.value.url} type={node.value.mimeType} />
+</video>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  video {
+    width: 100%;
+    height: auto;
+    margin-block: 3em;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px -10px var(--color-shadow);
+  }
+</style>

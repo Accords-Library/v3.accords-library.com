@@ -1098,8 +1098,18 @@ export interface RichTextUploadNode extends RichTextNode {
 }
 
 export interface RichTextUploadImageNode extends RichTextUploadNode {
-  relationTo: "images" | "background-images";
+  relationTo: Collections.Images;
   value: Image;
+}
+
+export interface RichTextUploadVideoNode extends RichTextUploadNode {
+  relationTo: Collections.Videos;
+  value: Video;
+}
+
+export interface RichTextUploadAudioNode extends RichTextUploadNode {
+  relationTo: Collections.Audios;
+  value: Audio;
 }
 
 export interface RichTextTextNode extends RichTextNode {
@@ -1167,7 +1177,13 @@ export const isNodeUploadNode = (node: RichTextNode): node is RichTextUploadNode
   node.type === "upload";
 
 export const isUploadNodeImageNode = (node: RichTextUploadNode): node is RichTextUploadImageNode =>
-  node.relationTo === "images" || node.relationTo === "background-images";
+  node.relationTo === Collections.Images;
+
+  export const isUploadNodeVideoNode = (node: RichTextUploadNode): node is RichTextUploadVideoNode =>
+  node.relationTo === Collections.Videos;
+
+  export const isUploadNodeAudioNode = (node: RichTextUploadNode): node is RichTextUploadAudioNode =>
+  node.relationTo === Collections.Audios;
 
 export const isNodeListNode = (node: RichTextNode): node is RichTextListNode =>
   node.type === "list";

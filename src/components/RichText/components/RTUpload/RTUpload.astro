@@ -1,8 +1,15 @@
 ---
-import { isUploadNodeImageNode, type RichTextUploadNode } from "src/shared/payload/payload-sdk";
+import {
+  isUploadNodeAudioNode,
+  isUploadNodeImageNode,
+  isUploadNodeVideoNode,
+  type RichTextUploadNode,
+} from "src/shared/payload/payload-sdk";
 import type { RichTextContext } from "src/utils/richText";
 import RTImage from "./components/RTImage.astro";
 import ErrorMessage from "components/ErrorMessage.astro";
+import RTAudio from "./components/RTAudio.astro";
+import RTVideo from "./components/RTVideo.astro";
 
 interface Props {
   node: RichTextUploadNode;
@@ -12,11 +19,17 @@ interface Props {
 const { node, context } = Astro.props;
 ---
 
-{/* ------------------------------------------- HTML ------------------------------------------- */}
+{
+  /* ------------------------------------------- HTML ------------------------------------------- */
+}
 
 {
   isUploadNodeImageNode(node) ? (
     <RTImage node={node} context={context} />
+  ) : isUploadNodeAudioNode(node) ? (
+    <RTAudio node={node} context={context} />
+  ) : isUploadNodeVideoNode(node) ? (
+    <RTVideo node={node} context={context} />
   ) : (
     <ErrorMessage
       title={`Unknown upload collection: ${node.relationTo}`}
