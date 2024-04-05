@@ -3,10 +3,7 @@
 ## Short term
 
 - [Timeline] inline links to pages not working (timeline 2026/06)
-- [Timeline] 11940-11 says december on the website.
-- [Home] Have the event count reflect the actual number
 - Save cookies for longer than just the session
-- [Payload] Stop sending Rich text content if it is empty
 
 ## Mid term
 
@@ -22,7 +19,7 @@
 
 ## Long term
 
-- [Timeline] Some filtering options (by source/languages/)
+- [Timeline] Some filtering options (by source/languages)
 - The Chronicles
 - The Changelog
 - Grid view (all files)

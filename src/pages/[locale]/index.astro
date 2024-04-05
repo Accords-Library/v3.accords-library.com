@@ -6,7 +6,7 @@ import LibraryGrid from "./_components/LibraryGrid.astro";
 import ChronicleCard from "./_components/ChronicleCard.astro";
 import LinkCard from "./_components/LinkCard.astro";
 import { getI18n } from "src/i18n/i18n";
-import { dataConfig } from "src/dataConfig";
+import { cache } from "src/utils/cachedPayload";
 
 const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
@@ -132,8 +132,8 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
           icon="material-symbols:calendar-month-outline"
           title={t("footer.links.timeline.title")}
           subtitle={t("footer.links.timeline.subtitle", {
-            eraCount: dataConfig.timeline.eras.length,
-            eventCount: 358,
+            eraCount: cache.config.timeline.eras.length,
+            eventCount: cache.config.timeline.eventCount,
           })}
           href={getLocalizedUrl("/timeline")}
         />

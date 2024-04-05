@@ -2,7 +2,7 @@
 import type { EndpointChronologyEvent } from "src/shared/payload/payload-sdk";
 import TimelineEvent from "./TimelineEvent.astro";
 import { getI18n } from "src/i18n/i18n";
-import { dataConfig } from "src/dataConfig";
+import { cache } from "src/utils/cachedPayload";
 
 interface Props {
   year: number;
@@ -15,7 +15,7 @@ const { formatTimelineDate } = await getI18n(Astro.locals.currentLocale);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-{dataConfig.timeline.yearsWithABreakBefore.includes(year) && <hr id={`hr-${year}`} />}
+{cache.config.timeline.breaks.includes(year) && <hr id={`hr-${year}`} />}
 
 <h2 id={year.toString()}>
   {formatTimelineDate(events.length === 1 ? events[0]!.date : { year })}

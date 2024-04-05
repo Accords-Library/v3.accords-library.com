@@ -1,16 +1,15 @@
 ---
-import { payload } from "src/shared/payload/payload-sdk";
 import CategoryCard from "./CategoryCard.astro";
 import { getI18n } from "src/i18n/i18n";
+import { cache } from "src/utils/cachedPayload";
 
-const folders = await payload.getHomeFolders();
 const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 {
-  folders.map(({ slug, translations, darkThumbnail, lightThumbnail }) => (
+  cache.config.homeFolders.map(({ slug, translations, darkThumbnail, lightThumbnail }) => (
     <CategoryCard
       img={
         darkThumbnail && lightThumbnail
