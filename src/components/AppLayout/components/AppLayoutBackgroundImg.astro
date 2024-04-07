@@ -3,7 +3,7 @@ import type { PayloadImage } from "src/shared/payload/payload-sdk";
 import { getRandomId } from "src/utils/random";
 
 interface Props {
-  img: PayloadImage;
+  img: Pick<PayloadImage, "url" | "width" | "height">;
 }
 
 const {

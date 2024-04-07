@@ -1,4 +1,5 @@
 ---
+import HeaderTitle from "components/HeaderTitle.astro";
 import RichText from "components/RichText/RichText.astro";
 import type { RichTextSectionBlock } from "src/shared/payload/payload-sdk";
 import type { RichTextContext } from "src/utils/richText";
@@ -13,34 +14,10 @@ const { node, context } = Astro.props;
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-{
-  context.depth < 2 ? (
-    <h2 id={node.anchorHash}>
-      <span>{`${node.anchorHash} `}</span>
-      {node.fields.blockName}
-    </h2>
-  ) : context.depth === 2 ? (
-    <h3 id={node.anchorHash}>
-      <span>{`${node.anchorHash} `}</span>
-      {node.fields.blockName}
-    </h3>
-  ) : context.depth === 3 ? (
-    <h4 id={node.anchorHash}>
-      <span>{`${node.anchorHash} `}</span>
-      {node.fields.blockName}
-    </h4>
-  ) : context.depth === 4 ? (
-    <h5 id={node.anchorHash}>
-      <span>{`${node.anchorHash} `}</span>
-      {node.fields.blockName}
-    </h5>
-  ) : (
-    <h6 id={node.anchorHash}>
-      <span>{`${node.anchorHash} `}</span>
-      {node.fields.blockName}
-    </h6>
-  )
-}
+<HeaderTitle id={node.anchorHash} header={context.depth + 1}>
+  <span>{`${node.anchorHash} `}</span>
+  {node.fields.blockName}
+</HeaderTitle>
 
 <RichText content={node.fields.content} context={{ ...context, depth: context.depth + 1 }} />
 
@@ -51,6 +28,6 @@ const { node, context } = Astro.props;
     color: var(--color-base-650);
     font-weight: 500;
     font-size: 70%;
-    margin-right: 0.3em;
+    place-self: end;
   }
 </style>

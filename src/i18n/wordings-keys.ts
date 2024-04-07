@@ -111,4 +111,5 @@ export type WordingKey =
   | "global.sources.typeLabel.folder"
   | "global.sources.typeLabel.collectible.range.page"
   | "global.sources.typeLabel.collectible.range.timestamp"
-  | "global.sources.typeLabel.collectible.range.custom";
+  | "global.sources.typeLabel.collectible.range.custom"
+  | "global.openMediaPage";

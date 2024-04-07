@@ -1,0 +1,53 @@
+---
+interface Props {
+  id?: string;
+  header: number;
+}
+
+const { header, id } = Astro.props;
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+{
+  header === 1 ? (
+    <h1 id={id}>
+      <slot />
+    </h1>
+  ) : header === 2 ? (
+    <h2 id={id}>
+      <slot />
+    </h2>
+  ) : header === 3 ? (
+    <h3 id={id}>
+      <slot />
+    </h3>
+  ) : header === 4 ? (
+    <h4 id={id}>
+      <slot />
+    </h4>
+  ) : header === 5 ? (
+    <h5 id={id}>
+      <slot />
+    </h5>
+  ) : (
+    <h6 id={id}>
+      <slot />
+    </h6>
+  )
+}
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    display: inline-flex;
+    place-items: center;
+    gap: 0.5em;
+  }
+</style>

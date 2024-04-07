@@ -1,27 +1,60 @@
 ---
 import { type RichTextUploadImageNode } from "src/shared/payload/payload-sdk";
 import type { RichTextContext } from "src/utils/richText";
+import OpenMediaPageButton from "./OpenMediaPageButton.astro";
+import { getI18n } from "src/i18n/i18n";
+import HeaderTitle from "components/HeaderTitle.astro";
+import { Icon } from "astro-icon/components";
 
 interface Props {
   node: RichTextUploadImageNode;
   context: RichTextContext;
 }
 
-const { node } = Astro.props;
+const {
+  node: {
+    value: { id, url, translations },
+  },
+  context,
+} = Astro.props;
+
+const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
+const { title }: { title?: string } =
+  translations.length > 0 ? getLocalizedMatch(translations) : {};
+
+const mediaPage = `/images/${id}`;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<img src={node.value.url} />
+<div>
+  {
+    title && (
+      <HeaderTitle header={context.depth + 2}>
+        <Icon name="material-symbols:image-outline" />
+        {title}
+      </HeaderTitle>
+    )
+  }
+
+  <a href={mediaPage}><img src={url} /></a>
+
+  <OpenMediaPageButton url={mediaPage} />
+</div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  img {
-    width: 100%;
-    height: auto;
-    margin-block: 3em;
-    border-radius: 16px;
-    box-shadow: 0 5px 20px -10px var(--color-shadow);
+  div {
+    margin-block: 4em;
+
+    & > a > img {
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px -10px var(--color-shadow);
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
   }
 </style>

@@ -50,23 +50,14 @@ const { currentTheme } = Astro.locals;
     "light-theme": currentTheme === "light",
     "dark-theme": currentTheme === "dark",
     "texture-dots": !isIOS,
-  }}
->
+  }}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="stylesheet" href="/css/tippy.css" />
-    <meta
-      name="theme-color"
-      media="(prefers-color-scheme: light)"
-      content="#fdebd4"
-    />
-    <meta
-      name="theme-color"
-      media="(prefers-color-scheme: dark)"
-      content="#27231e"
-    />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fdebd4" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#27231e" />
     <link rel="manifest" href="/site.webmanifest" />
 
     {/* Meta & OpenGraph */}
@@ -80,10 +71,7 @@ const { currentTheme } = Astro.locals;
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={thumbnail} />
 
-    <meta
-      property="og:type"
-      content={video ? "video.movie" : audio ? "music.song" : "website"}
-    />
+    <meta property="og:type" content={video ? "video.movie" : audio ? "music.song" : "website"} />
     <meta property="og:locale" content={currentLocale} />
     <meta property="og:site_name" content={t("global.siteName")} />
 
@@ -133,9 +121,7 @@ const { currentTheme } = Astro.locals;
   <AppLayoutSpinner />
 </html>
 
-{
-  /* ------------------------------------------- CSS -------------------------------------------- */
-}
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style is:global>
   html {
@@ -467,8 +453,7 @@ const { currentTheme } = Astro.locals;
     backdrop-filter: blur(10px);
 
     transition-duration: 250ms;
-    transition-property: padding-top, box-shadow, background-color, color,
-      border-color;
+    transition-property: padding-top, box-shadow, background-color, color, border-color;
 
     &:hover {
       --foreground-color: var(--color-base-1000);
@@ -587,19 +572,13 @@ const { currentTheme } = Astro.locals;
   }
 </style>
 
-{
-  /* ------------------------------------------- JS --------------------------------------------- */
-}
+{/* ------------------------------------------- JS --------------------------------------------- */}
 
 <script is:inline>
-  Array.from(document.querySelectorAll(".when-no-js")).forEach((node) =>
-    node.remove()
-  );
+  Array.from(document.querySelectorAll(".when-no-js")).forEach((node) => node.remove());
 
   document.addEventListener("astro:before-swap", ({ newDocument }) => {
-    Array.from(newDocument.querySelectorAll(".when-no-js")).forEach((node) =>
-      node.remove()
-    );
+    Array.from(newDocument.querySelectorAll(".when-no-js")).forEach((node) => node.remove());
   });
 </script>
 

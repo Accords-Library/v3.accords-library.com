@@ -1,11 +1,11 @@
 ---
-import type { EndpointFolderPreview } from "src/shared/payload/payload-sdk";
+import type { EndpointFolder } from "src/shared/payload/payload-sdk";
 import FolderCard from "./FolderCard.astro";
 import { getI18n } from "src/i18n/i18n";
 
 interface Props {
   title?: string | undefined;
-  folders: EndpointFolderPreview[];
+  folders: EndpointFolder[];
 }
 
 const { title, folders } = Astro.props;

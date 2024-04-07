@@ -1,29 +1,61 @@
 ---
+import { getI18n } from "src/i18n/i18n";
 import { type RichTextUploadVideoNode } from "src/shared/payload/payload-sdk";
+import { formatLocale } from "src/utils/format";
 import type { RichTextContext } from "src/utils/richText";
+import OpenMediaPageButton from "./OpenMediaPageButton.astro";
+import HeaderTitle from "components/HeaderTitle.astro";
+import { Icon } from "astro-icon/components";
 
 interface Props {
   node: RichTextUploadVideoNode;
   context: RichTextContext;
 }
 
-const { node } = Astro.props;
+const {
+  node: {
+    value: { id, url, thumbnail, mimeType, subtitles, translations },
+  },
+  context,
+} = Astro.props;
+
+const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
+const { title } = getLocalizedMatch(translations);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<video controls>
-  <source src={node.value.url} type={node.value.mimeType} />
-</video>
+<div>
+  <HeaderTitle header={context.depth + 2}>
+    <Icon name="material-symbols:movie-outline" />
+    {title}
+  </HeaderTitle>
+
+  <video controls poster={thumbnail?.url}>
+    <source src={url} type={mimeType} />
+    {
+      subtitles.map(({ language, url }) => (
+        <track label={formatLocale(language)} src={url} kind="subtitles" srclang={language} />
+      ))
+    }
+  </video>
+
+  <OpenMediaPageButton url={`/videos/${id}`} />
+</div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  video {
-    width: 100%;
-    height: auto;
-    margin-block: 3em;
-    border-radius: 16px;
-    box-shadow: 0 5px 20px -10px var(--color-shadow);
+  div {
+    margin-block: 4em;
+
+    & > video {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px -10px var(--color-shadow);
+    }
   }
 </style>

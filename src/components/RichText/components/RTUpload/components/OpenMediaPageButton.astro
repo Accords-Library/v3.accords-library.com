@@ -1,0 +1,38 @@
+---
+import { Icon } from "astro-icon/components";
+import { getI18n } from "src/i18n/i18n";
+
+interface Props {
+  url: string;
+}
+
+const { url } = Astro.props;
+const { t } = await getI18n(Astro.locals.currentLocale);
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<div class="button">
+  <a href={url}>
+    <div class="pressable-label">
+      <Icon name="material-symbols:left-click" />
+      <p>{t("global.openMediaPage")}</p>
+    </div>
+  </a>
+</div>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  .button {
+    display: flex;
+    place-items: start;
+    gap: 0.3em;
+    font-size: 85%;
+
+    & > a > div {
+      padding: 0.3em 0.6em;
+      padding-right: 0.8em;
+    }
+  }
+</style>

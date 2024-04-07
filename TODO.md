@@ -4,6 +4,9 @@
 
 - [Timeline] inline links to pages not working (timeline 2026/06)
 - Save cookies for longer than just the session
+- [Image] media page
+- [Video] media page
+- [Audio] media page
 
 ## Mid term
 
