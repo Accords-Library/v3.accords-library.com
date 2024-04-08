@@ -1,41 +1,41 @@
 ---
-import type { EndpointRecorder } from "src/shared/payload/payload-sdk";
+import type { EndpointCredit } from "src/shared/payload/payload-sdk";
 import Metadata from "./Metadata.astro";
 import { getI18n } from "src/i18n/i18n";
 
 interface Props {
-  translators?: EndpointRecorder[] | undefined;
-  transcribers?: EndpointRecorder[] | undefined;
-  proofreaders?: EndpointRecorder[] | undefined;
-  authors?: EndpointRecorder[] | undefined;
+  credits: EndpointCredit[];
 }
 
-const { translators = [], transcribers = [], proofreaders = [], authors = [] } = Astro.props;
-const { t } = await getI18n(Astro.locals.currentLocale);
+const { credits } = Astro.props;
+const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<Metadata
-  icon="material-symbols:person-outline"
-  title={t("global.credits.translators")}
-  values={translators.map(({ username }) => username)}
-/>
+<div>
+  {
+    credits.map(({ recorders, role: { icon, translations } }) => (
+      <Metadata
+        icon={icon}
+        title={getLocalizedMatch(translations).name}
+        values={recorders.map(({ username }) => username)}
+      />
+    ))
+  }
+</div>
 
-<Metadata
-  icon="material-symbols:person-edit-outline"
-  title={t("global.credits.transcribers")}
-  values={transcribers.map(({ username }) => username)}
-/>
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
-<Metadata
-  icon="material-symbols:person-check-outline"
-  title={t("global.credits.proofreaders")}
-  values={proofreaders.map(({ username }) => username)}
-/>
+<style>
+  div {
+    display: grid;
+    gap: 2em;
+    margin-block: 2em;
 
-<Metadata
-  icon="material-symbols:person-check-outline"
-  title={t("global.credits.authors")}
-  values={authors.map(({ username }) => username)}
-/>
+    @media (max-width: 35rem) {
+      gap: 3.5em;
+      margin-block: 3.5em;
+    }
+  }
+</style>

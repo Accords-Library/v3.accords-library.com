@@ -1,6 +1,7 @@
 ---
 import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
 import AudioPlayer from "components/AudioPlayer.astro";
+import Credits from "components/Credits.astro";
 import DownloadButton from "components/DownloadButton.astro";
 import RichText from "components/RichText/RichText.astro";
 import TagGroups from "components/TagGroups.astro";
@@ -15,7 +16,7 @@ if (audio instanceof Response) {
 }
 
 const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
-const { translations, tagGroups, filename, url } = audio;
+const { translations, tagGroups, filename, url, credits } = audio;
 
 const { title, description } = getLocalizedMatch(translations);
 ---
@@ -29,7 +30,10 @@ const { title, description } = getLocalizedMatch(translations);
     <div>
       <h1>{title}</h1>
       {description && <RichText content={description} />}
-      {tagGroups.length > 0 && <TagGroups {tagGroups} />}
+      <div>
+        {tagGroups.length > 0 && <TagGroups {tagGroups} />}
+        {credits.length > 0 && <Credits credits={credits} />}
+      </div>
       <DownloadButton href={url} filename={filename} />
     </div>
   </div>
@@ -53,11 +57,19 @@ const { title, description } = getLocalizedMatch(translations);
       max-width: 35em;
     }
 
-    div {
+    & > div {
       display: flex;
       flex-direction: column;
       gap: 2em;
       align-items: start;
+
+      & > div {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 2em 6em;
+        width: 100%;
+      }
     }
   }
 </style>

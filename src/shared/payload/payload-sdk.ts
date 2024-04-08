@@ -6,6 +6,18 @@
  * and re-run `payload generate:types` to regenerate this file.
  */
 
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "Credits".
+ */
+export type Credits =
+  | {
+      role: string | CreditsRole;
+      recorders: (string | Recorder)[];
+      id?: string | null;
+    }[]
+  | null;
+
 export interface Config {
   collections: {
     pages: Page;
@@ -21,6 +33,7 @@ export interface Config {
     scans: Scan;
     tags: Tag;
     "tags-groups": TagsGroup;
+    "credits-roles": CreditsRole;
     recorders: Recorder;
     languages: Language;
     currencies: Currency;
@@ -40,11 +53,9 @@ export interface Config {
 export interface Page {
   id: string;
   slug: string;
-  type: "Content" | "Post" | "Generic";
   thumbnail?: string | Image | null;
   backgroundImage?: string | Image | null;
   tags?: (string | Tag)[] | null;
-  authors?: (string | Recorder)[] | null;
   translations: {
     language: string | Language;
     sourceLanguage: string | Language;
@@ -81,9 +92,7 @@ export interface Page {
       };
       [k: string]: unknown;
     };
-    transcribers?: (string | Recorder)[] | null;
-    translators?: (string | Recorder)[] | null;
-    proofreaders?: (string | Recorder)[] | null;
+    credits?: Credits;
     id?: string | null;
   }[];
   folders?: (string | Folder)[] | null;
@@ -122,6 +131,7 @@ export interface Image {
       }[]
     | null;
   tags?: (string | Tag)[] | null;
+  credits?: Credits;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -179,6 +189,22 @@ export interface Tag {
  * via the `definition` "tags-groups".
  */
 export interface TagsGroup {
+  id: string;
+  slug: string;
+  icon?: string | null;
+  translations: {
+    language: string | Language;
+    name: string;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "credits-roles".
+ */
+export interface CreditsRole {
   id: string;
   slug: string;
   icon?: string | null;
@@ -321,9 +347,7 @@ export interface Collectible {
     | null;
   scansEnabled?: boolean | null;
   scans?: {
-    scanners: (string | Recorder)[];
-    cleaners: (string | Recorder)[];
-    typesetters?: (string | Recorder)[] | null;
+    credits?: Credits;
     coverEnabled?: boolean | null;
     cover?: {
       front?: string | Scan | null;
@@ -554,6 +578,7 @@ export interface Audio {
     id?: string | null;
   }[];
   tags?: (string | Tag)[] | null;
+  credits?: Credits;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -626,6 +651,7 @@ export interface Video {
     id?: string | null;
   }[];
   tags?: (string | Tag)[] | null;
+  credits?: Credits;
   platformEnabled?: boolean | null;
   platform?: {
     channel: string | VideosChannel;
@@ -716,9 +742,7 @@ export interface ChronologyEvent {
         };
         [k: string]: unknown;
       } | null;
-      transcribers?: (string | Recorder)[] | null;
-      translators?: (string | Recorder)[] | null;
-      proofreaders?: (string | Recorder)[] | null;
+      credits?: Credits;
       id?: string | null;
     }[];
     id?: string | null;
@@ -978,6 +1002,7 @@ export enum Collections {
   VideosChannels = "videos-channels",
   MediaThumbnails = "media-thumbnails",
   Scans = "scans",
+  CreditsRole = "credits-roles",
 }
 
 export enum CollectionGroups {
@@ -1032,12 +1057,6 @@ export enum RecordersRoles {
 export enum CollectionStatus {
   Draft = "draft",
   Published = "published",
-}
-
-export enum PageType {
-  Content = "Content",
-  Post = "Post",
-  Generic = "Generic",
 }
 
 /* RICH TEXT */
@@ -1428,11 +1447,22 @@ export type EndpointTagsGroup = {
   tags: EndpointTag[];
 };
 
+export type EndpointRole = {
+  icon: string;
+  translations: {
+    language: string;
+    name: string;
+  }[];
+};
+
+export type EndpointCredit = {
+  role: EndpointRole;
+  recorders: EndpointRecorder[];
+};
+
 export type EndpointPage = {
   slug: string;
-  type: PageType;
   thumbnail?: PayloadImage;
-  authors: EndpointRecorder[];
   tagGroups: EndpointTagsGroup[];
   backgroundImage?: PayloadImage;
   translations: {
@@ -1443,9 +1473,7 @@ export type EndpointPage = {
     sourceLanguage: string;
     summary?: RichTextContent;
     content: RichTextContent;
-    transcribers: EndpointRecorder[];
-    translators: EndpointRecorder[];
-    proofreaders: EndpointRecorder[];
+    credits: EndpointCredit[];
     toc: TableOfContentEntry[];
   }[];
   parentPages: EndpointSource[];
@@ -1554,9 +1582,7 @@ export type EndpointChronologyEvent = {
       title?: string;
       description?: RichTextContent;
       notes?: RichTextContent;
-      transcribers: EndpointRecorder[];
-      translators: EndpointRecorder[];
-      proofreaders: EndpointRecorder[];
+      credits: EndpointCredit[];
     }[];
   }[];
 };
@@ -1588,6 +1614,7 @@ export type EndpointMedia = {
     title: string;
     description?: RichTextContent;
   }[];
+  credits: EndpointCredit[];
 };
 
 export type EndpointImage = EndpointMedia & {

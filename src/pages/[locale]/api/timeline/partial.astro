@@ -25,8 +25,7 @@ const { sources, translations } = event.events[index]!;
 
 const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 const { getLocalizedMatch } = await getI18n(lang);
-const { title, description, notes, proofreaders, transcribers, translators } =
-  getLocalizedMatch(translations);
+const { title, description, notes, credits } = getLocalizedMatch(translations);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -40,9 +39,7 @@ const { title, description, notes, proofreaders, transcribers, translators } =
       <TimelineLanguageOverride
         availableLanguages={translations.map(({ language }) => language)}
         currentLang={lang}
-        proofreaders={proofreaders}
-        transcribers={transcribers}
-        translators={translators}
+        credits={credits}
         getPartialUrl={(locale) =>
           getLocalizedUrl(`/api/timeline/partial?id=${id}&index=${index}&lang=${locale}`)}
       />

@@ -59,7 +59,7 @@ const translation = getLocalizedMatch(page.translations);
         )
       }
 
-      <TagGroups tagGroups={page.tagGroups} />
+      {page.tagGroups.length > 0 && <TagGroups tagGroups={page.tagGroups} />}
 
       <div class="when-not-large meta-container">
         {
@@ -73,11 +73,7 @@ const translation = getLocalizedMatch(page.translations);
             />
           )
         }
-        <Credits
-          translators={translation.translators}
-          proofreaders={translation.proofreaders}
-          authors={page.authors}
-        />
+        {translation.credits.length > 0 && <Credits credits={translation.credits} />}
       </div>
 
       {
@@ -118,12 +114,7 @@ const translation = getLocalizedMatch(page.translations);
             />
           )
         }
-        <Credits
-          translators={translation.translators}
-          transcribers={translation.transcribers}
-          proofreaders={translation.proofreaders}
-          authors={page.authors}
-        />
+        {translation.credits.length > 0 && <Credits credits={translation.credits} />}
       </div>
 
       {translation.toc.length > 0 && <TableOfContent toc={translation.toc} />}

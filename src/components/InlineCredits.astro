@@ -1,48 +1,23 @@
 ---
-import type { EndpointRecorder } from "src/shared/payload/payload-sdk";
+import type { EndpointCredit } from "src/shared/payload/payload-sdk";
 import { getI18n } from "src/i18n/i18n";
 
 interface Props {
-  translators?: EndpointRecorder[] | undefined;
-  transcribers?: EndpointRecorder[] | undefined;
-  proofreaders?: EndpointRecorder[] | undefined;
+  credits: EndpointCredit[];
 }
 
-const { translators = [], transcribers = [], proofreaders = [] } = Astro.props;
-const { t } = await getI18n(Astro.locals.currentLocale);
-
-const tagGroups = [];
-
-if (translators.length > 0) {
-  tagGroups.push({
-    name: t("global.credits.translators"),
-    values: translators,
-  });
-}
-
-if (transcribers.length > 0) {
-  tagGroups.push({
-    name: t("global.credits.transcribers"),
-    values: transcribers,
-  });
-}
-
-if (proofreaders.length > 0) {
-  tagGroups.push({
-    name: t("global.credits.proofreaders"),
-    values: proofreaders,
-  });
-}
+const { credits } = Astro.props;
+const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<div id="tags">
+<div id="credits">
   {
-    tagGroups.map(({ name, values }) => (
+    credits.map(({ recorders, role: { translations } }) => (
       <div>
-        <p>{name}</p>
-        {values.map(({ username }) => username).join(", ")}
+        <p>{getLocalizedMatch(translations).name}</p>
+        {recorders.map(({ username }) => username).join(", ")}
       </div>
     ))
   }
@@ -51,7 +26,7 @@ if (proofreaders.length > 0) {
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  #tags {
+  #credits {
     margin-top: 0.5em;
     display: flex;
     flex-direction: column;
