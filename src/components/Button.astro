@@ -46,9 +46,13 @@ const { title, icon, class: className, ariaLabel, id } = Astro.props;
     transition-duration: 250ms;
     transition-property: padding-top, box-shadow, background-color, color, border-color;
 
-    &.with-title > svg {
-      width: 1.2em;
-      height: 1.2em;
+    &.with-title {
+      padding-right: 1.2em;
+
+      & > svg {
+        width: 1.2em;
+        height: 1.2em;
+      }
     }
 
     > svg {

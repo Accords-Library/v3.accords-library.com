@@ -1,7 +1,10 @@
 ---
-import type { EndpointTagsGroup, PayloadImage } from "src/shared/payload/payload-sdk";
+import type { PayloadImage } from "src/shared/payload/payload-sdk";
 import InlineTagGroups from "pages/[locale]/collectibles/_components/ContentsSection/InlineTagGroups.astro";
 import Card from "components/Card.astro";
+import { Icon } from "astro-icon/components";
+import type { ComponentProps } from "astro/types";
+import { getI18n } from "src/i18n/i18n";
 
 interface Props {
   thumbnail?: PayloadImage | undefined;
@@ -9,9 +12,14 @@ interface Props {
   title: string;
   subtitle?: string | undefined;
   href?: string | undefined;
-  tagGroups?: EndpointTagsGroup[];
+  tagGroups?: ComponentProps<typeof InlineTagGroups>["tagGroups"];
   disableRoundedTop?: boolean;
+  smallTitle?: boolean;
+  icon?: string;
+  iconHoverLabel?: string;
 }
+
+const { t } = await getI18n(Astro.locals.currentLocale);
 
 const {
   thumbnail,
@@ -20,13 +28,16 @@ const {
   subtitle,
   href,
   tagGroups = [],
+  smallTitle = false,
   disableRoundedTop = false,
+  icon = "material-symbols:unknown-document",
+  iconHoverLabel = t("global.previewTypes.unknown"),
 } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<Card href={href} disableRoundedTop={disableRoundedTop}>
+<Card href={href} disableRoundedTop={disableRoundedTop && thumbnail !== undefined}>
   <div id="card">
     {
       thumbnail && (
@@ -34,12 +45,22 @@ const {
       )
     }
 
-    <div>
-      <p>
-        {pretitle && <span id="pretitle">{pretitle}&nbsp;</span>}
-        <span id="title">{title}&nbsp;</span>
-        {subtitle && <span id="subtitle">{subtitle}</span>}
-      </p>
+    <div id="icon-container" class:list={{ "thumbnail-alt": !thumbnail }} title={iconHoverLabel}>
+      <Icon name={icon} width={32} height={32} />
+    </div>
+
+    <div id="footer">
+      {
+        smallTitle ? (
+          <p>{title}</p>
+        ) : (
+          <p>
+            {pretitle && <span id="pretitle">{pretitle}&nbsp;</span>}
+            <span id="title">{title}&nbsp;</span>
+            {subtitle && <span id="subtitle">{subtitle}</span>}
+          </p>
+        )
+      }
 
       {
         tagGroups.length > 0 && (
@@ -74,20 +95,49 @@ const {
   }
 
   #card {
+    position: relative;
+
     & > img {
       width: 100%;
       height: auto;
     }
 
-    & > div {
+    & > #icon-container {
+      &.thumbnail-alt {
+        margin: 0.4em;
+        margin-bottom: unset;
+        aspect-ratio: 3/2;
+        background-color: var(--color-elevation-2);
+        color: var(--color-base-400);
+        display: grid;
+        place-content: center;
+
+        & > :global(svg) {
+          width: 64px;
+          height: 64px;
+        }
+      }
+
+      &:not(.thumbnail-alt) {
+        position: absolute;
+        top: 0.4em;
+        left: 0.4em;
+        padding: 0.5em;
+        backdrop-filter: blur(5px);
+        background-color: color-mix(in srgb, var(--color-elevation-2) 60%, transparent);
+      }
+
+      border-radius: 0.7em;
+    }
+
+    & > #footer {
       padding: 1em;
-      padding-top: 1.5em;
       display: flex;
       flex-direction: column;
       gap: 1.2em;
 
       & > p {
-        line-height: 0.8;
+        line-height: 1;
         display: grid;
         overflow-wrap: anywhere;
         font-size: clamp(0.5em, 0.35em + 0.75vw, 1em);
@@ -96,12 +146,13 @@ const {
         & > #pretitle {
           font-family: var(--font-sans-serifs);
           font-weight: 400;
-          margin-bottom: 0.8em;
+          margin-bottom: 0.5em;
         }
 
         & > #title {
+          line-height: 0.8;
           font-family: var(--font-serif);
-          font-size: 200%;
+          font-size: 150%;
         }
 
         & > #subtitle {

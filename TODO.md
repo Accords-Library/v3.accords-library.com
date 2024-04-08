@@ -3,13 +3,10 @@
 ## Short term
 
 - [Timeline] inline links to pages not working (timeline 2026/06)
-- Save cookies for longer than just the session
-- [Image] media page
-- [Video] media page
-- [Audio] media page
 
 ## Mid term
 
+- Save cookies for longer than just the session
 - [Scripts] Can't run the scripts using node (ts-node?)
 - Support for nameless section
 - [Timeline] Error if collectible not published?
@@ -34,6 +31,7 @@
   - Consider official search plugin for payload https://payloadcms.com/docs/plugins/search
   - Convert Rich text to simple text for indexing and open graph purposes
 - Anonymous comments
+- [Images] add images group (which could be named or not)
 
 ## Bonus
 

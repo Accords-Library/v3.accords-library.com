@@ -1,0 +1,27 @@
+---
+import type { EndpointAudio } from "src/shared/payload/payload-sdk";
+
+interface Props {
+  audio: EndpointAudio;
+}
+
+const {
+  audio: { url, mimeType },
+} = Astro.props;
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<audio controls>
+  <source src={url} type={mimeType} />
+</audio>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  audio {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px -10px var(--color-shadow);
+  }
+</style>

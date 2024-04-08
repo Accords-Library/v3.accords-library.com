@@ -1,6 +1,6 @@
 ---
 import AppLayout from "components/AppLayout/AppLayout.astro";
-import { payload } from "src/shared/payload/payload-sdk";
+import { Collections, payload } from "src/shared/payload/payload-sdk";
 import RichText from "components/RichText/RichText.astro";
 import FoldersSection from "./_components/FoldersSection.astro";
 import { fetchOr404 } from "src/utils/responses";
@@ -9,6 +9,9 @@ import { getI18n } from "src/i18n/i18n";
 import CollectiblePreview from "components/Previews/CollectiblePreview.astro";
 import PagePreview from "components/Previews/PagePreview.astro";
 import { formatRichTextToString } from "src/utils/format";
+import ImagePreview from "components/Previews/ImagePreview.astro";
+import AudioPreview from "components/Previews/AudioPreview.astro";
+import VideoPreview from "components/Previews/VideoPreview.astro";
 
 const { slug } = Astro.params;
 
@@ -62,11 +65,20 @@ const meta = getLocalizedMatch(folder.translations);
       {
         folder.files.map(({ relationTo, value }) => {
           switch (relationTo) {
-            case "collectibles":
+            case Collections.Collectibles:
               return <CollectiblePreview collectible={value} />;
 
-            case "pages":
+            case Collections.Pages:
               return <PagePreview page={value} />;
+
+            case Collections.Images:
+              return <ImagePreview image={value} />;
+
+            case Collections.Audios:
+              return <AudioPreview audio={value} />;
+
+            case Collections.Videos:
+              return <VideoPreview video={value} />;
 
             default:
               return (
@@ -98,7 +110,6 @@ const meta = getLocalizedMatch(folder.translations);
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: clamp(6px, 2vmin, 16px);
-      place-items: start;
     }
   }
 </style>

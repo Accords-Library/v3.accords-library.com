@@ -1,31 +1,30 @@
 ---
 import GenericPreview from "components/Previews/GenericPreview.astro";
 import { getI18n } from "src/i18n/i18n";
-import type { EndpointCollectible } from "src/shared/payload/payload-sdk";
+import type { EndpointImage } from "src/shared/payload/payload-sdk";
 
 interface Props {
-  collectible: EndpointCollectible;
+  image: EndpointImage;
 }
 
 const { getLocalizedMatch, getLocalizedUrl, t } = await getI18n(Astro.locals.currentLocale);
 
 const {
-  collectible: { slug, translations, thumbnail, tagGroups },
+  image: thumbnail,
+  image: { id, translations, tagGroups, filename },
 } = Astro.props;
 
-const { title, pretitle, subtitle } = getLocalizedMatch(translations);
+const { title } = translations.length > 0 ? getLocalizedMatch(translations) : { title: filename };
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <GenericPreview
   title={title}
-  pretitle={pretitle}
-  subtitle={subtitle}
   thumbnail={thumbnail}
-  href={getLocalizedUrl(`/collectibles/${slug}`)}
+  href={getLocalizedUrl(`/images/${id}`)}
   tagGroups={tagGroups}
-  icon="material-symbols:category"
-  iconHoverLabel={t("global.previewTypes.collectible")}
-  disableRoundedTop
+  icon="material-symbols:imagesmode"
+  iconHoverLabel={t("global.previewTypes.image")}
+  smallTitle
 />

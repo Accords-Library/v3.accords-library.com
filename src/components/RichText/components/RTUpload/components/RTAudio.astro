@@ -1,10 +1,11 @@
 ---
 import { type RichTextUploadAudioNode } from "src/shared/payload/payload-sdk";
 import type { RichTextContext } from "src/utils/richText";
-import OpenMediaPageButton from "./OpenMediaPageButton.astro";
-import { getI18n } from "src/i18n/i18n";
+import AudioPlayer from "components/AudioPlayer.astro";
 import HeaderTitle from "components/HeaderTitle.astro";
 import { Icon } from "astro-icon/components";
+import { getI18n } from "src/i18n/i18n";
+import OpenMediaPageButton from "./OpenMediaPageButton.astro";
 
 interface Props {
   node: RichTextUploadAudioNode;
@@ -12,43 +13,30 @@ interface Props {
 }
 
 const {
-  node: {
-    value: { id, url, mimeType, translations },
-  },
+  node: { value },
   context,
 } = Astro.props;
 
-const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
-const { title } = getLocalizedMatch(translations);
+const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
+const { title } = getLocalizedMatch(value.translations);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div>
   <HeaderTitle header={context.depth + 2}>
-    <Icon name="material-symbols:headphones" />
+    <Icon name="material-symbols:music-note" />
     {title}
   </HeaderTitle>
-
-  <audio controls>
-    <source src={url} type={mimeType} />
-  </audio>
-
-  <OpenMediaPageButton url={`/audios/${id}`} />
+  <AudioPlayer audio={value} />
+  <OpenMediaPageButton url={getLocalizedUrl(`/audios/${value.id}`)} />
 </div>
-
-{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   div {
     margin-block: 4em;
-
-    & > audio {
-      margin-top: 0.4em;
-      margin-bottom: 0.2em;
-      width: 100%;
-      border-radius: 16px;
-      box-shadow: 0 5px 20px -10px var(--color-shadow);
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
   }
 </style>

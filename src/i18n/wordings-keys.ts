@@ -112,4 +112,11 @@ export type WordingKey =
   | "global.sources.typeLabel.collectible.range.page"
   | "global.sources.typeLabel.collectible.range.timestamp"
   | "global.sources.typeLabel.collectible.range.custom"
-  | "global.openMediaPage";
+  | "global.openMediaPage"
+  | "global.downloadButton"
+  | "global.previewTypes.video"
+  | "global.previewTypes.page"
+  | "global.previewTypes.image"
+  | "global.previewTypes.audio"
+  | "global.previewTypes.collectible"
+  | "global.previewTypes.unknown";

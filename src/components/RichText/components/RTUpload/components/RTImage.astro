@@ -18,11 +18,11 @@ const {
   context,
 } = Astro.props;
 
-const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
+const { getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 const { title }: { title?: string } =
   translations.length > 0 ? getLocalizedMatch(translations) : {};
 
-const mediaPage = `/images/${id}`;
+const mediaPage = getLocalizedUrl(`/images/${id}`);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -31,14 +31,12 @@ const mediaPage = `/images/${id}`;
   {
     title && (
       <HeaderTitle header={context.depth + 2}>
-        <Icon name="material-symbols:image-outline" />
+        <Icon name="material-symbols:imagesmode" />
         {title}
       </HeaderTitle>
     )
   }
-
   <a href={mediaPage}><img src={url} /></a>
-
   <OpenMediaPageButton url={mediaPage} />
 </div>
 
@@ -47,14 +45,16 @@ const mediaPage = `/images/${id}`;
 <style>
   div {
     margin-block: 4em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
 
     & > a > img {
       width: 100%;
       height: auto;
       border-radius: 16px;
       box-shadow: 0 5px 20px -10px var(--color-shadow);
-      margin-top: 0.4em;
-      margin-bottom: 0.2em;
+      margin-bottom: -0.5em;
     }
   }
 </style>

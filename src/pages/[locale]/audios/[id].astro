@@ -1,0 +1,63 @@
+---
+import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AudioPlayer from "components/AudioPlayer.astro";
+import DownloadButton from "components/DownloadButton.astro";
+import RichText from "components/RichText/RichText.astro";
+import TagGroups from "components/TagGroups.astro";
+import { getI18n } from "src/i18n/i18n";
+import { payload } from "src/shared/payload/payload-sdk";
+import { fetchOr404 } from "src/utils/responses";
+
+const { id } = Astro.params;
+const audio = await fetchOr404(() => payload.getAudioByID(id!));
+if (audio instanceof Response) {
+  return audio;
+}
+
+const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
+const { translations, tagGroups, filename, url } = audio;
+
+const { title, description } = getLocalizedMatch(translations);
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<AppEmptyLayout>
+  <div id="container">
+    <AudioPlayer audio={audio} />
+
+    <div>
+      <h1>{title}</h1>
+      {description && <RichText content={description} />}
+      {tagGroups.length > 0 && <TagGroups {tagGroups} />}
+      <DownloadButton href={url} filename={filename} />
+    </div>
+  </div>
+</AppEmptyLayout>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  #container {
+    display: flex;
+    flex-direction: column;
+    gap: 6em;
+    margin-top: 6em;
+    align-items: center;
+
+    > :global(audio) {
+      width: 100%;
+    }
+
+    h1 {
+      max-width: 35em;
+    }
+
+    div {
+      display: flex;
+      flex-direction: column;
+      gap: 2em;
+      align-items: start;
+    }
+  }
+</style>

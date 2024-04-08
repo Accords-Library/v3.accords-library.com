@@ -1,31 +1,29 @@
 ---
 import GenericPreview from "components/Previews/GenericPreview.astro";
 import { getI18n } from "src/i18n/i18n";
-import type { EndpointCollectible } from "src/shared/payload/payload-sdk";
+import type { EndpointVideo } from "src/shared/payload/payload-sdk";
 
 interface Props {
-  collectible: EndpointCollectible;
+  video: EndpointVideo;
 }
 
 const { getLocalizedMatch, getLocalizedUrl, t } = await getI18n(Astro.locals.currentLocale);
 
 const {
-  collectible: { slug, translations, thumbnail, tagGroups },
+  video: { id, translations, tagGroups, filename, thumbnail },
 } = Astro.props;
 
-const { title, pretitle, subtitle } = getLocalizedMatch(translations);
+const { title } = translations.length > 0 ? getLocalizedMatch(translations) : { title: filename };
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <GenericPreview
   title={title}
-  pretitle={pretitle}
-  subtitle={subtitle}
   thumbnail={thumbnail}
-  href={getLocalizedUrl(`/collectibles/${slug}`)}
+  href={getLocalizedUrl(`/videos/${id}`)}
   tagGroups={tagGroups}
-  icon="material-symbols:category"
-  iconHoverLabel={t("global.previewTypes.collectible")}
-  disableRoundedTop
+  icon="material-symbols:smart-display"
+  iconHoverLabel={t("global.previewTypes.video")}
+  smallTitle
 />
