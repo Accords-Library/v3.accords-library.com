@@ -1,6 +1,5 @@
 {
   "name": "v3.accords-library.com",
-  "type": "module",
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
@@ -25,7 +24,7 @@
     "@fontsource-variable/murecho": "^5.0.18",
     "@fontsource-variable/vollkorn": "^5.0.20",
     "accept-language": "^3.0.18",
-    "astro": "4.5.16",
+    "astro": "4.5.18",
     "astro-icon": "^1.1.0",
     "node-cache": "^5.1.2",
     "tippy.js": "^6.3.7",
@@ -41,6 +40,6 @@
     "postcss-preset-env": "^9.5.4",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
-    "typescript": "^5.4.4"
+    "typescript": "^5.4.5"
   }
 }

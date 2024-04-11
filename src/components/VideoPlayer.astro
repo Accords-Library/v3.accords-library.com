@@ -13,7 +13,7 @@ const {
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<video controls poster={thumbnail?.url}>
+<video controls poster={thumbnail?.url} crossorigin="anonymous">
   <source src={url} type={mimeType} />
   {
     subtitles.map(({ language, url }) => (
