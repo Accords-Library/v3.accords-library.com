@@ -18,7 +18,7 @@ import ContentsSection from "./_components/ContentsSection/ContentsSection.astro
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 
 const { slug } = Astro.params;
-const { getLocalizedMatch, t } = await getI18n(Astro.locals.currentLocale);
+const { getLocalizedMatch, getLocalizedUrl, t } = await getI18n(Astro.locals.currentLocale);
 
 const collectible = await fetchOr404(() => payload.getCollectible(slug!));
 if (collectible instanceof Response) {
@@ -69,12 +69,14 @@ const scansFirstImage = scans[0];
       <div id="images" class="when-not-large">
         {
           thumbnail && (
-            <img
-              id="thumbnail"
-              src={thumbnail.url}
-              width={thumbnail.width}
-              height={thumbnail.height}
-            />
+            <a href={getLocalizedUrl(`/images/${thumbnail.id}`)}>
+              <img
+                id="thumbnail"
+                src={thumbnail.url}
+                width={thumbnail.width}
+                height={thumbnail.height}
+              />
+            </a>
           )
         }
 
@@ -154,12 +156,14 @@ const scansFirstImage = scans[0];
 
         {
           thumbnail && (
-            <img
-              id="thumbnail"
-              src={thumbnail.url}
-              width={thumbnail.width}
-              height={thumbnail.height}
-            />
+            <a href={getLocalizedUrl(`/images/${thumbnail.id}`)}>
+              <img
+                id="thumbnail"
+                src={thumbnail.url}
+                width={thumbnail.width}
+                height={thumbnail.height}
+              />
+            </a>
           )
         }
       </div>
@@ -197,9 +201,6 @@ const scansFirstImage = scans[0];
         }
 
         & > #thumbnail {
-          width: 100%;
-          height: auto;
-          box-shadow: 0 5px 20px -10px var(--color-shadow);
           max-width: 35rem;
         }
 
@@ -251,13 +252,18 @@ const scansFirstImage = scans[0];
           flex-direction: column;
           gap: 1em;
         }
-
-        & > #thumbnail {
-          width: 100%;
-          height: auto;
-          box-shadow: 0 5px 20px -10px var(--color-shadow);
-        }
       }
+    }
+  }
+
+  #thumbnail {
+    width: 100%;
+    height: auto;
+    box-shadow: 0 5px 20px -10px var(--color-shadow);
+    transition: 100ms scale;
+
+    &:hover {
+      scale: 102%;
     }
   }
 

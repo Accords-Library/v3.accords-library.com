@@ -41,13 +41,15 @@ const translation = getLocalizedMatch(page.translations);
 
       {
         page.thumbnail && (
-          <img
-            id="thumbnail"
-            class="when-not-large"
-            src={page.thumbnail.url}
-            width={page.thumbnail.width}
-            height={page.thumbnail.height}
-          />
+          <a href={getLocalizedUrl(`/images/${page.thumbnail.id}`)}>
+            <img
+              id="thumbnail"
+              class="when-not-large"
+              src={page.thumbnail.url}
+              width={page.thumbnail.width}
+              height={page.thumbnail.height}
+            />
+          </a>
         )
       }
 
@@ -93,12 +95,14 @@ const translation = getLocalizedMatch(page.translations);
     <div id="right" class="when-large">
       {
         page.thumbnail && (
-          <img
-            id="thumbnail"
-            src={page.thumbnail.url}
-            width={page.thumbnail.width}
-            height={page.thumbnail.height}
-          />
+          <a href={getLocalizedUrl(`/images/${page.thumbnail.id}`)}>
+            <img
+              id="thumbnail"
+              src={page.thumbnail.url}
+              width={page.thumbnail.width}
+              height={page.thumbnail.height}
+            />
+          </a>
         )
       }
 
@@ -135,12 +139,8 @@ const translation = getLocalizedMatch(page.translations);
     }
 
     & > #left {
-      & > #thumbnail {
-        width: 100%;
+      & > a > #thumbnail {
         max-width: 35rem;
-        height: auto;
-        border-radius: 16px;
-        box-shadow: 0 5px 20px -10px var(--color-shadow);
         margin-block: 2em;
       }
 
@@ -159,14 +159,17 @@ const translation = getLocalizedMatch(page.translations);
         margin-block: 3em;
       }
     }
+  }
 
-    & > #right {
-      & > #thumbnail {
-        width: 100%;
-        height: auto;
-        border-radius: 16px;
-        box-shadow: 0 5px 20px -10px var(--color-shadow);
-      }
+  #thumbnail {
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px -10px var(--color-shadow);
+    transition: 100ms scale;
+
+    &:hover {
+      scale: 102%;
     }
   }
 

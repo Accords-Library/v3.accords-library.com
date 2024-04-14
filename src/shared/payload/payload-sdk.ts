@@ -23,27 +23,27 @@ export interface Config {
     pages: Page;
     collectibles: Collectible;
     folders: Folder;
-    "chronology-events": ChronologyEvent;
+    'chronology-events': ChronologyEvent;
     images: Image;
     audios: Audio;
-    "media-thumbnails": MediaThumbnail;
+    'media-thumbnails': MediaThumbnail;
     videos: Video;
-    "videos-subtitles": VideoSubtitle;
-    "videos-channels": VideosChannel;
+    'videos-subtitles': VideoSubtitle;
+    'videos-channels': VideosChannel;
     scans: Scan;
     tags: Tag;
-    "tags-groups": TagsGroup;
-    "credits-roles": CreditsRole;
+    'tags-groups': TagsGroup;
+    'credits-roles': CreditsRole;
     recorders: Recorder;
     languages: Language;
     currencies: Currency;
     wordings: Wording;
-    "generic-contents": GenericContent;
-    "payload-preferences": PayloadPreference;
-    "payload-migrations": PayloadMigration;
+    'generic-contents': GenericContent;
+    'payload-preferences': PayloadPreference;
+    'payload-migrations': PayloadMigration;
   };
   globals: {
-    "website-config": WebsiteConfig;
+    'website-config': WebsiteConfig;
   };
 }
 /**
@@ -70,8 +70,8 @@ export interface Page {
           version: number;
           [k: string]: unknown;
         }[];
-        direction: ("ltr" | "rtl") | null;
-        format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
         indent: number;
         version: number;
       };
@@ -85,8 +85,8 @@ export interface Page {
           version: number;
           [k: string]: unknown;
         }[];
-        direction: ("ltr" | "rtl") | null;
-        format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
         indent: number;
         version: number;
       };
@@ -100,7 +100,7 @@ export interface Page {
   updatedBy: string | Recorder;
   updatedAt: string;
   createdAt: string;
-  _status?: ("draft" | "published") | null;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -120,8 +120,8 @@ export interface Image {
               version: number;
               [k: string]: unknown;
             }[];
-            direction: ("ltr" | "rtl") | null;
-            format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
             indent: number;
             version: number;
           };
@@ -225,7 +225,7 @@ export interface Recorder {
   username: string;
   avatar?: string | Image | null;
   languages?: (string | Language)[] | null;
-  role?: ("Admin" | "Recorder" | "Api")[] | null;
+  role?: ('Admin' | 'Recorder' | 'Api')[] | null;
   anonymize: boolean;
   email: string;
   resetPasswordToken?: string | null;
@@ -256,8 +256,8 @@ export interface Folder {
           version: number;
           [k: string]: unknown;
         }[];
-        direction: ("ltr" | "rtl") | null;
-        format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
         indent: number;
         version: number;
       };
@@ -281,23 +281,23 @@ export interface Folder {
   files?:
     | (
         | {
-            relationTo: "collectibles";
+            relationTo: 'collectibles';
             value: string | Collectible;
           }
         | {
-            relationTo: "pages";
+            relationTo: 'pages';
             value: string | Page;
           }
         | {
-            relationTo: "videos";
+            relationTo: 'videos';
             value: string | Video;
           }
         | {
-            relationTo: "images";
+            relationTo: 'images';
             value: string | Image;
           }
         | {
-            relationTo: "audios";
+            relationTo: 'audios';
             value: string | Audio;
           }
       )[]
@@ -313,7 +313,7 @@ export interface Collectible {
   id: string;
   slug: string;
   thumbnail?: string | Image | null;
-  nature: "Physical" | "Digital";
+  nature: 'Physical' | 'Digital';
   languages?: (string | Language)[] | null;
   tags?: (string | Tag)[] | null;
   translations: {
@@ -329,8 +329,8 @@ export interface Collectible {
           version: number;
           [k: string]: unknown;
         }[];
-        direction: ("ltr" | "rtl") | null;
-        format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
         indent: number;
         version: number;
       };
@@ -419,8 +419,8 @@ export interface Collectible {
   pageInfoEnabled?: boolean | null;
   pageInfo?: {
     pageCount: number;
-    bindingType?: ("Paperback" | "Hardcover") | null;
-    pageOrder?: ("Left to right" | "Right to left") | null;
+    bindingType?: ('Paperback' | 'Hardcover') | null;
+    pageOrder?: ('Left to right' | 'Right to left') | null;
   };
   folders?: (string | Folder)[] | null;
   parentItems?: (string | Collectible)[] | null;
@@ -429,19 +429,19 @@ export interface Collectible {
     | {
         content:
           | {
-              relationTo: "pages";
+              relationTo: 'pages';
               value: string | Page;
             }
           | {
-              relationTo: "generic-contents";
+              relationTo: 'generic-contents';
               value: string | GenericContent;
             }
           | {
-              relationTo: "audios";
+              relationTo: 'audios';
               value: string | Audio;
             }
           | {
-              relationTo: "videos";
+              relationTo: 'videos';
               value: string | Video;
             };
         range?:
@@ -451,14 +451,14 @@ export interface Collectible {
                   end: number;
                   id?: string | null;
                   blockName?: string | null;
-                  blockType: "pageRange";
+                  blockType: 'pageRange';
                 }
               | {
                   start: string;
                   end: string;
                   id?: string | null;
                   blockName?: string | null;
-                  blockType: "timeRange";
+                  blockType: 'timeRange';
                 }
               | {
                   translations: {
@@ -471,8 +471,8 @@ export interface Collectible {
                           version: number;
                           [k: string]: unknown;
                         }[];
-                        direction: ("ltr" | "rtl") | null;
-                        format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+                        direction: ('ltr' | 'rtl') | null;
+                        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
                         indent: number;
                         version: number;
                       };
@@ -482,7 +482,7 @@ export interface Collectible {
                   }[];
                   id?: string | null;
                   blockName?: string | null;
-                  blockType: "other";
+                  blockType: 'other';
                 }
             )[]
           | null;
@@ -492,7 +492,7 @@ export interface Collectible {
   updatedBy: string | Recorder;
   updatedAt: string;
   createdAt: string;
-  _status?: ("draft" | "published") | null;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -568,8 +568,8 @@ export interface Audio {
           version: number;
           [k: string]: unknown;
         }[];
-        direction: ("ltr" | "rtl") | null;
-        format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
         indent: number;
         version: number;
       };
@@ -640,8 +640,8 @@ export interface Video {
           version: number;
           [k: string]: unknown;
         }[];
-        direction: ("ltr" | "rtl") | null;
-        format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
         indent: number;
         version: number;
       };
@@ -720,8 +720,8 @@ export interface ChronologyEvent {
             version: number;
             [k: string]: unknown;
           }[];
-          direction: ("ltr" | "rtl") | null;
-          format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
           indent: number;
           version: number;
         };
@@ -735,8 +735,8 @@ export interface ChronologyEvent {
             version: number;
             [k: string]: unknown;
           }[];
-          direction: ("ltr" | "rtl") | null;
-          format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+          direction: ('ltr' | 'rtl') | null;
+          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
           indent: number;
           version: number;
         };
@@ -750,7 +750,7 @@ export interface ChronologyEvent {
   updatedBy: string | Recorder;
   updatedAt: string;
   createdAt: string;
-  _status?: ("draft" | "published") | null;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -760,7 +760,7 @@ export interface UrlBlock {
   url: string;
   id?: string | null;
   blockName?: string | null;
-  blockType: "urlBlock";
+  blockType: 'urlBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -774,13 +774,13 @@ export interface CollectibleBlock {
             page: number;
             id?: string | null;
             blockName?: string | null;
-            blockType: "page";
+            blockType: 'page';
           }
         | {
             timestamp: string;
             id?: string | null;
             blockName?: string | null;
-            blockType: "timestamp";
+            blockType: 'timestamp';
           }
         | {
             translations: {
@@ -790,13 +790,13 @@ export interface CollectibleBlock {
             }[];
             id?: string | null;
             blockName?: string | null;
-            blockType: "other";
+            blockType: 'other';
           }
       )[]
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: "collectibleBlock";
+  blockType: 'collectibleBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -806,7 +806,7 @@ export interface PageBlock {
   page: string | Page;
   id?: string | null;
   blockName?: string | null;
-  blockType: "pageBlock";
+  blockType: 'pageBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -830,7 +830,7 @@ export interface Wording {
 export interface PayloadPreference {
   id: string;
   user: {
-    relationTo: "recorders";
+    relationTo: 'recorders';
     value: string | Recorder;
   };
   key?: string | null;
@@ -898,8 +898,8 @@ export interface LineBlock {
         version: number;
         [k: string]: unknown;
       }[];
-      direction: ("ltr" | "rtl") | null;
-      format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
       indent: number;
       version: number;
     };
@@ -907,7 +907,7 @@ export interface LineBlock {
   };
   id?: string | null;
   blockName?: string | null;
-  blockType: "lineBlock";
+  blockType: 'lineBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -922,8 +922,8 @@ export interface CueBlock {
         version: number;
         [k: string]: unknown;
       }[];
-      direction: ("ltr" | "rtl") | null;
-      format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
       indent: number;
       version: number;
     };
@@ -931,7 +931,7 @@ export interface CueBlock {
   };
   id?: string | null;
   blockName?: string | null;
-  blockType: "cueBlock";
+  blockType: 'cueBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -941,17 +941,17 @@ export interface TranscriptBlock {
   lines: (LineBlock | CueBlock)[];
   id?: string | null;
   blockName?: string | null;
-  blockType: "transcriptBlock";
+  blockType: 'transcriptBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "BreakBlock".
  */
 export interface BreakBlock {
-  type: "Scene break" | "Empty space" | "Solid line" | "Dotted line";
+  type: 'Scene break' | 'Empty space' | 'Solid line' | 'Dotted line';
   id?: string | null;
   blockName?: string | null;
-  blockType: "breakBlock";
+  blockType: 'breakBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -966,8 +966,8 @@ export interface SectionBlock {
         version: number;
         [k: string]: unknown;
       }[];
-      direction: ("ltr" | "rtl") | null;
-      format: "left" | "start" | "center" | "right" | "end" | "justify" | "";
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
       indent: number;
       version: number;
     };
@@ -975,8 +975,9 @@ export interface SectionBlock {
   };
   id?: string | null;
   blockName?: string | null;
-  blockType: "sectionBlock";
+  blockType: 'sectionBlock';
 }
+
 
 
 /////////////// CONSTANTS ///////////////
@@ -1400,8 +1401,8 @@ export type EndpointFolder = {
 
 export type EndpointWebsiteConfig = {
   homeFolders: (EndpointFolder & {
-    lightThumbnail?: PayloadImage;
-    darkThumbnail?: PayloadImage;
+    lightThumbnail?: EndpointImage;
+    darkThumbnail?: EndpointImage;
   })[];
   timeline: {
     breaks: number[];
@@ -1417,7 +1418,7 @@ export type EndpointWebsiteConfig = {
 export type EndpointRecorder = {
   id: string;
   username: string;
-  avatar?: PayloadImage;
+  avatar?: EndpointImage;
   languages: string[];
 };
 
@@ -1462,9 +1463,9 @@ export type EndpointCredit = {
 
 export type EndpointPage = {
   slug: string;
-  thumbnail?: PayloadImage;
+  thumbnail?: EndpointImage;
   tagGroups: EndpointTagsGroup[];
-  backgroundImage?: PayloadImage;
+  backgroundImage?: EndpointImage;
   translations: {
     language: string;
     pretitle?: string;
@@ -1481,7 +1482,7 @@ export type EndpointPage = {
 
 export type EndpointCollectible = {
   slug: string;
-  thumbnail?: PayloadImage;
+  thumbnail?: EndpointImage;
   translations: {
     language: string;
     pretitle?: string;
@@ -1492,9 +1493,9 @@ export type EndpointCollectible = {
   tagGroups: EndpointTagsGroup[];
   releaseDate?: string;
   languages: string[];
-  backgroundImage?: PayloadImage;
+  backgroundImage?: EndpointImage;
   nature: CollectibleNature;
-  gallery: PayloadImage[];
+  gallery: EndpointImage[];
   scans: PayloadImage[];
   urls: { url: string; label: string }[];
   price?: {

@@ -2,6 +2,7 @@
 
 ## Short term
 
+- [Medias] Add Parent pages
 - [Timeline] inline links to pages not working (timeline 2026/06)
 
 ## Mid term
