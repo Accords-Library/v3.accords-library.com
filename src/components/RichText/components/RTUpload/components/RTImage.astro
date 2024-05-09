@@ -13,7 +13,7 @@ interface Props {
 
 const {
   node: {
-    value: { id, url, translations },
+    value: { id, url, width, height, translations },
   },
   context,
 } = Astro.props;
@@ -36,7 +36,7 @@ const mediaPage = getLocalizedUrl(`/images/${id}`);
       </HeaderTitle>
     )
   }
-  <a href={mediaPage}><img src={url} /></a>
+  <a href={mediaPage}><img src={url} width={width} height={height} /></a>
   <OpenMediaPageButton url={mediaPage} />
 </div>
 

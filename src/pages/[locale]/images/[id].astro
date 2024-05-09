@@ -27,7 +27,9 @@ const { title, description } =
 
 <AppEmptyLayout>
   <div id="container">
-    <img src={url} width={width} height={height} />
+    <a href={url} target="_blank">
+      <img src={url} width={width} height={height} />
+    </a>
 
     <div>
       <h1>{title}</h1>
@@ -53,12 +55,13 @@ const { title, description } =
     img {
       max-height: 60vh;
       max-width: 100%;
+      height: auto;
       width: auto;
-      object-fit: contain;
     }
 
     h1 {
       max-width: 35em;
+      overflow-wrap: anywhere;
     }
 
     & > div {
