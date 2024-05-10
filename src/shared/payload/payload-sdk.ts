@@ -1801,8 +1801,6 @@ export const payload = {
     await (await request(payloadApiUrl(Collections.ChronologyEvents, `id/${id}`))).json(),
   getImageByID: async (id: string): Promise<EndpointImage> =>
     await (await request(payloadApiUrl(Collections.Images, `id/${id}`))).json(),
-  getScanByID: async (id: string): Promise<PayloadImage> =>
-    await (await request(payloadApiUrl(Collections.Scans, `id/${id}`))).json(),
   getAudioByID: async (id: string): Promise<EndpointAudio> =>
     await (await request(payloadApiUrl(Collections.Audios, `id/${id}`))).json(),
   getVideoByID: async (id: string): Promise<EndpointVideo> =>
