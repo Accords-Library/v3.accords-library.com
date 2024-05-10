@@ -25,6 +25,10 @@ const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     <a href={getLocalizedUrl(`/collectibles/${doc.value.slug}`)}>
       <slot />
     </a>
+  ) : doc.relationTo === Collections.Pages ? (
+    <a href={getLocalizedUrl(`/pages/${doc.value.slug}`)}>
+      <slot />
+    </a>
   ) : (
     <ErrorMessage
       title={`Unknown internal link: ${doc.relationTo}`}
