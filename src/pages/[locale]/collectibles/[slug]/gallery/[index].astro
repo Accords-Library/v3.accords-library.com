@@ -1,0 +1,42 @@
+---
+import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import Lightbox from "components/Lightbox.astro";
+import { getI18n } from "src/i18n/i18n";
+import { payload } from "src/shared/payload/payload-sdk";
+import { fetchOr404 } from "src/utils/responses";
+
+const slug = Astro.params.slug!;
+const index = Astro.params.index!;
+const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
+
+const galleryImage = await fetchOr404(() => payload.getCollectibleGalleryImage(slug, index));
+if (galleryImage instanceof Response) {
+  return galleryImage;
+}
+
+const { parentPages, previousIndex, nextIndex, image } = galleryImage;
+
+const { title, description } =
+  image.translations.length > 0
+    ? getLocalizedMatch(image.translations)
+    : { title: image.filename, description: undefined };
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<AppEmptyLayout parentPages={parentPages}>
+  <Lightbox
+    image={image}
+    title={title}
+    previousImageHref={previousIndex
+      ? getLocalizedUrl(`/collectibles/${slug}/gallery/${previousIndex}`)
+      : undefined}
+    nextImageHref={nextIndex
+      ? getLocalizedUrl(`/collectibles/${slug}/gallery/${nextIndex}`)
+      : undefined}
+    description={description}
+    filename={image.filename}
+    tagGroups={image.tagGroups}
+    credits={image.credits}
+  />
+</AppEmptyLayout>

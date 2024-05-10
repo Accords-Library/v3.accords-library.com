@@ -1,0 +1,80 @@
+---
+import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
+import RichText from "components/RichText/RichText.astro";
+import { getI18n } from "src/i18n/i18n";
+import { payload } from "src/shared/payload/payload-sdk";
+import { fetchOr404 } from "src/utils/responses";
+
+const slug = Astro.params.slug!;
+const { getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
+
+const gallery = await fetchOr404(() => payload.getCollectibleGallery(slug));
+if (gallery instanceof Response) {
+  return gallery;
+}
+
+const { translations, parentPages, images } = gallery;
+const translation = getLocalizedMatch(translations);
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<AppEmptyLayout parentPages={parentPages}>
+  <AppLayoutTitle
+    title={translation.title}
+    pretitle={translation.pretitle}
+    subtitle={translation.subtitle}
+  />
+
+  {
+    translation.description && (
+      <div id="summary" class="high-contrast-text">
+        <RichText content={translation.description} />
+      </div>
+    )
+  }
+
+  <div>
+    {
+      images.map((image, index) => (
+        <a href={getLocalizedUrl(`/collectibles/${slug}/gallery/${index}`)}>
+          <img src={image.url} />
+        </a>
+      ))
+    }
+  </div>
+</AppEmptyLayout>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  div {
+    margin-top: 3em;
+    display: flex;
+    gap: 2em;
+    flex-wrap: wrap;
+
+    a {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      text-align: center;
+      place-items: center;
+
+      transition: 100ms scale;
+
+      &:hover {
+        scale: 104%;
+      }
+
+      & > img {
+        max-height: 20em;
+        max-width: 100%;
+        height: auto;
+        width: auto;
+        box-shadow: 0 5px 20px -10px var(--color-shadow);
+      }
+    }
+  }
+</style>

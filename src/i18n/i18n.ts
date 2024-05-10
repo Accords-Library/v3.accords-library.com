@@ -173,6 +173,50 @@ export const getI18n = async (locale: string) => {
     );
   };
 
+  const formatScanIndexShort = (index: string) => {
+    switch (index) {
+      case "cover-flap-front":
+      case "dustjacket-flap-front":
+      case "dustjacket-inside-flap-front":
+      case "obi-flap-front":
+      case "obi-inside-flap-front":
+        return t("collectibles.scans.shortIndex.flapFront");
+
+      case "cover-front":
+      case "cover-inside-front":
+      case "dustjacket-front":
+      case "dustjacket-inside-front":
+      case "obi-front":
+      case "obi-inside-front":
+        return t("collectibles.scans.shortIndex.front");
+
+      case "cover-spine":
+      case "dustjacket-spine":
+      case "dustjacket-inside-spine":
+      case "obi-spine":
+      case "obi-inside-spine":
+        return t("collectibles.scans.shortIndex.spine");
+
+      case "cover-back":
+      case "cover-inside-back":
+      case "dustjacket-back":
+      case "dustjacket-inside-back":
+      case "obi-back":
+      case "obi-inside-back":
+        return t("collectibles.scans.shortIndex.back");
+
+      case "cover-flap-back":
+      case "dustjacket-flap-back":
+      case "dustjacket-inside-flap-back":
+      case "obi-flap-back":
+      case "obi-inside-flap-back":
+        return t("collectibles.scans.shortIndex.flapBack");
+
+      default:
+        return index;
+    }
+  };
+
   const formatEndpointSource = (source: EndpointSource) => {
     switch (source.type) {
       case "url":
@@ -228,6 +272,20 @@ export const getI18n = async (locale: string) => {
           label: getLocalizedMatch(source.folder.translations).name,
         };
 
+      case "scans":
+        return {
+          href: getLocalizedUrl(`/collectibles/${source.collectible.slug}/scans`),
+          typeLabel: t("global.sources.typeLabel.scans"),
+          label: formatInlineTitle(getLocalizedMatch(source.collectible.translations)),
+        };
+
+      case "gallery":
+        return {
+          href: getLocalizedUrl(`/collectibles/${source.collectible.slug}/gallery`),
+          typeLabel: t("global.sources.typeLabel.gallery"),
+          label: formatInlineTitle(getLocalizedMatch(source.collectible.translations)),
+        };
+
       default:
         return {
           href: "/404",
@@ -250,5 +308,6 @@ export const getI18n = async (locale: string) => {
     formatNumber,
     formatTimelineDate,
     formatEndpointSource,
+    formatScanIndexShort,
   };
 };

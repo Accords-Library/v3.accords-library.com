@@ -2,21 +2,28 @@
 
 ## Short term
 
-- [Medias] Add Parent pages
 - [Timeline] inline links to pages not working (timeline 2026/06)
+- Fix inconsistency with material-icon in Payload (with or without material-icon prefix)
+- [Media] display filename alongside the localized title.
+- [Media] Have a title, subtitle, pretitle just like everything else
+- Background images some times lack gradient at the bottom and fade in before they could load
+- Number of audio players seems limited (on Chrome and Firefox)
 
 ## Mid term
 
+- [Medias] Add Parent pages
+- [Scans] Adapt size of obi based on cover/dustjacket
+- [Scans] Order of cover/dustjacket/obi should be based on the book's page order.
+- [RichTextContent] Add autolink block support
 - Save cookies for longer than just the session
 - [Scripts] Can't run the scripts using node (ts-node?)
 - Support for nameless section
 - [Timeline] Error if collectible not published?
 - [Timeline] Handle no JS for footers
 - [Timeline] Add details button in footer with credits + last updated / created
-- [Collectibles] Create page for gallery
-- [Collectibles] Create page for scans
 - When the tags overflow, the tag group name should be align start (see http://localhost:12499/en/pages/magnitude-negative-chapter-1)
 - [SDK] create a initPayload() that return a payload sdk (and stop hard wirring to ENV or node-cache)
+- [Videos] see why no video on Firefox and no poster on Chrome https://v3.accords-library.com/en/videos/661b672825d380e548dbb8c8
 
 ## Long term
 

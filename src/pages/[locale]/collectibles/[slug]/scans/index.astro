@@ -1,0 +1,215 @@
+---
+import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
+import Credits from "components/Credits.astro";
+import RichText from "components/RichText/RichText.astro";
+import { getI18n } from "src/i18n/i18n";
+import { payload } from "src/shared/payload/payload-sdk";
+import { fetchOr404 } from "src/utils/responses";
+import ScanPreview from "./_components/ScanPreview.astro";
+
+const slug = Astro.params.slug!;
+const { getLocalizedMatch, t } = await getI18n(Astro.locals.currentLocale);
+
+const scans = await fetchOr404(() => payload.getCollectibleScans(slug));
+if (scans instanceof Response) {
+  return scans;
+}
+
+const { translations, credits, cover, pages, dustjacket, obi, parentPages } = scans;
+
+const translation = getLocalizedMatch(translations);
+
+const hasInsideCover = cover ? Object.keys(cover).some((value) => value.includes("inside")) : false;
+const hasOutsideCover = cover
+  ? Object.keys(cover).some((value) => !value.includes("inside"))
+  : false;
+
+const hasInsideDustjacket = dustjacket
+  ? Object.keys(dustjacket).some((value) => value.includes("inside"))
+  : false;
+const hasOutsideDustjacket = dustjacket
+  ? Object.keys(dustjacket).some((value) => !value.includes("inside"))
+  : false;
+
+const hasInsideObi = obi ? Object.keys(obi).some((value) => value.includes("inside")) : false;
+const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("inside")) : false;
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<AppEmptyLayout parentPages={parentPages}>
+  <AppLayoutTitle
+    title={translation.title}
+    pretitle={translation.pretitle}
+    subtitle={translation.subtitle}
+  />
+
+  {
+    translation.description && (
+      <div id="summary" class="high-contrast-text">
+        <RichText content={translation.description} />
+      </div>
+    )
+  }
+
+  {credits.length > 0 && <Credits credits={credits} />}
+
+  {
+    cover && (
+      <>
+        {hasOutsideCover && (
+          <section>
+            <h2>{t("collectibles.scans.cover")}</h2>
+            <div>
+              {cover.flapFront && <ScanPreview collectibleSlug={slug} scan={cover.flapFront} />}
+              {cover.front && <ScanPreview collectibleSlug={slug} scan={cover.front} />}
+              {cover.spine && <ScanPreview collectibleSlug={slug} scan={cover.spine} />}
+              {cover.back && <ScanPreview collectibleSlug={slug} scan={cover.back} />}
+              {cover.flapBack && <ScanPreview collectibleSlug={slug} scan={cover.flapBack} />}
+            </div>
+          </section>
+        )}
+        {hasInsideCover && (
+          <section>
+            <h2>{t("collectibles.scans.coverInside")}</h2>
+            <div>
+              {cover.insideFlapFront && (
+                <ScanPreview collectibleSlug={slug} scan={cover.insideFlapFront} />
+              )}
+              {cover.insideFront && <ScanPreview collectibleSlug={slug} scan={cover.insideFront} />}
+              {cover.insideBack && <ScanPreview collectibleSlug={slug} scan={cover.insideBack} />}
+              {cover.insideFlapBack && (
+                <ScanPreview collectibleSlug={slug} scan={cover.insideFlapBack} />
+              )}
+            </div>
+          </section>
+        )}
+      </>
+    )
+  }
+
+  {
+    dustjacket && (
+      <>
+        {hasOutsideDustjacket && (
+          <section>
+            <h2>{t("collectibles.scans.dustjacket")}</h2>
+            <p class="prose">{t("collectibles.scans.dustjacket.description")}</p>
+            <div>
+              {dustjacket.flapFront && (
+                <ScanPreview collectibleSlug={slug} scan={dustjacket.flapFront} />
+              )}
+              {dustjacket.front && <ScanPreview collectibleSlug={slug} scan={dustjacket.front} />}
+              {dustjacket.spine && <ScanPreview collectibleSlug={slug} scan={dustjacket.spine} />}
+              {dustjacket.back && <ScanPreview collectibleSlug={slug} scan={dustjacket.back} />}
+              {dustjacket.flapBack && (
+                <ScanPreview collectibleSlug={slug} scan={dustjacket.flapBack} />
+              )}
+            </div>
+          </section>
+        )}
+        {hasInsideDustjacket && (
+          <section>
+            <h2>{t("collectibles.scans.dustjacketInside")}</h2>
+            <div>
+              {dustjacket.insideFlapFront && (
+                <ScanPreview collectibleSlug={slug} scan={dustjacket.insideFlapFront} />
+              )}
+              {dustjacket.insideFront && (
+                <ScanPreview collectibleSlug={slug} scan={dustjacket.insideFront} />
+              )}
+              {dustjacket.insideSpine && (
+                <ScanPreview collectibleSlug={slug} scan={dustjacket.insideSpine} />
+              )}
+              {dustjacket.insideBack && (
+                <ScanPreview collectibleSlug={slug} scan={dustjacket.insideBack} />
+              )}
+              {dustjacket.insideFlapBack && (
+                <ScanPreview collectibleSlug={slug} scan={dustjacket.insideFlapBack} />
+              )}
+            </div>
+          </section>
+        )}
+      </>
+    )
+  }
+
+  {
+    obi && (
+      <>
+        {hasOutsideObi && (
+          <section>
+            <h2>{t("collectibles.scans.obi")}</h2>
+            <p class="prose">{t("collectibles.scans.obi.description")}</p>
+            <div>
+              {obi.flapFront && <ScanPreview collectibleSlug={slug} scan={obi.flapFront} />}
+              {obi.front && <ScanPreview collectibleSlug={slug} scan={obi.front} />}
+              {obi.spine && <ScanPreview collectibleSlug={slug} scan={obi.spine} />}
+              {obi.back && <ScanPreview collectibleSlug={slug} scan={obi.back} />}
+              {obi.flapBack && <ScanPreview collectibleSlug={slug} scan={obi.flapBack} />}
+            </div>
+          </section>
+        )}
+        {hasInsideObi && (
+          <section>
+            <h2>{t("collectibles.scans.obiInside")}</h2>
+            <div>
+              {obi.insideFlapFront && (
+                <ScanPreview collectibleSlug={slug} scan={obi.insideFlapFront} />
+              )}
+              {obi.insideFront && <ScanPreview collectibleSlug={slug} scan={obi.insideFront} />}
+              {obi.insideSpine && <ScanPreview collectibleSlug={slug} scan={obi.insideSpine} />}
+              {obi.insideBack && <ScanPreview collectibleSlug={slug} scan={obi.insideBack} />}
+              {obi.insideFlapBack && (
+                <ScanPreview collectibleSlug={slug} scan={obi.insideFlapBack} />
+              )}
+            </div>
+          </section>
+        )}
+      </>
+    )
+  }
+
+  {
+    pages.length > 0 && (
+      <section>
+        <h2>{t("collectibles.scans.pages")}</h2>
+        <div>
+          {pages.map((image) => (
+            <ScanPreview collectibleSlug={slug} scan={image} />
+          ))}
+        </div>
+      </section>
+    )
+  }
+</AppEmptyLayout>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  #summary {
+    margin-block: 2.5em;
+  }
+
+  section {
+    margin-block: 6em;
+
+    & > h2 {
+      font-family: var(--font-serif);
+      font-size: 30px;
+    }
+
+    & > p {
+      margin-top: 0.5em;
+      margin-bottom: 2em;
+    }
+
+    & > div {
+      margin-top: 1em;
+      display: flex;
+      gap: 2em;
+      flex-wrap: wrap;
+    }
+  }
+</style>

@@ -1,0 +1,49 @@
+---
+import { getI18n } from "src/i18n/i18n";
+import type { EndpointScanImage } from "src/shared/payload/payload-sdk";
+
+interface Props {
+  scan: EndpointScanImage;
+  collectibleSlug: string;
+}
+
+const {
+  scan: { url, index, width, height },
+  collectibleSlug,
+} = Astro.props;
+
+const { getLocalizedUrl, formatScanIndexShort } = await getI18n(Astro.locals.currentLocale);
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<a href={getLocalizedUrl(`/collectibles/${collectibleSlug}/scans/${index}`)}>
+  <img width={width} height={height} src={url} alt={index} />
+  <p>{formatScanIndexShort(index)}</p>
+</a>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  a {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    text-align: center;
+    place-items: center;
+
+    transition: 100ms scale;
+
+    &:hover {
+      scale: 104%;
+    }
+
+    & > img {
+      max-height: 20em;
+      max-width: 100%;
+      height: auto;
+      width: auto;
+      box-shadow: 0 5px 20px -10px var(--color-shadow);
+    }
+  }
+</style>

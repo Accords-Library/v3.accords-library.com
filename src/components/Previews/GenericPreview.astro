@@ -1,10 +1,10 @@
 ---
 import type { PayloadImage } from "src/shared/payload/payload-sdk";
-import InlineTagGroups from "pages/[locale]/collectibles/_components/ContentsSection/InlineTagGroups.astro";
 import Card from "components/Card.astro";
 import { Icon } from "astro-icon/components";
 import type { ComponentProps } from "astro/types";
 import { getI18n } from "src/i18n/i18n";
+import InlineTagGroups from "components/InlineTagGroups.astro";
 
 interface Props {
   thumbnail?: PayloadImage | undefined;

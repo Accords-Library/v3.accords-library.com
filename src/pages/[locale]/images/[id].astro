@@ -1,9 +1,6 @@
 ---
 import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
-import Credits from "components/Credits.astro";
-import DownloadButton from "components/DownloadButton.astro";
-import RichText from "components/RichText/RichText.astro";
-import TagGroups from "components/TagGroups.astro";
+import Lightbox from "components/Lightbox.astro";
 import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/shared/payload/payload-sdk";
 import { fetchOr404 } from "src/utils/responses";
@@ -15,7 +12,7 @@ if (image instanceof Response) {
 }
 
 const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
-const { url, width, height, filename, translations, tagGroups, credits } = image;
+const { filename, translations, tagGroups, credits } = image;
 
 const { title, description } =
   translations.length > 0
@@ -26,57 +23,12 @@ const { title, description } =
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <AppEmptyLayout>
-  <div id="container">
-    <a href={url} target="_blank">
-      <img src={url} width={width} height={height} />
-    </a>
-
-    <div>
-      <h1>{title}</h1>
-      {description && <RichText content={description} />}
-      <div>
-        {tagGroups.length > 0 && <TagGroups {tagGroups} />}
-        {credits.length > 0 && <Credits credits={credits} />}
-      </div>
-      <DownloadButton href={url} filename={filename} />
-    </div>
-  </div>
+  <Lightbox
+    image={image}
+    title={title}
+    description={description}
+    filename={filename}
+    tagGroups={tagGroups}
+    credits={credits}
+  />
 </AppEmptyLayout>
-
-{/* ------------------------------------------- CSS -------------------------------------------- */}
-
-<style>
-  #container {
-    display: flex;
-    flex-direction: column;
-    gap: 6em;
-    align-items: center;
-
-    img {
-      max-height: 60vh;
-      max-width: 100%;
-      height: auto;
-      width: auto;
-    }
-
-    h1 {
-      max-width: 35em;
-      overflow-wrap: anywhere;
-    }
-
-    & > div {
-      display: flex;
-      flex-direction: column;
-      gap: 2em;
-      align-items: start;
-
-      & > div {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 2em 6em;
-        width: 100%;
-      }
-    }
-  }
-</style>

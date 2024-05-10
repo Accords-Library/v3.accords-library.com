@@ -1,0 +1,34 @@
+---
+import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import Lightbox from "components/Lightbox.astro";
+import { getI18n } from "src/i18n/i18n";
+import { payload } from "src/shared/payload/payload-sdk";
+import { fetchOr404 } from "src/utils/responses";
+
+const slug = Astro.params.slug!;
+const index = Astro.params.index!;
+const { formatScanIndexShort, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
+
+const scanPage = await fetchOr404(() => payload.getCollectibleScanPage(slug, index));
+if (scanPage instanceof Response) {
+  return scanPage;
+}
+
+const { parentPages, previousIndex, nextIndex, image } = scanPage;
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<AppEmptyLayout parentPages={parentPages}>
+  <Lightbox
+    image={image}
+    title={formatScanIndexShort(index)}
+    previousImageHref={previousIndex
+      ? getLocalizedUrl(`/collectibles/${slug}/scans/${previousIndex}`)
+      : undefined}
+    nextImageHref={nextIndex
+      ? getLocalizedUrl(`/collectibles/${slug}/scans/${nextIndex}`)
+      : undefined}
+    filename={image.filename}
+  />
+</AppEmptyLayout>

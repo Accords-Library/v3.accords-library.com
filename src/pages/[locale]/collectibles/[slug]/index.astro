@@ -44,9 +44,6 @@ const {
 } = collectible;
 
 const translation = getLocalizedMatch(translations);
-
-const galleryFirstImage = gallery[0];
-const scansFirstImage = scans[0];
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -82,21 +79,23 @@ const scansFirstImage = scans[0];
 
         <div id="gallery-scans" class="when-no-print">
           {
-            galleryFirstImage && (
+            gallery && (
               <ImageTile
-                image={galleryFirstImage.url}
-                title="Gallery"
-                subtitle={`${gallery.length} images`}
+                image={gallery.thumbnail.url}
+                title={t("collectibles.gallery.title")}
+                subtitle={t("collectibles.gallery.subtitle", { count: gallery.count })}
+                href={getLocalizedUrl(`/collectibles/${slug}/gallery`)}
               />
             )
           }
 
           {
-            scansFirstImage && (
+            scans && (
               <ImageTile
-                image={scansFirstImage.url}
-                title="Scans"
-                subtitle={`${scans.length} images`}
+                image={scans.thumbnail.url}
+                title={t("collectibles.scans.title")}
+                subtitle={t("collectibles.scans.subtitle", { count: scans.count })}
+                href={getLocalizedUrl(`/collectibles/${slug}/scans`)}
               />
             )
           }
@@ -134,21 +133,23 @@ const scansFirstImage = scans[0];
       <div id="images">
         <div id="gallery-scans" class="when-no-print">
           {
-            galleryFirstImage && (
+            gallery && (
               <ImageTile
-                image={galleryFirstImage.url}
-                title={t("collectibles.gallery")}
-                subtitle={t("collectibles.imageCount", { count: gallery.length })}
+                image={gallery.thumbnail.url}
+                title={t("collectibles.gallery.title")}
+                subtitle={t("collectibles.gallery.subtitle", { count: gallery.count })}
+                href={getLocalizedUrl(`/collectibles/${slug}/gallery`)}
               />
             )
           }
 
           {
-            scansFirstImage && (
+            scans && (
               <ImageTile
-                image={scansFirstImage.url}
-                title={t("collectibles.scans")}
-                subtitle={t("collectibles.imageCount", { count: scans.length })}
+                image={scans.thumbnail.url}
+                title={t("collectibles.scans.title")}
+                subtitle={t("collectibles.scans.subtitle", { count: scans.count })}
+                href={getLocalizedUrl(`/collectibles/${slug}/scans`)}
               />
             )
           }

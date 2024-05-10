@@ -1,0 +1,118 @@
+---
+import Button from "components/Button.astro";
+import {
+  type EndpointCredit,
+  type EndpointTagsGroup,
+  type PayloadImage,
+  type RichTextContent,
+} from "src/shared/payload/payload-sdk";
+import RichText from "./RichText/RichText.astro";
+import TagGroups from "./TagGroups.astro";
+import Credits from "./Credits.astro";
+import DownloadButton from "./DownloadButton.astro";
+
+interface Props {
+  previousImageHref?: string | undefined;
+  nextImageHref?: string | undefined;
+  image: PayloadImage;
+  title: string;
+  description?: RichTextContent | undefined;
+  tagGroups?: EndpointTagsGroup[] | undefined;
+  credits?: EndpointCredit[] | undefined;
+  filename?: string | undefined;
+}
+
+const {
+  nextImageHref,
+  previousImageHref,
+  image: { url, width, height },
+  tagGroups,
+  credits,
+  description,
+  title,
+  filename,
+} = Astro.props;
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<div id="container">
+  <div id="image-viewer" class:list={{ "with-buttons": previousImageHref || nextImageHref }}>
+    <a
+      class:list={{ hidden: !previousImageHref }}
+      href={previousImageHref}
+      data-astro-history="replace">
+      <Button icon="material-symbols:chevron-left" />
+    </a>
+
+    <a href={url} target="_blank"><img src={url} width={width} height={height} /></a>
+
+    <a class:list={{ hidden: !nextImageHref }} href={nextImageHref} data-astro-history="replace">
+      <Button icon="material-symbols:chevron-right" />
+    </a>
+  </div>
+
+  <div
+    id="info"
+    class:list={{
+      complex:
+        (tagGroups && tagGroups.length > 0) || (credits && credits.length > 0) || description,
+    }}>
+    <h1>{title}</h1>
+    {description && <RichText content={description} />}
+    <div>
+      {tagGroups && tagGroups.length > 0 && <TagGroups {tagGroups} />}
+      {credits && credits.length > 0 && <Credits credits={credits} />}
+    </div>
+    {filename && <DownloadButton href={url} filename={filename} />}
+  </div>
+</div>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  #container {
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+    align-items: center;
+    margin-top: 3em;
+
+    & > #image-viewer {
+      &.with-buttons {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 1em;
+        place-items: center;
+      }
+
+      & > a.hidden {
+        visibility: hidden;
+      }
+
+      img {
+        max-height: 70vh;
+        max-width: 100%;
+        height: auto;
+        width: auto;
+      }
+    }
+
+    & > #info {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      align-items: center;
+
+      &.complex {
+        gap: 2em;
+        align-items: start;
+      }
+
+      & > h1 {
+        max-width: 35em;
+        overflow-wrap: anywhere;
+      }
+    }
+  }
+</style>

@@ -3,26 +3,27 @@ interface Props {
   image: string;
   title: string;
   subtitle: string;
+  href: string;
 }
 
-const { image, title, subtitle } = Astro.props;
+const { image, title, subtitle, href } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<div id="tile">
+<a href={href}>
   <img src={image} />
 
   <div class="high-contrast-text">
     <p class="title">{title}</p>
     <p>{subtitle}</p>
   </div>
-</div>
+</a>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  #tile {
+  a {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
@@ -32,6 +33,12 @@ const { image, title, subtitle } = Astro.props;
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 5px 20px -10px var(--color-shadow);
+
+    transition: 100ms scale;
+
+    &:hover {
+      scale: 102%;
+    }
 
     & > div {
       text-align: center;
