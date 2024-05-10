@@ -5,9 +5,10 @@ interface Props {
   icon: string;
   title: string;
   values: string[];
+  withBorder?: boolean | undefined;
 }
 
-const { icon, title, values } = Astro.props;
+const { icon, title, values, withBorder = true } = Astro.props;
 
 if (values.length === 0) return;
 ---
@@ -19,7 +20,7 @@ if (values.length === 0) return;
     <Icon name={icon} width={24} height={24} />
     <p>{title}</p>
   </div>
-  <div id="values">
+  <div id="values" class:list={{ "with-border": withBorder }}>
     {values.map((value) => <div>{value}</div>)}
   </div>
 </div>
@@ -54,13 +55,15 @@ if (values.length === 0) return;
       flex-wrap: wrap;
       gap: 6px;
 
-      & > div {
-        border: 1px solid var(--color-base-1000);
-        border-radius: 9999px;
-        padding-top: 0.15em;
-        padding-bottom: 0.25em;
-        padding-inline: 0.6em;
-        backdrop-filter: blur(10px);
+      &.with-border {
+        & > div {
+          border: 1px solid var(--color-base-1000);
+          border-radius: 9999px;
+          padding-bottom: 0.25em;
+          padding-top: 0.15em;
+          padding-inline: 0.6em;
+          backdrop-filter: blur(10upx);
+        }
       }
     }
   }

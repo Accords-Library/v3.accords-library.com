@@ -3,6 +3,7 @@ import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
 import Lightbox from "components/Lightbox.astro";
 import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/shared/payload/payload-sdk";
+import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
 
 const { id } = Astro.params;
@@ -11,24 +12,57 @@ if (image instanceof Response) {
   return image;
 }
 
-const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
-const { filename, translations, tagGroups, credits } = image;
+const { getLocalizedMatch, formatDate, t } = await getI18n(Astro.locals.currentLocale);
+const { filename, translations, tagGroups, credits, createdAt, updatedAt } = image;
 
-const { title, description } =
+const { pretitle, title, subtitle, description } =
   translations.length > 0
     ? getLocalizedMatch(translations)
-    : { title: filename, description: undefined };
+    : { pretitle: undefined, title: filename, subtitle: undefined, description: undefined };
+
+const tagsAndAttributes = [
+  ...tagGroups,
+  ...(filename && title !== filename
+    ? [
+        {
+          title: t("global.media.attributes.filename"),
+          icon: "material-symbols:unknown-document-outline",
+          values: [filename],
+          withBorder: false,
+        },
+      ]
+    : []),
+  {
+    title: t("global.media.attributes.createdAt"),
+    icon: "material-symbols:calendar-add-on-outline",
+    values: [formatDate(new Date(createdAt))],
+    withBorder: false,
+  },
+  {
+    title: t("global.media.attributes.updatedAt"),
+    icon: "material-symbols:edit-calendar",
+    values: [formatDate(new Date(updatedAt))],
+    withBorder: false,
+  },
+];
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppEmptyLayout>
+<AppEmptyLayout
+  openGraph={{
+    thumbnail: image,
+    description: description ? formatRichTextToString(description) : undefined,
+    title: formatInlineTitle({ pretitle, title, subtitle }),
+  }}>
   <Lightbox
     image={image}
+    pretitle={pretitle}
     title={title}
+    subtitle={subtitle}
     description={description}
     filename={filename}
-    tagGroups={tagGroups}
+    tagGroups={tagsAndAttributes}
     credits={credits}
   />
 </AppEmptyLayout>

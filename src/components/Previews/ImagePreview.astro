@@ -14,17 +14,22 @@ const {
   image: { id, translations, tagGroups, filename },
 } = Astro.props;
 
-const { title } = translations.length > 0 ? getLocalizedMatch(translations) : { title: filename };
+const { pretitle, title, subtitle } =
+  translations.length > 0
+    ? getLocalizedMatch(translations)
+    : { pretitle: undefined, title: filename, subtitle: undefined };
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <GenericPreview
+  pretitle={pretitle}
   title={title}
+  subtitle={subtitle}
   thumbnail={thumbnail}
   href={getLocalizedUrl(`/images/${id}`)}
   tagGroups={tagGroups}
   icon="material-symbols:imagesmode"
   iconHoverLabel={t("global.previewTypes.image")}
-  smallTitle
+  smallTitle={title === filename}
 />

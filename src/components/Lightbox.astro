@@ -2,7 +2,6 @@
 import Button from "components/Button.astro";
 import {
   type EndpointCredit,
-  type EndpointTagsGroup,
   type PayloadImage,
   type RichTextContent,
 } from "src/shared/payload/payload-sdk";
@@ -10,14 +9,18 @@ import RichText from "./RichText/RichText.astro";
 import TagGroups from "./TagGroups.astro";
 import Credits from "./Credits.astro";
 import DownloadButton from "./DownloadButton.astro";
+import AppLayoutTitle from "./AppLayout/components/AppLayoutTitle.astro";
+import type { ComponentProps } from "astro/types";
 
 interface Props {
   previousImageHref?: string | undefined;
   nextImageHref?: string | undefined;
   image: PayloadImage;
+  pretitle?: string | undefined;
   title: string;
+  subtitle?: string | undefined;
   description?: RichTextContent | undefined;
-  tagGroups?: EndpointTagsGroup[] | undefined;
+  tagGroups?: ComponentProps<typeof TagGroups>["tagGroups"] | undefined;
   credits?: EndpointCredit[] | undefined;
   filename?: string | undefined;
 }
@@ -26,12 +29,16 @@ const {
   nextImageHref,
   previousImageHref,
   image: { url, width, height },
-  tagGroups,
+  tagGroups = [],
   credits,
   description,
+  pretitle,
   title,
+  subtitle,
   filename,
 } = Astro.props;
+
+const smallTitle = !subtitle && !pretitle;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -58,12 +65,17 @@ const {
       complex:
         (tagGroups && tagGroups.length > 0) || (credits && credits.length > 0) || description,
     }}>
-    <h1>{title}</h1>
+    {
+      smallTitle ? (
+        <h1>{title}</h1>
+      ) : (
+        <AppLayoutTitle pretitle={pretitle} title={title} subtitle={subtitle} />
+      )
+    }
+
     {description && <RichText content={description} />}
-    <div>
-      {tagGroups && tagGroups.length > 0 && <TagGroups {tagGroups} />}
-      {credits && credits.length > 0 && <Credits credits={credits} />}
-    </div>
+    {tagGroups && tagGroups.length > 0 && <TagGroups tagGroups={tagGroups} />}
+    {credits && credits.length > 0 && <Credits credits={credits} />}
     {filename && <DownloadButton href={url} filename={filename} />}
   </div>
 </div>

@@ -2,12 +2,14 @@
 
 ## Short term
 
-- [Timeline] inline links to pages not working (timeline 2026/06)
-- Fix inconsistency with material-icon in Payload (with or without material-icon prefix)
-- [Media] display filename alongside the localized title.
-- [Media] Have a title, subtitle, pretitle just like everything else
 - Background images some times lack gradient at the bottom and fade in before they could load
 - Number of audio players seems limited (on Chrome and Firefox)
+- Create a tool to upload scans images and apply them to collectible
+- Automatically generate different sizes of images
+- Handle relationship in RichText Content
+- On most pages (collectibles + pages), there is a gap in the breakpoints where no thumbnail is displayed.
+- Add duration on audio/video preview cards
+- Add proper localization for formatFilesize, formatInches, formatMillimeters, formatPounds, and formatGrams
 
 ## Mid term
 
@@ -24,6 +26,7 @@
 - When the tags overflow, the tag group name should be align start (see http://localhost:12499/en/pages/magnitude-negative-chapter-1)
 - [SDK] create a initPayload() that return a payload sdk (and stop hard wirring to ENV or node-cache)
 - [Videos] see why no video on Firefox and no poster on Chrome https://v3.accords-library.com/en/videos/661b672825d380e548dbb8c8
+- [Videos] Display platform info + channel page
 
 ## Long term
 

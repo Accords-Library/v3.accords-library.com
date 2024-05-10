@@ -139,4 +139,9 @@ export type WordingKey =
   | "global.sources.typeLabel.scans"
   | "collectibles.scans.dustjacket.description"
   | "collectibles.scans.obi.description"
-  | "global.sources.typeLabel.gallery";
+  | "global.sources.typeLabel.gallery"
+  | "global.media.attributes.filename"
+  | "global.media.attributes.duration"
+  | "global.media.attributes.filesize"
+  | "global.media.attributes.createdAt"
+  | "global.media.attributes.updatedAt";

@@ -1,18 +1,39 @@
 ---
 import type { EndpointTagsGroup } from "src/shared/payload/payload-sdk";
-import TagGroup from "./TagGroup.astro";
+import { getI18n } from "src/i18n/i18n";
+import Metadata from "./Metadata.astro";
 
 interface Props {
-  tagGroups: EndpointTagsGroup[];
+  tagGroups: (
+    | EndpointTagsGroup
+    | { title: string; icon: string; values: string[]; withBorder?: boolean }
+  )[];
 }
 
 const { tagGroups } = Astro.props;
+const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
+
+const groups = tagGroups.map((group) => {
+  if ("title" in group) {
+    return group;
+  } else {
+    return {
+      title: getLocalizedMatch(group.translations).name,
+      icon: group.icon,
+      values: group.tags.map(({ translations }) => getLocalizedMatch(translations).name),
+    };
+  }
+});
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div>
-  {tagGroups.map((tag) => <TagGroup tagGroup={tag} />)}
+  {
+    groups.map(({ icon, title, values, withBorder }) => (
+      <Metadata icon={icon} title={title} values={values} withBorder={withBorder} />
+    ))
+  }
   <slot />
 </div>
 

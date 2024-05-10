@@ -111,7 +111,9 @@ export interface Image {
   translations?:
     | {
         language: string | Language;
+        pretitle?: string | null;
         title: string;
+        subtitle?: string | null;
         description?: {
           root: {
             type: string;
@@ -559,7 +561,9 @@ export interface Audio {
   thumbnail?: string | MediaThumbnail | null;
   translations: {
     language: string | Language;
+    pretitle?: string | null;
     title: string;
+    subtitle?: string | null;
     description?: {
       root: {
         type: string;
@@ -631,7 +635,9 @@ export interface Video {
   thumbnail?: string | MediaThumbnail | null;
   translations: {
     language: string | Language;
+    pretitle?: string | null;
     title: string;
+    subtitle?: string | null;
     description?: {
       root: {
         type: string;
@@ -1711,7 +1717,9 @@ export type EndpointMedia = {
   tagGroups: EndpointTagsGroup[];
   translations: {
     language: string;
+    pretitle?: string;
     title: string;
+    subtitle?: string;
     description?: RichTextContent;
   }[];
   credits: EndpointCredit[];

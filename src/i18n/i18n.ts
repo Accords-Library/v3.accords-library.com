@@ -134,6 +134,25 @@ export const getI18n = async (locale: string) => {
     options: Intl.DateTimeFormatOptions | undefined = { dateStyle: "medium" }
   ): string => date.toLocaleDateString(locale, options);
 
+  const formatDuration = (durationInSec: number) => {
+    const hours = Math.floor(durationInSec / 3600);
+    durationInSec -= hours * 3600;
+    const minutes = Math.floor(durationInSec / 60);
+    durationInSec -= minutes * 60;
+    const seconds = Math.floor(durationInSec);
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  };
+
+  const formatFilesize = (sizeInBytes: number): string => {
+    if (sizeInBytes < 1_000) return `${formatNumber(sizeInBytes, { maximumFractionDigits: 2 })} B`;
+    sizeInBytes = sizeInBytes / 1000;
+    if (sizeInBytes < 1_000) return `${formatNumber(sizeInBytes, { maximumFractionDigits: 2 })} KB`;
+    sizeInBytes = sizeInBytes / 1000;
+    if (sizeInBytes < 1_000) return `${formatNumber(sizeInBytes, { maximumFractionDigits: 2 })} MB`;
+    sizeInBytes = sizeInBytes / 1000;
+    return `${formatNumber(sizeInBytes, { maximumFractionDigits: 2 })} GB`;
+  };
+
   const formatInches = (sizeInMm: number): string => {
     return (
       (sizeInMm * 0.039370078740157).toLocaleString(locale, { maximumFractionDigits: 2 }) + " in"
@@ -301,6 +320,7 @@ export const getI18n = async (locale: string) => {
     getLocalizedUrl,
     formatPrice,
     formatDate,
+    formatDuration,
     formatInches,
     formatPounds,
     formatGrams,
@@ -309,5 +329,6 @@ export const getI18n = async (locale: string) => {
     formatTimelineDate,
     formatEndpointSource,
     formatScanIndexShort,
+    formatFilesize,
   };
 };
