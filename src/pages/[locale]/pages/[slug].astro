@@ -23,7 +23,7 @@ const meta = getLocalizedMatch(page.translations);
   openGraph={{
     title: formatInlineTitle(meta),
     description: meta.summary && formatRichTextToString(meta.summary),
-    thumbnail: page.thumbnail?.url,
+    thumbnail: page.thumbnail,
   }}
   parentPages={page.parentPages}
   backgroundImage={page.backgroundImage ?? page.thumbnail}>

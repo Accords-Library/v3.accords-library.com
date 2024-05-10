@@ -5,15 +5,16 @@ import "@fontsource-variable/vollkorn";
 import "@fontsource-variable/murecho";
 import { getI18n } from "src/i18n/i18n";
 import AppLayoutSpinner from "./AppLayoutSpinner.astro";
+import type { EndpointAudio, EndpointVideo, PayloadImage } from "src/shared/payload/payload-sdk";
 
 interface Props {
   openGraph?:
     | {
         title?: string | undefined;
         description?: string | undefined;
-        thumbnail?: string | undefined;
-        audio?: string | undefined;
-        video?: string | undefined;
+        thumbnail?: PayloadImage | undefined;
+        audio?: EndpointAudio | undefined;
+        video?: EndpointVideo | undefined;
       }
     | undefined;
 }
@@ -24,13 +25,20 @@ const { t } = await getI18n(currentLocale);
 const { openGraph = {} } = Astro.props;
 const {
   description = t("global.meta.description"),
-  thumbnail = "/img/default_og.jpg",
+  thumbnail = {
+    filename: "default_og.jpg",
+    filesize: 0,
+    height: 630,
+    width: 1200,
+    mimeType: "image/jpeg",
+    url: "/img/default_og.jpg",
+  },
   audio,
   video,
 } = openGraph;
 
 const title = openGraph.title
-  ? `${t("global.siteName")} – ${openGraph.title}`
+  ? `${openGraph.title} – ${t("global.siteName")}`
   : t("global.siteName");
 
 const userAgent = Astro.request.headers.get("user-agent") ?? "";
@@ -69,7 +77,7 @@ const { currentTheme } = Astro.locals;
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content={thumbnail} />
+    <meta name="twitter:image" content={thumbnail.url} />
 
     <meta property="og:type" content={video ? "video.movie" : audio ? "music.song" : "website"} />
     <meta property="og:locale" content={currentLocale} />
@@ -78,26 +86,27 @@ const { currentTheme } = Astro.locals;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
 
-    <meta property="og:image" content={thumbnail} />
-    <meta property="og:image:secure_url" content={thumbnail} />
-    <!-- <meta property="og:image:width" content={thumbnail.width.toString()} />
+    <meta property="og:image" content={thumbnail.url} />
+    <meta property="og:image:secure_url" content={thumbnail.url} />
+    <meta property="og:image:width" content={thumbnail.width.toString()} />
     <meta property="og:image:height" content={thumbnail.height.toString()} />
-    <meta property="og:image:alt" content={thumbnail.alt} /> -->
-    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:type" content={thumbnail.mimeType} />
 
     {
       audio && (
         <>
-          <meta property="og:audio" content={audio} />
-          <meta property="og:audio:type" content="audio/mpeg" />
+          <meta property="og:audio" content={audio.url} />
+          <meta property="og:audio:secure_url" content={audio.url} />
+          <meta property="og:audio:type" content={audio.mimeType} />
         </>
       )
     }
     {
       video && (
         <>
-          <meta property="og:video" content={video} />
-          <meta property="og:video:type" content="video/mp4" />
+          <meta property="og:video" content={video.url} />
+          <meta property="og:video:secure_url" content={video.url} />
+          <meta property="og:video:type" content={video.mimeType} />
         </>
       )
     }

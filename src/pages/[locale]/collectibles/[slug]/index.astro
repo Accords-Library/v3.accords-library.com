@@ -52,6 +52,7 @@ const translation = getLocalizedMatch(translations);
   openGraph={{
     title: formatInlineTitle(translation),
     description: translation.description && formatRichTextToString(translation.description),
+    thumbnail,
   }}
   parentPages={parentPages}
   backgroundImage={backgroundImage ?? thumbnail}>
