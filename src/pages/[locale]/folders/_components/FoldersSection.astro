@@ -22,7 +22,7 @@ const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.curren
       folders.map(({ slug, translations, icon }) => (
         <FolderCard
           title={getLocalizedMatch(translations).name}
-          icon={icon ? `material-symbols:${icon}` : undefined}
+          icon={icon}
           href={getLocalizedUrl(`/folders/${slug}`)}
         />
       ))
