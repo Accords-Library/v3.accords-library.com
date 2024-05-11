@@ -10,7 +10,7 @@ import { formatRichTextToString } from "src/utils/format";
 import ImagePreview from "components/Previews/ImagePreview.astro";
 import AudioPreview from "components/Previews/AudioPreview.astro";
 import VideoPreview from "components/Previews/VideoPreview.astro";
-import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 
@@ -27,7 +27,7 @@ const meta = getLocalizedMatch(folder.translations);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppEmptyLayout
+<AppLayout
   openGraph={{
     title: meta.name,
     description: meta.description && formatRichTextToString(meta.description),
@@ -91,7 +91,7 @@ const meta = getLocalizedMatch(folder.translations);
       }
     </div>
   </div>
-</AppEmptyLayout>
+</AppLayout>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 

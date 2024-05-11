@@ -1,5 +1,5 @@
 ---
-import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayout from "components/AppLayout/AppLayout.astro";
 import Lightbox from "components/Lightbox.astro";
 import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/shared/payload/payload-sdk";
@@ -23,7 +23,7 @@ const translation = getLocalizedMatch(translations);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppEmptyLayout
+<AppLayout
   openGraph={{
     title: `${formatInlineTitle(translation)} (${index})`,
     description: translation.description && formatRichTextToString(translation.description),
@@ -41,4 +41,4 @@ const translation = getLocalizedMatch(translations);
       : undefined}
     filename={image.filename}
   />
-</AppEmptyLayout>
+</AppLayout>

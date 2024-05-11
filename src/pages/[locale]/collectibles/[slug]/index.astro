@@ -1,5 +1,5 @@
 ---
-import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import TagGroups from "components/TagGroups.astro";
 import { getI18n } from "src/i18n/i18n";
@@ -49,7 +49,7 @@ const translation = getLocalizedMatch(translations);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppEmptyLayout
+<AppLayout
   openGraph={{
     title: formatInlineTitle(translation),
     description: translation.description && formatRichTextToString(translation.description),
@@ -127,7 +127,7 @@ const translation = getLocalizedMatch(translations);
 
     {contents.length > 0 && <ContentsSection contents={contents} />}
   </AsideLayout>
-</AppEmptyLayout>
+</AppLayout>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 

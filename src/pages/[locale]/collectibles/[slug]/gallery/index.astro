@@ -1,5 +1,5 @@
 ---
-import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import { getI18n } from "src/i18n/i18n";
@@ -21,7 +21,7 @@ const translation = getLocalizedMatch(translations);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppEmptyLayout
+<AppLayout
   openGraph={{
     title: `${formatInlineTitle(translation)} (${t("collectibles.gallery")})`,
     description: translation.description && formatRichTextToString(translation.description),
@@ -45,7 +45,7 @@ const translation = getLocalizedMatch(translations);
       ))
     }
   </div>
-</AppEmptyLayout>
+</AppLayout>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 

@@ -1,5 +1,5 @@
 ---
-import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import Credits from "components/Credits.astro";
 import { getI18n } from "src/i18n/i18n";
@@ -39,7 +39,7 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppEmptyLayout
+<AppLayout
   openGraph={{
     title: `${formatInlineTitle(translation)} (${t("collectibles.scans")})`,
     description: translation.description && formatRichTextToString(translation.description),
@@ -184,7 +184,7 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
       </section>
     )
   }
-</AppEmptyLayout>
+</AppLayout>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 

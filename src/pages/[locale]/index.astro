@@ -6,7 +6,7 @@ import ChronicleCard from "./_components/ChronicleCard.astro";
 import LinkCard from "./_components/LinkCard.astro";
 import { getI18n } from "src/i18n/i18n";
 import { cache } from "src/utils/cachedPayload";
-import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 
 const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
@@ -14,7 +14,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppEmptyLayout
+<AppLayout
   openGraph={{ title: t("home.title") }}
   backgroundImage={{
     url: "/img/background-image.webp",
@@ -179,7 +179,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       </div>
     </section>
   </div>
-</AppEmptyLayout>
+</AppLayout>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 

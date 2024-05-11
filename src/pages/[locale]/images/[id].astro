@@ -1,5 +1,5 @@
 ---
-import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayout from "components/AppLayout/AppLayout.astro";
 import Lightbox from "components/Lightbox.astro";
 import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/shared/payload/payload-sdk";
@@ -49,7 +49,7 @@ const tagsAndAttributes = [
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppEmptyLayout
+<AppLayout
   openGraph={{
     thumbnail: image,
     description: description ? formatRichTextToString(description) : undefined,
@@ -65,4 +65,4 @@ const tagsAndAttributes = [
     tagGroups={tagsAndAttributes}
     credits={credits}
   />
-</AppEmptyLayout>
+</AppLayout>

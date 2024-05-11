@@ -1,12 +1,12 @@
 ---
-import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppEmptyLayout>
+<AppLayout>
   <AppLayoutTitle pretitle="Guide to" title="Rich Text Editor" />
   <AppLayoutDescription
     description="Having troubles using the Rich Text Editor? Looking for tips and advanced techniques? You've come to the right place!"
@@ -32,7 +32,7 @@ import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro
       </kbd> to create a linebreak.
     </p>
   </div>
-</AppEmptyLayout>
+</AppLayout>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 

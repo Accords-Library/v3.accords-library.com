@@ -2,7 +2,7 @@
 import { payload } from "src/shared/payload/payload-sdk";
 import { groupBy } from "src/utils/array";
 import TimelineYear from "./_components/TimelineYear.astro";
-import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import Card from "components/Card.astro";
 import { getI18n } from "src/i18n/i18n";
@@ -18,7 +18,7 @@ const { getLocalizedUrl, t, formatTimelineDate } = await getI18n(Astro.locals.cu
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppEmptyLayout>
+<AppLayout>
   <AppLayoutBackgroundImg
     img={{
       url: "/img/timeline-background.webp",
@@ -76,7 +76,7 @@ const { getLocalizedUrl, t, formatTimelineDate } = await getI18n(Astro.locals.cu
     </Card>
   </div>
   {groupedEvents.map(({ key, values }) => <TimelineYear year={key} events={values} />)}
-</AppEmptyLayout>
+</AppLayout>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 

@@ -1,5 +1,5 @@
 ---
-import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import Credits from "components/Credits.astro";
 import DownloadButton from "components/DownloadButton.astro";
@@ -70,7 +70,7 @@ const tagsAndAttributes = [
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppEmptyLayout
+<AppLayout
   openGraph={{
     thumbnail,
     video,
@@ -96,7 +96,7 @@ const tagsAndAttributes = [
       <DownloadButton href={url} filename={filename} />
     </div>
   </div>
-</AppEmptyLayout>
+</AppLayout>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
