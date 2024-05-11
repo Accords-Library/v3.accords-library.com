@@ -41,13 +41,12 @@ const groups = tagGroups.map((group) => {
 
 <style>
   div {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 2em;
-    margin-block: 2em;
 
     @media (max-width: 35rem) {
-      gap: 3.5em;
-      margin-block: 3.5em;
+      gap: 3em;
     }
   }
 </style>

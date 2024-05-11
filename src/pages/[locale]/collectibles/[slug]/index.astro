@@ -3,23 +3,24 @@ import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import TagGroups from "components/TagGroups.astro";
 import { getI18n } from "src/i18n/i18n";
-import { payload } from "src/shared/payload/payload-sdk";
+import { CollectibleNature, payload } from "src/shared/payload/payload-sdk";
 import { fetchOr404 } from "src/utils/responses";
 import ImageTile from "./_components/ImageTile.astro";
-import PriceInfo from "./_components/PriceInfo.astro";
 import SizeInfo from "./_components/SizeInfo.astro";
-import ReleaseDateInfo from "./_components/ReleaseDateInfo.astro";
 import PageInfo from "./_components/PageInfo.astro";
 import AvailabilityInfo from "./_components/AvailabilityInfo.astro";
 import WeightInfo from "./_components/WeightInfo.astro";
 import SubitemSection from "./_components/SubitemSection.astro";
 import ContentsSection from "./_components/ContentsSection/ContentsSection.astro";
-import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
+import { formatInlineTitle, formatLocale, formatRichTextToString } from "src/utils/format";
 import AsideLayout from "components/AppLayout/AsideLayout.astro";
 import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
+import { convert } from "src/utils/currencies";
 
 const { slug } = Astro.params;
-const { getLocalizedMatch, getLocalizedUrl, t } = await getI18n(Astro.locals.currentLocale);
+const { getLocalizedMatch, getLocalizedUrl, t, formatDate, formatPrice } = await getI18n(
+  Astro.locals.currentLocale
+);
 
 const collectible = await fetchOr404(() => payload.getCollectible(slug!));
 if (collectible instanceof Response) {
@@ -42,9 +43,89 @@ const {
   parentPages,
   tagGroups,
   contents,
+  createdAt,
+  updatedAt,
+  updatedBy,
+  languages,
+  nature,
 } = collectible;
 
 const translation = getLocalizedMatch(translations);
+const { pretitle, title, subtitle, description } = translation;
+
+const attributes = [
+  {
+    title: t("global.media.attributes.createdAt"),
+    icon: "material-symbols:calendar-add-on-outline",
+    values: [formatDate(new Date(createdAt))],
+    withBorder: false,
+  },
+  {
+    title: t("global.media.attributes.updatedAt"),
+    icon: "material-symbols:edit-calendar",
+    values: [formatDate(new Date(updatedAt))],
+    withBorder: false,
+  },
+];
+
+if (updatedBy) {
+  attributes.push({
+    title: t("global.media.attributes.updatedBy"),
+    icon: "material-symbols:person-edit-outline",
+    values: [updatedBy?.username],
+    withBorder: true,
+  });
+}
+
+const tagGroupWithAttributes = [
+  ...tagGroups,
+  {
+    title: t("collectibles.nature"),
+    icon: "material-symbols:leaf-spark-outline",
+    values: [nature === CollectibleNature.Physical ? "Physical" : "Digital"],
+    withBorder: true,
+  },
+];
+
+if (releaseDate) {
+  tagGroupWithAttributes.push({
+    title: t("collectibles.releaseDate"),
+    icon: "material-symbols:calendar-month-outline",
+    values: [formatDate(new Date(releaseDate))],
+    withBorder: false,
+  });
+}
+
+if (languages.length > 0) {
+  tagGroupWithAttributes.push({
+    title: t("collectibles.languages"),
+    icon: "material-symbols:translate",
+    values: languages.map((lang) => formatLocale(lang)),
+    withBorder: true,
+  });
+}
+
+if (price) {
+  const preferredCurrency = Astro.locals.currentCurrency;
+
+  const convertedPrice = {
+    amount: convert(price.currency, preferredCurrency, price.amount),
+    currency: preferredCurrency,
+  };
+
+  let priceText = price.amount === 0 ? t("collectibles.price.free") : formatPrice(price);
+
+  if (price.amount > 0 && price.currency !== convertedPrice.currency) {
+    priceText += ` (${formatPrice(convertedPrice)})`;
+  }
+
+  tagGroupWithAttributes.push({
+    title: t("collectibles.price"),
+    icon: "material-symbols:sell-outline",
+    values: [priceText],
+    withBorder: false,
+  });
+}
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -52,18 +133,14 @@ const translation = getLocalizedMatch(translations);
 <AppLayout
   openGraph={{
     title: formatInlineTitle(translation),
-    description: translation.description && formatRichTextToString(translation.description),
+    description: description && formatRichTextToString(description),
     thumbnail,
   }}
   parentPages={parentPages}
   backgroundImage={backgroundImage ?? thumbnail}>
   <AsideLayout>
     <Fragment slot="header">
-      <AppLayoutTitle
-        title={translation.title}
-        pretitle={translation.pretitle}
-        subtitle={translation.subtitle}
-      />
+      <AppLayoutTitle title={title} pretitle={pretitle} subtitle={subtitle} />
     </Fragment>
 
     <Fragment slot="header-aside">
@@ -107,21 +184,31 @@ const translation = getLocalizedMatch(translations);
       </div>
     </Fragment>
 
-    {translation.description && <AppLayoutDescription description={translation.description} />}
+    <Fragment slot="aside">
+      {
+        attributes.length > 0 && (
+          <div id="attributes">
+            <TagGroups tagGroups={attributes} />
+          </div>
+        )
+      }
+    </Fragment>
 
-    <TagGroups tagGroups={tagGroups}>
-      {releaseDate && <ReleaseDateInfo releaseDate={releaseDate} />}
+    <Fragment slot="meta">
+      {description && <AppLayoutDescription description={description} />}
 
-      {price && <PriceInfo price={price} />}
+      <div id="tags">
+        <TagGroups tagGroups={tagGroupWithAttributes}>
+          <AvailabilityInfo urls={urls} price={price !== undefined} releaseDate={releaseDate} />
 
-      <AvailabilityInfo urls={urls} price={price !== undefined} releaseDate={releaseDate} />
+          {size && <SizeInfo size={size} />}
 
-      {size && <SizeInfo size={size} />}
+          {weight && <WeightInfo weight={weight} />}
 
-      {weight && <WeightInfo weight={weight} />}
-
-      {pageInfo && <PageInfo pageInfo={pageInfo} />}
-    </TagGroups>
+          {pageInfo && <PageInfo pageInfo={pageInfo} />}
+        </TagGroups>
+      </div>
+    </Fragment>
 
     {subitems.length > 0 && <SubitemSection subitems={subitems} />}
 
@@ -193,6 +280,26 @@ const translation = getLocalizedMatch(translations);
           flex-direction: column;
         }
       }
+    }
+  }
+
+  #tags {
+    margin-block: 2em;
+
+    @media (max-width: 1280.5px) {
+      margin-bottom: 4em;
+    }
+
+    @media (max-width: 35rem) {
+      margin-top: 4em;
+      margin-bottom: 6em;
+    }
+  }
+
+  #attributes {
+    @media (min-width: 1280.5px) {
+      margin-left: 12em;
+      margin-top: 3em;
     }
   }
 </style>

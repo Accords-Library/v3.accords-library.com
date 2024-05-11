@@ -5,12 +5,12 @@ import {
   type PayloadImage,
   type RichTextContent,
 } from "src/shared/payload/payload-sdk";
-import RichText from "./RichText/RichText.astro";
 import TagGroups from "./TagGroups.astro";
 import Credits from "./Credits.astro";
 import DownloadButton from "./DownloadButton.astro";
 import AppLayoutTitle from "./AppLayout/components/AppLayoutTitle.astro";
 import type { ComponentProps } from "astro/types";
+import AppLayoutDescription from "./AppLayout/components/AppLayoutDescription.astro";
 
 interface Props {
   previousImageHref?: string | undefined;
@@ -65,15 +65,16 @@ const smallTitle = !subtitle && !pretitle;
       complex:
         (tagGroups && tagGroups.length > 0) || (credits && credits.length > 0) || description,
     }}>
-    {
-      smallTitle ? (
-        <h1>{title}</h1>
-      ) : (
-        <AppLayoutTitle pretitle={pretitle} title={title} subtitle={subtitle} />
-      )
-    }
-
-    {description && <RichText content={description} />}
+    <div>
+      {
+        smallTitle ? (
+          <h1>{title}</h1>
+        ) : (
+          <AppLayoutTitle pretitle={pretitle} title={title} subtitle={subtitle} />
+        )
+      }
+      {description && <AppLayoutDescription description={description} />}
+    </div>
     {tagGroups && tagGroups.length > 0 && <TagGroups tagGroups={tagGroups} />}
     {credits && credits.length > 0 && <Credits credits={credits} />}
     {filename && <DownloadButton href={url} filename={filename} />}
@@ -113,12 +114,16 @@ const smallTitle = !subtitle && !pretitle;
     & > #info {
       display: flex;
       flex-direction: column;
-      gap: 1em;
-      align-items: center;
+      gap: 4em;
+      align-items: start;
 
-      &.complex {
+      @media (max-width: 35rem) {
+        gap: 6em;
+      }
+
+      &:not(.complex) {
+        align-items: center;
         gap: 2em;
-        align-items: start;
       }
 
       & > h1 {

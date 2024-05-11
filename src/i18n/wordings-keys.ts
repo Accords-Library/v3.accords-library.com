@@ -144,4 +144,7 @@ export type WordingKey =
   | "global.media.attributes.duration"
   | "global.media.attributes.filesize"
   | "global.media.attributes.createdAt"
-  | "global.media.attributes.updatedAt";
+  | "global.media.attributes.updatedAt"
+  | "global.media.attributes.updatedBy"
+  | "collectibles.nature"
+  | "collectibles.languages";

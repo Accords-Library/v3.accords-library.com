@@ -36,8 +36,7 @@ const { pretitle, title, subtitle, description } = getLocalizedMatch(translation
 
 const smallTitle = !subtitle && !pretitle;
 
-const tagsAndAttributes = [
-  ...tagGroups,
+const attributes = [
   ...(filename && title !== filename
     ? [
         {
@@ -81,7 +80,7 @@ const tagsAndAttributes = [
   <div id="container">
     <AudioPlayer audio={audio} />
 
-    <div>
+    <div id="info">
       {
         smallTitle ? (
           <h1>{title}</h1>
@@ -90,10 +89,9 @@ const tagsAndAttributes = [
         )
       }
       {description && <RichText content={description} />}
-      <div>
-        {tagsAndAttributes.length > 0 && <TagGroups tagGroups={tagsAndAttributes} />}
-        {credits.length > 0 && <Credits credits={credits} />}
-      </div>
+      {tagGroups.length > 0 && <TagGroups tagGroups={tagGroups} />}
+      {credits.length > 0 && <Credits credits={credits} />}
+      {attributes.length > 0 && <TagGroups tagGroups={attributes} />}
       <DownloadButton href={url} filename={filename} />
     </div>
   </div>
@@ -117,18 +115,14 @@ const tagsAndAttributes = [
       max-width: 35em;
     }
 
-    & > div {
+    & > #info {
       display: flex;
       flex-direction: column;
-      gap: 2em;
+      gap: 4em;
       align-items: start;
 
-      & > div {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 2em 6em;
-        width: 100%;
+      @media (max-width: 35rem) {
+        gap: 6em;
       }
     }
   }

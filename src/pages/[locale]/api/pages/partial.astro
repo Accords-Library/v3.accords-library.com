@@ -22,13 +22,38 @@ interface Props {
 const reqUrl = new URL(Astro.request.url);
 const lang = Astro.props.lang ?? reqUrl.searchParams.get("lang")!;
 const slug = Astro.props.slug ?? reqUrl.searchParams.get("slug")!;
-const { translations, thumbnail, tagGroups } = Astro.props.page ?? (await payload.getPage(slug));
+const { translations, thumbnail, tagGroups, createdAt, updatedAt, updatedBy } =
+  Astro.props.page ?? (await payload.getPage(slug));
 
-const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
+const { getLocalizedUrl, t, formatDate } = await getI18n(Astro.locals.currentLocale);
 const { getLocalizedMatch } = await getI18n(lang);
 
 const { pretitle, title, subtitle, summary, content, credits, toc, language, sourceLanguage } =
   getLocalizedMatch(translations);
+
+const attributes = [
+  {
+    title: t("global.media.attributes.createdAt"),
+    icon: "material-symbols:calendar-add-on-outline",
+    values: [formatDate(new Date(createdAt))],
+    withBorder: false,
+  },
+  {
+    title: t("global.media.attributes.updatedAt"),
+    icon: "material-symbols:edit-calendar",
+    values: [formatDate(new Date(updatedAt))],
+    withBorder: false,
+  },
+];
+
+if (updatedBy) {
+  attributes.push({
+    title: t("global.media.attributes.updatedBy"),
+    icon: "material-symbols:person-edit-outline",
+    values: [updatedBy?.username],
+    withBorder: true,
+  });
+}
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -56,27 +81,37 @@ const { pretitle, title, subtitle, summary, content, credits, toc, language, sou
 
     <Fragment slot="meta">
       {summary && <AppLayoutDescription description={summary} />}
-      {tagGroups.length > 0 && <TagGroups tagGroups={tagGroups} />}
-    </Fragment>
-
-    <Fragment slot="aside">
       {
-        translations.length > 1 && (
-          <LanguageOverride
-            currentLanguage={language}
-            currentSourceLanguage={sourceLanguage}
-            availableLanguages={translations.map(({ language }) => language)}
-            getPartialUrl={(lang) =>
-              getLocalizedUrl(`/api/pages/partial?lang=${lang}&slug=${slug}`)
-            }
-          />
+        tagGroups.length > 0 && (
+          <div id="tags">
+            <TagGroups tagGroups={tagGroups} />
+          </div>
         )
       }
+    </Fragment>
 
-      {credits.length > 0 && <Credits credits={credits} />}
+    <div id="aside" slot="aside">
+      <div id="credits">
+        {
+          translations.length > 1 && (
+            <LanguageOverride
+              currentLanguage={language}
+              currentSourceLanguage={sourceLanguage}
+              availableLanguages={translations.map(({ language }) => language)}
+              getPartialUrl={(lang) =>
+                getLocalizedUrl(`/api/pages/partial?lang=${lang}&slug=${slug}`)
+              }
+            />
+          )
+        }
+
+        {credits.length > 0 && <Credits credits={credits} />}
+      </div>
+
+      {attributes.length > 0 && <TagGroups tagGroups={attributes} />}
 
       {toc.length > 0 && <TableOfContent toc={toc} />}
-    </Fragment>
+    </div>
 
     <hr />
     <div id="text">
@@ -92,6 +127,39 @@ const { pretitle, title, subtitle, summary, content, credits, toc, language, sou
     border: none;
     border-top: 3px dotted var(--color-base-500);
     margin-block: 3em;
+  }
+
+  #aside {
+    display: flex;
+    flex-direction: column;
+    gap: 4em;
+
+    @media (max-width: 35rem) {
+      gap: 6em;
+    }
+  }
+
+  #tags {
+    margin-block: 2em;
+
+    @media (max-width: 1280.5px) {
+      margin-bottom: 4em;
+    }
+
+    @media (max-width: 35rem) {
+      margin-top: 4em;
+      margin-bottom: 6em;
+    }
+  }
+
+  #credits {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    @media (max-width: 35rem) {
+      gap: 2em;
+    }
   }
 
   #thumbnail {

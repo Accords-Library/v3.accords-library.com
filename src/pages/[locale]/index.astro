@@ -33,7 +33,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 
   <AppLayoutDescription description={t("home.description")} />
 
-  <a href={getLocalizedUrl("/about")}>
+  <a href={getLocalizedUrl("/about")} class="DEV_TODO">
     <Button title={t("home.aboutUsButton")} icon="material-symbols:left-click" />
   </a>
 
