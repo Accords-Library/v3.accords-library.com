@@ -22,12 +22,13 @@ interface Props {
 const reqUrl = new URL(Astro.request.url);
 const lang = Astro.props.lang ?? reqUrl.searchParams.get("lang")!;
 const slug = Astro.props.slug ?? reqUrl.searchParams.get("slug")!;
-const page = Astro.props.page ?? (await payload.getPage(slug));
+const { translations, thumbnail, tagGroups } = Astro.props.page ?? (await payload.getPage(slug));
 
 const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 const { getLocalizedMatch } = await getI18n(lang);
 
-const translation = getLocalizedMatch(page.translations);
+const { pretitle, title, subtitle, summary, content, credits, toc, language, sourceLanguage } =
+  getLocalizedMatch(translations);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -35,22 +36,18 @@ const translation = getLocalizedMatch(page.translations);
 <MasoTarget>
   <AsideLayout>
     <Fragment slot="header">
-      <AppLayoutTitle
-        title={translation.title}
-        pretitle={translation.pretitle}
-        subtitle={translation.subtitle}
-      />
+      <AppLayoutTitle title={title} pretitle={pretitle} subtitle={subtitle} />
     </Fragment>
 
     <Fragment slot="header-aside">
       {
-        page.thumbnail && (
-          <a href={getLocalizedUrl(`/images/${page.thumbnail.id}`)}>
+        thumbnail && (
+          <a href={getLocalizedUrl(`/images/${thumbnail.id}`)}>
             <img
               id="thumbnail"
-              src={page.thumbnail.url}
-              width={page.thumbnail.width}
-              height={page.thumbnail.height}
+              src={thumbnail.url}
+              width={thumbnail.width}
+              height={thumbnail.height}
             />
           </a>
         )
@@ -58,16 +55,17 @@ const translation = getLocalizedMatch(page.translations);
     </Fragment>
 
     <Fragment slot="meta">
-      {translation.summary && <AppLayoutDescription description={translation.summary} />}
-      {page.tagGroups.length > 0 && <TagGroups tagGroups={page.tagGroups} />}
+      {summary && <AppLayoutDescription description={summary} />}
+      {tagGroups.length > 0 && <TagGroups tagGroups={tagGroups} />}
     </Fragment>
 
     <Fragment slot="aside">
       {
-        page.translations.length > 1 && (
+        translations.length > 1 && (
           <LanguageOverride
-            currentLang={lang}
-            availableLanguages={page.translations.map(({ language }) => language)}
+            currentLanguage={language}
+            currentSourceLanguage={sourceLanguage}
+            availableLanguages={translations.map(({ language }) => language)}
             getPartialUrl={(lang) =>
               getLocalizedUrl(`/api/pages/partial?lang=${lang}&slug=${slug}`)
             }
@@ -75,14 +73,14 @@ const translation = getLocalizedMatch(page.translations);
         )
       }
 
-      {translation.credits.length > 0 && <Credits credits={translation.credits} />}
+      {credits.length > 0 && <Credits credits={credits} />}
 
-      {translation.toc.length > 0 && <TableOfContent toc={translation.toc} />}
+      {toc.length > 0 && <TableOfContent toc={toc} />}
     </Fragment>
 
     <hr />
     <div id="text">
-      <RichText content={translation.content} />
+      <RichText content={content} />
     </div>
   </AsideLayout>
 </MasoTarget>

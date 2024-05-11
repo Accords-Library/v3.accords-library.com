@@ -6,12 +6,13 @@ import { formatLocale } from "src/utils/format";
 import { getI18n } from "src/i18n/i18n";
 
 interface Props {
-  currentLang: string;
+  currentLanguage: string;
+  currentSourceLanguage: string;
   getPartialUrl: (locale: string) => string;
   availableLanguages: string[];
 }
 
-const { currentLang, getPartialUrl, availableLanguages } = Astro.props;
+const { currentLanguage, currentSourceLanguage, getPartialUrl, availableLanguages } = Astro.props;
 const { t } = await getI18n(Astro.locals.currentLocale);
 ---
 
@@ -19,13 +20,16 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 
 <div id="lang-selector" class="when-js when-no-print">
   <Tooltip trigger="click">
-    <Button icon="material-symbols:translate" title={currentLang.toUpperCase()} />
+    <Button
+      icon="material-symbols:translate"
+      title={`${currentLanguage !== currentSourceLanguage ? `${currentSourceLanguage.toUpperCase()} → ` : ""}${currentLanguage.toUpperCase()}`}
+    />
 
     <div id="tooltip-content" slot="tooltip-content">
       {
         availableLanguages.map((id) => (
           <MasoActor href={getPartialUrl(id)}>
-            <p class:list={{ current: id === currentLang, "pressable-link": true }}>
+            <p class:list={{ current: id === currentLanguage, "pressable-link": true }}>
               {formatLocale(id)}
             </p>
           </MasoActor>
