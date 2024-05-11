@@ -8,7 +8,6 @@
 - Automatically generate different sizes of images
 - Handle relationship in RichText Content
 - On most pages (collectibles + pages), there is a gap in the breakpoints where no thumbnail is displayed.
-- Add duration on audio/video preview cards
 - Add proper localization for formatFilesize, formatInches, formatMillimeters, formatPounds, and formatGrams
 
 ## Mid term

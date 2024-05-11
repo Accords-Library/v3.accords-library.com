@@ -3,6 +3,7 @@ import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
 import Lightbox from "components/Lightbox.astro";
 import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/shared/payload/payload-sdk";
+import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
 
 const slug = Astro.params.slug!;
@@ -53,7 +54,13 @@ const tagsAndAttributes = [
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppEmptyLayout parentPages={parentPages}>
+<AppEmptyLayout
+  openGraph={{
+    thumbnail: image,
+    description: description ? formatRichTextToString(description) : undefined,
+    title: formatInlineTitle({ pretitle, title, subtitle }),
+  }}
+  parentPages={parentPages}>
   <Lightbox
     image={image}
     pretitle={pretitle}

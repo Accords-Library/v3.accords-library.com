@@ -7,6 +7,7 @@ import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/shared/payload/payload-sdk";
 import { fetchOr404 } from "src/utils/responses";
 import ScanPreview from "./_components/ScanPreview.astro";
+import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 
 const slug = Astro.params.slug!;
 const { getLocalizedMatch, t } = await getI18n(Astro.locals.currentLocale);
@@ -16,7 +17,7 @@ if (scans instanceof Response) {
   return scans;
 }
 
-const { translations, credits, cover, pages, dustjacket, obi, parentPages } = scans;
+const { translations, credits, cover, pages, dustjacket, obi, parentPages, thumbnail } = scans;
 
 const translation = getLocalizedMatch(translations);
 
@@ -38,7 +39,13 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppEmptyLayout parentPages={parentPages}>
+<AppEmptyLayout
+  openGraph={{
+    title: `${formatInlineTitle(translation)} (${t("collectibles.scans")})`,
+    description: translation.description && formatRichTextToString(translation.description),
+    thumbnail,
+  }}
+  parentPages={parentPages}>
   <AppLayoutTitle
     title={translation.title}
     pretitle={translation.pretitle}

@@ -4,23 +4,30 @@ import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro
 import RichText from "components/RichText/RichText.astro";
 import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/shared/payload/payload-sdk";
+import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
 
 const slug = Astro.params.slug!;
-const { getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
+const { getLocalizedMatch, getLocalizedUrl, t } = await getI18n(Astro.locals.currentLocale);
 
 const gallery = await fetchOr404(() => payload.getCollectibleGallery(slug));
 if (gallery instanceof Response) {
   return gallery;
 }
 
-const { translations, parentPages, images } = gallery;
+const { translations, parentPages, images, thumbnail } = gallery;
 const translation = getLocalizedMatch(translations);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppEmptyLayout parentPages={parentPages}>
+<AppEmptyLayout
+  openGraph={{
+    title: `${formatInlineTitle(translation)} (${t("collectibles.gallery")})`,
+    description: translation.description && formatRichTextToString(translation.description),
+    thumbnail,
+  }}
+  parentPages={parentPages}>
   <AppLayoutTitle
     title={translation.title}
     pretitle={translation.pretitle}
