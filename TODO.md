@@ -2,7 +2,6 @@
 
 ## Short term
 
-- Background images some times lack gradient at the bottom and fade in before they could load
 - Number of audio players seems limited (on Chrome and Firefox)
 - Create a tool to upload scans images and apply them to collectible
 - Automatically generate different sizes of images

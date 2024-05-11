@@ -12,7 +12,7 @@ const {
 const uniqueId = getRandomId();
 
 const style = `
-@media (max-aspect-ratio: ${width}/${height}) {
+@media (max-aspect-ratio: ${width}/${height * 0.85}) {
   #${uniqueId} {
       mask-image: linear-gradient( to bottom, rgba(0 0 0 / 30%) 0%, transparent 100% );
   }
@@ -23,7 +23,7 @@ const style = `
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <img id={uniqueId} src={url} class="when-no-print when-js" />
-<img src={url} class="when-no-print when-no-js" />
+<img id={uniqueId} src={url} class="when-no-print when-no-js" />
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
