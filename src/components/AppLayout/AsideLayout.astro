@@ -1,0 +1,65 @@
+---
+/*
+
+On larger screens (>= 1280)
+
+header        header-aside
+meta          aside
+default slot
+
+
+On smaller screens (<= 1280)
+
+header
+header-aside
+meta
+aside
+default slot
+
+*/
+---
+
+<div id="layout">
+  <div id="left">
+    <slot name="header" />
+    <div class="when-not-large">
+      <slot name="header-aside" />
+      <slot name="meta" />
+      <slot name="aside" />
+    </div>
+    <div class="when-large">
+      <slot name="meta" />
+    </div>
+    <slot />
+  </div>
+  <div id="right" class="when-large">
+    <slot name="header-aside" />
+    <slot name="aside" />
+  </div>
+</div>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  #layout {
+    container-type: inline-size;
+
+    @media (min-width: 1280.5px) {
+      display: grid;
+      justify-content: space-between;
+      grid-template-columns: 35rem 35rem;
+    }
+  }
+
+  .when-large {
+    @media (max-width: 1280.5px) {
+      display: none !important;
+    }
+  }
+
+  .when-not-large {
+    @media (min-width: 1280.5px) {
+      display: none !important;
+    }
+  }
+</style>

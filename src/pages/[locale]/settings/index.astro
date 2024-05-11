@@ -1,5 +1,6 @@
 ---
-import AppLayout from "components/AppLayout/AppLayout.astro";
+import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import { getI18n } from "src/i18n/i18n";
 import { cache } from "src/utils/cachedPayload";
 import { formatCurrency } from "src/utils/currencies";
@@ -11,7 +12,9 @@ const { t } = await getI18n(currentLocale);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppLayout openGraph={{ title: t("settings.title") }} title={t("settings.title")}>
+<AppEmptyLayout openGraph={{ title: t("settings.title") }}>
+  <AppLayoutTitle title={t("settings.title")} />
+
   <div id="main">
     <div class="section">
       <h2>{t("settings.language.title")}</h2>
@@ -66,7 +69,7 @@ const { t } = await getI18n(currentLocale);
       }
     </div>
   </div>
-</AppLayout>
+</AppEmptyLayout>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
@@ -87,5 +90,6 @@ const { t } = await getI18n(currentLocale);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 5em;
+    margin-top: 4.5em;
   }
 </style>

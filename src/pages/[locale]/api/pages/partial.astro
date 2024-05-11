@@ -8,6 +8,8 @@ import TableOfContent from "components/TableOfContent/TableOfContent.astro";
 import LanguageOverride from "components/LanguageOverride.astro";
 import Credits from "components/Credits.astro";
 import { getI18n } from "src/i18n/i18n";
+import AsideLayout from "components/AppLayout/AsideLayout.astro";
+import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 
 export const partial = true;
 
@@ -31,20 +33,21 @@ const translation = getLocalizedMatch(page.translations);
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <MasoTarget>
-  <div id="layout">
-    <div id="left">
+  <AsideLayout>
+    <Fragment slot="header">
       <AppLayoutTitle
         title={translation.title}
         pretitle={translation.pretitle}
         subtitle={translation.subtitle}
       />
+    </Fragment>
 
+    <Fragment slot="header-aside">
       {
         page.thumbnail && (
           <a href={getLocalizedUrl(`/images/${page.thumbnail.id}`)}>
             <img
               id="thumbnail"
-              class="when-not-large"
               src={page.thumbnail.url}
               width={page.thumbnail.width}
               height={page.thumbnail.height}
@@ -52,147 +55,66 @@ const translation = getLocalizedMatch(page.translations);
           </a>
         )
       }
+    </Fragment>
 
-      {
-        translation.summary && (
-          <div id="summary" class="high-contrast-text">
-            <RichText content={translation.summary} />
-          </div>
-        )
-      }
-
+    <Fragment slot="meta">
+      {translation.summary && <AppLayoutDescription description={translation.summary} />}
       {page.tagGroups.length > 0 && <TagGroups tagGroups={page.tagGroups} />}
+    </Fragment>
 
-      <div class="when-not-large meta-container">
-        {
-          page.translations.length > 1 && (
-            <LanguageOverride
-              currentLang={lang}
-              availableLanguages={page.translations.map(({ language }) => language)}
-              getPartialUrl={(lang) =>
-                getLocalizedUrl(`/api/pages/partial?lang=${lang}&slug=${slug}`)
-              }
-            />
-          )
-        }
-        {translation.credits.length > 0 && <Credits credits={translation.credits} />}
-      </div>
-
+    <Fragment slot="aside">
       {
-        translation.toc.length > 0 && (
-          <div class="when-not-large meta-container">
-            <TableOfContent toc={translation.toc} />
-          </div>
+        page.translations.length > 1 && (
+          <LanguageOverride
+            currentLang={lang}
+            availableLanguages={page.translations.map(({ language }) => language)}
+            getPartialUrl={(lang) =>
+              getLocalizedUrl(`/api/pages/partial?lang=${lang}&slug=${slug}`)
+            }
+          />
         )
       }
 
-      <hr />
-      <div id="text">
-        <RichText content={translation.content} />
-      </div>
-    </div>
-
-    <div id="right" class="when-large">
-      {
-        page.thumbnail && (
-          <a href={getLocalizedUrl(`/images/${page.thumbnail.id}`)}>
-            <img
-              id="thumbnail"
-              src={page.thumbnail.url}
-              width={page.thumbnail.width}
-              height={page.thumbnail.height}
-            />
-          </a>
-        )
-      }
-
-      <div class="meta-container">
-        {
-          page.translations.length > 1 && (
-            <LanguageOverride
-              currentLang={lang}
-              availableLanguages={page.translations.map(({ language }) => language)}
-              getPartialUrl={(lang) =>
-                getLocalizedUrl(`/api/pages/partial?lang=${lang}&slug=${slug}`)
-              }
-            />
-          )
-        }
-        {translation.credits.length > 0 && <Credits credits={translation.credits} />}
-      </div>
+      {translation.credits.length > 0 && <Credits credits={translation.credits} />}
 
       {translation.toc.length > 0 && <TableOfContent toc={translation.toc} />}
+    </Fragment>
+
+    <hr />
+    <div id="text">
+      <RichText content={translation.content} />
     </div>
-  </div>
+  </AsideLayout>
 </MasoTarget>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  #layout {
-    display: grid;
-    justify-content: space-between;
-    container-type: inline-size;
-
-    @media (min-width: 80rem) {
-      grid-template-columns: 35rem 35rem;
-    }
-
-    & > #left {
-      & > a > #thumbnail {
-        max-width: 35rem;
-        margin-block: 2em;
-      }
-
-      & > #summary {
-        backdrop-filter: blur(5px);
-        padding: 1.5em;
-        margin: -1.5em;
-        margin-block: 1em;
-        border-radius: 3em;
-        width: fit-content;
-      }
-
-      hr {
-        border: none;
-        border-top: 3px dotted var(--color-base-500);
-        margin-block: 3em;
-      }
-    }
+  hr {
+    border: none;
+    border-top: 3px dotted var(--color-base-500);
+    margin-block: 3em;
   }
 
   #thumbnail {
+    max-width: 35rem;
+    max-height: 60vh;
     width: 100%;
     height: auto;
     border-radius: 16px;
     box-shadow: 0 5px 20px -10px var(--color-shadow);
     transition: 100ms scale;
 
+    @media (max-width: 1280.5px) {
+      margin-top: 2em;
+    }
+
+    @media (min-width: 1280.5px) {
+      margin-bottom: 2em;
+    }
+
     &:hover {
       scale: 102%;
-    }
-  }
-
-  .meta-container {
-    @media (max-width: 35rem) {
-      margin-block: 5em;
-      gap: 2em;
-    }
-
-    margin-block: 2em;
-    display: grid;
-    gap: 1em;
-  }
-
-  .when-large {
-    @media (max-width: 80rem) {
-      display: none !important;
-    }
-  }
-
-  .when-not-large {
-    @media (min-width: 80rem) {
-      display: none !important;
     }
   }
 </style>

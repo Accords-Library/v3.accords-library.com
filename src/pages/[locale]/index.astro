@@ -1,19 +1,20 @@
 ---
 import { Icon } from "astro-icon/components";
-import AppLayout from "components/AppLayout/AppLayout.astro";
 import Button from "components/Button.astro";
 import LibraryGrid from "./_components/LibraryGrid.astro";
 import ChronicleCard from "./_components/ChronicleCard.astro";
 import LinkCard from "./_components/LinkCard.astro";
 import { getI18n } from "src/i18n/i18n";
 import { cache } from "src/utils/cachedPayload";
+import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 
 const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppLayout
+<AppEmptyLayout
   openGraph={{ title: t("home.title") }}
   backgroundImage={{
     url: "/img/background-image.webp",
@@ -22,19 +23,19 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
   }}
   hideFooterLinks
   hideHomeButton>
-  <div id="title" slot="header-title">
+  <div id="title">
     <Icon name="accords" />
     <div>
       <h1 class="font-serif">{t("global.siteName")}</h1>
       <p>{t("global.siteSubtitle")}</p>
     </div>
   </div>
-  <div id="description" slot="header-description">
-    <p set:html={t("home.description")} class="high-contrast-text" />
-    <a href={getLocalizedUrl("/about")} class="DEV_TODO">
-      <Button title={t("home.aboutUsButton")} icon="material-symbols:left-click" />
-    </a>
-  </div>
+
+  <AppLayoutDescription description={t("home.description")} />
+
+  <a href={getLocalizedUrl("/about")}>
+    <Button title={t("home.aboutUsButton")} icon="material-symbols:left-click" />
+  </a>
 
   <div id="main">
     <section id="library" class="high-contrast-text">
@@ -178,37 +179,11 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       </div>
     </section>
   </div>
-</AppLayout>
+</AppEmptyLayout>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  #description {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    align-items: flex-start;
-
-    margin-bottom: 128px;
-
-    > p {
-      backdrop-filter: blur(5px);
-      padding: 1em;
-      margin: -1em;
-      width: fit-content;
-
-      border-radius: 5em;
-    }
-
-    @media (max-width: 35rem) {
-      align-items: center;
-
-      @media (max-width: 25rem) {
-        align-items: stretch;
-      }
-    }
-  }
-
   #title {
     display: flex;
     place-items: center;
@@ -267,9 +242,9 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
   }
 
   #main {
+    margin-top: 96px;
     display: grid;
     gap: 64px;
-    margin-top: -96px;
 
     & > section {
       & > h2 {

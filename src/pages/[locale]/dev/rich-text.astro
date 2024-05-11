@@ -1,13 +1,17 @@
 ---
-import AppLayout from "components/AppLayout/AppLayout.astro";
+import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
+import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppLayout
-  pretitle="Guide to"
-  title="Rich Text Editor"
-  description="Having troubles using the Rich Text Editor? Looking for tips and advanced techniques? You've come to the right place!">
+<AppEmptyLayout>
+  <AppLayoutTitle pretitle="Guide to" title="Rich Text Editor" />
+  <AppLayoutDescription
+    description="Having troubles using the Rich Text Editor? Looking for tips and advanced techniques? You've come to the right place!"
+  />
+
   <div class="prose">
     <h2>Add indentation / spaces between words</h2>
 
@@ -28,4 +32,12 @@ import AppLayout from "components/AppLayout/AppLayout.astro";
       </kbd> to create a linebreak.
     </p>
   </div>
-</AppLayout>
+</AppEmptyLayout>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  .prose {
+    margin-top: 4.5em;
+  }
+</style>

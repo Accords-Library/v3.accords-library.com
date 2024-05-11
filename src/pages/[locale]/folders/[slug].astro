@@ -1,7 +1,5 @@
 ---
-import AppLayout from "components/AppLayout/AppLayout.astro";
 import { Collections, payload } from "src/shared/payload/payload-sdk";
-import RichText from "components/RichText/RichText.astro";
 import FoldersSection from "./_components/FoldersSection.astro";
 import { fetchOr404 } from "src/utils/responses";
 import ErrorMessage from "components/ErrorMessage.astro";
@@ -12,6 +10,9 @@ import { formatRichTextToString } from "src/utils/format";
 import ImagePreview from "components/Previews/ImagePreview.astro";
 import AudioPreview from "components/Previews/AudioPreview.astro";
 import VideoPreview from "components/Previews/VideoPreview.astro";
+import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
+import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 
 const { slug } = Astro.params;
 
@@ -26,38 +27,36 @@ const meta = getLocalizedMatch(folder.translations);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppLayout
-  title={meta.name}
+<AppEmptyLayout
   openGraph={{
     title: meta.name,
     description: meta.description && formatRichTextToString(meta.description),
   }}
   parentPages={folder.parentPages}>
-  {
-    meta.description && (
-      <div slot="header-description">
-        <RichText content={meta.description} />
-      </div>
-    )
-  }
+  <AppLayoutTitle title={meta.name} />
+  {meta.description && <AppLayoutDescription description={meta.description} />}
+
   <div id="main">
     {
-      folder.sections.type === "single" ? (
+      folder.sections.type === "single" && folder.sections.subfolders.length > 0 ? (
         <FoldersSection folders={folder.sections.subfolders} />
       ) : (
-        <div id="sections">
-          {folder.sections.sections.map(({ subfolders, translations }) => (
-            <FoldersSection
-              folders={subfolders}
-              title={
-                getLocalizedMatch<{
-                  language: string;
-                  name: string | undefined;
-                }>(translations).name
-              }
-            />
-          ))}
-        </div>
+        folder.sections.type === "multiple" &&
+        folder.sections.sections.length > 0 && (
+          <div id="sections">
+            {folder.sections.sections.map(({ subfolders, translations }) => (
+              <FoldersSection
+                folders={subfolders}
+                title={
+                  getLocalizedMatch<{
+                    language: string;
+                    name: string | undefined;
+                  }>(translations).name
+                }
+              />
+            ))}
+          </div>
+        )
       )
     }
 
@@ -92,12 +91,13 @@ const meta = getLocalizedMatch(folder.translations);
       }
     </div>
   </div>
-</AppLayout>
+</AppEmptyLayout>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   #main {
+    margin-top: 4.5em;
     display: grid;
     gap: 4em;
 

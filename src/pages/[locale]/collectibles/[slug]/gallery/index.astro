@@ -1,7 +1,7 @@
 ---
 import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
+import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
-import RichText from "components/RichText/RichText.astro";
 import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/shared/payload/payload-sdk";
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
@@ -34,13 +34,7 @@ const translation = getLocalizedMatch(translations);
     subtitle={translation.subtitle}
   />
 
-  {
-    translation.description && (
-      <div id="summary" class="high-contrast-text">
-        <RichText content={translation.description} />
-      </div>
-    )
-  }
+  {translation.description && <AppLayoutDescription description={translation.description} />}
 
   <div>
     {

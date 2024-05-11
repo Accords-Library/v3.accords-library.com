@@ -2,18 +2,25 @@
 import Html from "./components/Html.astro";
 import Topbar from "./components/Topbar/Topbar.astro";
 import Footer from "./components/Footer.astro";
-import type { EndpointSource, PayloadImage } from "src/shared/payload/payload-sdk";
+import type { EndpointSource } from "src/shared/payload/payload-sdk";
 import AppLayoutBackgroundImg from "./components/AppLayoutBackgroundImg.astro";
 import type { ComponentProps } from "astro/types";
 
 interface Props {
   openGraph?: ComponentProps<typeof Html>["openGraph"];
   parentPages?: EndpointSource[];
+  backgroundImage?: ComponentProps<typeof AppLayoutBackgroundImg>["img"] | undefined;
   hideFooterLinks?: boolean;
-  backgroundImage?: PayloadImage | undefined;
+  hideHomeButton?: boolean;
 }
 
-const { openGraph, hideFooterLinks = false, parentPages, backgroundImage } = Astro.props;
+const {
+  openGraph,
+  parentPages,
+  backgroundImage,
+  hideFooterLinks = false,
+  hideHomeButton = false,
+} = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -21,7 +28,7 @@ const { openGraph, hideFooterLinks = false, parentPages, backgroundImage } = Ast
 <Html openGraph={openGraph}>
   <header>
     {backgroundImage && <AppLayoutBackgroundImg img={backgroundImage} />}
-    <Topbar parentPages={parentPages} />
+    <Topbar parentPages={parentPages} hideHomeButton={hideHomeButton} />
   </header>
   <main><slot /></main>
   <Footer withLinks={!hideFooterLinks} />
@@ -37,7 +44,7 @@ const { openGraph, hideFooterLinks = false, parentPages, backgroundImage } = Ast
   }
 
   main {
-    padding-top: 1em;
+    padding-top: 1.5em;
     padding-bottom: 8em;
     flex-grow: 1;
   }

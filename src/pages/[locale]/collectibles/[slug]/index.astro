@@ -1,7 +1,6 @@
 ---
 import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
-import RichText from "components/RichText/RichText.astro";
 import TagGroups from "components/TagGroups.astro";
 import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/shared/payload/payload-sdk";
@@ -16,6 +15,8 @@ import WeightInfo from "./_components/WeightInfo.astro";
 import SubitemSection from "./_components/SubitemSection.astro";
 import ContentsSection from "./_components/ContentsSection/ContentsSection.astro";
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
+import AsideLayout from "components/AppLayout/AsideLayout.astro";
+import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 
 const { slug } = Astro.params;
 const { getLocalizedMatch, getLocalizedUrl, t } = await getI18n(Astro.locals.currentLocale);
@@ -56,82 +57,30 @@ const translation = getLocalizedMatch(translations);
   }}
   parentPages={parentPages}
   backgroundImage={backgroundImage ?? thumbnail}>
-  <div id="layout">
-    <div id="left">
+  <AsideLayout>
+    <Fragment slot="header">
       <AppLayoutTitle
         title={translation.title}
         pretitle={translation.pretitle}
         subtitle={translation.subtitle}
       />
+    </Fragment>
 
-      <div id="images" class="when-not-large">
-        {
-          thumbnail && (
-            <a href={getLocalizedUrl(`/images/${thumbnail.id}`)}>
-              <img
-                id="thumbnail"
-                src={thumbnail.url}
-                width={thumbnail.width}
-                height={thumbnail.height}
-              />
-            </a>
-          )
-        }
-
-        <div id="gallery-scans" class="when-no-print">
-          {
-            gallery && (
-              <ImageTile
-                image={gallery.thumbnail.url}
-                title={t("collectibles.gallery.title")}
-                subtitle={t("collectibles.gallery.subtitle", { count: gallery.count })}
-                href={getLocalizedUrl(`/collectibles/${slug}/gallery`)}
-              />
-            )
-          }
-
-          {
-            scans && (
-              <ImageTile
-                image={scans.thumbnail.url}
-                title={t("collectibles.scans.title")}
-                subtitle={t("collectibles.scans.subtitle", { count: scans.count })}
-                href={getLocalizedUrl(`/collectibles/${slug}/scans`)}
-              />
-            )
-          }
-        </div>
-      </div>
-
-      {
-        translation.description && (
-          <div id="summary" class="high-contrast-text">
-            <RichText content={translation.description} />
-          </div>
-        )
-      }
-
-      <TagGroups tagGroups={tagGroups}>
-        {releaseDate && <ReleaseDateInfo releaseDate={releaseDate} />}
-
-        {price && <PriceInfo price={price} />}
-
-        <AvailabilityInfo urls={urls} price={price !== undefined} releaseDate={releaseDate} />
-
-        {size && <SizeInfo size={size} />}
-
-        {weight && <WeightInfo weight={weight} />}
-
-        {pageInfo && <PageInfo pageInfo={pageInfo} />}
-      </TagGroups>
-
-      {subitems.length > 0 && <SubitemSection subitems={subitems} />}
-
-      {contents.length > 0 && <ContentsSection contents={contents} />}
-    </div>
-
-    <div id="right" class="when-large">
+    <Fragment slot="header-aside">
       <div id="images">
+        {
+          thumbnail && (
+            <a href={getLocalizedUrl(`/images/${thumbnail.id}`)}>
+              <img
+                id="thumbnail"
+                src={thumbnail.url}
+                width={thumbnail.width}
+                height={thumbnail.height}
+              />
+            </a>
+          )
+        }
+
         <div id="gallery-scans" class="when-no-print">
           {
             gallery && (
@@ -155,129 +104,95 @@ const translation = getLocalizedMatch(translations);
             )
           }
         </div>
-
-        {
-          thumbnail && (
-            <a href={getLocalizedUrl(`/images/${thumbnail.id}`)}>
-              <img
-                id="thumbnail"
-                src={thumbnail.url}
-                width={thumbnail.width}
-                height={thumbnail.height}
-              />
-            </a>
-          )
-        }
       </div>
-    </div>
-  </div>
+    </Fragment>
+
+    {translation.description && <AppLayoutDescription description={translation.description} />}
+
+    <TagGroups tagGroups={tagGroups}>
+      {releaseDate && <ReleaseDateInfo releaseDate={releaseDate} />}
+
+      {price && <PriceInfo price={price} />}
+
+      <AvailabilityInfo urls={urls} price={price !== undefined} releaseDate={releaseDate} />
+
+      {size && <SizeInfo size={size} />}
+
+      {weight && <WeightInfo weight={weight} />}
+
+      {pageInfo && <PageInfo pageInfo={pageInfo} />}
+    </TagGroups>
+
+    {subitems.length > 0 && <SubitemSection subitems={subitems} />}
+
+    {contents.length > 0 && <ContentsSection contents={contents} />}
+  </AsideLayout>
 </AppEmptyLayout>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  #layout {
+  #images {
     display: grid;
-    justify-content: space-between;
-    container-type: inline-size;
+    place-content: start;
+    place-items: start;
+    margin-block: 2em;
+    gap: clamp(1em, 0.5em + 3vw, 2em);
+    grid-template-columns: 1fr;
 
-    @media (min-width: 80rem) {
-      grid-template-columns: 35rem 35rem;
+    @media (max-width: 23rem) {
+      gap: 2.5em;
     }
 
-    & > #left {
-      & > #images {
-        display: grid;
-        place-content: start;
-        place-items: start;
-        margin-block: 2em;
-        gap: clamp(1em, 0.5em + 3vw, 2em);
-        grid-template-columns: 1fr;
+    @media (min-width: 52rem) {
+      grid-template-columns: 35rem 10rem;
+    }
 
-        @media (max-width: 23rem) {
-          gap: 2.5em;
+    @media (min-width: 1280.5px) {
+      grid-template-columns: 10rem 1fr;
+      margin-block: initial;
+
+      & > #gallery-scans {
+        order: -1;
+      }
+    }
+
+    & a > #thumbnail {
+      max-width: 35rem;
+      width: 100%;
+      height: auto;
+      box-shadow: 0 5px 20px -10px var(--color-shadow);
+      transition: 100ms scale;
+
+      &:hover {
+        scale: 102%;
+      }
+    }
+
+    & > #gallery-scans {
+      display: flex;
+      max-width: 35rem;
+      flex-direction: column;
+      gap: 2.5em;
+      width: 100%;
+
+      > :global(a) {
+        aspect-ratio: 2 / 1;
+      }
+
+      @media (min-width: 23rem) {
+        gap: clamp(1em, 0.5em + 3vw, 2em);
+        flex-direction: row;
+
+        > :global(a) {
+          aspect-ratio: 1 / 1;
         }
 
         @media (min-width: 52rem) {
-          grid-template-columns: 35rem 10rem;
-        }
-
-        & > #thumbnail {
-          max-width: 35rem;
-        }
-
-        & > #gallery-scans {
-          display: flex;
-          max-width: 35rem;
+          max-width: 15rem;
           flex-direction: column;
-          gap: 2.5em;
-          width: 100%;
-
-          > :global(div) {
-            aspect-ratio: 2 / 1;
-          }
-
-          @media (min-width: 23rem) {
-            gap: clamp(1em, 0.5em + 3vw, 2em);
-            flex-direction: row;
-
-            > :global(div) {
-              aspect-ratio: 1 / 1;
-            }
-
-            @media (min-width: 52rem) {
-              max-width: 15rem;
-              flex-direction: column;
-            }
-          }
         }
       }
-
-      & > #summary {
-        backdrop-filter: blur(5px);
-        padding: 1.5em;
-        margin: -1.5em;
-        margin-block: 1em;
-        border-radius: 3em;
-        width: fit-content;
-      }
-    }
-
-    & > #right {
-      & > #images {
-        display: grid;
-        grid-template-columns: 10rem 1fr;
-        gap: 1em;
-
-        & > #gallery-scans {
-          display: flex;
-          flex-direction: column;
-          gap: 1em;
-        }
-      }
-    }
-  }
-
-  #thumbnail {
-    width: 100%;
-    height: auto;
-    box-shadow: 0 5px 20px -10px var(--color-shadow);
-    transition: 100ms scale;
-
-    &:hover {
-      scale: 102%;
-    }
-  }
-
-  .when-large {
-    @media (max-width: 80rem) {
-      display: none !important;
-    }
-  }
-
-  .when-not-large {
-    @media (min-width: 80rem) {
-      display: none !important;
     }
   }
 </style>

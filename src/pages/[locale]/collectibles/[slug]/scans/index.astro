@@ -2,12 +2,12 @@
 import AppEmptyLayout from "components/AppLayout/AppEmptyLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import Credits from "components/Credits.astro";
-import RichText from "components/RichText/RichText.astro";
 import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/shared/payload/payload-sdk";
 import { fetchOr404 } from "src/utils/responses";
 import ScanPreview from "./_components/ScanPreview.astro";
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
+import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 
 const slug = Astro.params.slug!;
 const { getLocalizedMatch, t } = await getI18n(Astro.locals.currentLocale);
@@ -52,13 +52,7 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
     subtitle={translation.subtitle}
   />
 
-  {
-    translation.description && (
-      <div id="summary" class="high-contrast-text">
-        <RichText content={translation.description} />
-      </div>
-    )
-  }
+  {translation.description && <AppLayoutDescription description={translation.description} />}
 
   {credits.length > 0 && <Credits credits={credits} />}
 
@@ -195,10 +189,6 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  #summary {
-    margin-block: 2.5em;
-  }
-
   section {
     margin-block: 6em;
 
