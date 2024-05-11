@@ -41,7 +41,7 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
 
 <AppLayout
   openGraph={{
-    title: `${formatInlineTitle(translation)} (${t("collectibles.scans")})`,
+    title: `${formatInlineTitle(translation)} (${t("collectibles.scans.title")})`,
     description: translation.description && formatRichTextToString(translation.description),
     thumbnail,
   }}
