@@ -19,7 +19,7 @@ const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
       <Metadata
         icon={icon}
         title={getLocalizedMatch(translations).name}
-        values={recorders.map(({ username }) => username)}
+        values={recorders.map(({ username }) => ({ name: username }))}
       />
     ))
   }

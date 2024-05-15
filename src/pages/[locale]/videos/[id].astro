@@ -41,7 +41,7 @@ const attributes = [
         {
           title: t("global.media.attributes.filename"),
           icon: "material-symbols:video-file-outline",
-          values: [filename],
+          values: [{ name: filename }],
           withBorder: false,
         },
       ]
@@ -49,19 +49,19 @@ const attributes = [
   {
     title: t("global.media.attributes.filesize"),
     icon: "material-symbols:hard-drive-outline",
-    values: [formatFilesize(filesize)],
+    values: [{ name: formatFilesize(filesize) }],
     withBorder: false,
   },
   {
     title: t("global.media.attributes.createdAt"),
     icon: "material-symbols:calendar-add-on-outline",
-    values: [formatDate(new Date(createdAt))],
+    values: [{ name: formatDate(new Date(createdAt)) }],
     withBorder: false,
   },
   {
     title: t("global.media.attributes.updatedAt"),
     icon: "material-symbols:edit-calendar",
-    values: [formatDate(new Date(updatedAt))],
+    values: [{ name: formatDate(new Date(updatedAt)) }],
     withBorder: false,
   },
 ];

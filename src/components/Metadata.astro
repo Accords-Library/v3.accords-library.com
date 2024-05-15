@@ -4,7 +4,7 @@ import { Icon } from "astro-icon/components";
 interface Props {
   icon: string;
   title: string;
-  values: string[];
+  values: { name: string; href?: string }[];
   withBorder?: boolean | undefined;
 }
 
@@ -21,7 +21,17 @@ if (values.length === 0) return;
     <p>{title}</p>
   </div>
   <div id="values" class:list={{ "with-border": withBorder }}>
-    {values.map((value) => <div>{value}</div>)}
+    {
+      values.map(({ name, href }) =>
+        href ? (
+          <a class="pressable high-contrast-text" href={href}>
+            {name}
+          </a>
+        ) : (
+          <div>{name}</div>
+        )
+      )
+    }
   </div>
 </div>
 
@@ -56,13 +66,16 @@ if (values.length === 0) return;
       gap: 6px;
 
       &.with-border {
-        & > div {
-          border: 1px solid var(--color-base-1000);
+        & > * {
           border-radius: 9999px;
           padding-bottom: 0.25em;
           padding-top: 0.15em;
           padding-inline: 0.6em;
-          backdrop-filter: blur(10upx);
+          backdrop-filter: blur(10px);
+        }
+
+        & > div {
+          border: 1px solid var(--color-base-1000);
         }
       }
     }

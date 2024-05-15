@@ -57,13 +57,13 @@ const attributes = [
   {
     title: t("global.media.attributes.createdAt"),
     icon: "material-symbols:calendar-add-on-outline",
-    values: [formatDate(new Date(createdAt))],
+    values: [{ name: formatDate(new Date(createdAt)) }],
     withBorder: false,
   },
   {
     title: t("global.media.attributes.updatedAt"),
     icon: "material-symbols:edit-calendar",
-    values: [formatDate(new Date(updatedAt))],
+    values: [{ name: formatDate(new Date(updatedAt)) }],
     withBorder: false,
   },
 ];
@@ -72,7 +72,7 @@ if (updatedBy) {
   attributes.push({
     title: t("global.media.attributes.updatedBy"),
     icon: "material-symbols:person-edit-outline",
-    values: [updatedBy?.username],
+    values: [{ name: updatedBy.username }],
     withBorder: true,
   });
 }
@@ -82,7 +82,15 @@ const tagGroupWithAttributes = [
   {
     title: t("collectibles.nature"),
     icon: "material-symbols:leaf-spark-outline",
-    values: [nature === CollectibleNature.Physical ? "Physical" : "Digital"],
+    values: [
+      {
+        name: t(
+          nature === CollectibleNature.Physical
+            ? "collectibles.nature.physical"
+            : "collectibles.nature.digital"
+        ),
+      },
+    ],
     withBorder: true,
   },
 ];
@@ -91,7 +99,7 @@ if (releaseDate) {
   tagGroupWithAttributes.push({
     title: t("collectibles.releaseDate"),
     icon: "material-symbols:calendar-month-outline",
-    values: [formatDate(new Date(releaseDate))],
+    values: [{ name: formatDate(new Date(releaseDate)) }],
     withBorder: false,
   });
 }
@@ -100,7 +108,7 @@ if (languages.length > 0) {
   tagGroupWithAttributes.push({
     title: t("collectibles.languages"),
     icon: "material-symbols:translate",
-    values: languages.map((lang) => formatLocale(lang)),
+    values: languages.map((lang) => ({ name: formatLocale(lang) })),
     withBorder: true,
   });
 }
@@ -122,7 +130,7 @@ if (price) {
   tagGroupWithAttributes.push({
     title: t("collectibles.price"),
     icon: "material-symbols:sell-outline",
-    values: [priceText],
+    values: [{ name: priceText }],
     withBorder: false,
   });
 }
@@ -232,7 +240,7 @@ if (price) {
     }
 
     @media (min-width: 52rem) {
-      grid-template-columns: 35rem 10rem;
+      grid-template-columns: auto 10rem;
     }
 
     @media (min-width: 1280.5px) {
@@ -244,15 +252,21 @@ if (price) {
       }
     }
 
-    & a > #thumbnail {
-      max-width: 35rem;
-      width: 100%;
-      height: auto;
-      box-shadow: 0 5px 20px -10px var(--color-shadow);
-      transition: 100ms scale;
+    & a {
+      width: fit-content;
 
-      &:hover {
-        scale: 102%;
+      & > #thumbnail {
+        max-width: min(35rem, 100%);
+        max-height: 80vh;
+        width: auto;
+        height: auto;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px -10px var(--color-shadow);
+        transition: 100ms scale;
+
+        &:hover {
+          scale: 102%;
+        }
       }
     }
 

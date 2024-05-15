@@ -33,6 +33,7 @@ export interface Config {
     scans: Scan;
     tags: Tag;
     "tags-groups": TagsGroup;
+    attributes: Attribute;
     "credits-roles": CreditsRole;
     recorders: Recorder;
     languages: Language;
@@ -55,6 +56,7 @@ export interface Page {
   slug: string;
   thumbnail?: string | Image | null;
   backgroundImage?: string | Image | null;
+  attributes?: (TagsBlock | NumberBlock | TextBlock)[] | null;
   tags?: (string | Tag)[] | null;
   translations: {
     language: string | Language;
@@ -183,6 +185,7 @@ export interface Tag {
     id?: string | null;
   }[];
   group: string | TagsGroup;
+  page?: (string | null) | Page;
   updatedAt: string;
   createdAt: string;
 }
@@ -237,6 +240,56 @@ export interface Recorder {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TagsBlock".
+ */
+export interface TagsBlock {
+  name: string | Attribute;
+  tags: (string | Tag)[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: "tagsBlock";
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "attributes".
+ */
+export interface Attribute {
+  id: string;
+  slug: string;
+  icon?: string | null;
+  type: "Number" | "Text" | "Tags";
+  translations: {
+    language: string | Language;
+    name: string;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NumberBlock".
+ */
+export interface NumberBlock {
+  name: string | Attribute;
+  number: number;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: "numberBlock";
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TextBlock".
+ */
+export interface TextBlock {
+  name: string | Attribute;
+  text: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: "textBlock";
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1009,6 +1062,7 @@ export enum Collections {
   MediaThumbnails = "media-thumbnails",
   Scans = "scans",
   CreditsRole = "credits-roles",
+  Attributes = "attributes",
 }
 
 export enum CollectionGroups {
@@ -1063,6 +1117,12 @@ export enum RecordersRoles {
 export enum CollectionStatus {
   Draft = "draft",
   Published = "published",
+}
+
+export enum AttributeTypes {
+  Number = "Number",
+  Text = "Text",
+  Tags = "Tags",
 }
 
 /* RICH TEXT */
@@ -1344,7 +1404,6 @@ const injectAuth = async (init?: RequestInit): Promise<RequestInit> => ({
   headers: {
     ...init?.headers,
     Authorization: `JWT ${await getToken()}`,
-    "x-rate-limit-skip": import.meta.env.PAYLOAD_RATING_LIMIT_SKIP_TOKEN ?? "",
   },
 });
 
@@ -1441,6 +1500,7 @@ export type EndpointWording = {
 
 export type EndpointTag = {
   slug: string;
+  page?: EndpointPage;
   translations: {
     language: string;
     name: string;
@@ -1456,6 +1516,35 @@ export type EndpointTagsGroup = {
   }[];
   tags: EndpointTag[];
 };
+
+export type EndpointGenericAttribute = {
+  slug: string;
+  icon: string;
+  translations: {
+    language: string;
+    name: string;
+  }[];
+};
+
+export type EndpointNumberAttribute = EndpointGenericAttribute & {
+  type: AttributeTypes.Number;
+  value: number;
+};
+
+export type EndpointTextAttribute = EndpointGenericAttribute & {
+  type: AttributeTypes.Text;
+  value: string;
+};
+
+export type EndpointTagsAttribute = EndpointGenericAttribute & {
+  type: AttributeTypes.Tags;
+  value: EndpointTag[];
+};
+
+export type EndpointAttribute =
+  | EndpointNumberAttribute
+  | EndpointTextAttribute
+  | EndpointTagsAttribute;
 
 export type EndpointRole = {
   icon: string;
@@ -1474,6 +1563,7 @@ export type EndpointPage = {
   slug: string;
   thumbnail?: EndpointImage;
   tagGroups: EndpointTagsGroup[];
+  attributes: EndpointAttribute[];
   backgroundImage?: EndpointImage;
   translations: {
     language: string;

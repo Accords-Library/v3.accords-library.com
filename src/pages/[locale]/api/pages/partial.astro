@@ -35,13 +35,13 @@ const attributes = [
   {
     title: t("global.media.attributes.createdAt"),
     icon: "material-symbols:calendar-add-on-outline",
-    values: [formatDate(new Date(createdAt))],
+    values: [{ name: formatDate(new Date(createdAt)) }],
     withBorder: false,
   },
   {
     title: t("global.media.attributes.updatedAt"),
     icon: "material-symbols:edit-calendar",
-    values: [formatDate(new Date(updatedAt))],
+    values: [{ name: formatDate(new Date(updatedAt)) }],
     withBorder: false,
   },
 ];
@@ -50,7 +50,7 @@ if (updatedBy) {
   attributes.push({
     title: t("global.media.attributes.updatedBy"),
     icon: "material-symbols:person-edit-outline",
-    values: [updatedBy?.username],
+    values: [{ name: updatedBy.username }],
     withBorder: true,
   });
 }
@@ -163,9 +163,9 @@ if (updatedBy) {
   }
 
   #thumbnail {
-    max-width: 35rem;
-    max-height: 60vh;
-    width: 100%;
+    max-width: min(35rem, 100%);
+    max-height: 80vh;
+    width: auto;
     height: auto;
     border-radius: 16px;
     box-shadow: 0 5px 20px -10px var(--color-shadow);

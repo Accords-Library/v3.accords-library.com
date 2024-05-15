@@ -32,7 +32,7 @@ const tagsAndAttributes = [
         {
           title: t("global.media.attributes.filename"),
           icon: "material-symbols:unknown-document-outline",
-          values: [filename],
+          values: [{ name: filename }],
           withBorder: false,
         },
       ]
@@ -40,13 +40,13 @@ const tagsAndAttributes = [
   {
     title: t("global.media.attributes.createdAt"),
     icon: "material-symbols:calendar-add-on-outline",
-    values: [formatDate(new Date(createdAt))],
+    values: [{ name: formatDate(new Date(createdAt)) }],
     withBorder: false,
   },
   {
     title: t("global.media.attributes.updatedAt"),
     icon: "material-symbols:edit-calendar",
-    values: [formatDate(new Date(updatedAt))],
+    values: [{ name: formatDate(new Date(updatedAt)) }],
     withBorder: false,
   },
 ];
