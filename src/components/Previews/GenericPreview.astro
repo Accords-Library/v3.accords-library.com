@@ -4,7 +4,7 @@ import Card from "components/Card.astro";
 import { Icon } from "astro-icon/components";
 import type { ComponentProps } from "astro/types";
 import { getI18n } from "src/i18n/i18n";
-import InlineTagGroups from "components/InlineTagGroups.astro";
+import InlineAttributes from "components/InlineAttributes.astro";
 
 interface Props {
   thumbnail?: PayloadImage | undefined;
@@ -12,7 +12,7 @@ interface Props {
   title: string;
   subtitle?: string | undefined;
   href?: string | undefined;
-  tagGroups?: ComponentProps<typeof InlineTagGroups>["tagGroups"];
+  attributes?: ComponentProps<typeof InlineAttributes>["attributes"];
   disableRoundedTop?: boolean;
   smallTitle?: boolean;
   icon?: string;
@@ -27,7 +27,7 @@ const {
   pretitle,
   subtitle,
   href,
-  tagGroups = [],
+  attributes = [],
   smallTitle = false,
   disableRoundedTop = false,
   icon = "material-symbols:unknown-document",
@@ -63,11 +63,11 @@ const {
       }
 
       {
-        tagGroups.length > 0 && (
+        attributes.length > 0 && (
           <>
             {subtitle && <hr />}
             <div id="tags">
-              <InlineTagGroups tagGroups={tagGroups} />
+              <InlineAttributes attributes={attributes} />
             </div>
           </>
         )

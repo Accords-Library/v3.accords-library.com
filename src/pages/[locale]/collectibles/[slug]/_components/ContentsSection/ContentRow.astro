@@ -4,10 +4,10 @@ import RichText from "components/RichText/RichText.astro";
 import { getI18n } from "src/i18n/i18n";
 import { Collections, type EndpointCollectible } from "src/shared/payload/payload-sdk";
 import { formatInlineTitle } from "src/utils/format";
-import InlineTagGroups from "../../../../../../components/InlineTagGroups.astro";
 import Card from "components/Card.astro";
 import AudioPlayer from "components/AudioPlayer.astro";
 import VideoPlayer from "components/VideoPlayer.astro";
+import InlineAttributes from "components/InlineAttributes.astro";
 
 interface Props {
   content: EndpointCollectible["contents"][number];
@@ -99,9 +99,9 @@ const href = (() => {
       (content.relationTo === Collections.Pages ||
         content.relationTo === Collections.Audios ||
         content.relationTo === Collections.Videos) &&
-        content.value.tagGroups.length > 0 && (
+        content.value.attributes.length > 0 && (
           <div id="tags">
-            <InlineTagGroups tagGroups={content.value.tagGroups} />
+            <InlineAttributes attributes={content.value.attributes} />
           </div>
         )
     }

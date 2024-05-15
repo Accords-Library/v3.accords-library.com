@@ -1,0 +1,38 @@
+---
+import { Icon } from "astro-icon/components";
+import type { Attribute } from "src/utils/attributes";
+
+interface Props extends Attribute {}
+
+const { icon, title, values } = Astro.props;
+
+if (values.length === 0) return;
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<div id="container">
+  <Icon name={icon} />
+  <p>{title}</p>
+  <div>{values.map(({ name }) => name).join(", ")}</div>
+</div>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  #container {
+    font-weight: 400;
+    font-size: 80%;
+    display: flex;
+    gap: 0.5em;
+
+    & > p {
+      color: var(--color-base-750);
+    }
+
+    & > svg {
+      color: var(--color-base-750);
+      flex-shrink: 0;
+    }
+  }
+</style>

@@ -11,7 +11,7 @@ const { getLocalizedMatch, getLocalizedUrl, t } = await getI18n(Astro.locals.cur
 
 const {
   image: thumbnail,
-  image: { id, translations, tagGroups, filename },
+  image: { id, translations, attributes, filename },
 } = Astro.props;
 
 const { pretitle, title, subtitle } =
@@ -28,7 +28,7 @@ const { pretitle, title, subtitle } =
   subtitle={subtitle}
   thumbnail={thumbnail}
   href={getLocalizedUrl(`/images/${id}`)}
-  tagGroups={tagGroups}
+  attributes={attributes}
   icon="material-symbols:imagesmode"
   iconHoverLabel={t("global.previewTypes.image")}
   smallTitle={title === filename}

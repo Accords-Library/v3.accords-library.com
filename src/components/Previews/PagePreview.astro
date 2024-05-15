@@ -10,7 +10,7 @@ interface Props {
 const { getLocalizedMatch, getLocalizedUrl, t } = await getI18n(Astro.locals.currentLocale);
 
 const {
-  page: { slug, translations, thumbnail, tagGroups },
+  page: { slug, translations, thumbnail, attributes },
 } = Astro.props;
 
 const { title, pretitle, subtitle } = getLocalizedMatch(translations);
@@ -24,7 +24,7 @@ const { title, pretitle, subtitle } = getLocalizedMatch(translations);
   subtitle={subtitle}
   thumbnail={thumbnail}
   href={getLocalizedUrl(`/pages/${slug}`)}
-  tagGroups={tagGroups}
+  attributes={attributes}
   icon="material-symbols:docs"
   iconHoverLabel={t("global.previewTypes.page")}
 />

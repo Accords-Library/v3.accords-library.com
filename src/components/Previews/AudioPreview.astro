@@ -12,7 +12,7 @@ const { getLocalizedMatch, getLocalizedUrl, t, formatDuration } = await getI18n(
 );
 
 const {
-  audio: { id, translations, tagGroups, filename, thumbnail, duration },
+  audio: { id, translations, attributes, filename, thumbnail, duration },
 } = Astro.props;
 
 const { pretitle, title, subtitle } =
@@ -20,12 +20,12 @@ const { pretitle, title, subtitle } =
     ? getLocalizedMatch(translations)
     : { pretitle: undefined, title: filename, subtitle: undefined };
 
-const tagsAndAttributes = [
-  ...tagGroups,
+const attributesWithMeta = [
+  ...attributes,
   {
     title: t("global.media.attributes.duration"),
     icon: "material-symbols:hourglass-empty",
-    values: [formatDuration(duration)],
+    values: [{ name: formatDuration(duration) }],
   },
 ];
 ---
@@ -38,7 +38,7 @@ const tagsAndAttributes = [
   subtitle={subtitle}
   thumbnail={thumbnail}
   href={getLocalizedUrl(`/audios/${id}`)}
-  tagGroups={tagsAndAttributes}
+  attributes={attributesWithMeta}
   icon="material-symbols:music-note"
   iconHoverLabel={t("global.previewTypes.audio")}
   smallTitle={title === filename}

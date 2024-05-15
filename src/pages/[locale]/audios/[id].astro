@@ -1,11 +1,11 @@
 ---
 import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
+import Attributes from "components/Attributes.astro";
 import AudioPlayer from "components/AudioPlayer.astro";
 import Credits from "components/Credits.astro";
 import DownloadButton from "components/DownloadButton.astro";
 import RichText from "components/RichText/RichText.astro";
-import TagGroups from "components/TagGroups.astro";
 import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/shared/payload/payload-sdk";
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
@@ -22,7 +22,7 @@ const { getLocalizedMatch, t, formatFilesize, formatDate } = await getI18n(
 );
 const {
   translations,
-  tagGroups,
+  attributes,
   filename,
   url,
   credits,
@@ -36,7 +36,7 @@ const { pretitle, title, subtitle, description } = getLocalizedMatch(translation
 
 const smallTitle = !subtitle && !pretitle;
 
-const attributes = [
+const metaAttributes = [
   ...(filename && title !== filename
     ? [
         {
@@ -89,9 +89,9 @@ const attributes = [
         )
       }
       {description && <RichText content={description} />}
-      {tagGroups.length > 0 && <TagGroups tagGroups={tagGroups} />}
+      {attributes.length > 0 && <Attributes attributes={attributes} />}
       {credits.length > 0 && <Credits credits={credits} />}
-      {attributes.length > 0 && <TagGroups tagGroups={attributes} />}
+      {metaAttributes.length > 0 && <Attributes attributes={metaAttributes} />}
       <DownloadButton href={url} filename={filename} />
     </div>
   </div>

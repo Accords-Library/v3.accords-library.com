@@ -5,12 +5,12 @@ import {
   type PayloadImage,
   type RichTextContent,
 } from "src/shared/payload/payload-sdk";
-import TagGroups from "./TagGroups.astro";
 import Credits from "./Credits.astro";
 import DownloadButton from "./DownloadButton.astro";
 import AppLayoutTitle from "./AppLayout/components/AppLayoutTitle.astro";
 import type { ComponentProps } from "astro/types";
 import AppLayoutDescription from "./AppLayout/components/AppLayoutDescription.astro";
+import Attributes from "./Attributes.astro";
 
 interface Props {
   previousImageHref?: string | undefined;
@@ -20,7 +20,8 @@ interface Props {
   title: string;
   subtitle?: string | undefined;
   description?: RichTextContent | undefined;
-  tagGroups?: ComponentProps<typeof TagGroups>["tagGroups"] | undefined;
+  attributes?: ComponentProps<typeof Attributes>["attributes"] | undefined;
+  metaAttributes?: ComponentProps<typeof Attributes>["attributes"] | undefined;
   credits?: EndpointCredit[] | undefined;
   filename?: string | undefined;
 }
@@ -29,8 +30,9 @@ const {
   nextImageHref,
   previousImageHref,
   image: { url, width, height },
-  tagGroups = [],
-  credits,
+  attributes = [],
+  metaAttributes = [],
+  credits = [],
   description,
   pretitle,
   title,
@@ -63,7 +65,7 @@ const smallTitle = !subtitle && !pretitle;
     id="info"
     class:list={{
       complex:
-        (tagGroups && tagGroups.length > 0) || (credits && credits.length > 0) || description,
+        attributes.length > 0 || metaAttributes.length > 0 || credits.length > 0 || description,
     }}>
     <div>
       {
@@ -75,8 +77,9 @@ const smallTitle = !subtitle && !pretitle;
       }
       {description && <AppLayoutDescription description={description} />}
     </div>
-    {tagGroups && tagGroups.length > 0 && <TagGroups tagGroups={tagGroups} />}
-    {credits && credits.length > 0 && <Credits credits={credits} />}
+    {attributes.length > 0 && <Attributes attributes={attributes} />}
+    {credits.length > 0 && <Credits credits={credits} />}
+    {metaAttributes.length > 0 && <Attributes attributes={metaAttributes} />}
     {filename && <DownloadButton href={url} filename={filename} />}
   </div>
 </div>

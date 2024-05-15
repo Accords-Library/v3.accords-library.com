@@ -1,7 +1,6 @@
 ---
 import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
-import TagGroups from "components/TagGroups.astro";
 import { getI18n } from "src/i18n/i18n";
 import { CollectibleNature, payload } from "src/shared/payload/payload-sdk";
 import { fetchOr404 } from "src/utils/responses";
@@ -16,6 +15,7 @@ import { formatInlineTitle, formatLocale, formatRichTextToString } from "src/uti
 import AsideLayout from "components/AppLayout/AsideLayout.astro";
 import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 import { convert } from "src/utils/currencies";
+import Attributes from "components/Attributes.astro";
 
 const { slug } = Astro.params;
 const { getLocalizedMatch, getLocalizedUrl, t, formatDate, formatPrice } = await getI18n(
@@ -41,7 +41,7 @@ const {
   scans,
   subitems,
   parentPages,
-  tagGroups,
+  attributes,
   contents,
   createdAt,
   updatedAt,
@@ -53,7 +53,7 @@ const {
 const translation = getLocalizedMatch(translations);
 const { pretitle, title, subtitle, description } = translation;
 
-const attributes = [
+const metaAttributes = [
   {
     title: t("global.media.attributes.createdAt"),
     icon: "material-symbols:calendar-add-on-outline",
@@ -69,7 +69,7 @@ const attributes = [
 ];
 
 if (updatedBy) {
-  attributes.push({
+  metaAttributes.push({
     title: t("global.media.attributes.updatedBy"),
     icon: "material-symbols:person-edit-outline",
     values: [{ name: updatedBy.username }],
@@ -77,8 +77,7 @@ if (updatedBy) {
   });
 }
 
-const tagGroupWithAttributes = [
-  ...tagGroups,
+const additionalAttributes = [
   {
     title: t("collectibles.nature"),
     icon: "material-symbols:leaf-spark-outline",
@@ -96,7 +95,7 @@ const tagGroupWithAttributes = [
 ];
 
 if (releaseDate) {
-  tagGroupWithAttributes.push({
+  additionalAttributes.push({
     title: t("collectibles.releaseDate"),
     icon: "material-symbols:calendar-month-outline",
     values: [{ name: formatDate(new Date(releaseDate)) }],
@@ -105,7 +104,7 @@ if (releaseDate) {
 }
 
 if (languages.length > 0) {
-  tagGroupWithAttributes.push({
+  additionalAttributes.push({
     title: t("collectibles.languages"),
     icon: "material-symbols:translate",
     values: languages.map((lang) => ({ name: formatLocale(lang) })),
@@ -127,7 +126,7 @@ if (price) {
     priceText += ` (${formatPrice(convertedPrice)})`;
   }
 
-  tagGroupWithAttributes.push({
+  additionalAttributes.push({
     title: t("collectibles.price"),
     icon: "material-symbols:sell-outline",
     values: [{ name: priceText }],
@@ -194,9 +193,9 @@ if (price) {
 
     <Fragment slot="aside">
       {
-        attributes.length > 0 && (
+        metaAttributes.length > 0 && (
           <div id="attributes">
-            <TagGroups tagGroups={attributes} />
+            <Attributes attributes={metaAttributes} />
           </div>
         )
       }
@@ -206,7 +205,7 @@ if (price) {
       {description && <AppLayoutDescription description={description} />}
 
       <div id="tags">
-        <TagGroups tagGroups={tagGroupWithAttributes}>
+        <Attributes attributes={[...attributes, ...additionalAttributes]}>
           <AvailabilityInfo urls={urls} price={price !== undefined} releaseDate={releaseDate} />
 
           {size && <SizeInfo size={size} />}
@@ -214,7 +213,7 @@ if (price) {
           {weight && <WeightInfo weight={weight} />}
 
           {pageInfo && <PageInfo pageInfo={pageInfo} />}
-        </TagGroups>
+        </Attributes>
       </div>
     </Fragment>
 

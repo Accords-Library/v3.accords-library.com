@@ -32,7 +32,6 @@ export interface Config {
     "videos-channels": VideosChannel;
     scans: Scan;
     tags: Tag;
-    "tags-groups": TagsGroup;
     attributes: Attribute;
     "credits-roles": CreditsRole;
     recorders: Recorder;
@@ -56,8 +55,8 @@ export interface Page {
   slug: string;
   thumbnail?: string | Image | null;
   backgroundImage?: string | Image | null;
-  attributes?: (TagsBlock | NumberBlock | TextBlock)[] | null;
   tags?: (string | Tag)[] | null;
+  attributes?: (TagsBlock | NumberBlock | TextBlock)[] | null;
   translations: {
     language: string | Language;
     sourceLanguage: string | Language;
@@ -135,6 +134,7 @@ export interface Image {
       }[]
     | null;
   tags?: (string | Tag)[] | null;
+  attributes?: (TagsBlock | NumberBlock | TextBlock)[] | null;
   credits?: Credits;
   updatedAt: string;
   createdAt: string;
@@ -177,26 +177,8 @@ export interface Language {
  */
 export interface Tag {
   id: string;
-  name?: string | null;
   slug: string;
-  translations: {
-    language: string | Language;
-    name: string;
-    id?: string | null;
-  }[];
-  group: string | TagsGroup;
   page?: (string | null) | Page;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tags-groups".
- */
-export interface TagsGroup {
-  id: string;
-  slug: string;
-  icon?: string | null;
   translations: {
     language: string | Language;
     name: string;
@@ -204,42 +186,6 @@ export interface TagsGroup {
   }[];
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "credits-roles".
- */
-export interface CreditsRole {
-  id: string;
-  slug: string;
-  icon?: string | null;
-  translations: {
-    language: string | Language;
-    name: string;
-    id?: string | null;
-  }[];
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "recorders".
- */
-export interface Recorder {
-  id: string;
-  username: string;
-  avatar?: string | Image | null;
-  languages?: (string | Language)[] | null;
-  role?: ("Admin" | "Recorder" | "Api")[] | null;
-  anonymize: boolean;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -290,6 +236,42 @@ export interface TextBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: "textBlock";
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "credits-roles".
+ */
+export interface CreditsRole {
+  id: string;
+  slug: string;
+  icon?: string | null;
+  translations: {
+    language: string | Language;
+    name: string;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recorders".
+ */
+export interface Recorder {
+  id: string;
+  username: string;
+  avatar?: string | Image | null;
+  languages?: (string | Language)[] | null;
+  role?: ("Admin" | "Recorder" | "Api")[] | null;
+  anonymize: boolean;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  password?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -371,6 +353,7 @@ export interface Collectible {
   nature: "Physical" | "Digital";
   languages?: (string | Language)[] | null;
   tags?: (string | Tag)[] | null;
+  attributes?: (TagsBlock | NumberBlock | TextBlock)[] | null;
   translations: {
     language: string | Language;
     pretitle?: string | null;
@@ -635,6 +618,7 @@ export interface Audio {
     id?: string | null;
   }[];
   tags?: (string | Tag)[] | null;
+  attributes?: (TagsBlock | NumberBlock | TextBlock)[] | null;
   credits?: Credits;
   updatedAt: string;
   createdAt: string;
@@ -710,6 +694,7 @@ export interface Video {
     id?: string | null;
   }[];
   tags?: (string | Tag)[] | null;
+  attributes?: (TagsBlock | NumberBlock | TextBlock)[] | null;
   credits?: Credits;
   platformEnabled?: boolean | null;
   platform?: {
@@ -1042,27 +1027,26 @@ export interface SectionBlock {
 
 
 export enum Collections {
+  Attributes = "attributes",
   Audios = "audios",
   ChronologyEvents = "chronology-events",
+  Collectibles = "collectibles",
+  CreditsRole = "credits-roles",
   Currencies = "currencies",
+  Folders = "folders",
+  GenericContents = "generic-contents",
+  Images = "images",
   Languages = "languages",
+  MediaThumbnails = "media-thumbnails",
   Pages = "pages",
   Recorders = "recorders",
-  Folders = "folders",
-  Tags = "tags",
-  TagsGroups = "tags-groups",
-  Images = "images",
-  Wordings = "wordings",
-  Collectibles = "collectibles",
-  GenericContents = "generic-contents",
-  WebsiteConfig = "website-config",
-  Videos = "videos",
-  VideosSubtitles = "videos-subtitles",
-  VideosChannels = "videos-channels",
-  MediaThumbnails = "media-thumbnails",
   Scans = "scans",
-  CreditsRole = "credits-roles",
-  Attributes = "attributes",
+  Tags = "tags",
+  Videos = "videos",
+  VideosChannels = "videos-channels",
+  VideosSubtitles = "videos-subtitles",
+  Wordings = "wordings",
+  WebsiteConfig = "website-config",
 }
 
 export enum CollectionGroups {
@@ -1507,16 +1491,6 @@ export type EndpointTag = {
   }[];
 };
 
-export type EndpointTagsGroup = {
-  slug: string;
-  icon: string;
-  translations: {
-    language: string;
-    name: string;
-  }[];
-  tags: EndpointTag[];
-};
-
 export type EndpointGenericAttribute = {
   slug: string;
   icon: string;
@@ -1562,7 +1536,6 @@ export type EndpointCredit = {
 export type EndpointPage = {
   slug: string;
   thumbnail?: EndpointImage;
-  tagGroups: EndpointTagsGroup[];
   attributes: EndpointAttribute[];
   backgroundImage?: EndpointImage;
   translations: {
@@ -1592,7 +1565,7 @@ export type EndpointCollectible = {
     subtitle?: string;
     description?: RichTextContent;
   }[];
-  tagGroups: EndpointTagsGroup[];
+  attributes: EndpointAttribute[];
   releaseDate?: string;
   languages: string[];
   backgroundImage?: EndpointImage;
@@ -1816,7 +1789,7 @@ export type EndpointMedia = {
   filesize: number;
   updatedAt: string;
   createdAt: string;
-  tagGroups: EndpointTagsGroup[];
+  attributes: EndpointAttribute[];
   translations: {
     language: string;
     pretitle?: string;

@@ -3,13 +3,13 @@ import RichText from "components/RichText/RichText.astro";
 import { payload, type EndpointPage } from "src/shared/payload/payload-sdk";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import MasoTarget from "components/Maso/MasoTarget.astro";
-import TagGroups from "components/TagGroups.astro";
 import TableOfContent from "components/TableOfContent/TableOfContent.astro";
 import LanguageOverride from "components/LanguageOverride.astro";
 import Credits from "components/Credits.astro";
 import { getI18n } from "src/i18n/i18n";
 import AsideLayout from "components/AppLayout/AsideLayout.astro";
 import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
+import Attributes from "components/Attributes.astro";
 
 export const partial = true;
 
@@ -22,7 +22,7 @@ interface Props {
 const reqUrl = new URL(Astro.request.url);
 const lang = Astro.props.lang ?? reqUrl.searchParams.get("lang")!;
 const slug = Astro.props.slug ?? reqUrl.searchParams.get("slug")!;
-const { translations, thumbnail, tagGroups, createdAt, updatedAt, updatedBy } =
+const { translations, thumbnail, createdAt, updatedAt, updatedBy, attributes } =
   Astro.props.page ?? (await payload.getPage(slug));
 
 const { getLocalizedUrl, t, formatDate } = await getI18n(Astro.locals.currentLocale);
@@ -31,7 +31,7 @@ const { getLocalizedMatch } = await getI18n(lang);
 const { pretitle, title, subtitle, summary, content, credits, toc, language, sourceLanguage } =
   getLocalizedMatch(translations);
 
-const attributes = [
+const metaAttributes = [
   {
     title: t("global.media.attributes.createdAt"),
     icon: "material-symbols:calendar-add-on-outline",
@@ -47,7 +47,7 @@ const attributes = [
 ];
 
 if (updatedBy) {
-  attributes.push({
+  metaAttributes.push({
     title: t("global.media.attributes.updatedBy"),
     icon: "material-symbols:person-edit-outline",
     values: [{ name: updatedBy.username }],
@@ -82,9 +82,9 @@ if (updatedBy) {
     <Fragment slot="meta">
       {summary && <AppLayoutDescription description={summary} />}
       {
-        tagGroups.length > 0 && (
+        attributes.length > 0 && (
           <div id="tags">
-            <TagGroups tagGroups={tagGroups} />
+            <Attributes attributes={attributes} />
           </div>
         )
       }
@@ -108,7 +108,7 @@ if (updatedBy) {
         {credits.length > 0 && <Credits credits={credits} />}
       </div>
 
-      {attributes.length > 0 && <TagGroups tagGroups={attributes} />}
+      {metaAttributes.length > 0 && <Attributes attributes={metaAttributes} />}
 
       {toc.length > 0 && <TableOfContent toc={toc} />}
     </div>

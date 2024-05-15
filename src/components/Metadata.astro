@@ -1,12 +1,8 @@
 ---
 import { Icon } from "astro-icon/components";
+import type { Attribute } from "src/utils/attributes";
 
-interface Props {
-  icon: string;
-  title: string;
-  values: { name: string; href?: string }[];
-  withBorder?: boolean | undefined;
-}
+interface Props extends Attribute {}
 
 const { icon, title, values, withBorder = true } = Astro.props;
 

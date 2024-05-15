@@ -1,0 +1,83 @@
+---
+import { AttributeTypes, type EndpointAttribute } from "src/shared/payload/payload-sdk";
+import InlineMetadata from "./InlineMetadata.astro";
+import { getI18n } from "src/i18n/i18n";
+import ErrorMessage from "./ErrorMessage.astro";
+import type { Attribute } from "src/utils/attributes";
+
+interface Props {
+  attributes: (EndpointAttribute | Attribute)[];
+}
+
+const { attributes } = Astro.props;
+const { getLocalizedMatch, getLocalizedUrl, formatNumber } = await getI18n(
+  Astro.locals.currentLocale
+);
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<div id="container">
+  {
+    attributes.map((attribute) => {
+      if ("title" in attribute) {
+        return <InlineMetadata {...attribute} />;
+      }
+      const { icon, translations, value, type } = attribute;
+      const translation = getLocalizedMatch(translations);
+
+      switch (type) {
+        case AttributeTypes.Number:
+          return (
+            <InlineMetadata
+              icon={icon}
+              title={translation.name}
+              values={[{ name: formatNumber(value) }]}
+              withBorder={false}
+            />
+          );
+
+        case AttributeTypes.Text:
+          return (
+            <InlineMetadata
+              icon={icon}
+              title={translation.name}
+              values={[{ name: value }]}
+              withBorder={false}
+            />
+          );
+
+        case AttributeTypes.Tags:
+          return (
+            <InlineMetadata
+              icon={icon}
+              title={translation.name}
+              values={value.map(({ translations, page }) => ({
+                name: getLocalizedMatch(translations).name,
+                ...(page ? { href: getLocalizedUrl(`/pages/${page.slug}`) } : {}),
+              }))}
+            />
+          );
+
+        default:
+          return (
+            <ErrorMessage
+              title={`Unknown attribute type: ${type}`}
+              description="Please contact website technical administrator."
+            />
+          );
+      }
+    })
+  }
+  <slot />
+</div>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  #container {
+    display: flex;
+    gap: 0.5em 1.5em;
+    flex-wrap: wrap;
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import type { EndpointCredit } from "src/shared/payload/payload-sdk";
 import { getI18n } from "src/i18n/i18n";
+import InlineMetadata from "./InlineMetadata.astro";
 
 interface Props {
   credits: EndpointCredit[];
@@ -12,13 +13,14 @@ const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<div id="credits">
+<div>
   {
-    credits.map(({ recorders, role: { translations } }) => (
-      <div>
-        <p>{getLocalizedMatch(translations).name}</p>
-        {recorders.map(({ username }) => username).join(", ")}
-      </div>
+    credits.map(({ recorders, role: { icon, translations } }) => (
+      <InlineMetadata
+        icon={icon}
+        title={getLocalizedMatch(translations).name}
+        values={recorders.map(({ username }) => ({ name: username }))}
+      />
     ))
   }
 </div>
@@ -26,21 +28,12 @@ const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  #credits {
-    margin-top: 0.5em;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em 1.5em;
+  div {
+    display: grid;
+    gap: 2em;
 
-    & > div {
-      font-weight: 400;
-      font-size: 80%;
-      display: flex;
-      gap: 0.5em;
-
-      & > p {
-        color: var(--color-base-750);
-      }
+    @media (max-width: 35rem) {
+      gap: 3em;
     }
   }
 </style>

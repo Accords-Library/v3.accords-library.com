@@ -10,7 +10,7 @@ interface Props {
 const { getLocalizedMatch, getLocalizedUrl, t } = await getI18n(Astro.locals.currentLocale);
 
 const {
-  collectible: { slug, translations, thumbnail, tagGroups },
+  collectible: { slug, translations, thumbnail, attributes },
 } = Astro.props;
 
 const { title, pretitle, subtitle } = getLocalizedMatch(translations);
@@ -24,7 +24,7 @@ const { title, pretitle, subtitle } = getLocalizedMatch(translations);
   subtitle={subtitle}
   thumbnail={thumbnail}
   href={getLocalizedUrl(`/collectibles/${slug}`)}
-  tagGroups={tagGroups}
+  attributes={attributes}
   icon="material-symbols:category"
   iconHoverLabel={t("global.previewTypes.collectible")}
   disableRoundedTop
