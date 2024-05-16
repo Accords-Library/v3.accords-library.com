@@ -39,6 +39,7 @@
 - Anonymous comments
 - [Images] add images group (which could be named or not)
 - [Recorders] add list of contributions on recorders' pages
+- Check if cache and prefetching can be used / should be used
 
 ## Bonus
 
