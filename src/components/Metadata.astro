@@ -1,4 +1,4 @@
----
+ ---
 import { Icon } from "astro-icon/components";
 import type { Attribute } from "src/utils/attributes";
 
@@ -38,7 +38,6 @@ if (values.length === 0) return;
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 0.5em 1em;
-    align-items: center;
 
     @media (max-width: 35em) {
       grid-template-columns: 1fr;
@@ -46,7 +45,6 @@ if (values.length === 0) return;
 
     & > #title {
       display: flex;
-      place-items: center;
       gap: 8px;
 
       & > p {

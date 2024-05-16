@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { credits } = Astro.props;
-const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
+const { getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -19,7 +19,10 @@ const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
       <Metadata
         icon={icon}
         title={getLocalizedMatch(translations).name}
-        values={recorders.map(({ username }) => ({ name: username }))}
+        values={recorders.map(({ username, id }) => ({
+          name: username,
+          href: getLocalizedUrl(`/recorders/${id}`),
+        }))}
       />
     ))
   }

@@ -3,7 +3,6 @@
 ## Short term
 
 - Number of audio players seems limited (on Chrome and Firefox)
-- Create a tool to upload scans images and apply them to collectible
 - Automatically generate different sizes of images
 - Handle relationship in RichText Content
 
@@ -15,7 +14,6 @@
 - [Timeline] Error if collectible not published?
 - [Timeline] display source language
 - [Timeline] Add details button in footer with credits + last updated / created
-- When the tags overflow, the tag group name should be align start (see http://localhost:12499/en/pages/magnitude-negative-chapter-1)
 - [SDK] create a initPayload() that return a payload sdk (and stop hard wirring to ENV or node-cache)
 - [Videos] see why no video on Firefox and no poster on Chrome https://v3.accords-library.com/en/videos/661b672825d380e548dbb8c8
 - [Videos] Display platform info + channel page
@@ -41,6 +39,7 @@
   - Convert Rich text to simple text for indexing and open graph purposes
 - Anonymous comments
 - [Images] add images group (which could be named or not)
+- [Recorders] add list of contributions on recorders' pages
 
 ## Bonus
 

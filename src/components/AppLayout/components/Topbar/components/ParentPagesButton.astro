@@ -21,7 +21,7 @@ const { t } = await getI18n(Astro.locals.currentLocale);
   parentPages.length === 1 && parentPages[0] ? (
     <ReturnToButton parentPage={parentPages[0]} />
   ) : (
-    <Tooltip trigger="click">
+    <Tooltip trigger="click" class="when-js">
       <div id="tooltip-content" slot="tooltip-content">
         <p>{t("header.nav.parentPages.tooltip")}</p>
         <div>

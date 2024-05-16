@@ -16,6 +16,7 @@ import AsideLayout from "components/AppLayout/AsideLayout.astro";
 import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 import { convert } from "src/utils/currencies";
 import Attributes from "components/Attributes.astro";
+import type { Attribute } from "src/utils/attributes";
 
 const { slug } = Astro.params;
 const { getLocalizedMatch, getLocalizedUrl, t, formatDate, formatPrice } = await getI18n(
@@ -53,18 +54,16 @@ const {
 const translation = getLocalizedMatch(translations);
 const { pretitle, title, subtitle, description } = translation;
 
-const metaAttributes = [
+const metaAttributes: Attribute[] = [
   {
     title: t("global.media.attributes.createdAt"),
     icon: "material-symbols:calendar-add-on-outline",
     values: [{ name: formatDate(new Date(createdAt)) }],
-    withBorder: false,
   },
   {
     title: t("global.media.attributes.updatedAt"),
     icon: "material-symbols:edit-calendar",
     values: [{ name: formatDate(new Date(updatedAt)) }],
-    withBorder: false,
   },
 ];
 
@@ -72,7 +71,7 @@ if (updatedBy) {
   metaAttributes.push({
     title: t("global.media.attributes.updatedBy"),
     icon: "material-symbols:person-edit-outline",
-    values: [{ name: updatedBy.username }],
+    values: [{ name: updatedBy.username, href: getLocalizedUrl(`/recorders/${updatedBy.id}`) }],
     withBorder: true,
   });
 }
@@ -259,7 +258,6 @@ if (price) {
         max-height: 80vh;
         width: auto;
         height: auto;
-        border-radius: 16px;
         box-shadow: 0 5px 20px -10px var(--color-shadow);
         transition: 100ms scale;
 

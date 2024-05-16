@@ -1,0 +1,91 @@
+---
+import AppLayout from "components/AppLayout/AppLayout.astro";
+import AsideLayout from "components/AppLayout/AsideLayout.astro";
+import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
+import Attributes from "components/Attributes.astro";
+import RichText from "components/RichText/RichText.astro";
+import { getI18n } from "src/i18n/i18n";
+import { payload } from "src/shared/payload/payload-sdk";
+import type { Attribute } from "src/utils/attributes";
+import { formatLocale } from "src/utils/format";
+import { fetchOr404 } from "src/utils/responses";
+
+const id = Astro.params.id!;
+const recorder = await fetchOr404(() => payload.getRecorderByID(id));
+if (recorder instanceof Response) {
+  return recorder;
+}
+
+const { t, getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
+
+const { username, languages, avatar, translations } = recorder;
+
+const { biography } =
+  translations.length > 0 ? getLocalizedMatch(translations) : { biography: undefined };
+
+const additionalAttributes: Attribute[] = [];
+
+if (languages.length > 0) {
+  additionalAttributes.push({
+    title: t("collectibles.languages"),
+    icon: "material-symbols:translate",
+    values: languages.map((lang) => ({ name: formatLocale(lang) })),
+    withBorder: true,
+  });
+}
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<AppLayout>
+  <AsideLayout>
+    <Fragment slot="header">
+      <AppLayoutTitle pretitle={`Recorder#${id.substring(0, 5)}`} title={username} />
+    </Fragment>
+
+    {
+      avatar && (
+        <Fragment slot="header-aside">
+          <img src={avatar.url} width={avatar.width} height={avatar.height} />
+        </Fragment>
+      )
+    }
+
+    {
+      avatar && additionalAttributes.length > 0 && (
+        <Fragment slot="aside">
+          <Attributes attributes={additionalAttributes} />
+        </Fragment>
+      )
+    }
+
+    <div id="info">
+      {
+        !avatar && additionalAttributes.length > 0 && (
+          <Attributes attributes={additionalAttributes} />
+        )
+      }
+      {biography && <RichText content={biography} />}
+    </div>
+  </AsideLayout>
+</AppLayout>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  img {
+    max-width: min(35rem, 100%);
+    max-height: 50vh;
+    width: auto;
+    height: auto;
+    margin-bottom: 2em;
+
+    @media (max-width: 1280.5px) {
+      margin-top: 2em;
+    }
+  }
+
+  #info {
+    margin-top: 2em;
+  }
+</style>
