@@ -1,6 +1,6 @@
 ---
 import RichText from "components/RichText/RichText.astro";
-import { payload, type EndpointPage } from "src/shared/payload/payload-sdk";
+import type { EndpointPage } from "src/shared/payload/payload-sdk";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import MasoTarget from "components/Maso/MasoTarget.astro";
 import TableOfContent from "components/TableOfContent/TableOfContent.astro";
@@ -11,6 +11,7 @@ import AsideLayout from "components/AppLayout/AsideLayout.astro";
 import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 import Attributes from "components/Attributes.astro";
 import type { Attribute } from "src/utils/attributes";
+import { payload } from "src/utils/payload";
 
 export const partial = true;
 

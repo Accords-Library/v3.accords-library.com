@@ -22,6 +22,7 @@ export default defineConfig({
       },
     }),
   ],
+  prefetch: false,
   // devToolbar: { enabled: false },
   server: {
     port: parseInt(ASTRO_PORT ?? "4321"),

@@ -14,7 +14,6 @@
 - [Timeline] Error if collectible not published?
 - [Timeline] display source language
 - [Timeline] Add details button in footer with credits + last updated / created
-- [SDK] create a initPayload() that return a payload sdk (and stop hard wirring to ENV or node-cache)
 - [Videos] see why no video on Firefox and no poster on Chrome https://v3.accords-library.com/en/videos/661b672825d380e548dbb8c8
 - [Videos] Display platform info + channel page
 - [Timeline] Handle no JS for footers

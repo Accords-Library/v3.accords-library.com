@@ -2,7 +2,7 @@
 import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import { getI18n } from "src/i18n/i18n";
-import { CollectibleNature, payload } from "src/shared/payload/payload-sdk";
+import { CollectibleNature } from "src/shared/payload/payload-sdk";
 import { fetchOr404 } from "src/utils/responses";
 import ImageTile from "./_components/ImageTile.astro";
 import SizeInfo from "./_components/SizeInfo.astro";
@@ -17,6 +17,7 @@ import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescr
 import { convert } from "src/utils/currencies";
 import Attributes from "components/Attributes.astro";
 import type { Attribute } from "src/utils/attributes";
+import { payload } from "src/utils/payload";
 
 const { slug } = Astro.params;
 const { getLocalizedMatch, getLocalizedUrl, t, formatDate, formatPrice } = await getI18n(

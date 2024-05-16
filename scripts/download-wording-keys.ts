@@ -1,5 +1,5 @@
 import { writeFileSync } from "fs";
-import { payload } from "src/shared/payload/payload-sdk";
+import { payload } from "src/utils/payload";
 
 const TRANSLATION_FOLDER = `${process.cwd()}/src/i18n`;
 

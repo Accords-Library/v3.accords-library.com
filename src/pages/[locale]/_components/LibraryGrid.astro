@@ -1,7 +1,7 @@
 ---
 import CategoryCard from "./CategoryCard.astro";
 import { getI18n } from "src/i18n/i18n";
-import { cache } from "src/utils/cachedPayload";
+import { cache } from "src/utils/payload";
 
 const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 ---

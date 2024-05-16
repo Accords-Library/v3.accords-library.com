@@ -1,5 +1,5 @@
 import { defineMiddleware, sequence } from "astro:middleware";
-import { cache } from "src/utils/cachedPayload";
+import { cache } from "src/utils/payload";
 import acceptLanguage from "accept-language";
 import type { AstroCookies } from "astro";
 import { z } from "astro:content";

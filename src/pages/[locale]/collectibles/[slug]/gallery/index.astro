@@ -3,7 +3,7 @@ import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import { getI18n } from "src/i18n/i18n";
-import { payload } from "src/shared/payload/payload-sdk";
+import { payload } from "src/utils/payload";
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
 
@@ -75,6 +75,7 @@ const translation = getLocalizedMatch(translations);
         height: auto;
         width: auto;
         box-shadow: 0 5px 20px -10px var(--color-shadow);
+        border-radius: 16px;
       }
     }
   }

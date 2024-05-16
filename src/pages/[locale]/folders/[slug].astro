@@ -1,5 +1,5 @@
 ---
-import { Collections, payload } from "src/shared/payload/payload-sdk";
+import { Collections } from "src/shared/payload/payload-sdk";
 import FoldersSection from "./_components/FoldersSection.astro";
 import { fetchOr404 } from "src/utils/responses";
 import ErrorMessage from "components/ErrorMessage.astro";
@@ -13,6 +13,7 @@ import VideoPreview from "components/Previews/VideoPreview.astro";
 import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
+import { payload } from "src/utils/payload";
 
 const { slug } = Astro.params;
 
