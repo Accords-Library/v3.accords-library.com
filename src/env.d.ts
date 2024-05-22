@@ -6,5 +6,6 @@ declare namespace App {
     currentLocale: string;
     currentTheme: "dark" | "auto" | "light";
     currentCurrency: string;
+    notFound: boolean;
   }
 }

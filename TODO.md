@@ -4,19 +4,21 @@
 
 - Number of audio players seems limited (on Chrome and Firefox)
 - Automatically generate different sizes of images
-- Handle relationship in RichText Content
+- [RichTextContent] Handle relationship
+- [RichTextContent] Add autolink block support
 
 ## Mid term
 
-- [RichTextContent] Add autolink block support
 - Save cookies for longer than just the session
-- Support for nameless section
+- [Folders] Support for nameless section
 - [Timeline] Error if collectible not published?
 - [Timeline] display source language
 - [Timeline] Add details button in footer with credits + last updated / created
 - [Videos] see why no video on Firefox and no poster on Chrome https://v3.accords-library.com/en/videos/661b672825d380e548dbb8c8
 - [Videos] Display platform info + channel page
-- [Timeline] Handle no JS for footers
+- [JSLess] Provide JS-less alternative for timeline card footers
+- [JSLess] Provide JS-less alternative for parent pages
+- [Analytics] Add analytics
 
 ## Long term
 
@@ -30,7 +32,6 @@
 - The Changelog
 - Grid view (all files)
 - Web archives
-- Videos
 - Contact page
 - About us page
 - Global search function
@@ -40,6 +41,7 @@
 - [Images] add images group (which could be named or not)
 - [Recorders] add list of contributions on recorders' pages
 - Check if cache and prefetching can be used / should be used
+- Detect unused wording keys
 
 ## Bonus
 

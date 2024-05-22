@@ -3,6 +3,7 @@ import { cache } from "src/utils/payload";
 import acceptLanguage from "accept-language";
 import type { AstroCookies } from "astro";
 import { z } from "astro:content";
+import { trackRequest, trackEvent } from "src/shared/analytics/analytics";
 import { defaultLocale } from "src/i18n/i18n";
 
 const getAbsoluteLocaleUrl = (locale: string, url: string) => `/${locale}${url}`;
@@ -29,12 +30,14 @@ const localeNegotiator = defineMiddleware(({ cookies, url, request }, next) => {
 
   if (!currentLocale) {
     const redirectURL = getAbsoluteLocaleUrl(bestMatchingLocale, url.pathname);
+    trackEvent("locale-redirect");
     return redirect(redirectURL);
   }
 
   if (currentLocale !== bestMatchingLocale) {
     const pathnameWithoutLocale = url.pathname.substring(currentLocale.length + 1);
     const redirectURL = getAbsoluteLocaleUrl(bestMatchingLocale, pathnameWithoutLocale);
+    trackEvent("locale-redirect");
     return redirect(redirectURL);
   }
 
@@ -49,6 +52,7 @@ const handleActionsSearchParams = defineMiddleware(async ({ url }, next) => {
       ? url.pathname.substring(currentLocale.length + 1)
       : url.pathname;
     const redirectURL = getAbsoluteLocaleUrl(actionLang, pathnameWithoutLocale);
+    trackEvent("action-lang");
     return redirect(redirectURL, {
       "Set-Cookie": `${CookieKeys.Languages}=${JSON.stringify([actionLang])}; Path=/`,
     });
@@ -56,6 +60,7 @@ const handleActionsSearchParams = defineMiddleware(async ({ url }, next) => {
 
   const actionCurrency = url.searchParams.get("action-currency");
   if (isValidCurrency(actionCurrency)) {
+    trackEvent("action-currency");
     return redirect(url.pathname, {
       "Set-Cookie": `${CookieKeys.Currency}=${JSON.stringify(actionCurrency)}; Path=/`,
     });
@@ -64,7 +69,7 @@ const handleActionsSearchParams = defineMiddleware(async ({ url }, next) => {
   const actionTheme = url.searchParams.get("action-theme");
   const verifiedActionTheme = themeSchema.safeParse(actionTheme);
   if (verifiedActionTheme.success) {
-    url.searchParams.delete("action-theme");
+    trackEvent("action-theme");
     if (verifiedActionTheme.data === "auto") {
       return redirect(url.pathname, {
         "Set-Cookie": `${CookieKeys.Theme}=; Path=/; Expires=${new Date(0).toUTCString()}`,
@@ -95,18 +100,26 @@ const provideLocalsToRequest = defineMiddleware(async ({ url, locals, cookies },
   return next();
 });
 
+const analytics = defineMiddleware(async (context, next) => {
+  const { request, params, locals, clientAddress } = context;
+  const response = await next();
+  trackRequest(request, { params, locals, clientAddress });
+  return response;
+});
+
 export const onRequest = sequence(
   addContentLanguageResponseHeader,
   handleActionsSearchParams,
   localeNegotiator,
-  provideLocalsToRequest
+  provideLocalsToRequest,
+  analytics
 );
 
 /* LOCALE */
 
 const getCurrentLocale = (pathname: string): string | undefined => {
   for (const locale of cache.locales) {
-    if (pathname.startsWith(`/${locale.id}`)) {
+    if (pathname.split("/")[1] === locale.id) {
       return locale.id;
     }
   }
