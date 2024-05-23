@@ -5,6 +5,7 @@ import OpenMediaPageButton from "./OpenMediaPageButton.astro";
 import { getI18n } from "src/i18n/i18n";
 import HeaderTitle from "components/HeaderTitle.astro";
 import { Icon } from "astro-icon/components";
+import { sizesToSrcset } from "src/utils/img";
 
 interface Props {
   node: RichTextUploadImageNode;
@@ -13,7 +14,7 @@ interface Props {
 
 const {
   node: {
-    value: { id, url, width, height, translations },
+    value: { id, url, width, height, translations, sizes },
   },
   context,
 } = Astro.props;
@@ -36,7 +37,15 @@ const mediaPage = getLocalizedUrl(`/images/${id}`);
       </HeaderTitle>
     )
   }
-  <a href={mediaPage}><img src={url} width={width} height={height} /></a>
+  <a href={mediaPage}>
+    <img
+      src={url}
+      srcset={sizesToSrcset(sizes)}
+      sizes={`(max-width: 550px) 90vw, 550px`}
+      width={width}
+      height={height}
+    />
+  </a>
   <OpenMediaPageButton url={mediaPage} />
 </div>
 

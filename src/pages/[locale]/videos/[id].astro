@@ -11,8 +11,8 @@ import { payload } from "src/utils/payload";
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
 
-const { id } = Astro.params;
-const video = await fetchOr404(() => payload.getVideoByID(id!));
+const id = Astro.params.id!;
+const video = await fetchOr404(() => payload.getVideoByID(id));
 if (video instanceof Response) {
   return video;
 }
@@ -71,10 +71,10 @@ const metaAttributes = [
 
 <AppLayout
   openGraph={{
+    title: formatInlineTitle({ pretitle, title, subtitle }),
+    description: description && formatRichTextToString(description),
     thumbnail,
     video,
-    description: description ? formatRichTextToString(description) : undefined,
-    title: formatInlineTitle({ pretitle, title, subtitle }),
   }}>
   <div id="container">
     <VideoPlayer video={video} />

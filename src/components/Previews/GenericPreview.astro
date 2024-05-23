@@ -1,13 +1,18 @@
 ---
-import type { PayloadImage } from "src/shared/payload/payload-sdk";
+import type {
+  EndpointImage,
+  EndpointMediaThumbnail,
+  EndpointScanImage,
+} from "src/shared/payload/payload-sdk";
 import Card from "components/Card.astro";
 import { Icon } from "astro-icon/components";
 import type { ComponentProps } from "astro/types";
 import { getI18n } from "src/i18n/i18n";
 import InlineAttributes from "components/InlineAttributes.astro";
+import { sizesToSrcset, sizesForGridLayout } from "src/utils/img";
 
 interface Props {
-  thumbnail?: PayloadImage | undefined;
+  thumbnail?: EndpointImage | EndpointMediaThumbnail | EndpointScanImage | undefined;
   pretitle?: string | undefined;
   title: string;
   subtitle?: string | undefined;
@@ -41,7 +46,13 @@ const {
   <div id="card">
     {
       thumbnail && (
-        <img src={thumbnail.url} width={thumbnail.width} height={thumbnail.height} alt="" />
+        <img
+          src={thumbnail.url}
+          srcset={sizesToSrcset(thumbnail.sizes)}
+          sizes={sizesForGridLayout(250, 1.15)}
+          width={thumbnail.width}
+          height={thumbnail.height}
+        />
       )
     }
 

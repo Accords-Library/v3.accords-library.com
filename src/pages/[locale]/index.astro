@@ -16,11 +16,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 
 <AppLayout
   openGraph={{ title: t("home.title") }}
-  backgroundImage={{
-    url: "/img/background-image.webp",
-    height: 2279,
-    width: 1920,
-  }}
+  backgroundImage={cache.config.home.backgroundImage}
   hideFooterLinks
   hideHomeButton>
   <div id="title">

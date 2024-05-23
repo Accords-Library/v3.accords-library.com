@@ -18,13 +18,14 @@ import { convert } from "src/utils/currencies";
 import Attributes from "components/Attributes.astro";
 import type { Attribute } from "src/utils/attributes";
 import { payload } from "src/utils/payload";
+import { sizesToSrcset } from "src/utils/img";
 
-const { slug } = Astro.params;
+const slug = Astro.params.slug!;
 const { getLocalizedMatch, getLocalizedUrl, t, formatDate, formatPrice } = await getI18n(
   Astro.locals.currentLocale
 );
 
-const collectible = await fetchOr404(() => payload.getCollectible(slug!));
+const collectible = await fetchOr404(() => payload.getCollectible(slug));
 if (collectible instanceof Response) {
   return collectible;
 }
@@ -158,6 +159,8 @@ if (price) {
               <img
                 id="thumbnail"
                 src={thumbnail.url}
+                srcset={sizesToSrcset(thumbnail.sizes)}
+                sizes={`(max-width: 550px) 90vw, 550px`}
                 width={thumbnail.width}
                 height={thumbnail.height}
               />
@@ -169,7 +172,7 @@ if (price) {
           {
             gallery && (
               <ImageTile
-                image={gallery.thumbnail.url}
+                image={gallery.thumbnail}
                 title={t("collectibles.gallery.title")}
                 subtitle={t("collectibles.gallery.subtitle", { count: gallery.count })}
                 href={getLocalizedUrl(`/collectibles/${slug}/gallery`)}
@@ -180,7 +183,7 @@ if (price) {
           {
             scans && (
               <ImageTile
-                image={scans.thumbnail.url}
+                image={scans.thumbnail}
                 title={t("collectibles.scans.title")}
                 subtitle={t("collectibles.scans.subtitle", { count: scans.count })}
                 href={getLocalizedUrl(`/collectibles/${slug}/scans`)}

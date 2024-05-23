@@ -9,6 +9,7 @@ import { payload } from "src/utils/payload";
 import type { Attribute } from "src/utils/attributes";
 import { formatLocale } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
+import { sizesToSrcset } from "src/utils/img";
 
 const id = Astro.params.id!;
 const recorder = await fetchOr404(() => payload.getRecorderByID(id));
@@ -46,7 +47,13 @@ if (languages.length > 0) {
     {
       avatar && (
         <Fragment slot="header-aside">
-          <img src={avatar.url} width={avatar.width} height={avatar.height} />
+          <img
+            src={avatar.url}
+            srcset={sizesToSrcset(avatar.sizes)}
+            sizes={`(max-width: 550px) 90vw, 550px`}
+            width={avatar.width}
+            height={avatar.height}
+          />
         </Fragment>
       )
     }

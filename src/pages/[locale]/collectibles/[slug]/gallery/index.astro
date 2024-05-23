@@ -6,6 +6,7 @@ import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/utils/payload";
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
+import { sizesToSrcset } from "src/utils/img";
 
 const slug = Astro.params.slug!;
 const { getLocalizedMatch, getLocalizedUrl, t } = await getI18n(Astro.locals.currentLocale);
@@ -38,9 +39,17 @@ const translation = getLocalizedMatch(translations);
 
   <div>
     {
-      images.map((image, index) => (
+      images.map(({ url, width, height, sizes }, index) => (
         <a href={getLocalizedUrl(`/collectibles/${slug}/gallery/${index}`)}>
-          <img src={image.url} />
+          <img
+            src={url}
+            srcset={sizesToSrcset(sizes)}
+            sizes={`
+              (max-width: ${(width / height) * 320}px) 90vw,
+              ${(width / height) * 320}px`}
+            width={width}
+            height={height}
+          />
         </a>
       ))
     }
@@ -70,7 +79,7 @@ const translation = getLocalizedMatch(translations);
       }
 
       & > img {
-        max-height: 20em;
+        max-height: 320px;
         max-width: 100%;
         height: auto;
         width: auto;

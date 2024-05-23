@@ -2,7 +2,9 @@
 import Button from "components/Button.astro";
 import {
   type EndpointCredit,
-  type PayloadImage,
+  type EndpointImage,
+  type EndpointMediaThumbnail,
+  type EndpointScanImage,
   type RichTextContent,
 } from "src/shared/payload/payload-sdk";
 import Credits from "./Credits.astro";
@@ -11,11 +13,12 @@ import AppLayoutTitle from "./AppLayout/components/AppLayoutTitle.astro";
 import type { ComponentProps } from "astro/types";
 import AppLayoutDescription from "./AppLayout/components/AppLayoutDescription.astro";
 import Attributes from "./Attributes.astro";
+import { sizesToSrcset } from "src/utils/img";
 
 interface Props {
   previousImageHref?: string | undefined;
   nextImageHref?: string | undefined;
-  image: PayloadImage;
+  image: EndpointImage | EndpointScanImage | EndpointMediaThumbnail;
   pretitle?: string | undefined;
   title: string;
   subtitle?: string | undefined;
@@ -29,7 +32,7 @@ interface Props {
 const {
   nextImageHref,
   previousImageHref,
-  image: { url, width, height },
+  image: { url, width, height, sizes },
   attributes = [],
   metaAttributes = [],
   credits = [],
@@ -41,24 +44,45 @@ const {
 } = Astro.props;
 
 const smallTitle = !subtitle && !pretitle;
+
+const hasNavigation = previousImageHref || nextImageHref;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div id="container">
-  <div id="image-viewer" class:list={{ "with-buttons": previousImageHref || nextImageHref }}>
-    <a
-      class:list={{ hidden: !previousImageHref }}
-      href={previousImageHref}
-      data-astro-history="replace">
-      <Button icon="material-symbols:chevron-left" />
+  <div id="image-viewer" class:list={{ "with-buttons": hasNavigation }}>
+    {
+      hasNavigation && (
+        <a
+          class:list={{ hidden: !previousImageHref }}
+          href={previousImageHref}
+          data-astro-history="replace">
+          <Button icon="material-symbols:chevron-left" />
+        </a>
+      )
+    }
+
+    <a href={url} target="_blank">
+      <img
+        src={url}
+        srcset={sizesToSrcset(sizes)}
+        sizes={`(max-aspect-ratio: ${width / 0.9}/${height / 0.7}) 90vw, ${(width / height) * 70}vh`}
+        width={width}
+        height={height}
+      />
     </a>
 
-    <a href={url} target="_blank"><img src={url} width={width} height={height} /></a>
-
-    <a class:list={{ hidden: !nextImageHref }} href={nextImageHref} data-astro-history="replace">
-      <Button icon="material-symbols:chevron-right" />
-    </a>
+    {
+      hasNavigation && (
+        <a
+          class:list={{ hidden: !nextImageHref }}
+          href={nextImageHref}
+          data-astro-history="replace">
+          <Button icon="material-symbols:chevron-right" />
+        </a>
+      )
+    }
   </div>
 
   <div
@@ -128,11 +152,11 @@ const smallTitle = !subtitle && !pretitle;
         align-items: center;
         gap: 2em;
       }
-
-      & > h1 {
-        max-width: 35em;
-        overflow-wrap: anywhere;
-      }
     }
+  }
+
+  h1 {
+    max-width: 35em;
+    overflow-wrap: anywhere;
   }
 </style>

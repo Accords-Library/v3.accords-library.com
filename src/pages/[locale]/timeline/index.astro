@@ -6,7 +6,6 @@ import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import Card from "components/Card.astro";
 import { getI18n } from "src/i18n/i18n";
-import AppLayoutBackgroundImg from "components/AppLayout/components/AppLayoutBackgroundImg.astro";
 import { cache } from "src/utils/payload";
 import type { WordingKey } from "src/i18n/wordings-keys";
 import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
@@ -18,14 +17,7 @@ const { getLocalizedUrl, t, formatTimelineDate } = await getI18n(Astro.locals.cu
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppLayout>
-  <AppLayoutBackgroundImg
-    img={{
-      url: "/img/timeline-background.webp",
-      width: 2478,
-      height: 4110,
-    }}
-  />
+<AppLayout backgroundImage={cache.config.timeline.backgroundImage}>
   <AppLayoutTitle title={t("timeline.title")} />
   <AppLayoutDescription description={t("timeline.description")} />
 

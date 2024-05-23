@@ -5,14 +5,20 @@ import "@fontsource-variable/vollkorn";
 import "@fontsource-variable/murecho";
 import { getI18n } from "src/i18n/i18n";
 import AppLayoutSpinner from "./AppLayoutSpinner.astro";
-import type { EndpointAudio, EndpointVideo, PayloadImage } from "src/shared/payload/payload-sdk";
+import type {
+  EndpointAudio,
+  EndpointImage,
+  EndpointMediaThumbnail,
+  EndpointVideo,
+} from "src/shared/payload/payload-sdk";
+import { cache } from "src/utils/payload";
 
 interface Props {
   openGraph?:
     | {
         title?: string | undefined;
         description?: string | undefined;
-        thumbnail?: PayloadImage | undefined;
+        thumbnail?: EndpointImage | EndpointMediaThumbnail | undefined;
         audio?: EndpointAudio | undefined;
         video?: EndpointVideo | undefined;
       }
@@ -23,19 +29,10 @@ const { currentLocale } = Astro.locals;
 const { t } = await getI18n(currentLocale);
 
 const { openGraph = {} } = Astro.props;
-const {
-  description = t("global.meta.description"),
-  thumbnail = {
-    filename: "default_og.jpg",
-    filesize: 0,
-    height: 630,
-    width: 1200,
-    mimeType: "image/jpeg",
-    url: "/img/default_og.jpg",
-  },
-  audio,
-  video,
-} = openGraph;
+const { description = t("global.meta.description"), audio, video } = openGraph;
+
+const thumbnail =
+  openGraph.thumbnail?.openGraph ?? openGraph.thumbnail ?? cache.config.defaultOpenGraphImage;
 
 const title = openGraph.title
   ? `${openGraph.title} – ${t("global.siteName")}`
@@ -76,8 +73,6 @@ const { currentTheme } = Astro.locals;
     <meta name="twitter:site" content="@AccordsLibrary" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content={thumbnail.url} />
 
     <meta property="og:type" content={video ? "video.movie" : audio ? "music.song" : "website"} />
     <meta property="og:locale" content={currentLocale} />
@@ -86,11 +81,20 @@ const { currentTheme } = Astro.locals;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
 
-    <meta property="og:image" content={thumbnail.url} />
-    <meta property="og:image:secure_url" content={thumbnail.url} />
-    <meta property="og:image:width" content={thumbnail.width.toString()} />
-    <meta property="og:image:height" content={thumbnail.height.toString()} />
-    <meta property="og:image:type" content={thumbnail.mimeType} />
+    {
+      thumbnail && (
+        <>
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:image" content={thumbnail.url} />
+
+          <meta property="og:image" content={thumbnail.url} />
+          <meta property="og:image:secure_url" content={thumbnail.url} />
+          <meta property="og:image:width" content={thumbnail.width.toString()} />
+          <meta property="og:image:height" content={thumbnail.height.toString()} />
+          <meta property="og:image:type" content={thumbnail.mimeType} />
+        </>
+      )
+    }
 
     {
       audio && (

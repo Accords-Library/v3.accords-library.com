@@ -1,14 +1,20 @@
 ---
-import type { PayloadImage } from "src/shared/payload/payload-sdk";
+import type {
+  EndpointImage,
+  EndpointMediaThumbnail,
+  EndpointScanImage,
+} from "src/shared/payload/payload-sdk";
 import { getRandomId } from "src/utils/random";
+import { sizesToSrcset } from "src/utils/img";
 
 interface Props {
-  img: Pick<PayloadImage, "url" | "width" | "height">;
+  img: EndpointImage | EndpointMediaThumbnail | EndpointScanImage;
 }
 
 const {
-  img: { url, width, height },
+  img: { url, width, height, sizes },
 } = Astro.props;
+
 const uniqueId = getRandomId();
 
 const style = `
@@ -22,8 +28,24 @@ const style = `
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<img id={uniqueId} src={url} class="when-no-print when-js" />
-<img id={uniqueId} src={url} class="when-no-print when-no-js" />
+<img
+  id={uniqueId}
+  src={url}
+  srcset={sizesToSrcset(sizes)}
+  sizes="100vw"
+  width={width}
+  height={height}
+  class="when-no-print when-js"
+/>
+<img
+  id={uniqueId}
+  src={url}
+  srcset={sizesToSrcset(sizes)}
+  sizes="100vw"
+  width={width}
+  height={height}
+  class="when-no-print when-no-js"
+/>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 

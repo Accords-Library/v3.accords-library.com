@@ -1,6 +1,7 @@
 ---
 import { getI18n } from "src/i18n/i18n";
 import type { EndpointScanImage } from "src/shared/payload/payload-sdk";
+import { sizesToSrcset } from "src/utils/img";
 
 interface Props {
   scan: EndpointScanImage;
@@ -8,7 +9,7 @@ interface Props {
 }
 
 const {
-  scan: { url, index, width, height },
+  scan: { url, index, width, height, sizes },
   collectibleSlug,
 } = Astro.props;
 
@@ -18,7 +19,15 @@ const { getLocalizedUrl, formatScanIndexShort } = await getI18n(Astro.locals.cur
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <a href={getLocalizedUrl(`/collectibles/${collectibleSlug}/scans/${index}`)}>
-  <img width={width} height={height} src={url} alt={index} />
+  <img
+    src={url}
+    srcset={sizesToSrcset(sizes)}
+    sizes={`
+      (max-width: ${(width / height) * 320}px) 90vw,
+      ${(width / height) * 320}px`}
+    width={width}
+    height={height}
+  />
   <p>{formatScanIndexShort(index)}</p>
 </a>
 
@@ -39,10 +48,11 @@ const { getLocalizedUrl, formatScanIndexShort } = await getI18n(Astro.locals.cur
     }
 
     & > img {
-      max-height: 20em;
+      max-height: 320px;
       max-width: 100%;
       height: auto;
       width: auto;
+      aspect-ratio: auto 21/29.7;
       box-shadow: 0 5px 20px -10px var(--color-shadow);
     }
   }

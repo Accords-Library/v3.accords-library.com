@@ -1,18 +1,39 @@
 ---
+import type {
+  EndpointImage,
+  EndpointMediaThumbnail,
+  EndpointScanImage,
+} from "src/shared/payload/payload-sdk";
+import { sizesToSrcset } from "src/utils/img";
+
 interface Props {
-  image: string;
+  image: EndpointImage | EndpointScanImage | EndpointMediaThumbnail;
   title: string;
   subtitle: string;
   href: string;
 }
 
-const { image, title, subtitle, href } = Astro.props;
+const {
+  image: { url, width, height, sizes },
+  title,
+  subtitle,
+  href,
+} = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <a href={href}>
-  <img src={image} />
+  <img
+    src={url}
+    srcset={sizesToSrcset(sizes)}
+    sizes=`
+      (max-width: 400px) 90vw,
+      (max-width: 850px) 50vw,
+      200px`
+    width={width}
+    height={height}
+  />
 
   <div class="high-contrast-text">
     <p class="title">{title}</p>

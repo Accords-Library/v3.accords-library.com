@@ -12,7 +12,7 @@
     "script:download-currencies": "npm run scripts/download-currencies.ts",
     "script:download-wording-keys": "npm run scripts/download-wording-keys.ts",
     "prettier": "prettier --write --list-different --plugin=prettier-plugin-astro .",
-    "precommit": "npm run script:download-wording-keys && npm run script:download-payload-sdk && npm run prettier && npm run astro check"
+    "precommit": "npm run script:download-payload-sdk && npm run script:download-wording-keys && npm run prettier && npm run astro check"
   },
   "engines": {
     "npm": ">=10.0.0",
@@ -24,7 +24,7 @@
     "@fontsource-variable/murecho": "^5.0.19",
     "@fontsource-variable/vollkorn": "^5.0.21",
     "accept-language": "^3.0.18",
-    "astro": "4.8.7",
+    "astro": "4.9.0",
     "astro-icon": "^1.1.0",
     "node-cache": "^5.1.2",
     "tippy.js": "^6.3.7",

@@ -6,15 +6,17 @@ import { payload } from "src/utils/payload";
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
 
-const { slug } = Astro.params;
+const slug = Astro.params.slug!;
 
-const page = await fetchOr404(() => payload.getPage(slug!));
+const page = await fetchOr404(() => payload.getPage(slug));
 if (page instanceof Response) {
   return page;
 }
 
+const { parentPages, thumbnail, translations, backgroundImage } = page;
+
 const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
-const meta = getLocalizedMatch(page.translations);
+const meta = getLocalizedMatch(translations);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -23,9 +25,9 @@ const meta = getLocalizedMatch(page.translations);
   openGraph={{
     title: formatInlineTitle(meta),
     description: meta.summary && formatRichTextToString(meta.summary),
-    thumbnail: page.thumbnail,
+    thumbnail: thumbnail,
   }}
-  parentPages={page.parentPages}
-  backgroundImage={page.backgroundImage ?? page.thumbnail}>
-  <Page slug={page.slug} lang={Astro.locals.currentLocale} page={page} />
+  parentPages={parentPages}
+  backgroundImage={backgroundImage ?? thumbnail}>
+  <Page slug={slug} lang={Astro.locals.currentLocale} page={page} />
 </AppLayout>

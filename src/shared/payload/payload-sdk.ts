@@ -55,7 +55,6 @@ export interface Page {
   slug: string;
   thumbnail?: string | Image | null;
   backgroundImage?: string | Image | null;
-  tags?: (string | Tag)[] | null;
   attributes?: (TagsBlock | NumberBlock | TextBlock)[] | null;
   translations: {
     language: string | Language;
@@ -133,7 +132,6 @@ export interface Image {
         id?: string | null;
       }[]
     | null;
-  tags?: (string | Tag)[] | null;
   attributes?: (TagsBlock | NumberBlock | TextBlock)[] | null;
   credits?: Credits;
   updatedAt: string;
@@ -161,6 +159,62 @@ export interface Image {
       filesize?: number | null;
       filename?: string | null;
     };
+    "200w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    "320w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    "480w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    "800w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    "1280w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    "1920w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    "2560w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
   };
 }
 /**
@@ -170,22 +224,6 @@ export interface Image {
 export interface Language {
   id: string;
   name: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "tags".
- */
-export interface Tag {
-  id: string;
-  slug: string;
-  page?: (string | null) | Page;
-  translations: {
-    language: string | Language;
-    name: string;
-    id?: string | null;
-  }[];
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -207,6 +245,22 @@ export interface Attribute {
   slug: string;
   icon?: string | null;
   type: "Number" | "Text" | "Tags";
+  translations: {
+    language: string | Language;
+    name: string;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: string;
+  slug: string;
+  page?: (string | null) | Page;
   translations: {
     language: string | Language;
     name: string;
@@ -373,7 +427,6 @@ export interface Collectible {
   thumbnail?: string | Image | null;
   nature: "Physical" | "Digital";
   languages?: (string | Language)[] | null;
-  tags?: (string | Tag)[] | null;
   attributes?: (TagsBlock | NumberBlock | TextBlock)[] | null;
   translations: {
     language: string | Language;
@@ -576,7 +629,31 @@ export interface Scan {
       filesize?: number | null;
       filename?: string | null;
     };
-    og?: {
+    "200w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    "320w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    "480w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    "800w"?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -638,7 +715,6 @@ export interface Audio {
     } | null;
     id?: string | null;
   }[];
-  tags?: (string | Tag)[] | null;
   attributes?: (TagsBlock | NumberBlock | TextBlock)[] | null;
   credits?: Credits;
   updatedAt: string;
@@ -681,6 +757,62 @@ export interface MediaThumbnail {
       filesize?: number | null;
       filename?: string | null;
     };
+    "200w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    "320w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    "480w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    "800w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    "1280w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    "1920w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    "2560w"?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
   };
 }
 /**
@@ -714,7 +846,6 @@ export interface Video {
     subfile?: string | VideoSubtitle | null;
     id?: string | null;
   }[];
-  tags?: (string | Tag)[] | null;
   attributes?: (TagsBlock | NumberBlock | TextBlock)[] | null;
   credits?: Credits;
   platformEnabled?: boolean | null;
@@ -928,6 +1059,9 @@ export interface PayloadMigration {
  */
 export interface WebsiteConfig {
   id: string;
+  homeBackgroundImage: string | Image;
+  timelineBackgroundImage: string | Image;
+  defaultOpenGraphImage: string | Image;
   homeFolders?:
     | {
         lightThumbnail?: string | Image | null;
@@ -1393,11 +1527,15 @@ export type EndpointFolder = {
 };
 
 export type EndpointWebsiteConfig = {
-  homeFolders: (EndpointFolder & {
-    lightThumbnail?: EndpointImage;
-    darkThumbnail?: EndpointImage;
-  })[];
+  home: {
+    backgroundImage?: EndpointImage;
+    folders: (EndpointFolder & {
+      lightThumbnail?: EndpointImage;
+      darkThumbnail?: EndpointImage;
+    })[];
+  };
   timeline: {
+    backgroundImage?: EndpointImage;
     breaks: number[];
     eventCount: number;
     eras: {
@@ -1406,6 +1544,7 @@ export type EndpointWebsiteConfig = {
       name: string;
     }[];
   };
+  defaultOpenGraphImage?: EndpointImage;
 };
 
 export type EndpointRecorder = {
@@ -1516,7 +1655,7 @@ export type EndpointCollectible = {
   backgroundImage?: EndpointImage;
   nature: CollectibleNature;
   gallery?: { count: number; thumbnail: EndpointImage };
-  scans?: { count: number; thumbnail: PayloadImage };
+  scans?: { count: number; thumbnail: EndpointScanImage };
   urls: { url: string; label: string }[];
   price?: {
     amount: number;
@@ -1681,6 +1820,7 @@ export type EndpointCollectibleScanPage = {
 
 export type EndpointScanImage = PayloadImage & {
   index: string;
+  sizes: PayloadImage[];
 };
 
 export type TableOfContentEntry = {
@@ -1748,15 +1888,17 @@ export type EndpointMedia = {
 export type EndpointImage = EndpointMedia & {
   width: number;
   height: number;
+  sizes: PayloadImage[];
+  openGraph?: PayloadImage;
 };
 
 export type EndpointAudio = EndpointMedia & {
-  thumbnail?: PayloadImage;
+  thumbnail?: EndpointMediaThumbnail;
   duration: number;
 };
 
 export type EndpointVideo = EndpointMedia & {
-  thumbnail?: PayloadImage;
+  thumbnail?: EndpointMediaThumbnail;
   subtitles: {
     language: string;
     url: string;
@@ -1774,6 +1916,11 @@ export type EndpointVideo = EndpointMedia & {
     publishedDate: string;
   };
   duration: number;
+};
+
+export type EndpointMediaThumbnail = PayloadImage & {
+  sizes: PayloadImage[];
+  openGraph?: PayloadImage;
 };
 
 export type PayloadMedia = {

@@ -1,6 +1,9 @@
 ---
+import type { EndpointImage } from "src/shared/payload/payload-sdk";
+import { sizesForGridLayout, sizesToSrcset } from "src/utils/img";
+
 interface Props {
-  img?: { light: string; dark: string } | undefined;
+  img?: { light: EndpointImage; dark: EndpointImage } | undefined;
   name: string;
   href: string;
 }
@@ -14,8 +17,26 @@ const { img, name, href } = Astro.props;
   {
     img ? (
       <>
-        <img src={img.light} class="when-light-theme" alt={name} title={name} />
-        <img src={img.dark} class="when-dark-theme" alt={name} title={name} />
+        <img
+          src={img.light.url}
+          srcset={sizesToSrcset(img.light.sizes)}
+          sizes={sizesForGridLayout(250, 1.15)}
+          width={img.light.width}
+          height={img.light.height}
+          class="when-light-theme"
+          alt={name}
+          title={name}
+        />
+        <img
+          src={img.dark.url}
+          srcset={sizesToSrcset(img.dark.sizes)}
+          sizes={sizesForGridLayout(250, 1.15)}
+          width={img.dark.width}
+          height={img.dark.height}
+          class="when-dark-theme"
+          alt={name}
+          title={name}
+        />
       </>
     ) : (
       <div>

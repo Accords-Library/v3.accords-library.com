@@ -11,8 +11,8 @@ import { payload } from "src/utils/payload";
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
 
-const { id } = Astro.params;
-const audio = await fetchOr404(() => payload.getAudioByID(id!));
+const id = Astro.params.id!;
+const audio = await fetchOr404(() => payload.getAudioByID(id));
 if (audio instanceof Response) {
   return audio;
 }
@@ -72,10 +72,10 @@ const metaAttributes = [
 
 <AppLayout
   openGraph={{
+    title: formatInlineTitle({ pretitle, title, subtitle }),
+    description: description && formatRichTextToString(description),
     thumbnail,
     audio,
-    description: description ? formatRichTextToString(description) : undefined,
-    title: formatInlineTitle({ pretitle, title, subtitle }),
   }}>
   <div id="container">
     <AudioPlayer audio={audio} />

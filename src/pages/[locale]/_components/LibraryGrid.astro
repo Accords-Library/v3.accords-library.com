@@ -9,12 +9,10 @@ const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.curren
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 {
-  cache.config.homeFolders.map(({ slug, translations, darkThumbnail, lightThumbnail }) => (
+  cache.config.home.folders.map(({ slug, translations, darkThumbnail, lightThumbnail }) => (
     <CategoryCard
       img={
-        darkThumbnail && lightThumbnail
-          ? { dark: darkThumbnail.url, light: lightThumbnail.url }
-          : undefined
+        darkThumbnail && lightThumbnail ? { dark: darkThumbnail, light: lightThumbnail } : undefined
       }
       name={getLocalizedMatch(translations).name}
       href={getLocalizedUrl(`/folders/${slug}`)}

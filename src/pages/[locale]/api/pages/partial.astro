@@ -12,6 +12,7 @@ import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescr
 import Attributes from "components/Attributes.astro";
 import type { Attribute } from "src/utils/attributes";
 import { payload } from "src/utils/payload";
+import { sizesToSrcset } from "src/utils/img";
 
 export const partial = true;
 
@@ -71,6 +72,8 @@ if (updatedBy) {
             <img
               id="thumbnail"
               src={thumbnail.url}
+              srcset={sizesToSrcset(thumbnail.sizes)}
+              sizes={`(max-width: 550px) 90vw, 550px`}
               width={thumbnail.width}
               height={thumbnail.height}
             />

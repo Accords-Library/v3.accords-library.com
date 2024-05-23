@@ -15,9 +15,9 @@ import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro
 import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 import { payload } from "src/utils/payload";
 
-const { slug } = Astro.params;
+const slug = Astro.params.slug!;
 
-const folder = await fetchOr404(() => payload.getFolder(slug!));
+const folder = await fetchOr404(() => payload.getFolder(slug));
 if (folder instanceof Response) {
   return folder;
 }

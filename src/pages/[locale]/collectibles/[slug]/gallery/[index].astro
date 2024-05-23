@@ -55,9 +55,9 @@ const metaAttributes = [
 
 <AppLayout
   openGraph={{
-    thumbnail: image,
-    description: description ? formatRichTextToString(description) : undefined,
     title: formatInlineTitle({ pretitle, title, subtitle }),
+    description: description && formatRichTextToString(description),
+    thumbnail: image,
   }}
   parentPages={parentPages}>
   <Lightbox

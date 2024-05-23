@@ -1,16 +1,18 @@
 # Accord's Library v3.0
 
+## Ongoing
+
+- [Analytics] Add analytics
+
 ## Short term
 
 - Number of audio players seems limited (on Chrome and Firefox)
-- Automatically generate different sizes of images
 - [RichTextContent] Handle relationship
 - [RichTextContent] Add autolink block support
 
 ## Mid term
 
 - Save cookies for longer than just the session
-- [Folders] Support for nameless section
 - [Timeline] Error if collectible not published?
 - [Timeline] display source language
 - [Timeline] Add details button in footer with credits + last updated / created
@@ -18,10 +20,10 @@
 - [Videos] Display platform info + channel page
 - [JSLess] Provide JS-less alternative for timeline card footers
 - [JSLess] Provide JS-less alternative for parent pages
-- [Analytics] Add analytics
 
 ## Long term
 
+- [Folders] Support for nameless section
 - [Scripts] Can't run the scripts using node (ts-node?)
 - [Scans] Adapt size of obi based on cover/dustjacket
 - [Scans] Order of cover/dustjacket/obi should be based on the book's page order.
