@@ -1,5 +1,4 @@
 ---
-import Button from "components/Button.astro";
 import {
   type EndpointCredit,
   type EndpointImage,
@@ -14,6 +13,7 @@ import type { ComponentProps } from "astro/types";
 import AppLayoutDescription from "./AppLayout/components/AppLayoutDescription.astro";
 import Attributes from "./Attributes.astro";
 import { sizesToSrcset } from "src/utils/img";
+import { Icon } from "astro-icon/components";
 
 interface Props {
   previousImageHref?: string | undefined;
@@ -55,10 +55,11 @@ const hasNavigation = previousImageHref || nextImageHref;
     {
       hasNavigation && (
         <a
-          class:list={{ hidden: !previousImageHref }}
+          id="previous-button"
+          class:list={{ hidden: !previousImageHref, pressable: true }}
           href={previousImageHref}
           data-astro-history="replace">
-          <Button icon="material-symbols:chevron-left" />
+          <Icon name="material-symbols:chevron-left" />
         </a>
       )
     }
@@ -76,10 +77,11 @@ const hasNavigation = previousImageHref || nextImageHref;
     {
       hasNavigation && (
         <a
-          class:list={{ hidden: !nextImageHref }}
+          id="next-button"
+          class:list={{ hidden: !nextImageHref, pressable: true }}
           href={nextImageHref}
           data-astro-history="replace">
-          <Button icon="material-symbols:chevron-right" />
+          <Icon name="material-symbols:chevron-right" />
         </a>
       )
     }
@@ -160,3 +162,33 @@ const hasNavigation = previousImageHref || nextImageHref;
     overflow-wrap: anywhere;
   }
 </style>
+
+{/* ------------------------------------------- JS --------------------------------------------- */}
+
+<script>
+  import { navigate } from "astro:transitions/client";
+
+  let queueCount = 0;
+
+  document.addEventListener("keydown", async (e) => {
+    queueCount++;
+    if (queueCount > 1) return;
+
+    const handle = async () => {
+      const previousHref = document.getElementById("previous-button")?.getAttribute("href");
+      const nextHref = document.getElementById("next-button")?.getAttribute("href");
+
+      if (previousHref && e.key === "ArrowLeft") {
+        await navigate(previousHref);
+      } else if (nextHref && e.key === "ArrowRight") {
+        await navigate(nextHref);
+      }
+
+      queueCount--;
+    };
+
+    while (queueCount > 0) {
+      await handle();
+    }
+  });
+</script>
