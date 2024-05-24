@@ -21,20 +21,18 @@ const {
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<a href={href} target={target} rel={rel}>
-  <div class="pressable-label">
-    <Icon name="material-symbols:keyboard-return" />
-    <p>
-      <span>{typeLabel}</span>
-      {label}
-    </p>
-  </div>
+<a class="pressable-label" href={href} target={target} rel={rel}>
+  <Icon name="material-symbols:keyboard-return" />
+  <p>
+    <span>{typeLabel}</span>
+    {label}
+  </p>
 </a>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  div {
+  a {
     height: 16px;
 
     & > p {

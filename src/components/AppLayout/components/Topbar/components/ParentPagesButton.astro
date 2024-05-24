@@ -30,14 +30,14 @@ const { t } = await getI18n(Astro.locals.currentLocale);
           ))}
         </div>
       </div>
-      <div class="pressable-label">
+      <button class="pressable-label">
         <Icon name="material-symbols:keyboard-return" />
         <p>
           {t("header.nav.parentPages.label", {
             count: parentPages.length,
           })}
         </p>
-      </div>
+      </button>
     </Tooltip>
   )
 }

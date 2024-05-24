@@ -68,9 +68,8 @@ if (updatedBy) {
     <Fragment slot="header-aside">
       {
         thumbnail && (
-          <a href={getLocalizedUrl(`/images/${thumbnail.id}`)}>
+          <a id="thumbnail" href={getLocalizedUrl(`/images/${thumbnail.id}`)}>
             <img
-              id="thumbnail"
               src={thumbnail.url}
               srcset={sizesToSrcset(thumbnail.sizes)}
               sizes={`(max-width: 550px) 90vw, 550px`}
@@ -166,13 +165,19 @@ if (updatedBy) {
   }
 
   #thumbnail {
-    max-width: min(35rem, 100%);
-    max-height: 80vh;
-    width: auto;
-    height: auto;
     border-radius: 16px;
     box-shadow: 0 5px 20px -10px var(--color-shadow);
+    overflow: hidden;
     transition: 100ms scale;
+    display: block;
+    width: fit-content;
+
+    & > img {
+      max-width: min(35rem, 100%);
+      max-height: 80vh;
+      width: auto;
+      height: auto;
+    }
 
     @media (max-width: 1280.5px) {
       margin-top: 2em;
@@ -182,8 +187,14 @@ if (updatedBy) {
       margin-bottom: 2em;
     }
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       scale: 102%;
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--color-base-1000);
+      outline-offset: unset;
     }
   }
 </style>

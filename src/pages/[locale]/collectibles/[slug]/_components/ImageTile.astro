@@ -57,8 +57,14 @@ const {
 
     transition: 100ms scale;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       scale: 105%;
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--color-base-1000);
+      outline-offset: unset;
     }
 
     & > div {

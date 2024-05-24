@@ -1,7 +1,4 @@
 ---
-import ConditionalWrapper from "./ConditionalWrapper.astro";
-import Link from "./Link.astro";
-
 interface Props {
   href?: string | undefined;
   disableRoundedTop?: boolean;
@@ -12,11 +9,17 @@ const { href, disableRoundedTop = false } = Astro.props;
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<ConditionalWrapper condition={href !== undefined} wrapper={Link} props={{ href: href! }}>
-  <div id="card" class:list={{ "rounded-top": !disableRoundedTop }}>
-    <slot />
-  </div>
-</ConditionalWrapper>
+{
+  href !== undefined ? (
+    <a href={href} id="card" class:list={{ "rounded-top": !disableRoundedTop }}>
+      <slot />
+    </a>
+  ) : (
+    <div id="card" class:list={{ "rounded-top": !disableRoundedTop }}>
+      <slot />
+    </div>
+  )
+}
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
@@ -37,20 +40,27 @@ const { href, disableRoundedTop = false } = Astro.props;
     background-color: color-mix(in srgb, var(--color-elevation-2) 30%, transparent);
   }
 
-  :global(a) > #card {
+  a#card {
     transition-duration: 150ms;
     transition-property: border-color, box-shadow, background-color;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       border-color: var(--color-base-650);
       box-shadow: 0 2px 2px var(--color-shadow-2);
       background-color: color-mix(in srgb, var(--color-elevation-2) 80%, transparent);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--color-base-650);
+      outline-offset: unset;
     }
 
     &:active {
       border-color: var(--color-base-1000);
       box-shadow: 0 6px 12px 2px var(--color-shadow-2);
       background-color: var(--color-elevation-2);
+      outline-color: var(--color-base-1000);
     }
   }
 </style>

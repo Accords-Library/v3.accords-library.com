@@ -256,6 +256,17 @@ if (price) {
 
     & a {
       width: fit-content;
+      transition: 100ms scale;
+
+      &:hover,
+      &:focus-visible {
+        scale: 102%;
+      }
+
+      &:focus-visible {
+        outline: 3px solid var(--color-base-1000);
+        outline-offset: unset;
+      }
 
       & > #thumbnail {
         max-width: min(35rem, 100%);
@@ -263,11 +274,6 @@ if (price) {
         width: auto;
         height: auto;
         box-shadow: 0 5px 20px -10px var(--color-shadow);
-        transition: 100ms scale;
-
-        &:hover {
-          scale: 102%;
-        }
       }
     }
 

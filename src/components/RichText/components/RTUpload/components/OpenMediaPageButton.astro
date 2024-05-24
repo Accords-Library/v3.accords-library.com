@@ -12,12 +12,10 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<div class="button">
-  <a href={url}>
-    <div class="pressable-label">
-      <Icon name="material-symbols:left-click" />
-      <p>{t("global.openMediaPage")}</p>
-    </div>
+<div class="button when-no-print">
+  <a href={url} class="pressable-label">
+    <Icon name="material-symbols:left-click" />
+    <p>{t("global.openMediaPage")}</p>
   </a>
 </div>
 
@@ -30,9 +28,10 @@ const { t } = await getI18n(Astro.locals.currentLocale);
     gap: 0.3em;
     font-size: 85%;
 
-    & > a > div {
+    & > a {
       padding: 0.3em 0.6em;
       padding-right: 0.8em;
+      gap: 0.7em;
     }
   }
 </style>

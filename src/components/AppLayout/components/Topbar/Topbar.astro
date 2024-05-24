@@ -77,6 +77,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       display: flex;
       place-items: center;
       overflow-x: scroll;
+      padding: 3px; /* This way focus outline isn't cropped by overflow-x */
       gap: 8px;
       margin-left: -0.8em;
 
@@ -92,6 +93,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       place-items: center;
       justify-content: flex-end;
       overflow-x: scroll;
+      padding: 3px; /* This way focus outline isn't cropped by overflow-x */
 
       @media (max-width: 28rem) {
         justify-content: center;

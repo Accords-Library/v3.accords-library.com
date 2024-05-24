@@ -362,6 +362,8 @@ const { currentTheme } = Astro.locals;
 
   button {
     background-color: unset;
+    font-size: 1em;
+    border: unset;
   }
 
   button,
@@ -450,8 +452,14 @@ const { currentTheme } = Astro.locals;
 
     transition: 150ms background-color;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       background-color: var(--color-base-250);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--color-base-1000);
+      outline-offset: unset;
     }
 
     &:active {
@@ -468,10 +476,16 @@ const { currentTheme } = Astro.locals;
     transition-duration: 250ms;
     transition-property: padding-top, box-shadow, background-color, color, border-color;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       --foreground-color: var(--color-base-1000);
       box-shadow: 0 2px 2px var(--color-shadow-2);
       background-color: var(--color-elevation-1);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--foreground-color);
+      outline-offset: unset;
     }
 
     &:active {
