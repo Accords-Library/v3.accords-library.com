@@ -26,6 +26,7 @@ const { img, name, href } = Astro.props;
           class="when-light-theme"
           alt={name}
           title={name}
+          loading="lazy"
         />
         <img
           src={img.dark.url}
@@ -36,6 +37,7 @@ const { img, name, href } = Astro.props;
           class="when-dark-theme"
           alt={name}
           title={name}
+          loading="lazy"
         />
       </>
     ) : (

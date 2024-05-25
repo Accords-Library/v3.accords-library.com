@@ -23,6 +23,7 @@
 
 ## Long term
 
+- More data caching between the CMS and Astro
 - [Folders] Support for nameless section
 - [Scripts] Can't run the scripts using node (ts-node?)
 - [Scans] Adapt size of obi based on cover/dustjacket

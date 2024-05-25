@@ -68,7 +68,10 @@ if (updatedBy) {
     <Fragment slot="header-aside">
       {
         thumbnail && (
-          <a id="thumbnail" href={getLocalizedUrl(`/images/${thumbnail.id}`)}>
+          <a
+            id="thumbnail"
+            href={getLocalizedUrl(`/images/${thumbnail.id}`)}
+            style={`aspect-ratio: ${thumbnail.width}/${thumbnail.height};`}>
             <img
               src={thumbnail.url}
               srcset={sizesToSrcset(thumbnail.sizes)}
@@ -166,17 +169,18 @@ if (updatedBy) {
 
   #thumbnail {
     border-radius: 16px;
-    box-shadow: 0 5px 20px -10px var(--color-shadow);
-    overflow: hidden;
     transition: 100ms scale;
     display: block;
-    width: fit-content;
+
+    max-height: 80vh;
+    max-width: min(35rem, 100%);
 
     & > img {
-      max-width: min(35rem, 100%);
-      max-height: 80vh;
-      width: auto;
+      max-width: 100%;
       height: auto;
+
+      border-radius: 16px;
+      box-shadow: 0 5px 20px -10px var(--color-shadow);
     }
 
     @media (max-width: 1280.5px) {

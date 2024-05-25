@@ -15,7 +15,7 @@ const { node, context } = Astro.props;
 
 {
   node.children.length > 0 && (
-    <p style={`text-align: ${node.format};`}>
+    <p style={node.format ? `text-align: ${node.format};` : undefined}>
       {node.children.map((node) => (
         <RTNode node={node} context={context} />
       ))}

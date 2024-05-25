@@ -17,7 +17,7 @@ if (recorder instanceof Response) {
   return recorder;
 }
 
-const { t, getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
+const { t, getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 
 const { username, languages, avatar, translations } = recorder;
 
@@ -47,13 +47,17 @@ if (languages.length > 0) {
     {
       avatar && (
         <Fragment slot="header-aside">
-          <img
-            src={avatar.url}
-            srcset={sizesToSrcset(avatar.sizes)}
-            sizes={`(max-width: 550px) 90vw, 550px`}
-            width={avatar.width}
-            height={avatar.height}
-          />
+          <a
+            href={getLocalizedUrl(`/images/${avatar.id}`)}
+            style={`aspect-ratio: ${avatar.width}/${avatar.height};`}>
+            <img
+              src={avatar.url}
+              srcset={sizesToSrcset(avatar.sizes)}
+              sizes={`(max-width: 550px) 90vw, 550px`}
+              width={avatar.width}
+              height={avatar.height}
+            />
+          </a>
         </Fragment>
       )
     }
@@ -80,15 +84,33 @@ if (languages.length > 0) {
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  img {
-    max-width: min(35rem, 100%);
-    max-height: 50vh;
-    width: auto;
-    height: auto;
+  a {
+    display: block;
     margin-bottom: 2em;
+    border-radius: 16px;
+
+    transition: 100ms scale;
 
     @media (max-width: 1280.5px) {
       margin-top: 2em;
+    }
+    &:hover,
+    &:focus-visible {
+      scale: 102%;
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--color-base-1000);
+      outline-offset: unset;
+    }
+
+    max-width: min(35rem, 100%);
+    max-height: 50vh;
+
+    & > img {
+      border-radius: 16px;
+      max-width: 100%;
+      height: auto;
     }
   }
 

@@ -64,7 +64,7 @@ const hasNavigation = previousImageHref || nextImageHref;
       )
     }
 
-    <a href={url} target="_blank">
+    <a id="image-anchor" href={url} target="_blank" style=`aspect-ratio:${width}/${height};`>
       <img
         src={url}
         srcset={sizesToSrcset(sizes)}
@@ -132,11 +132,45 @@ const hasNavigation = previousImageHref || nextImageHref;
         visibility: hidden;
       }
 
-      img {
+      & > a {
+        &:focus-visible {
+          outline: 3px solid var(--color-base-1000);
+          outline-offset: unset;
+        }
+
+        &.pressable {
+          border-radius: 9999px;
+          padding-left: 1em;
+          padding-right: 1em;
+          height: 2.5em;
+
+          display: flex;
+          place-items: center;
+          place-content: center;
+
+          & > svg {
+            width: 1.5em;
+            height: 1.5em;
+          }
+        }
+      }
+
+      & > #image-anchor {
+        display: block;
+        transition: 100ms scale;
+        box-shadow: 0 5px 20px -10px var(--color-shadow);
+
+        &:hover,
+        &:focus-visible {
+          scale: 102%;
+        }
+
         max-height: 70vh;
-        max-width: 100%;
-        height: auto;
-        width: auto;
+
+        & > img {
+          max-width: 100%;
+          height: auto;
+        }
       }
     }
 

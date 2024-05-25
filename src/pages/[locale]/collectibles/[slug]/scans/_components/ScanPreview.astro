@@ -1,15 +1,17 @@
 ---
 import { getI18n } from "src/i18n/i18n";
 import type { EndpointScanImage } from "src/shared/payload/payload-sdk";
-import { sizesToSrcset } from "src/utils/img";
+import { sizesForGridLayout, sizesToSrcset } from "src/utils/img";
 
 interface Props {
   scan: EndpointScanImage;
   collectibleSlug: string;
+  aspectRatio?: { width: number; height: number } | undefined;
 }
 
 const {
   scan: { url, index, width, height, sizes },
+  aspectRatio,
   collectibleSlug,
 } = Astro.props;
 
@@ -18,41 +20,51 @@ const { getLocalizedUrl, formatScanIndexShort } = await getI18n(Astro.locals.cur
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<a href={getLocalizedUrl(`/collectibles/${collectibleSlug}/scans/${index}`)}>
-  <img
-    src={url}
-    srcset={sizesToSrcset(sizes)}
-    sizes={`
-      (max-width: ${(width / height) * 320}px) 90vw,
-      ${(width / height) * 320}px`}
-    width={width}
-    height={height}
-  />
+<div style={aspectRatio ? `aspect-ratio:${aspectRatio.width}/${aspectRatio.height};` : undefined}>
+  <a
+    href={getLocalizedUrl(`/collectibles/${collectibleSlug}/scans/${index}`)}
+    style=`aspect-ratio:${width}/${height};`>
+    <img
+      src={url}
+      srcset={sizesToSrcset(sizes)}
+      sizes={sizesForGridLayout(200, 1.15)}
+      width={width}
+      height={height}
+      loading="lazy"
+    />
+  </a>
   <p>{formatScanIndexShort(index)}</p>
-</a>
+</div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  a {
+  div {
     display: flex;
     flex-direction: column;
     gap: 1em;
     text-align: center;
     place-items: center;
+  }
 
+  a {
     transition: 100ms scale;
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       scale: 104%;
     }
 
+    &:focus-visible {
+      outline: 3px solid var(--color-base-1000);
+      outline-offset: unset;
+    }
+
+    max-height: 100%;
+
     & > img {
-      max-height: 320px;
       max-width: 100%;
       height: auto;
-      width: auto;
-      aspect-ratio: auto 21/29.7;
       box-shadow: 0 5px 20px -10px var(--color-shadow);
     }
   }

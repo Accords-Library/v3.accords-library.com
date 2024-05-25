@@ -63,11 +63,29 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
           <section>
             <h2>{t("collectibles.scans.cover")}</h2>
             <div>
-              {cover.flapFront && <ScanPreview collectibleSlug={slug} scan={cover.flapFront} />}
-              {cover.front && <ScanPreview collectibleSlug={slug} scan={cover.front} />}
-              {cover.spine && <ScanPreview collectibleSlug={slug} scan={cover.spine} />}
-              {cover.back && <ScanPreview collectibleSlug={slug} scan={cover.back} />}
-              {cover.flapBack && <ScanPreview collectibleSlug={slug} scan={cover.flapBack} />}
+              {cover.flapFront && (
+                <ScanPreview
+                  aspectRatio={cover.front}
+                  collectibleSlug={slug}
+                  scan={cover.flapFront}
+                />
+              )}
+              {cover.front && (
+                <ScanPreview aspectRatio={cover.front} collectibleSlug={slug} scan={cover.front} />
+              )}
+              {cover.spine && (
+                <ScanPreview aspectRatio={cover.front} collectibleSlug={slug} scan={cover.spine} />
+              )}
+              {cover.back && (
+                <ScanPreview aspectRatio={cover.front} collectibleSlug={slug} scan={cover.back} />
+              )}
+              {cover.flapBack && (
+                <ScanPreview
+                  aspectRatio={cover.front}
+                  collectibleSlug={slug}
+                  scan={cover.flapBack}
+                />
+              )}
             </div>
           </section>
         )}
@@ -76,12 +94,32 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
             <h2>{t("collectibles.scans.coverInside")}</h2>
             <div>
               {cover.insideFlapFront && (
-                <ScanPreview collectibleSlug={slug} scan={cover.insideFlapFront} />
+                <ScanPreview
+                  aspectRatio={cover.front}
+                  collectibleSlug={slug}
+                  scan={cover.insideFlapFront}
+                />
               )}
-              {cover.insideFront && <ScanPreview collectibleSlug={slug} scan={cover.insideFront} />}
-              {cover.insideBack && <ScanPreview collectibleSlug={slug} scan={cover.insideBack} />}
+              {cover.insideFront && (
+                <ScanPreview
+                  aspectRatio={cover.front}
+                  collectibleSlug={slug}
+                  scan={cover.insideFront}
+                />
+              )}
+              {cover.insideBack && (
+                <ScanPreview
+                  aspectRatio={cover.front}
+                  collectibleSlug={slug}
+                  scan={cover.insideBack}
+                />
+              )}
               {cover.insideFlapBack && (
-                <ScanPreview collectibleSlug={slug} scan={cover.insideFlapBack} />
+                <ScanPreview
+                  aspectRatio={cover.front}
+                  collectibleSlug={slug}
+                  scan={cover.insideFlapBack}
+                />
               )}
             </div>
           </section>
@@ -99,13 +137,39 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
             <p class="prose">{t("collectibles.scans.dustjacket.description")}</p>
             <div>
               {dustjacket.flapFront && (
-                <ScanPreview collectibleSlug={slug} scan={dustjacket.flapFront} />
+                <ScanPreview
+                  aspectRatio={dustjacket.front}
+                  collectibleSlug={slug}
+                  scan={dustjacket.flapFront}
+                />
               )}
-              {dustjacket.front && <ScanPreview collectibleSlug={slug} scan={dustjacket.front} />}
-              {dustjacket.spine && <ScanPreview collectibleSlug={slug} scan={dustjacket.spine} />}
-              {dustjacket.back && <ScanPreview collectibleSlug={slug} scan={dustjacket.back} />}
+              {dustjacket.front && (
+                <ScanPreview
+                  aspectRatio={dustjacket.front}
+                  collectibleSlug={slug}
+                  scan={dustjacket.front}
+                />
+              )}
+              {dustjacket.spine && (
+                <ScanPreview
+                  aspectRatio={dustjacket.front}
+                  collectibleSlug={slug}
+                  scan={dustjacket.spine}
+                />
+              )}
+              {dustjacket.back && (
+                <ScanPreview
+                  aspectRatio={dustjacket.front}
+                  collectibleSlug={slug}
+                  scan={dustjacket.back}
+                />
+              )}
               {dustjacket.flapBack && (
-                <ScanPreview collectibleSlug={slug} scan={dustjacket.flapBack} />
+                <ScanPreview
+                  aspectRatio={dustjacket.front}
+                  collectibleSlug={slug}
+                  scan={dustjacket.flapBack}
+                />
               )}
             </div>
           </section>
@@ -115,19 +179,39 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
             <h2>{t("collectibles.scans.dustjacketInside")}</h2>
             <div>
               {dustjacket.insideFlapFront && (
-                <ScanPreview collectibleSlug={slug} scan={dustjacket.insideFlapFront} />
+                <ScanPreview
+                  aspectRatio={dustjacket.front}
+                  collectibleSlug={slug}
+                  scan={dustjacket.insideFlapFront}
+                />
               )}
               {dustjacket.insideFront && (
-                <ScanPreview collectibleSlug={slug} scan={dustjacket.insideFront} />
+                <ScanPreview
+                  aspectRatio={dustjacket.front}
+                  collectibleSlug={slug}
+                  scan={dustjacket.insideFront}
+                />
               )}
               {dustjacket.insideSpine && (
-                <ScanPreview collectibleSlug={slug} scan={dustjacket.insideSpine} />
+                <ScanPreview
+                  aspectRatio={dustjacket.front}
+                  collectibleSlug={slug}
+                  scan={dustjacket.insideSpine}
+                />
               )}
               {dustjacket.insideBack && (
-                <ScanPreview collectibleSlug={slug} scan={dustjacket.insideBack} />
+                <ScanPreview
+                  aspectRatio={dustjacket.front}
+                  collectibleSlug={slug}
+                  scan={dustjacket.insideBack}
+                />
               )}
               {dustjacket.insideFlapBack && (
-                <ScanPreview collectibleSlug={slug} scan={dustjacket.insideFlapBack} />
+                <ScanPreview
+                  aspectRatio={dustjacket.front}
+                  collectibleSlug={slug}
+                  scan={dustjacket.insideFlapBack}
+                />
               )}
             </div>
           </section>
@@ -144,11 +228,21 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
             <h2>{t("collectibles.scans.obi")}</h2>
             <p class="prose">{t("collectibles.scans.obi.description")}</p>
             <div>
-              {obi.flapFront && <ScanPreview collectibleSlug={slug} scan={obi.flapFront} />}
-              {obi.front && <ScanPreview collectibleSlug={slug} scan={obi.front} />}
-              {obi.spine && <ScanPreview collectibleSlug={slug} scan={obi.spine} />}
-              {obi.back && <ScanPreview collectibleSlug={slug} scan={obi.back} />}
-              {obi.flapBack && <ScanPreview collectibleSlug={slug} scan={obi.flapBack} />}
+              {obi.flapFront && (
+                <ScanPreview aspectRatio={obi.front} collectibleSlug={slug} scan={obi.flapFront} />
+              )}
+              {obi.front && (
+                <ScanPreview aspectRatio={obi.front} collectibleSlug={slug} scan={obi.front} />
+              )}
+              {obi.spine && (
+                <ScanPreview aspectRatio={obi.front} collectibleSlug={slug} scan={obi.spine} />
+              )}
+              {obi.back && (
+                <ScanPreview aspectRatio={obi.front} collectibleSlug={slug} scan={obi.back} />
+              )}
+              {obi.flapBack && (
+                <ScanPreview aspectRatio={obi.front} collectibleSlug={slug} scan={obi.flapBack} />
+              )}
             </div>
           </section>
         )}
@@ -157,13 +251,35 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
             <h2>{t("collectibles.scans.obiInside")}</h2>
             <div>
               {obi.insideFlapFront && (
-                <ScanPreview collectibleSlug={slug} scan={obi.insideFlapFront} />
+                <ScanPreview
+                  aspectRatio={obi.front}
+                  collectibleSlug={slug}
+                  scan={obi.insideFlapFront}
+                />
               )}
-              {obi.insideFront && <ScanPreview collectibleSlug={slug} scan={obi.insideFront} />}
-              {obi.insideSpine && <ScanPreview collectibleSlug={slug} scan={obi.insideSpine} />}
-              {obi.insideBack && <ScanPreview collectibleSlug={slug} scan={obi.insideBack} />}
+              {obi.insideFront && (
+                <ScanPreview
+                  aspectRatio={obi.front}
+                  collectibleSlug={slug}
+                  scan={obi.insideFront}
+                />
+              )}
+              {obi.insideSpine && (
+                <ScanPreview
+                  aspectRatio={obi.front}
+                  collectibleSlug={slug}
+                  scan={obi.insideSpine}
+                />
+              )}
+              {obi.insideBack && (
+                <ScanPreview aspectRatio={obi.front} collectibleSlug={slug} scan={obi.insideBack} />
+              )}
               {obi.insideFlapBack && (
-                <ScanPreview collectibleSlug={slug} scan={obi.insideFlapBack} />
+                <ScanPreview
+                  aspectRatio={obi.front}
+                  collectibleSlug={slug}
+                  scan={obi.insideFlapBack}
+                />
               )}
             </div>
           </section>
@@ -178,7 +294,7 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
         <h2>{t("collectibles.scans.pages")}</h2>
         <div>
           {pages.map((image) => (
-            <ScanPreview collectibleSlug={slug} scan={image} />
+            <ScanPreview aspectRatio={pages[0]} collectibleSlug={slug} scan={image} />
           ))}
         </div>
       </section>
@@ -204,9 +320,10 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
 
     & > div {
       margin-top: 1em;
-      display: flex;
-      gap: 2em;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 32px 16px;
+      align-items: end;
     }
   }
 </style>

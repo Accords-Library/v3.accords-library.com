@@ -37,7 +37,7 @@ const mediaPage = getLocalizedUrl(`/images/${id}`);
       </HeaderTitle>
     )
   }
-  <a href={mediaPage}>
+  <a href={mediaPage} style=`aspect-ratio: ${width}/${height};`>
     <img
       src={url}
       srcset={sizesToSrcset(sizes)}
@@ -53,13 +53,13 @@ const mediaPage = getLocalizedUrl(`/images/${id}`);
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
+  div {
+    margin-block: 4em;
+  }
+
   a {
     display: block;
     line-height: 0;
-    box-shadow: 0 5px 20px -10px var(--color-shadow);
-    border-radius: 16px;
-    overflow: hidden;
-    width: fit-content;
     margin-bottom: 0.5em;
 
     transition-property: scale, margin-bottom;
@@ -75,12 +75,15 @@ const mediaPage = getLocalizedUrl(`/images/${id}`);
       outline: 3px solid var(--color-base-1000);
       outline-offset: unset;
     }
-  }
 
-  img {
     max-height: 70vh;
-    max-width: 100%;
-    width: auto;
-    height: auto;
+
+    & > img {
+      box-shadow: 0 5px 20px -10px var(--color-shadow);
+      border-radius: 16px;
+
+      max-width: 100%;
+      height: auto;
+    }
   }
 </style>

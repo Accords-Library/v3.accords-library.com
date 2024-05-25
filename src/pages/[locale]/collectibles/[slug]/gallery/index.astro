@@ -40,7 +40,9 @@ const translation = getLocalizedMatch(translations);
   <div>
     {
       images.map(({ url, width, height, sizes }, index) => (
-        <a href={getLocalizedUrl(`/collectibles/${slug}/gallery/${index}`)}>
+        <a
+          href={getLocalizedUrl(`/collectibles/${slug}/gallery/${index}`)}
+          style={`aspect-ratio: ${width}/${height};`}>
           <img
             src={url}
             srcset={sizesToSrcset(sizes)}
@@ -49,6 +51,7 @@ const translation = getLocalizedMatch(translations);
               ${(width / height) * 320}px`}
             width={width}
             height={height}
+            loading="lazy"
           />
         </a>
       ))
@@ -71,18 +74,25 @@ const translation = getLocalizedMatch(translations);
       gap: 1em;
       text-align: center;
       place-items: center;
+      border-radius: 16px;
 
       transition: 100ms scale;
 
-      &:hover {
+      &:hover,
+      &:focus-visible {
         scale: 104%;
       }
 
+      &:focus-visible {
+        outline: 3px solid var(--color-base-1000);
+        outline-offset: unset;
+      }
+
+      max-height: 320px;
+
       & > img {
-        max-height: 320px;
         max-width: 100%;
         height: auto;
-        width: auto;
         box-shadow: 0 5px 20px -10px var(--color-shadow);
         border-radius: 16px;
       }
