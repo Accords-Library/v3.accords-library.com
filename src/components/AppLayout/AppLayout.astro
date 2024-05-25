@@ -26,8 +26,8 @@ const {
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <Html openGraph={openGraph}>
+  {backgroundImage && <AppLayoutBackgroundImg img={backgroundImage} />}
   <header>
-    {backgroundImage && <AppLayoutBackgroundImg img={backgroundImage} />}
     <Topbar parentPages={parentPages} hideHomeButton={hideHomeButton} />
   </header>
   <main><slot /></main>

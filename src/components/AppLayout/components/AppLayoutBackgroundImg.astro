@@ -6,6 +6,7 @@ import type {
 } from "src/shared/payload/payload-sdk";
 import { getRandomId } from "src/utils/random";
 import { sizesToSrcset } from "src/utils/img";
+import { UAParser } from "ua-parser-js";
 
 interface Props {
   img: EndpointImage | EndpointMediaThumbnail | EndpointScanImage;
@@ -22,53 +23,60 @@ const style = `
   #${uniqueId} {
       mask-image: linear-gradient( to bottom, rgba(0 0 0 / 30%) 0%, transparent 100% );
   }
-}
-`;
+}`; // Required to be done like this because we can't insert variables in media queries with Astro.
+
+const userAgent = Astro.request.headers.get("user-agent") ?? "";
+const parser = new UAParser(userAgent);
+const isParallaxEnabled =
+  parser.getDevice().type !== "mobile" && parser.getDevice().type !== "tablet";
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<img
-  id={uniqueId}
-  src={url}
-  srcset={sizesToSrcset(sizes)}
-  sizes="100vw"
-  width={width}
-  height={height}
-  loading="lazy"
-  class="when-no-print when-js"
-/>
-<img
-  id={uniqueId}
-  src={url}
-  srcset={sizesToSrcset(sizes)}
-  sizes="100vw"
-  width={width}
-  height={height}
-  loading="lazy"
-  class="when-no-print when-no-js"
-/>
+<div>
+  <img
+    id={uniqueId}
+    src={url}
+    srcset={sizesToSrcset(sizes)}
+    sizes="100vw"
+    width={width}
+    height={height}
+    loading="lazy"
+    class="when-no-print"
+  />
+</div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style set:html={style} is:inline></style>
 
 <style>
-  img {
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  div {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    overflow: hidden;
+    z-index: -1;
+  }
 
+  img {
     width: 100%;
     height: auto;
     max-height: 100%;
 
     object-fit: cover;
     object-position: 50% 0;
-
-    z-index: -1;
 
     mask-image: linear-gradient(
       to bottom,
@@ -80,19 +88,37 @@ const style = `
 
     user-select: none;
 
-    &.when-js {
-      opacity: 0;
-      transition: 3s opacity;
-    }
+    animation: fadeIn 3s forwards;
   }
 </style>
 
 {/* ------------------------------------------- JS --------------------------------------------- */}
 
-<script define:vars={{ uniqueId }} is:inline>
+<script define:vars={{ uniqueId, isParallaxEnabled }} is:inline>
   const element = document.getElementById(uniqueId);
+  element.style.animationPlayState = "paused";
 
-  element.addEventListener("load", () => {
-    element.style.opacity = 1;
-  });
+  if (isParallaxEnabled) {
+    window.backgroundParralaxElement = element;
+  }
+
+  element.addEventListener(
+    "load",
+    () => {
+      element.style.animationPlayState = "running";
+    },
+    { once: true, passive: true }
+  );
+</script>
+
+<script>
+  const refreshParallax = () => {
+    if (!("backgroundParralaxElement" in window)) return;
+    if (!(window.backgroundParralaxElement instanceof HTMLElement)) return;
+
+    const parallaxAmount = window.scrollY * 0.4;
+    window.backgroundParralaxElement.style.transform = `translateY(${parallaxAmount}px)`;
+  };
+
+  document.addEventListener("scroll", refreshParallax, { passive: true });
 </script>

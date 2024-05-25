@@ -6,6 +6,8 @@
 
 ## Short term
 
+- Display if a content has a source language
+- [JSLess] Display if a content is available in more than one language 
 - Number of audio players seems limited (on Chrome and Firefox)
 - [RichTextContent] Handle relationship
 - [RichTextContent] Add autolink block support
@@ -23,6 +25,7 @@
 
 ## Long term
 
+- Try using CSS instead of JS for parallax effect
 - More data caching between the CMS and Astro
 - [Folders] Support for nameless section
 - [Scripts] Can't run the scripts using node (ts-node?)
