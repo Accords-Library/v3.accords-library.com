@@ -195,7 +195,8 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
         margin: 0;
         line-height: 1;
         font-size: 52px;
-        font-weight: 800;
+        font-variation-settings: "wght" 300;
+        font-variation-settings: "wght" 800;
       }
 
       & > p {
@@ -203,7 +204,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
         margin: 0;
         margin-top: -0.5em;
         font-size: 21px;
-        font-weight: 600;
+        font-variation-settings: "wght" 600;
       }
     }
 
@@ -223,7 +224,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
           margin: 0;
           line-height: 1;
           font-size: calc(var(--container-width) / 9);
-          font-weight: 800;
+          font-variation-settings: "wght" 800;
         }
 
         & > p {
@@ -231,7 +232,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
           margin: 0;
           margin-top: -0.5em;
           font-size: calc(var(--container-width) / 21.8);
-          font-weight: 700;
+          font-variation-settings: "wght" 700;
         }
       }
     }

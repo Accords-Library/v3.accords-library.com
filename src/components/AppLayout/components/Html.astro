@@ -1,8 +1,6 @@
 ---
 import UAParser from "ua-parser-js";
 import { ViewTransitions } from "astro:transitions";
-import "@fontsource-variable/vollkorn";
-import "@fontsource-variable/murecho";
 import { getI18n } from "src/i18n/i18n";
 import AppLayoutSpinner from "./AppLayoutSpinner.astro";
 import type {
@@ -60,7 +58,7 @@ const { currentTheme } = Astro.locals;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="stylesheet" href="/css/tippy.css" />
+    <link rel="stylesheet" href="/css/tippy.css" fetchpriority="low" />
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fdebd4" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#27231e" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -186,12 +184,6 @@ const { currentTheme } = Astro.locals;
       color-scheme: only light;
     }
 
-    font-weight: 430;
-
-    strong {
-      font-weight: 600;
-    }
-
     @media screen {
       &.dark-theme {
         --color-base-1000: #ebeae7;
@@ -298,6 +290,64 @@ const { currentTheme } = Astro.locals;
     }
   }
 
+  /* FONTS */
+
+  @font-face {
+    font-family: "Vollkorn Variable";
+    src: url("/fonts/Vollkorn-VariableFont_wght.woff2") format("woff2-variations");
+    src: url("/fonts/Vollkorn-VariableFont_wght.woff2") format("woff2") tech("variations");
+    font-weight: 400 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Murecho Variable";
+    src: url("/fonts/Murecho-VariableFont_wght.woff2") format("woff2-variations");
+    src: url("/fonts/Murecho-VariableFont_wght.woff2") format("woff2") tech("variations");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  html {
+    font-variation-settings: "wght" 430;
+  }
+
+  h1 {
+    font-variation-settings: "wght" 900;
+  }
+
+  h2 {
+    font-variation-settings: "wght" 800;
+  }
+
+  h3,
+  h4 {
+    font-variation-settings: "wght" 700;
+  }
+
+  h5,
+  h6 {
+    font-variation-settings: "wght" 600;
+  }
+
+  strong {
+    font-variation-settings: "wght" 600;
+  }
+
+  b {
+    font-variation-settings: "wght" 700;
+  }
+
+  .font-serif {
+    font-family: "Vollkorn Variable", serif;
+  }
+
+  :root {
+    --font-serif: "Vollkorn Variable", serif;
+  }
+
   /* THEMING */
 
   *::selection {
@@ -345,19 +395,6 @@ const { currentTheme } = Astro.locals;
   html {
     padding: 0;
     margin: 0;
-  }
-
-  h1,
-  h2 {
-    font-weight: 800;
-  }
-
-  .font-serif {
-    font-family: "Vollkorn Variable", serif;
-  }
-
-  :root {
-    --font-serif: "Vollkorn Variable", serif;
   }
 
   button {
