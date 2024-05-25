@@ -24,10 +24,16 @@ if (values.length === 0) return;
     font-weight: 400;
     font-size: 80%;
     display: flex;
-    gap: 0.5em;
+    flex-wrap: wrap;
+    gap: 0.1em 0.5em;
 
     & > p {
       color: var(--color-base-750);
+    }
+
+    & > div {
+      line-height: 1.2;
+      font-size: 90%;
     }
 
     & > svg {

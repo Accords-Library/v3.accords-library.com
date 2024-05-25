@@ -29,6 +29,7 @@ const { icon = "material-symbols:folder-outline", title, href } = Astro.props;
     padding: 12px 24px;
     border-radius: 12px;
     text-decoration: none;
+    font-size: clamp(0.8em, 0.35em + 0.75vw, 1em);
 
     & > svg {
       width: 24px;
@@ -42,7 +43,7 @@ const { icon = "material-symbols:folder-outline", title, href } = Astro.props;
       gap: 2px;
 
       & > h3 {
-        font-size: 1.25em;
+        font-size: 125%;
       }
     }
   }

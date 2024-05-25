@@ -39,6 +39,10 @@ const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.curren
   section {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 0.7rem 1rem;
+    gap: clamp(6px, 2vmax, 16px);
+
+    @media (max-width: 40rem) {
+      row-gap: 12px;
+    }
   }
 </style>
