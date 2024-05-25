@@ -63,6 +63,9 @@ const { currentTheme } = Astro.locals;
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#27231e" />
     <link rel="manifest" href="/site.webmanifest" />
 
+    {(openGraph.audio || openGraph.video) && <link rel="preconnect" href="https://resha.re" />}
+    <link rel="preconnect" href="https://dashboard.accords-library.com" />
+
     {/* Meta & OpenGraph */}
     <title>{title}</title>
 
