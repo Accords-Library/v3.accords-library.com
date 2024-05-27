@@ -11,18 +11,28 @@ interface Props {
 
 const { year, events } = Astro.props;
 const { formatTimelineDate } = await getI18n(Astro.locals.currentLocale);
+
+const eventsHaveDifferentDates = events.some(
+  ({ date }) => JSON.stringify(date) !== JSON.stringify(events[0]?.date)
+);
+const date = eventsHaveDifferentDates ? { year } : events[0]!.date;
+const multiple = events.flatMap(({ events }) => events).length > 1;
+
+if (year === 856) {
+  console.log({ eventsHaveDifferentDates, events: events.map(({ date }) => date) });
+}
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 {cache.config.timeline.breaks.includes(year) && <hr id={`hr-${year}`} />}
 
-<h2 id={year.toString()}>
-  {formatTimelineDate(events.length === 1 ? events[0]!.date : { year })}
+<h2 class="font-2xl" class:list={{ multiple }} id={year.toString()}>
+  {formatTimelineDate(date)}
 </h2>
 
-<div class="year-container">
-  {events.map((event) => <TimelineEvent event={event} displayDate={events.length > 1} />)}
+<div class="year-container" class:list={{ multiple }}>
+  {events.map((event) => <TimelineEvent event={event} displayDate={eventsHaveDifferentDates} />)}
 </div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
@@ -36,22 +46,32 @@ const { formatTimelineDate } = await getI18n(Astro.locals.currentLocale);
   }
 
   .year-container {
-    border-left: 1px solid var(--color-base-600);
-    padding-left: 1em;
-    padding-block: 1em;
     margin-bottom: 3em;
+    width: fit-content;
 
-    display: flex;
-    flex-direction: column;
-    gap: 2em;
+    &.multiple {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5em;
+
+      border-left: 1px solid;
+      border-top: 1px solid;
+      border-color: var(--color-base-600);
+      border-radius: calc(26px);
+      padding: 1em;
+    }
   }
 
   h2 {
-    padding-bottom: 0.2em;
     padding-inline: 0.2em;
     color: var(--color-base-700);
-    border-bottom: 1px solid var(--color-base-600);
     scroll-margin-block: 1em;
-    width: fit-content;
+
+    line-height: 2;
+    margin-left: 12px;
+
+    &.multiple {
+      margin-left: 18px;
+    }
   }
 </style>

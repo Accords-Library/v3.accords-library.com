@@ -35,25 +35,28 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 
     {credits.length > 0 && <InlineCredits credits={credits} />}
   </div>
-  <div class="pressable-label">
+  <button class="pressable-label">
     <Icon name="material-symbols:translate" />
-    <p>
+    <p class="font-s">
       {
         t("timeline.eventFooter.languages", {
           count: availableLanguages.length,
         })
       }
     </p>
-  </div>
+  </button>
 </Tooltip>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
+  button {
+    padding-block: 0.5em;
+  }
+
   #tooltip-content {
     display: grid;
     gap: 0.5em;
-    font-size: 1rem;
 
     & .current {
       color: var(--color-base-750);

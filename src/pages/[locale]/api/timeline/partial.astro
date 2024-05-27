@@ -1,6 +1,7 @@
 ---
+import Card from "components/Card.astro";
 import MasoTarget from "components/Maso/MasoTarget.astro";
-import TimelineEventTranslation from "pages/[locale]/timeline/_components/TimelineEventTranslation.astro";
+import RichText from "components/RichText/RichText.astro";
 import TimelineLanguageOverride from "pages/[locale]/timeline/_components/TimelineLanguageOverride.astro";
 import TimelineNote from "pages/[locale]/timeline/_components/TimelineNote.astro";
 import TimelineSourcesButton from "pages/[locale]/timeline/_components/TimelineSourcesButton.astro";
@@ -32,20 +33,25 @@ const { title, description, notes, credits } = getLocalizedMatch(translations);
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <MasoTarget>
-  <div class="event">
-    <TimelineEventTranslation title={title} description={description} />
-    <div id="bottom" class="when-js when-no-print">
-      <TimelineSourcesButton sources={sources} />
-      {notes && <TimelineNote notes={notes} />}
-      <TimelineLanguageOverride
-        availableLanguages={translations.map(({ language }) => language)}
-        currentLang={lang}
-        credits={credits}
-        getPartialUrl={(locale) =>
-          getLocalizedUrl(`/api/timeline/partial?id=${id}&index=${index}&lang=${locale}`)}
-      />
+  <Card>
+    <div class="event">
+      <div id="content">
+        {title && <h4 class="font-xl">{title}</h4>}
+        {description && <RichText content={description} />}
+      </div>
+      <div id="bottom" class="when-js when-no-print">
+        <TimelineSourcesButton sources={sources} />
+        {notes && <TimelineNote notes={notes} />}
+        <TimelineLanguageOverride
+          availableLanguages={translations.map(({ language }) => language)}
+          currentLang={lang}
+          credits={credits}
+          getPartialUrl={(locale) =>
+            getLocalizedUrl(`/api/timeline/partial?id=${id}&index=${index}&lang=${locale}`)}
+        />
+      </div>
     </div>
-  </div>
+  </Card>
 </MasoTarget>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
@@ -55,12 +61,27 @@ const { title, description, notes, credits } = getLocalizedMatch(translations);
     display: flex;
     flex-direction: column;
     gap: 1em;
+    padding: 1em;
+
+    & > #content {
+      padding-left: 0.9em;
+      padding-right: 1.2em;
+      padding-top: 0.5em;
+
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+
+      & > h4 {
+        line-height: 1.2;
+        max-width: 35rem;
+      }
+    }
 
     & > #bottom {
       display: flex;
       place-items: start;
-      gap: 0.3em;
-      font-size: 85%;
+      gap: 0.4em;
     }
   }
 </style>

@@ -20,8 +20,16 @@ const { t } = await getI18n(Astro.locals.currentLocale);
   <div id="tooltip-content" slot="tooltip-content">
     <RichText content={notes} />
   </div>
-  <div class="pressable-label">
+  <button class="pressable-label">
     <Icon name="material-symbols:comment-outline" />
-    <p>{t("timeline.eventFooter.note")}</p>
-  </div>
+    <p class="font-s">{t("timeline.eventFooter.note")}</p>
+  </button>
 </Tooltip>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  button {
+    padding-block: 0.5em;
+  }
+</style>

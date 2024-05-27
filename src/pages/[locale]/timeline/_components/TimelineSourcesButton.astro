@@ -20,7 +20,7 @@ const { t } = await getI18n(Astro.locals.currentLocale);
   sources.length === 0 ? (
     <div class="no-sources error-message">
       <Icon name="material-symbols:warning-outline" />
-      <p>{t("timeline.eventFooter.sources", { count: sources.length })}</p>
+      <p class="font-s">{t("timeline.eventFooter.sources", { count: sources.length })}</p>
     </div>
   ) : (
     <Tooltip trigger="click">
@@ -29,10 +29,10 @@ const { t } = await getI18n(Astro.locals.currentLocale);
           <SourceRow source={source} />
         ))}
       </div>
-      <div class="pressable-label">
+      <button class="pressable-label">
         <Icon name="material-symbols:edit-note" />
-        <p>{t("timeline.eventFooter.sources", { count: sources.length })}</p>
-      </div>
+        <p class="font-s">{t("timeline.eventFooter.sources", { count: sources.length })}</p>
+      </button>
     </Tooltip>
   )
 }
@@ -40,11 +40,16 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  #tooltip-content {
-    display: grid;
-    gap: 0.5em;
-    font-size: 1rem;
+  button {
+    padding-block: 0.5em;
   }
+
+  #tooltip-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+
   .no-sources {
     flex-shrink: 0;
     display: flex;
