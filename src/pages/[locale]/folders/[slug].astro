@@ -37,7 +37,7 @@ const meta = getLocalizedMatch(folder.translations);
   <AppLayoutTitle title={meta.name} />
   {meta.description && <AppLayoutDescription description={meta.description} />}
 
-  <div id="main">
+  <div id="main" class:list={{ complex: folder.sections.type === "multiple" }}>
     {
       folder.sections.type === "single" && folder.sections.subfolders.length > 0 ? (
         <FoldersSection folders={folder.sections.subfolders} />
@@ -102,9 +102,13 @@ const meta = getLocalizedMatch(folder.translations);
     display: grid;
     gap: 4em;
 
-    & > #sections {
-      display: grid;
-      gap: 2.5em;
+    &.complex {
+      gap: 6em;
+
+      & > #sections {
+        display: grid;
+        gap: 4em;
+      }
     }
 
     & > #files {

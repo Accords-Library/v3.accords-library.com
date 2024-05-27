@@ -74,7 +74,9 @@ const translation = getLocalizedMatch(translations);
       gap: 1em;
       text-align: center;
       place-items: center;
+      box-shadow: 0 5px 20px -10px var(--color-shadow-0);
       border-radius: 16px;
+      overflow: hidden;
 
       transition: 100ms scale;
 
@@ -83,19 +85,7 @@ const translation = getLocalizedMatch(translations);
         scale: 104%;
       }
 
-      &:focus-visible {
-        outline: 3px solid var(--color-base-1000);
-        outline-offset: unset;
-      }
-
       max-height: 320px;
-
-      & > img {
-        max-width: 100%;
-        height: auto;
-        box-shadow: 0 5px 20px -10px var(--color-shadow);
-        border-radius: 16px;
-      }
     }
   }
 </style>

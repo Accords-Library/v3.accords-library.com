@@ -1,6 +1,6 @@
 ---
-import { Icon } from "astro-icon/components";
 import type { Attribute } from "src/utils/attributes";
+import TitleIcon from "./TitleIcon.astro";
 
 interface Props extends Attribute {}
 
@@ -12,10 +12,7 @@ if (values.length === 0) return;
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div id="container">
-  <div id="title">
-    <Icon name={icon} width={24} height={24} />
-    <p>{title}</p>
-  </div>
+  <TitleIcon title={title} icon={icon} />
   <div id="values" class:list={{ "with-border": withBorder }}>
     {
       values.map(({ name, href }) =>
@@ -43,24 +40,19 @@ if (values.length === 0) return;
       grid-template-columns: 1fr;
     }
 
-    & > #title {
-      display: flex;
-      gap: 8px;
-
-      & > p {
-        font-size: 1.5em;
-        font-variation-settings: "wght" 600;
-        translate: 0px -0.1em;
-      }
-    }
-
     & > #values {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
 
+      &:not(.with-border) {
+        translate: 0px 5px;
+        line-height: 1.2;
+      }
+
       &.with-border {
-        & > * {
+        & > div,
+        & > a {
           border-radius: 9999px;
           padding-bottom: 0.25em;
           padding-top: 0.15em;

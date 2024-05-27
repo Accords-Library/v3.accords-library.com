@@ -15,7 +15,7 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 <div class="button when-no-print">
   <a href={url} class="pressable-label">
     <Icon name="material-symbols:left-click" />
-    <p>{t("global.openMediaPage")}</p>
+    <p class="font-s">{t("global.openMediaPage")}</p>
   </a>
 </div>
 
@@ -26,7 +26,6 @@ const { t } = await getI18n(Astro.locals.currentLocale);
     display: flex;
     place-items: start;
     gap: 0.3em;
-    font-size: 85%;
 
     & > a {
       padding: 0.3em 0.6em;

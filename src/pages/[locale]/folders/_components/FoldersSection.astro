@@ -16,7 +16,7 @@ const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.curren
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div>
-  {title && <h3>{title}</h3>}
+  {title && <h3 class="font-serif font-3xl">{title}</h3>}
   <section>
     {
       folders.map(({ slug, translations, icon }) => (

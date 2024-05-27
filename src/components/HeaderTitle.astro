@@ -11,27 +11,27 @@ const { header, id } = Astro.props;
 
 {
   header === 1 ? (
-    <h1 id={id}>
+    <h1 id={id} class="font-5xl">
       <slot />
     </h1>
   ) : header === 2 ? (
-    <h2 id={id}>
+    <h2 id={id} class="font-4xl">
       <slot />
     </h2>
   ) : header === 3 ? (
-    <h3 id={id}>
+    <h3 id={id} class="font-3xl">
       <slot />
     </h3>
   ) : header === 4 ? (
-    <h4 id={id}>
+    <h4 id={id} class="font-2xl">
       <slot />
     </h4>
   ) : header === 5 ? (
-    <h5 id={id}>
+    <h5 id={id} class="font-xl">
       <slot />
     </h5>
   ) : (
-    <h6 id={id}>
+    <h6 id={id} class="font-l">
       <slot />
     </h6>
   )

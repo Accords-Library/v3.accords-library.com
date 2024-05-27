@@ -48,24 +48,13 @@ const { getLocalizedUrl, formatScanIndexShort } = await getI18n(Astro.locals.cur
   }
 
   a {
+    max-height: 100%;
+    box-shadow: 0 5px 20px -10px var(--color-shadow-0);
     transition: 100ms scale;
 
     &:hover,
     &:focus-visible {
       scale: 104%;
-    }
-
-    &:focus-visible {
-      outline: 3px solid var(--color-base-1000);
-      outline-offset: unset;
-    }
-
-    max-height: 100%;
-
-    & > img {
-      max-width: 100%;
-      height: auto;
-      box-shadow: 0 5px 20px -10px var(--color-shadow);
     }
   }
 </style>

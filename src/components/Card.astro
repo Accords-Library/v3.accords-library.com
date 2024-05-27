@@ -32,7 +32,6 @@ const { href, disableRoundedTop = false } = Astro.props;
 
     &.rounded-top {
       border-radius: 1em;
-      overflow: hidden;
     }
 
     border: 1px solid var(--color-base-300);
@@ -47,13 +46,9 @@ const { href, disableRoundedTop = false } = Astro.props;
     &:hover,
     &:focus-visible {
       border-color: var(--color-base-650);
+      outline-color: var(--color-base-650);
       box-shadow: 0 2px 2px var(--color-shadow-2);
       background-color: color-mix(in srgb, var(--color-elevation-2) 80%, transparent);
-    }
-
-    &:focus-visible {
-      outline: 3px solid var(--color-base-650);
-      outline-offset: unset;
     }
 
     &:active {

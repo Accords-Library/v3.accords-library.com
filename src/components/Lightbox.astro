@@ -133,11 +133,6 @@ const hasNavigation = previousImageHref || nextImageHref;
       }
 
       & > a {
-        &:focus-visible {
-          outline: 3px solid var(--color-base-1000);
-          outline-offset: unset;
-        }
-
         &.pressable {
           border-radius: 9999px;
           padding-left: 1em;
@@ -156,9 +151,8 @@ const hasNavigation = previousImageHref || nextImageHref;
       }
 
       & > #image-anchor {
-        display: block;
         transition: 100ms scale;
-        box-shadow: 0 5px 20px -10px var(--color-shadow);
+        box-shadow: 0 5px 20px -10px var(--color-shadow-0);
 
         &:hover,
         &:focus-visible {
@@ -166,11 +160,6 @@ const hasNavigation = previousImageHref || nextImageHref;
         }
 
         max-height: 70vh;
-
-        & > img {
-          max-width: 100%;
-          height: auto;
-        }
       }
     }
 
@@ -193,7 +182,6 @@ const hasNavigation = previousImageHref || nextImageHref;
 
   h1 {
     max-width: 35em;
-    overflow-wrap: anywhere;
   }
 </style>
 

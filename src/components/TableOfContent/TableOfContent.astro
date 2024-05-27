@@ -1,8 +1,8 @@
 ---
 import type { TableOfContentEntry } from "src/shared/payload/payload-sdk";
 import TableOfContentItem from "./components/TableOfContentItem.astro";
-import { Icon } from "astro-icon/components";
 import { getI18n } from "src/i18n/i18n";
+import TitleIcon from "components/TitleIcon.astro";
 
 interface Props {
   toc: TableOfContentEntry[];
@@ -14,31 +14,9 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<div id="container">
-  <div id="title">
-    <Icon name="material-symbols:list-alt-outline" width={24} height={24} />
-    <p>{t("pages.tableOfContent")}</p>
-  </div>
+<div>
+  <TitleIcon title={t("pages.tableOfContent")} icon="material-symbols:list-alt-outline" />
   <ol>
     {toc.map((entry) => <TableOfContentItem entry={entry} />)}
   </ol>
 </div>
-
-{/* ------------------------------------------- CSS -------------------------------------------- */}
-
-<style>
-  #container {
-    & > #title {
-      display: flex;
-      place-items: center;
-      gap: 8px;
-      margin-bottom: 0.75em;
-
-      & > p {
-        font-size: 1.5em;
-        font-variation-settings: "wght" 600;
-        translate: 0px -0.1em;
-      }
-    }
-  }
-</style>

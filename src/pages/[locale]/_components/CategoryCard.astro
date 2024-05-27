@@ -52,28 +52,27 @@ const { img, name, href } = Astro.props;
 
 <style>
   a {
-    font-size: 24px;
-    font-variation-settings: "wght" 400;
-    text-decoration: none;
     display: grid;
     place-items: center;
 
     border-radius: 12px;
 
     user-select: none;
+    aspect-ratio: 16/9;
+    width: 100%;
+    box-sizing: border-box;
 
     & > img {
       object-fit: contain;
       height: 100%;
       width: 100%;
-      aspect-ratio: 2;
     }
 
     & > div {
-      aspect-ratio: 2;
-      width: 100%;
       display: grid;
       place-content: center;
+      height: 100%;
+      width: 100%;
     }
   }
 </style>

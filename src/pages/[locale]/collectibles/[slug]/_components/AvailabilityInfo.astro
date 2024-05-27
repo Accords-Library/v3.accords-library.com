@@ -1,5 +1,5 @@
 ---
-import { Icon } from "astro-icon/components";
+import TitleIcon from "components/TitleIcon.astro";
 import { getI18n } from "src/i18n/i18n";
 import type { EndpointCollectible } from "src/shared/payload/payload-sdk";
 
@@ -32,11 +32,7 @@ const title = (() => {
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div id="container">
-  <div id="title">
-    <Icon name="material-symbols:shopping-cart-outline" width={24} height={24} />
-    <p>{title}</p>
-  </div>
-
+  <TitleIcon title={title} icon={"material-symbols:shopping-cart-outline"} />
   {
     urls.length > 0 && (
       <div id="values">
@@ -61,17 +57,6 @@ const title = (() => {
 
     @media (max-width: 35em) {
       grid-template-columns: 1fr;
-    }
-
-    & > #title {
-      display: flex;
-      place-items: center;
-      gap: 8px;
-
-      & > p {
-        font-size: 1.5em;
-        font-variation-settings: "wght" 600;
-      }
     }
 
     & > #values {

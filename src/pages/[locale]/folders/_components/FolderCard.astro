@@ -13,8 +13,8 @@ const { icon = "material-symbols:folder-outline", title, href } = Astro.props;
 
 <a href={href} class="pressable">
   <Icon name={icon} />
-  <div id="right">
-    <h3>{title}</h3>
+  <div id="right" class="font-xl">
+    {title}
   </div>
 </a>
 
@@ -28,8 +28,6 @@ const { icon = "material-symbols:folder-outline", title, href } = Astro.props;
     color: var(--color-base-1000);
     padding: 12px 24px;
     border-radius: 12px;
-    text-decoration: none;
-    font-size: clamp(0.8em, 0.35em + 0.75vw, 1em);
 
     & > svg {
       width: 24px;
@@ -41,10 +39,6 @@ const { icon = "material-symbols:folder-outline", title, href } = Astro.props;
       flex-direction: column;
       align-items: flex-start;
       gap: 2px;
-
-      & > h3 {
-        font-size: 125%;
-      }
     }
   }
 </style>

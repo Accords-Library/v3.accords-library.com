@@ -12,30 +12,25 @@ if (values.length === 0) return;
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div id="container">
-  <Icon name={icon} />
-  <p>{title}</p>
-  <div>{values.map(({ name }) => name).join(", ")}</div>
+  <div class="title">
+    <Icon name={icon} />
+    <p class="font-xs">{title}</p>
+  </div>
+  <div class="font-xs">{values.map(({ name }) => name).join(", ")}</div>
 </div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   #container {
-    font-size: 80%;
     display: flex;
     flex-wrap: wrap;
     gap: 0.1em 0.5em;
+    line-height: 1.3;
 
-    & > p {
-      color: var(--color-base-750);
-    }
-
-    & > div {
-      line-height: 1.2;
-      font-size: 90%;
-    }
-
-    & > svg {
+    & > .title {
+      display: flex;
+      gap: 0.2em;
       color: var(--color-base-750);
       flex-shrink: 0;
     }

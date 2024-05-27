@@ -20,15 +20,16 @@ const {
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<a href={href} target={target} rel={rel}><div>{typeLabel}</div><p>{label}</p></a>
+<a href={href} target={target} rel={rel}><div class="font-xs">{typeLabel}</div><p>{label}</p></a>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   a {
     display: flex;
+    flex-wrap: wrap;
     place-items: center;
-    gap: 0.5em;
+    gap: 0.1em 0.3em;
 
     & > p {
       text-decoration: underline dotted 0.1em;
@@ -36,11 +37,13 @@ const {
 
       transition-duration: 150ms;
       transition-property: text-decoration-color, color;
+
+      line-height: 1.2;
     }
 
     border-radius: 16px;
-    padding: 2px 5px;
-    margin: -2px -5px;
+    padding: 4px 10px;
+    margin: -4px -10px;
 
     &:hover > p,
     &:focus-visible > p {
@@ -49,8 +52,7 @@ const {
     }
 
     &:focus-visible {
-      outline: 2px solid var(--color-base-1000);
-      outline-offset: unset;
+      outline-width: 1.5 px;
     }
 
     &:active > p {
@@ -61,8 +63,9 @@ const {
     & > div {
       background-color: var(--color-base-300);
       border-radius: 9999px;
-      padding: 0.5em 0.6em;
-      font-size: 80%;
+      padding: 0.3em 0.6em;
+      flex-shrink: 0;
+      margin-left: -0.5em;
     }
   }
 </style>

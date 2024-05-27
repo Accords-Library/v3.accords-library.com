@@ -1,6 +1,6 @@
 ---
-import { Icon } from "astro-icon/components";
 import CollectiblePreview from "components/Previews/CollectiblePreview.astro";
+import TitleIcon from "components/TitleIcon.astro";
 import { getI18n } from "src/i18n/i18n";
 import type { EndpointCollectible } from "src/shared/payload/payload-sdk";
 
@@ -14,35 +14,27 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<div id="title">
-  <Icon name="material-symbols:box-outline" width={24} height={24} />
-  <p>{t("collectibles.contents")}</p>
-</div>
+<div id="container">
+  <TitleIcon title={t("collectibles.contents")} icon="material-symbols:box-outline" />
 
-<div id="values">
-  {subitems.map((subitem) => <CollectiblePreview collectible={subitem} />)}
+  <div id="values">
+    {subitems.map((subitem) => <CollectiblePreview collectible={subitem} />)}
+  </div>
 </div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  #title {
+  #container {
     margin-top: 6em;
-    margin-bottom: 2em;
-
     display: flex;
-    place-items: center;
-    gap: 8px;
+    flex-direction: column;
+    gap: 2em;
 
-    & > p {
-      font-size: 1.5em;
-      font-variation-settings: "wght" 600;
+    & > #values {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: clamp(6px, 2vmin, 16px);
     }
-  }
-
-  #values {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: clamp(6px, 2vmin, 16px);
   }
 </style>

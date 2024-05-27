@@ -2,7 +2,6 @@
 import { Icon } from "astro-icon/components";
 import Button from "components/Button.astro";
 import LibraryGrid from "./_components/LibraryGrid.astro";
-import ChronicleCard from "./_components/ChronicleCard.astro";
 import LinkCard from "./_components/LinkCard.astro";
 import { getI18n } from "src/i18n/i18n";
 import { cache } from "src/utils/payload";
@@ -35,7 +34,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 
   <div id="main">
     <section id="library" class="high-contrast-text">
-      <h2>{t("home.librarySection.title")}</h2>
+      <h2 class="font-serif font-3xl">{t("home.librarySection.title")}</h2>
       <p set:html={t("home.librarySection.description")} />
       <a href={getLocalizedUrl("/search")} class="DEV_TODO">
         <Button
@@ -50,50 +49,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     </section>
 
     <section class="DEV_TODO">
-      <h2>{t("home.chroniclesSection.title")}</h2>
-      <p set:html={t("home.chroniclesSection.description")} />
-      <div class="flex">
-        <ChronicleCard
-          pretitle={"Preface"}
-          title={"The Yokoverse"}
-          subtitle={"Start reading the Chronicles here"}
-          href={getLocalizedUrl("/chronicles/preface")}
-        />
-        <ChronicleCard
-          pretitle={"Chapter 1"}
-          title={"Drakengard 3"}
-          subtitle={"A cursed world, and the girl who hated it"}
-          href={getLocalizedUrl("/chronicles/drakengard-3")}
-        />
-        <ChronicleCard
-          pretitle={"Chapter 2"}
-          title={"Drakengard"}
-          subtitle={"Humanity at its lowest"}
-          href={getLocalizedUrl("/chronicles/drakengard")}
-        />
-        <ChronicleCard
-          pretitle={"Chapter 3"}
-          title={"NieR"}
-          subtitle={"The Glory of Mankind comes to an abrupt End"}
-          href={getLocalizedUrl("/chronicles/nier")}
-        />
-        <ChronicleCard
-          pretitle={"Chapter 4"}
-          title={"NieR:Automata"}
-          subtitle={"Protagonists of Meaningless Stories"}
-          href={getLocalizedUrl("/chronicles/nier-automata")}
-        />
-        <ChronicleCard
-          pretitle={"Epilogue"}
-          title={"Appendices"}
-          subtitle={"Protagonists of Meaningless Stories"}
-          href={getLocalizedUrl("/chronicles/nier-automata")}
-        />
-      </div>
-    </section>
-
-    <section class="DEV_TODO">
-      <h2>{t("home.changesSection.title")}</h2>
+      <h2 class="font-serif font-3xl">{t("home.changesSection.title")}</h2>
       <p set:html={t("home.changesSection.description")} />
       <a href={getLocalizedUrl("/changelog")}>
         <Button
@@ -105,7 +61,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     </section>
 
     <section>
-      <h2>{t("home.moreSection.title")}</h2>
+      <h2 class="font-serif font-3xl">{t("home.moreSection.title")}</h2>
       <p set:html={t("home.moreSection.description")} />
       <div class="grid">
         <div class="DEV_TODO">
@@ -143,7 +99,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     </section>
 
     <section>
-      <h2>{t("home.linksSection.title")}</h2>
+      <h2 class="font-serif font-3xl">{t("home.linksSection.title")}</h2>
       <p set:html={t("home.linksSection.description")} />
       <div class="grid">
         <LinkCard
@@ -192,26 +148,21 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 
     & > div {
       & > h1 {
-        margin: 0;
-        line-height: 1;
-        font-size: 52px;
-        font-variation-settings: "wght" 300;
+        font-size: 54.5px;
         font-variation-settings: "wght" 800;
       }
 
       & > p {
-        line-height: 1;
-        margin: 0;
         margin-top: -0.5em;
-        font-size: 21px;
+        font-size: 20px;
         font-variation-settings: "wght" 600;
       }
     }
 
     @media (max-width: 35rem) {
       flex-direction: column;
-      width: 100%;
       place-items: center;
+      margin-bottom: 3em;
       --container-width: calc((100vw - 48px));
 
       & > svg {
@@ -222,16 +173,14 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       & > div {
         & > h1 {
           margin: 0;
-          line-height: 1;
           font-size: calc(var(--container-width) / 9);
           font-variation-settings: "wght" 800;
         }
 
         & > p {
-          line-height: 1;
           margin: 0;
           margin-top: -0.5em;
-          font-size: calc(var(--container-width) / 21.8);
+          font-size: calc(var(--container-width) / 25);
           font-variation-settings: "wght" 700;
         }
       }
@@ -244,11 +193,6 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     gap: 64px;
 
     & > section {
-      & > h2 {
-        font-family: var(--font-serif);
-        font-size: 30px;
-      }
-
       & > p {
         max-width: 35em;
         line-height: 1.5;

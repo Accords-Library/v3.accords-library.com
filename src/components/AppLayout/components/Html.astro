@@ -58,7 +58,17 @@ const { currentTheme } = Astro.locals;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="stylesheet" href="/css/tippy.css" fetchpriority="low" />
+
+    <link
+      rel="preload"
+      href="/css/tippy.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link rel="stylesheet" href="/css/tippy.css" />
+    </noscript>
+
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fdebd4" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#27231e" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -138,7 +148,61 @@ const { currentTheme } = Astro.locals;
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style is:global>
+  /* RESET */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  button,
+  body,
   html {
+    padding: 0;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  button,
+  input,
+  optgroup,
+  select,
+  textarea {
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  a:has(> img) {
+    display: block;
+    width: fit-content;
+  }
+
+  button {
+    background-color: initial;
+    border: initial;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: initial;
+  }
+
+  /* LIGHT/DARK THEME */
+
+  html,
+  .light-theme {
     --color-base-0: #ffffff;
     --color-base-50: #fffaf3;
     --color-base-100: #fff4e6;
@@ -166,7 +230,7 @@ const { currentTheme } = Astro.locals;
     --color-elevation-1: var(--color-base-125);
     --color-elevation-0: var(--color-base-150);
 
-    --color-shadow: var(--color-base-500);
+    --color-shadow-0: var(--color-base-500);
     --color-shadow-1: var(--color-base-350);
     --color-shadow-2: var(--color-base-300);
 
@@ -175,20 +239,70 @@ const { currentTheme } = Astro.locals;
     --texture-dots: url(/img/paper-dots.webp);
     --texture-dots-blend: multiply;
 
-    & .when-light-theme {
-      display: initial !important;
-    }
-
-    & .when-dark-theme {
-      display: none !important;
-    }
-
     * {
       color-scheme: only light;
     }
 
-    @media screen {
-      &.dark-theme {
+    color: var(--color-base-1000);
+  }
+
+  @media screen {
+    .light-theme {
+      & .when-dark-theme {
+        display: none !important;
+      }
+    }
+
+    .dark-theme {
+      --color-base-1000: #ebeae7;
+      --color-base-950: #eae5e0;
+      --color-base-900: #e8dfd8;
+      --color-base-850: #e4d1c4;
+      --color-base-800: #e0bfaa;
+      --color-base-750: #dcb095;
+      --color-base-700: #d4a07f;
+      --color-base-650: #cb916c;
+      --color-base-600: #bf835d;
+      --color-base-550: #b07751;
+      --color-base-500: #a06b48;
+      --color-base-450: #8f5f40;
+      --color-base-400: #7d5539;
+      --color-base-350: #6b4a33;
+      --color-base-300: #5c412e;
+      --color-base-250: #4a3728;
+      --color-base-200: #3a2d22;
+      --color-base-175: #312820;
+      --color-base-150: #27231e;
+      --color-base-100: #1c1b16;
+      --color-base-50: #11110d;
+      --color-base-0: #000000;
+
+      --color-elevation-2: var(--color-base-200);
+      --color-elevation-1: var(--color-base-175);
+      --color-elevation-0: var(--color-base-150);
+
+      --color-shadow-0: var(--color-base-0);
+      --color-shadow-1: var(--color-base-50);
+      --color-shadow-2: var(--color-base-100);
+
+      --color-critical-error: red;
+
+      --texture-dots: url(/img/paper-dots-dark.webp);
+      --texture-dots-blend: overlay;
+
+      & .when-light-theme {
+        display: none !important;
+      }
+
+      * {
+        color-scheme: only dark;
+      }
+
+      color: var(--color-base-1000);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      html:not(.manual-theme) {
         --color-base-1000: #ebeae7;
         --color-base-950: #eae5e0;
         --color-base-900: #e8dfd8;
@@ -216,7 +330,7 @@ const { currentTheme } = Astro.locals;
         --color-elevation-1: var(--color-base-175);
         --color-elevation-0: var(--color-base-150);
 
-        --color-shadow: var(--color-base-0);
+        --color-shadow-0: var(--color-base-0);
         --color-shadow-1: var(--color-base-0);
         --color-shadow-2: var(--color-base-50);
 
@@ -229,66 +343,11 @@ const { currentTheme } = Astro.locals;
           display: none !important;
         }
 
-        & .when-dark-theme {
-          display: initial !important;
-        }
-
         * {
           color-scheme: only dark;
         }
-      }
 
-      &:not(.manual-theme) {
-        @media (prefers-color-scheme: dark) {
-          --color-base-1000: #ebeae7;
-          --color-base-950: #eae5e0;
-          --color-base-900: #e8dfd8;
-          --color-base-850: #e4d1c4;
-          --color-base-800: #e0bfaa;
-          --color-base-750: #dcb095;
-          --color-base-700: #d4a07f;
-          --color-base-650: #cb916c;
-          --color-base-600: #bf835d;
-          --color-base-550: #b07751;
-          --color-base-500: #a06b48;
-          --color-base-450: #8f5f40;
-          --color-base-400: #7d5539;
-          --color-base-350: #6b4a33;
-          --color-base-300: #5c412e;
-          --color-base-250: #4a3728;
-          --color-base-200: #3a2d22;
-          --color-base-175: #312820;
-          --color-base-150: #27231e;
-          --color-base-100: #1c1b16;
-          --color-base-50: #11110d;
-          --color-base-0: #000000;
-
-          --color-elevation-3: var(--color-base-150);
-          --color-elevation-2: var(--color-base-200);
-          --color-elevation-1: var(--color-base-175);
-          --color-elevation-0: var(--color-base-150);
-
-          --color-shadow: var(--color-base-0);
-          --color-shadow-1: var(--color-base-0);
-          --color-shadow-2: var(--color-base-50);
-
-          --color-critical-error: red;
-
-          --texture-dots: url(/img/paper-dots-dark.webp);
-          --texture-dots-blend: overlay;
-
-          & .when-light-theme {
-            display: none !important;
-          }
-
-          & .when-dark-theme {
-            display: initial !important;
-          }
-
-          * {
-            color-scheme: only dark;
-          }
-        }
+        color: var(--color-base-1000);
       }
     }
   }
@@ -313,26 +372,14 @@ const { currentTheme } = Astro.locals;
     font-display: swap;
   }
 
-  html {
+  html,
+  body {
+    font-family: "Murecho Variable", sans-serif;
     font-variation-settings: "wght" 430;
-  }
-
-  h1 {
-    font-variation-settings: "wght" 900;
-  }
-
-  h2 {
-    font-variation-settings: "wght" 800;
-  }
-
-  h3,
-  h4 {
-    font-variation-settings: "wght" 700;
-  }
-
-  h5,
-  h6 {
-    font-variation-settings: "wght" 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    text-size-adjust: 100%;
+    font-size: 16px;
   }
 
   strong {
@@ -345,13 +392,117 @@ const { currentTheme } = Astro.locals;
 
   .font-serif {
     font-family: "Vollkorn Variable", serif;
+    letter-spacing: -0.055em;
   }
 
   :root {
-    --font-serif: "Vollkorn Variable", serif;
+    --font-size-xs: 0.75rem;
+    --font-size-s: 0.875rem;
+    --font-size-m: 1rem;
+    --font-size-l: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 1.875rem;
+    --font-size-4xl: 2.5rem;
+    --font-size-5xl: 4rem;
+  }
+
+  html,
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: var(--font-size-m);
+  }
+
+  .font-xs {
+    font-size: var(--font-size-xs);
+    font-variation-settings: "wght" 430;
+  }
+
+  .font-s {
+    font-size: var(--font-size-s);
+    font-variation-settings: "wght" 400;
+  }
+
+  .font-m {
+    font-size: var(--font-size-m);
+    font-variation-settings: "wght" 400;
+
+    &.font-serif {
+      letter-spacing: -0.015em;
+    }
+  }
+
+  .font-l {
+    font-size: var(--font-size-l);
+    font-variation-settings: "wght" 500;
+
+    &.font-serif {
+      letter-spacing: -0.015em;
+    }
+  }
+
+  .font-xl {
+    font-size: var(--font-size-xl);
+    font-variation-settings: "wght" 600;
+
+    &.font-serif {
+      font-variation-settings: "wght" 700;
+      letter-spacing: -0.04em;
+    }
+  }
+
+  .font-2xl {
+    font-size: var(--font-size-2xl);
+    font-variation-settings: "wght" 700;
+    &.font-serif {
+      font-variation-settings: "wght" 750;
+      letter-spacing: -0.04em;
+    }
+  }
+
+  .font-3xl {
+    font-size: var(--font-size-3xl);
+    font-variation-settings: "wght" 750;
+    &.font-serif {
+      font-variation-settings: "wght" 800;
+      letter-spacing: -0.045em;
+    }
+  }
+
+  .font-4xl {
+    font-size: var(--font-size-4xl);
+    font-variation-settings: "wght" 800;
+
+    &.font-serif {
+      font-variation-settings: "wght" 850;
+      letter-spacing: -0.05em;
+    }
+  }
+
+  .font-5xl {
+    font-size: var(--font-size-5xl);
+    font-variation-settings: "wght" 900;
   }
 
   /* THEMING */
+
+  a,
+  button {
+    &:focus-visible {
+      outline: 3px solid var(--color-base-1000);
+      outline-offset: unset;
+    }
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-base-650) transparent;
+  }
 
   *::selection {
     color: var(--color-elevation-0);
@@ -370,7 +521,6 @@ const { currentTheme } = Astro.locals;
 
   html {
     position: relative;
-    color: var(--color-base-1000);
     min-height: 100vb;
     display: flex;
 
@@ -385,36 +535,6 @@ const { currentTheme } = Astro.locals;
     display: flex;
     flex-direction: column;
     background-color: transparent;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  p,
-  button,
-  html {
-    padding: 0;
-    margin: 0;
-  }
-
-  button {
-    background-color: unset;
-    font-size: 1em;
-    border: unset;
-  }
-
-  button,
-  body {
-    font-family: "Murecho Variable", sans-serif;
-    line-height: 1;
-  }
-
-  a {
-    color: unset;
-    text-decoration: unset;
   }
 
   p {
@@ -497,11 +617,6 @@ const { currentTheme } = Astro.locals;
       background-color: var(--color-base-250);
     }
 
-    &:focus-visible {
-      outline: 3px solid var(--color-base-1000);
-      outline-offset: unset;
-    }
-
     &:active {
       background-color: var(--color-base-300);
     }
@@ -510,6 +625,7 @@ const { currentTheme } = Astro.locals;
   .pressable {
     --foreground-color: var(--color-base-650);
     color: var(--foreground-color);
+    outline-color: var(--foreground-color);
     border: 0.1rem solid var(--foreground-color);
     backdrop-filter: blur(10px);
 
@@ -521,11 +637,6 @@ const { currentTheme } = Astro.locals;
       --foreground-color: var(--color-base-1000);
       box-shadow: 0 2px 2px var(--color-shadow-2);
       background-color: var(--color-elevation-1);
-    }
-
-    &:focus-visible {
-      outline: 3px solid var(--foreground-color);
-      outline-offset: unset;
     }
 
     &:active {
@@ -545,7 +656,6 @@ const { currentTheme } = Astro.locals;
   }
 
   .prose {
-    font-size: 16px;
     line-height: 1.75;
     max-width: 35rem;
 
@@ -570,18 +680,6 @@ const { currentTheme } = Astro.locals;
       }
     }
 
-    > h2 {
-      font-size: 32px;
-    }
-
-    > h3 {
-      font-size: 24px;
-    }
-
-    > h4 {
-      font-size: 18px;
-    }
-
     > h2,
     > h3,
     > h4,
@@ -599,11 +697,6 @@ const { currentTheme } = Astro.locals;
     > h5 + h6 {
       margin-top: -0.75em;
     }
-  }
-
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-base-650) transparent;
   }
 
   .DEV_TODO {

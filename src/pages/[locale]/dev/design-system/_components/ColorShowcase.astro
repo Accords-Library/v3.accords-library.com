@@ -1,0 +1,118 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  baseColors: number[];
+  theme: "light-theme" | "dark-theme";
+}
+
+const { baseColors, theme } = Astro.props;
+---
+
+<div id="container" class:list={[theme, "manual-theme"]}>
+  <h4>Base colors</h4>
+  <div class="colors">
+    {
+      baseColors.map((color) => (
+        <div
+          style={`
+        background-color: var(--color-base-${color});
+        color: var(--color-base-${color > 500 ? 0 : 1000})
+      `}>
+          {color}
+        </div>
+      ))
+    }
+  </div>
+  <div class="legend">
+    <span><Icon name="material-symbols:chevron-left" /> Background</span><span>
+      Foreground <Icon name="material-symbols:chevron-right" />
+    </span>
+  </div>
+
+  <div class="group">
+    <div>
+      <h4>Elevation</h4>
+      <div class="colors">
+        <div style="background-color: var(--color-elevation-0);">0</div>
+        <div style="background-color: var(--color-elevation-1);">1</div>
+        <div style="background-color: var(--color-elevation-2);">2</div>
+      </div>
+    </div>
+
+    <div>
+      <h4>Shadows</h4>
+      <div class="colors">
+        <div style="background-color: var(--color-shadow-0);">0</div>
+        <div style="background-color: var(--color-shadow-1);">1</div>
+        <div style="background-color: var(--color-shadow-2);">2</div>
+      </div>
+    </div>
+
+    <div>
+      <h4>Others</h4>
+      <div class="colors">
+        <div style="background-color: var(--color-critical-error); color: var(--color-base-0);">
+          Error
+        </div>
+        <div class="texture-dots" style="background-color: var(--color-elevation-0)">Dots</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  #container {
+    max-width: unset;
+    background-color: var(--color-elevation-0);
+    padding: 2em;
+    border: 1px solid var(--color-elevation-2);
+    border-radius: 24px;
+    width: fit-content;
+  }
+
+  .legend {
+    display: flex;
+    place-content: space-between;
+    width: 100%;
+    margin-top: 0.5em;
+
+    & > span {
+      display: flex;
+
+      & > svg {
+        translate: 0 2px;
+      }
+    }
+  }
+
+  .group {
+    display: flex;
+    gap: 10em;
+    margin-top: 2em;
+  }
+
+  h4 {
+    line-height: 2;
+    margin-bottom: 4px;
+    font-size: 120%;
+  }
+
+  .colors {
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: start;
+    gap: 3px;
+
+    & > div {
+      border-radius: 6px;
+      width: 6ch;
+      height: 6ch;
+      display: flex;
+      place-content: center;
+      place-items: center;
+    }
+  }
+</style>

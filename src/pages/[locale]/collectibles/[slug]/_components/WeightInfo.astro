@@ -1,5 +1,5 @@
 ---
-import { Icon } from "astro-icon/components";
+import TitleIcon from "components/TitleIcon.astro";
 import { getI18n } from "src/i18n/i18n";
 
 interface Props {
@@ -13,11 +13,7 @@ const { formatPounds, formatGrams, t } = await getI18n(Astro.locals.currentLocal
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div id="container">
-  <div id="title">
-    <Icon name="material-symbols:scale-outline" width={24} height={24} />
-    <p>{t("collectibles.weight")}</p>
-  </div>
-
+  <TitleIcon title={t("collectibles.weight")} icon="material-symbols:scale-outline" />
   <p>{formatGrams(weight)}{" "}({formatPounds(weight)})</p>
 </div>
 
@@ -32,17 +28,6 @@ const { formatPounds, formatGrams, t } = await getI18n(Astro.locals.currentLocal
 
     @media (max-width: 35em) {
       grid-template-columns: 1fr;
-    }
-
-    & > #title {
-      display: flex;
-      place-items: center;
-      gap: 8px;
-
-      & > p {
-        font-size: 1.5em;
-        font-variation-settings: "wght" 600;
-      }
     }
 
     & > p {

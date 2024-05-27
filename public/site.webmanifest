@@ -27,38 +27,5 @@
 
   "name": "Accord's Library",
   "short_name": "Accord's Lib",
-  "start_url": ".",
-
-  "shortcuts": [
-    {
-      "name": "Library",
-      "url": "/library",
-      "description": "Browse all physical and digital media"
-    },
-    {
-      "name": "Contents",
-      "url": "/contents",
-      "description": "Explore all content and filter by type or category"
-    },
-    {
-      "name": "Wiki",
-      "url": "/wiki",
-      "description": "An encyclopedia for everything related to DrakeNieR"
-    },
-    {
-      "name": "Chronicles",
-      "url": "/chronicles",
-      "description": "Experience all events and content in chronological order"
-    },
-    {
-      "name": "News",
-      "url": "/news",
-      "description": "All the latest info"
-    },
-    {
-      "name": "Gallery",
-      "url": "/gallery",
-      "description": "Thousands of offcial artworks"
-    }
-  ]
+  "start_url": "."
 }

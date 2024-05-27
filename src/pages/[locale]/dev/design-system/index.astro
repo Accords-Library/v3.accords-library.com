@@ -1,0 +1,71 @@
+---
+import AppLayout from "components/AppLayout/AppLayout.astro";
+import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
+import ColorShowcase from "./_components/ColorShowcase.astro";
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<AppLayout>
+  <AppLayoutTitle pretitle="AL3.0" title="Design System" />
+
+  <div>
+    <h2>Colors</h2>
+
+    <h3>Light theme</h3>
+    <ColorShowcase
+      baseColors={[
+        0, 50, 100, 125, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850,
+        900, 950, 1000,
+      ]}
+      theme="light-theme"
+    />
+
+    <h3>Dark theme</h3>
+    <ColorShowcase
+      baseColors={[
+        0, 50, 100, 150, 175, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850,
+        900, 950, 1000,
+      ]}
+      theme="dark-theme"
+    />
+
+    <h2>Fonts</h2>
+
+    <div>
+      <p class="font-5xl">Lorem Ipsum 5XL</p>
+      <p class="font-4xl">Lorem Ipsum 4XL</p>
+      <p class="font-3xl">Lorem Ipsum 3XL</p>
+      <p class="font-2xl">Lorem Ipsum 2XL</p>
+      <p class="font-xl">Lorem Ipsum XL</p>
+      <p class="font-l">Lorem Ipsum L</p>
+      <p class="font-m">Lorem Ipsum M</p>
+      <p class="font-s">Lorem Ipsum S</p>
+      <p class="font-xs">Lorem Ipsum XS</p>
+    </div>
+
+    <div>
+      <p class="font-serif font-5xl">Lorem Ipsum 5XL</p>
+      <p class="font-serif font-4xl">Lorem Ipsum 4XL</p>
+      <p class="font-serif font-3xl">Lorem Ipsum 3XL</p>
+      <p class="font-serif font-2xl">Lorem Ipsum 2XL</p>
+      <p class="font-serif font-xl">Lorem Ipsum XL</p>
+      <p class="font-serif font-l">Lorem Ipsum L</p>
+      <p class="font-serif font-m">Lorem Ipsum M</p>
+    </div>
+  </div>
+</AppLayout>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+<style>
+  div {
+    margin-block: 2em;
+    display: grid;
+    gap: 8px;
+  }
+
+  .prose {
+    margin-top: 4em;
+    max-width: unset;
+  }
+</style>

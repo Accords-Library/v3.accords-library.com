@@ -36,7 +36,7 @@ const {
   />
 
   <div class="high-contrast-text">
-    <p class="title">{title}</p>
+    <p id="title" class="font-2xl">{title}</p>
     <p>{subtitle}</p>
   </div>
 </a>
@@ -53,7 +53,7 @@ const {
     place-items: center;
     overflow: hidden;
     border-radius: 12px;
-    box-shadow: 0 5px 20px -10px var(--color-shadow);
+    box-shadow: 0 5px 20px -10px var(--color-shadow-0);
 
     transition: 100ms scale;
 
@@ -62,22 +62,12 @@ const {
       scale: 105%;
     }
 
-    &:focus-visible {
-      outline: 3px solid var(--color-base-1000);
-      outline-offset: unset;
-    }
-
     & > div {
       text-align: center;
       backdrop-filter: blur(5px);
       padding: 1em;
       border-radius: 1em;
-
-      & > .title {
-        font-size: 130%;
-        font-variation-settings: "wght" 500;
-        margin-bottom: 0.2em;
-      }
+      line-height: 1.3;
     }
 
     & > img {

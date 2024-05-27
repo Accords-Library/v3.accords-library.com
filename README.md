@@ -156,7 +156,6 @@ A parallax effect is applied on the webpages' background image. This effect can 
 ## CSS Global Variables
 
 - `--color-base-X`: the current theme colors. X can be between 0 and 1000, available in increments of 50.
-- `--font-serif`: by default, everything use sans-serif. Use this variable to make the font serif.
 
 ## Translations
 

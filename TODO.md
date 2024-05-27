@@ -3,13 +3,17 @@
 ## Ongoing
 
 - [Analytics] Add analytics
+- [Tooltips] Tooltip in under next element (example in timeline)
+- [Language override] Maso actor is not focusable with keyboard nav
 
 ## Short term
 
+- [Timeline] Improve layout/spacing on mobile
 - Display if a content has a source language
 - [JSLess] Display if a content is available in more than one language
 - Number of audio players seems limited (on Chrome and Firefox)
 - [RichTextContent] Handle relationship
+- [Component] Make a metadata title component (combine with collectible custom info and table of content)
 - [RichTextContent] Add autolink block support
 
 ## Mid term
@@ -25,6 +29,8 @@
 
 ## Long term
 
+- [WebManifest] Add shortcuts https://web.dev/patterns/web-apps/shortcuts
+- [PWA] Rich install UI https://web.dev/patterns/web-apps/richer-install-ui/
 - Try using CSS instead of JS for parallax effect
 - More data caching between the CMS and Astro
 - [Folders] Support for nameless section

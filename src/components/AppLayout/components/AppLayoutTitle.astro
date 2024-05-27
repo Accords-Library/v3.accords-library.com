@@ -12,8 +12,14 @@ const { title, subtitle, pretitle } = Astro.props;
 
 <h1 class="high-contrast-text">
   {pretitle && <span id="pretitle">{pretitle}&nbsp;</span>}
-  <span id="title">{title}&nbsp;</span>
-  {subtitle && <span id="subtitle">{subtitle}</span>}
+  <span id="title" class="font-serif">{title}&nbsp;</span>
+  {
+    subtitle && (
+      <span id="subtitle" class="font-serif">
+        {subtitle}
+      </span>
+    )
+  }
 </h1>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
@@ -22,22 +28,19 @@ const { title, subtitle, pretitle } = Astro.props;
   h1 {
     line-height: 0.8;
     display: grid;
-    overflow-wrap: anywhere;
     font-size: clamp(1em, 0.7em + 1.5vw, 2em);
 
     & > #pretitle {
-      font-family: var(--font-sans-serifs);
       font-variation-settings: "wght" 430;
       margin-bottom: 0.8em;
     }
 
     & > #title {
-      font-family: var(--font-serif);
+      font-variation-settings: "wght" 900;
       font-size: 200%;
     }
 
     & > #subtitle {
-      font-family: var(--font-serif);
       font-variation-settings: "wght" 700;
       margin-top: 0.5em;
     }

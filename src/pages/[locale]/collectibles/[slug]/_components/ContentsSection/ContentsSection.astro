@@ -1,8 +1,8 @@
 ---
-import { Icon } from "astro-icon/components";
 import type { EndpointCollectible } from "src/shared/payload/payload-sdk";
 import ContentRow from "./ContentRow.astro";
 import { getI18n } from "src/i18n/i18n";
+import TitleIcon from "components/TitleIcon.astro";
 
 interface Props {
   contents: EndpointCollectible["contents"];
@@ -14,34 +14,26 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<div id="title">
-  <Icon name="material-symbols:list-alt-outline" width={24} height={24} />
-  <p>{t("collectibles.contents")}</p>
-</div>
+<div id="container">
+  <TitleIcon title={t("collectibles.contents")} icon="material-symbols:list-alt-outline" />
 
-<div id="contents">
-  {contents.map((content) => <ContentRow content={content} />)}
+  <div id="contents">
+    {contents.map((content) => <ContentRow content={content} />)}
+  </div>
 </div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  #title {
-    margin-top: 6em;
-    margin-bottom: 2em;
-
+  #container {
+    margin-top: 4em;
     display: flex;
-    place-items: center;
-    gap: 8px;
+    flex-direction: column;
+    gap: 2em;
 
-    & > p {
-      font-size: 1.5em;
-      font-variation-settings: "wght" 600;
+    & > #contents {
+      display: grid;
+      gap: 1em;
     }
-  }
-
-  #contents {
-    display: grid;
-    gap: 1em;
   }
 </style>

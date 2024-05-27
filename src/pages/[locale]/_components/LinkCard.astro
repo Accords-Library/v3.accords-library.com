@@ -15,8 +15,8 @@ const { icon, subtitle, title, href } = Astro.props;
 <a href={href} class="pressable">
   <Icon name={icon} />
   <div id="right">
-    <h3>{title}</h3>
-    <p>{subtitle}</p>
+    <p class="font-xl">{title}</p>
+    <p class="font-s">{subtitle}</p>
   </div>
 </a>
 
@@ -30,7 +30,6 @@ const { icon, subtitle, title, href } = Astro.props;
     color: var(--color-base-1000);
     padding: 1.5em;
     border-radius: 0.75em;
-    text-decoration: none;
 
     & > svg {
       width: clamp(1.5em, 6vw + 0.8em, 3em);
@@ -43,15 +42,6 @@ const { icon, subtitle, title, href } = Astro.props;
       flex-direction: column;
       align-items: flex-start;
       gap: 0.15em;
-
-      & > h3 {
-        font-size: 1.25em;
-      }
-
-      & > p {
-        font-size: 0.8em;
-        margin-left: 2px;
-      }
     }
   }
 </style>

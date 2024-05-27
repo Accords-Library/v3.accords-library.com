@@ -58,9 +58,12 @@ const mediaPage = getLocalizedUrl(`/images/${id}`);
   }
 
   a {
-    display: block;
     line-height: 0;
     margin-bottom: 0.5em;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px -10px var(--color-shadow-0);
+    border-radius: 16px;
+    overflow: hidden;
 
     transition-property: scale, margin-bottom;
     transition-duration: 100ms;
@@ -71,19 +74,6 @@ const mediaPage = getLocalizedUrl(`/images/${id}`);
       margin-bottom: 1em;
     }
 
-    &:focus-visible {
-      outline: 3px solid var(--color-base-1000);
-      outline-offset: unset;
-    }
-
     max-height: 70vh;
-
-    & > img {
-      box-shadow: 0 5px 20px -10px var(--color-shadow);
-      border-radius: 16px;
-
-      max-width: 100%;
-      height: auto;
-    }
   }
 </style>

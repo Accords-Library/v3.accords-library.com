@@ -61,7 +61,7 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
       <>
         {hasOutsideCover && (
           <section>
-            <h2>{t("collectibles.scans.cover")}</h2>
+            <h2 class="font-serif font-3xl">{t("collectibles.scans.cover")}</h2>
             <div>
               {cover.flapFront && (
                 <ScanPreview
@@ -91,7 +91,7 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
         )}
         {hasInsideCover && (
           <section>
-            <h2>{t("collectibles.scans.coverInside")}</h2>
+            <h2 class="font-serif font-3xl">{t("collectibles.scans.coverInside")}</h2>
             <div>
               {cover.insideFlapFront && (
                 <ScanPreview
@@ -133,7 +133,7 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
       <>
         {hasOutsideDustjacket && (
           <section>
-            <h2>{t("collectibles.scans.dustjacket")}</h2>
+            <h2 class="font-serif font-3xl">{t("collectibles.scans.dustjacket")}</h2>
             <p class="prose">{t("collectibles.scans.dustjacket.description")}</p>
             <div>
               {dustjacket.flapFront && (
@@ -176,7 +176,7 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
         )}
         {hasInsideDustjacket && (
           <section>
-            <h2>{t("collectibles.scans.dustjacketInside")}</h2>
+            <h2 class="font-serif font-3xl">{t("collectibles.scans.dustjacketInside")}</h2>
             <div>
               {dustjacket.insideFlapFront && (
                 <ScanPreview
@@ -225,7 +225,7 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
       <>
         {hasOutsideObi && (
           <section>
-            <h2>{t("collectibles.scans.obi")}</h2>
+            <h2 class="font-serif font-3xl">{t("collectibles.scans.obi")}</h2>
             <p class="prose">{t("collectibles.scans.obi.description")}</p>
             <div>
               {obi.flapFront && (
@@ -248,7 +248,7 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
         )}
         {hasInsideObi && (
           <section>
-            <h2>{t("collectibles.scans.obiInside")}</h2>
+            <h2 class="font-serif font-3xl">{t("collectibles.scans.obiInside")}</h2>
             <div>
               {obi.insideFlapFront && (
                 <ScanPreview
@@ -291,7 +291,7 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
   {
     pages.length > 0 && (
       <section>
-        <h2>{t("collectibles.scans.pages")}</h2>
+        <h2 class="font-serif font-3xl">{t("collectibles.scans.pages")}</h2>
         <div>
           {pages.map((image) => (
             <ScanPreview aspectRatio={pages[0]} collectibleSlug={slug} scan={image} />
@@ -308,22 +308,25 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
   section {
     margin-block: 6em;
 
-    & > h2 {
-      font-family: var(--font-serif);
-      font-size: 30px;
-    }
-
     & > p {
       margin-top: 0.5em;
       margin-bottom: 2em;
     }
 
     & > div {
-      margin-top: 1em;
+      margin-top: 2em;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 32px 16px;
       align-items: end;
+
+      @media (max-width: 600px) {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      @media (max-width: 320px) {
+        grid-template-columns: 1fr;
+      }
     }
   }
 </style>

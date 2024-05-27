@@ -27,8 +27,9 @@ const { node, context } = Astro.props;
   span {
     color: var(--color-base-650);
     font-variation-settings: "wght" 500;
-    font-size: 70%;
+    font-size: 75%; /* Using % on purpose */
     place-self: start;
     margin-top: 0.33em;
+    flex-shrink: 0;
   }
 </style>

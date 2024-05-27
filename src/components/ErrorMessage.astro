@@ -13,7 +13,7 @@ const { title, description } = Astro.props;
 
 <div class="error-message">
   <Icon name="material-symbols:error-outline" width={32} height={32} />
-  <p id="title">{title}</p>
+  <p class="font-xl">{title}</p>
   {description && <p>{description}</p>}
 </div>
 
@@ -27,10 +27,5 @@ const { title, description } = Astro.props;
     border-radius: 1em;
     display: grid;
     place-items: center;
-
-    & > #title {
-      font-variation-settings: "wght" 600;
-      font-size: 120%;
-    }
   }
 </style>

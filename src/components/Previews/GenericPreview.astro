@@ -47,6 +47,7 @@ const {
     {
       thumbnail && (
         <img
+          class:list={{ "rounded-top": !disableRoundedTop }}
           src={thumbnail.url}
           srcset={sizesToSrcset(thumbnail.sizes)}
           sizes={sizesForGridLayout(250, 1.15)}
@@ -64,12 +65,22 @@ const {
     <div id="footer">
       {
         smallTitle ? (
-          <p>{title}</p>
+          <p class="font-l">{title}</p>
         ) : (
           <p>
-            {pretitle && <span id="pretitle">{pretitle}&nbsp;</span>}
-            <span id="title">{title}&nbsp;</span>
-            {subtitle && <span id="subtitle">{subtitle}</span>}
+            {pretitle && (
+              <span id="pretitle" class="font-s">
+                {pretitle}
+              </span>
+            )}
+            <span id="title" class="font-serif font-2xl">
+              {title}
+            </span>
+            {subtitle && (
+              <span id="subtitle" class="font-serif font-m">
+                {subtitle}
+              </span>
+            )}
           </p>
         )
       }
@@ -112,6 +123,11 @@ const {
     & > img {
       width: 100%;
       height: auto;
+
+      &.rounded-top {
+        border-top-left-radius: 1em;
+        border-top-right-radius: 1em;
+      }
     }
 
     & > #icon-container {
@@ -149,28 +165,18 @@ const {
       gap: 1.2em;
 
       & > p {
-        line-height: 1;
         display: grid;
-        overflow-wrap: anywhere;
-        font-size: clamp(0.8em, 0.35em + 0.75vw, 1em);
-        font-variation-settings: "wght" 800;
 
         & > #pretitle {
-          font-family: var(--font-sans-serifs);
-          font-variation-settings: "wght" 400;
-          margin-bottom: 0.5em;
+          margin-bottom: 0.4em;
         }
 
         & > #title {
           line-height: 0.8;
-          font-family: var(--font-serif);
-          font-size: 150%;
         }
 
         & > #subtitle {
-          font-family: var(--font-serif);
-          font-variation-settings: "wght" 600;
-          margin-top: 0.5em;
+          margin-top: 0.4em;
         }
       }
 
