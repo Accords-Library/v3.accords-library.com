@@ -301,8 +301,14 @@ const { currentTheme } = Astro.locals;
       color: var(--color-base-1000);
     }
 
-    @media (prefers-color-scheme: dark) {
-      html:not(.manual-theme) {
+    html:not(.manual-theme) {
+      @media (prefers-color-scheme: light) {
+        & .when-dark-theme {
+          display: none !important;
+        }
+      }
+
+      @media (prefers-color-scheme: dark) {
         --color-base-1000: #ebeae7;
         --color-base-950: #eae5e0;
         --color-base-900: #e8dfd8;
