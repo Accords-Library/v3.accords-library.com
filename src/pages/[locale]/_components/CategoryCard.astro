@@ -57,6 +57,16 @@ const { img, name, href } = Astro.props;
 
     border-radius: 12px;
 
+    padding: 10%;
+
+    @media (max-width: 40rem) {
+      padding: 5%;
+    }
+
+    @media (max-width: 22rem) {
+      padding: 10%;
+    }
+
     user-select: none;
     aspect-ratio: 16/9;
     width: 100%;

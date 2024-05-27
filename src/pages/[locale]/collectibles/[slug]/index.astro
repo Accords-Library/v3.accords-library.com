@@ -176,6 +176,7 @@ if (price) {
           {
             gallery && (
               <ImageTile
+                class="collectibles_id-image_tile"
                 image={gallery.thumbnail}
                 title={t("collectibles.gallery.title")}
                 subtitle={t("collectibles.gallery.subtitle", { count: gallery.count })}
@@ -187,6 +188,7 @@ if (price) {
           {
             scans && (
               <ImageTile
+                class="collectibles_id-image_tile"
                 image={scans.thumbnail}
                 title={t("collectibles.scans.title")}
                 subtitle={t("collectibles.scans.subtitle", { count: scans.count })}
@@ -277,17 +279,15 @@ if (price) {
       gap: 2.5em;
       width: 100%;
 
-      > :global(a) {
-        aspect-ratio: 2 / 1;
+      @media (max-width: 23rem) {
+        > .collectibles_id-image_tile {
+          aspect-ratio: 2 / 1;
+        }
       }
 
       @media (min-width: 23rem) {
         gap: clamp(1em, 0.5em + 3vw, 2em);
         flex-direction: row;
-
-        > :global(a) {
-          aspect-ratio: 1 / 1;
-        }
 
         @media (min-width: 52rem) {
           max-width: 15rem;

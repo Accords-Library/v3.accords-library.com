@@ -200,24 +200,8 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
         margin-bottom: 24px;
       }
 
-      & > a > :global(.section-button) {
-        margin-bottom: 24px;
-      }
-
       &#library {
         & > .grid {
-          & > :global(a) {
-            padding: 10%;
-
-            @media (max-width: 40rem) {
-              padding: 5%;
-            }
-
-            @media (max-width: 22rem) {
-              padding: 10%;
-            }
-          }
-
           @media (max-width: 40rem) {
             grid-template-columns: 1fr 1fr;
           }

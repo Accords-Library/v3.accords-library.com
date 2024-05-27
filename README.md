@@ -249,3 +249,57 @@ It will produce
 
 `Return to Home`  
 `Return back`
+
+## Understand Astro's scoped CSS
+
+By default, everything is scoped to the current custom component. This mean you can't style a custom child component.
+If you do want to style a custom child component, there are two ways:
+
+- Using :global()
+- Passing a class to the child component
+
+Passing a class will enable two things on one element of the child component (typically the root element):
+
+- It will now have the class
+- It will also have the parent component CID (Astro's Scope-CSS ID)
+
+### Example
+
+We have two components:
+
+```html
+// Component A
+
+<div data-astro-cid-hnifvupa>
+  <p>This is Component A</p>
+  <ComponentB />
+</div>
+
+// Component B
+
+<div data-astro-cid-ywfdi5qi>
+  <p>This is Component B</p>
+</div>
+```
+
+Now if Component A pass a class "test" to Component B:
+
+```html
+<div data-astro-cid-hnifvupa>
+  <p>This is Component A</p>
+  <ComponentB class="test" />
+</div>
+```
+
+The resulting Component B will be:
+
+```
+<div class="test" data-astro-cid-hnifvupa data-astro-cid-ywfdi5qi>
+  <p>This is Component B</p>
+</div>
+```
+
+Things to consider:
+
+- The root element of Component B (the one where we applied the CID) is now in the scope of Component A's CSS.
+- The opposite isn't true: Component B's scoped CSS cannot affect Component A.

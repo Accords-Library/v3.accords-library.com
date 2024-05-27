@@ -37,82 +37,87 @@ const href = (() => {
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<Card href={href}>
-  <div id="row">
-    <div id="title">
-      {
-        content.relationTo === Collections.GenericContents ? (
-          <p>{getLocalizedMatch(content.value.translations).name}</p>
-        ) : content.relationTo === Collections.Pages ? (
-          <p>{formatInlineTitle(getLocalizedMatch(content.value.translations))}</p>
-        ) : content.relationTo === Collections.Audios ? (
-          <p>{formatInlineTitle(getLocalizedMatch(content.value.translations))}</p>
-        ) : content.relationTo === Collections.Videos ? (
-          <p>{formatInlineTitle(getLocalizedMatch(content.value.translations))}</p>
-        ) : (
-          <ErrorMessage
-            title="Unknown content type"
-            description="Please contact website technical administrator."
-          />
-        )
-      }
-    </div>
-
-    <div id="dots"></div>
-
-    <div id="range">
-      {
-        range && (
-          <>
-            {range.type === "pageRange" ? (
-              range.start
-            ) : range.type === "timeRange" ? (
-              range.start
-            ) : range.type === "other" ? (
-              <RichText content={getLocalizedMatch(range.translations).note} />
-            ) : (
-              <ErrorMessage
-                title="Unknown range type"
-                description="Please contact website technical administrator."
-              />
-            )}
-          </>
-        )
-      }
-    </div>
-
+<Card href={href} class="content_row-card">
+  <div id="title">
     {
-      content.relationTo === Collections.Audios ? (
-        <div class="media">
-          <AudioPlayer audio={content.value} />
-        </div>
+      content.relationTo === Collections.GenericContents ? (
+        <p>{getLocalizedMatch(content.value.translations).name}</p>
+      ) : content.relationTo === Collections.Pages ? (
+        <p>{formatInlineTitle(getLocalizedMatch(content.value.translations))}</p>
+      ) : content.relationTo === Collections.Audios ? (
+        <p>{formatInlineTitle(getLocalizedMatch(content.value.translations))}</p>
+      ) : content.relationTo === Collections.Videos ? (
+        <p>{formatInlineTitle(getLocalizedMatch(content.value.translations))}</p>
       ) : (
-        content.relationTo === Collections.Videos && (
-          <div class="media">
-            <VideoPlayer video={content.value} />
-          </div>
-        )
+        <ErrorMessage
+          title="Unknown content type"
+          description="Please contact website technical administrator."
+        />
       )
     }
+  </div>
 
+  <div id="dots"></div>
+
+  <div id="range">
     {
-      (content.relationTo === Collections.Pages ||
-        content.relationTo === Collections.Audios ||
-        content.relationTo === Collections.Videos) &&
-        content.value.attributes.length > 0 && (
-          <div id="tags">
-            <InlineAttributes attributes={content.value.attributes} />
-          </div>
-        )
+      range && (
+        <>
+          {range.type === "pageRange" ? (
+            range.start
+          ) : range.type === "timeRange" ? (
+            range.start
+          ) : range.type === "other" ? (
+            <RichText content={getLocalizedMatch(range.translations).note} />
+          ) : (
+            <ErrorMessage
+              title="Unknown range type"
+              description="Please contact website technical administrator."
+            />
+          )}
+        </>
+      )
     }
   </div>
+
+  {
+    content.relationTo === Collections.Audios ? (
+      <div class="media">
+        <AudioPlayer audio={content.value} />
+      </div>
+    ) : (
+      content.relationTo === Collections.Videos && (
+        <div class="media">
+          <VideoPlayer video={content.value} />
+        </div>
+      )
+    )
+  }
+
+  {
+    (content.relationTo === Collections.Pages ||
+      content.relationTo === Collections.Audios ||
+      content.relationTo === Collections.Videos) &&
+      content.value.attributes.length > 0 && (
+        <div id="tags">
+          <InlineAttributes attributes={content.value.attributes} />
+        </div>
+      )
+  }
 </Card>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  :global(a > #card) {
-    & > #row > #title {
+  .content_row-card {
+    padding: 1.5em;
+
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1em;
+    align-items: center;
+
+    &a > #title {
       transition-duration: 150ms;
       transition-property: text-decoration-color, color;
 
@@ -120,24 +125,15 @@ const href = (() => {
       text-decoration-color: transparent;
     }
 
-    &:hover > #row > #title {
+    &a:hover > #title {
       color: var(--color-base-750);
       text-decoration-color: var(--color-base-650);
     }
 
-    &:active > #row > #title {
+    &a:active > #title {
       color: var(--color-base-1000);
       text-decoration-color: var(--color-base-1000);
     }
-  }
-
-  #row {
-    padding: 1.5em;
-
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 1em;
-    align-items: center;
 
     & > #title {
       font-variation-settings: "wght" 600;

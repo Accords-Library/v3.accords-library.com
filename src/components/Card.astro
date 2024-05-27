@@ -2,20 +2,28 @@
 interface Props {
   href?: string | undefined;
   disableRoundedTop?: boolean;
+  class?: string | undefined;
 }
 
-const { href, disableRoundedTop = false } = Astro.props;
+const { href, disableRoundedTop = false, class: className, ...otherProps } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 {
   href !== undefined ? (
-    <a href={href} id="card" class:list={{ "rounded-top": !disableRoundedTop }}>
+    <a
+      href={href}
+      id="card"
+      class:list={[className, { "rounded-top": !disableRoundedTop }]}
+      {...(className ? otherProps : {})}>
       <slot />
     </a>
   ) : (
-    <div id="card" class:list={{ "rounded-top": !disableRoundedTop }}>
+    <div
+      id="card"
+      class:list={[className, { "rounded-top": !disableRoundedTop }]}
+      {...(className ? otherProps : {})}>
       <slot />
     </div>
   )
@@ -37,25 +45,25 @@ const { href, disableRoundedTop = false } = Astro.props;
     border: 1px solid var(--color-base-300);
     box-shadow: 0 1px 2px 0 var(--color-shadow-2);
     background-color: color-mix(in srgb, var(--color-elevation-2) 30%, transparent);
-  }
 
-  a#card {
-    transition-duration: 150ms;
-    transition-property: border-color, box-shadow, background-color;
+    &a {
+      transition-duration: 150ms;
+      transition-property: border-color, box-shadow, background-color;
 
-    &:hover,
-    &:focus-visible {
-      border-color: var(--color-base-650);
-      outline-color: var(--color-base-650);
-      box-shadow: 0 2px 2px var(--color-shadow-2);
-      background-color: color-mix(in srgb, var(--color-elevation-2) 80%, transparent);
-    }
+      &:hover,
+      &:focus-visible {
+        border-color: var(--color-base-650);
+        outline-color: var(--color-base-650);
+        box-shadow: 0 2px 2px var(--color-shadow-2);
+        background-color: color-mix(in srgb, var(--color-elevation-2) 80%, transparent);
+      }
 
-    &:active {
-      border-color: var(--color-base-1000);
-      box-shadow: 0 6px 12px 2px var(--color-shadow-2);
-      background-color: var(--color-elevation-2);
-      outline-color: var(--color-base-1000);
+      &:active {
+        border-color: var(--color-base-1000);
+        box-shadow: 0 6px 12px 2px var(--color-shadow-2);
+        background-color: var(--color-elevation-2);
+        outline-color: var(--color-base-1000);
+      }
     }
   }
 </style>

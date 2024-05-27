@@ -4,12 +4,12 @@ interface Props {
   trigger?: string | undefined;
 }
 
-const { class: className, trigger } = Astro.props;
+const { trigger, ...otherProps } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<tippy-tooltip class={className} trigger={trigger}>
+<tippy-tooltip trigger={trigger} {...otherProps.class ? otherProps : {}}>
   <template><slot name="tooltip-content" /></template>
   <slot />
 </tippy-tooltip>

@@ -34,23 +34,21 @@ const { title, description, notes, credits } = getLocalizedMatch(translations);
 
 {" " /* TODO: To be removed when https://github.com/withastro/astro/issues/11103 is fixed */}
 <MasoTarget>
-  <Card>
-    <div class="event">
-      <div id="content">
-        {title && <h4 class="font-xl">{title}</h4>}
-        {description && <RichText content={description} />}
-      </div>
-      <div id="bottom" class="when-js when-no-print">
-        <TimelineSourcesButton sources={sources} />
-        {notes && <TimelineNote notes={notes} />}
-        <TimelineLanguageOverride
-          availableLanguages={translations.map(({ language }) => language)}
-          currentLang={lang}
-          credits={credits}
-          getPartialUrl={(locale) =>
-            getLocalizedUrl(`/api/timeline/partial?id=${id}&index=${index}&lang=${locale}`)}
-        />
-      </div>
+  <Card class="timeline_partial-card">
+    <div id="content">
+      {title && <h4 class="font-xl">{title}</h4>}
+      {description && <RichText content={description} />}
+    </div>
+    <div id="bottom" class="when-js when-no-print">
+      <TimelineSourcesButton sources={sources} />
+      {notes && <TimelineNote notes={notes} />}
+      <TimelineLanguageOverride
+        availableLanguages={translations.map(({ language }) => language)}
+        currentLang={lang}
+        credits={credits}
+        getPartialUrl={(locale) =>
+          getLocalizedUrl(`/api/timeline/partial?id=${id}&index=${index}&lang=${locale}`)}
+      />
     </div>
   </Card>
 </MasoTarget>
@@ -58,7 +56,7 @@ const { title, description, notes, credits } = getLocalizedMatch(translations);
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  .event {
+  .timeline_partial-card {
     display: flex;
     flex-direction: column;
     gap: 1em;

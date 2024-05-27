@@ -78,7 +78,7 @@ const metaAttributes = [
     audio,
   }}>
   <div id="container">
-    <AudioPlayer audio={audio} />
+    <AudioPlayer audio={audio} class="audio_id-audio-player" />
 
     <div id="info">
       {
@@ -107,7 +107,7 @@ const metaAttributes = [
     margin-top: 6em;
     align-items: center;
 
-    > :global(audio) {
+    > .audio_id-audio-player {
       width: 100%;
     }
 

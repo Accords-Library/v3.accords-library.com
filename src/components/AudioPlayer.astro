@@ -3,16 +3,18 @@ import type { EndpointAudio } from "src/shared/payload/payload-sdk";
 
 interface Props {
   audio: EndpointAudio;
+  class?: string | undefined;
 }
 
 const {
   audio: { url, mimeType },
+  ...otherProps
 } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<audio controls>
+<audio controls {...otherProps.class ? otherProps : {}}>
   <source src={url} type={mimeType} />
 </audio>
 

@@ -80,10 +80,6 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       padding: 3px; /* This way focus outline isn't cropped by overflow-x */
       gap: 8px;
       margin-left: -0.8em;
-
-      & > :global(*) {
-        flex-shrink: 0;
-      }
     }
 
     & > #toolbar {
@@ -113,16 +109,16 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
         display: flex;
         gap: 12px;
 
-        & > :global(.m-only) {
+        & > .m-only {
           display: none;
         }
 
         @media (max-width: 40rem) {
-          & > :global(.m-only) {
+          & > .m-only {
             display: flex;
           }
 
-          & > :global(.m-not) {
+          & > .m-not {
             display: none;
           }
         }

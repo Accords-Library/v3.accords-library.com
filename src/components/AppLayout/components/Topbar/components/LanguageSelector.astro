@@ -10,7 +10,7 @@ interface Props {
   class?: string | undefined;
 }
 
-const { withTitle, class: className } = Astro.props;
+const { withTitle, ...otherProps } = Astro.props;
 
 const { currentLocale } = Astro.locals;
 const { t } = await getI18n(currentLocale);
@@ -18,7 +18,7 @@ const { t } = await getI18n(currentLocale);
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<Tooltip trigger="click" class={className}>
+<Tooltip trigger="click" {...otherProps.class ? otherProps : {}}>
   <div id="content" slot="tooltip-content">
     {
       cache.locales.map(({ id }) => (

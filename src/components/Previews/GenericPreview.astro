@@ -42,83 +42,81 @@ const {
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<Card href={href} disableRoundedTop={disableRoundedTop && thumbnail !== undefined}>
-  <div id="card">
+<Card
+  href={href}
+  disableRoundedTop={disableRoundedTop && thumbnail !== undefined}
+  class="generic_preview-card">
+  {
+    thumbnail && (
+      <img
+        class:list={{ "rounded-top": !disableRoundedTop }}
+        src={thumbnail.url}
+        srcset={sizesToSrcset(thumbnail.sizes)}
+        sizes={sizesForGridLayout(250, 1.15)}
+        width={thumbnail.width}
+        height={thumbnail.height}
+        loading="lazy"
+      />
+    )
+  }
+
+  <div
+    id="icon-container"
+    class:list={{ "thumbnail-alt": !thumbnail, "rounded-top": !disableRoundedTop }}
+    title={iconHoverLabel}>
+    <Icon name={icon} width={32} height={32} />
+  </div>
+
+  <div id="footer">
     {
-      thumbnail && (
-        <img
-          class:list={{ "rounded-top": !disableRoundedTop }}
-          src={thumbnail.url}
-          srcset={sizesToSrcset(thumbnail.sizes)}
-          sizes={sizesForGridLayout(250, 1.15)}
-          width={thumbnail.width}
-          height={thumbnail.height}
-          loading="lazy"
-        />
+      smallTitle ? (
+        <p class="font-l">{title}</p>
+      ) : (
+        <p>
+          {pretitle && (
+            <span id="pretitle" class="font-s">
+              {pretitle}
+            </span>
+          )}
+          <span id="title" class="font-serif font-2xl">
+            {title}
+          </span>
+          {subtitle && (
+            <span id="subtitle" class="font-serif font-m">
+              {subtitle}
+            </span>
+          )}
+        </p>
       )
     }
 
-    <div id="icon-container" class:list={{ "thumbnail-alt": !thumbnail }} title={iconHoverLabel}>
-      <Icon name={icon} width={32} height={32} />
-    </div>
-
-    <div id="footer">
-      {
-        smallTitle ? (
-          <p class="font-l">{title}</p>
-        ) : (
-          <p>
-            {pretitle && (
-              <span id="pretitle" class="font-s">
-                {pretitle}
-              </span>
-            )}
-            <span id="title" class="font-serif font-2xl">
-              {title}
-            </span>
-            {subtitle && (
-              <span id="subtitle" class="font-serif font-m">
-                {subtitle}
-              </span>
-            )}
-          </p>
-        )
-      }
-
-      {
-        attributes.length > 0 && (
-          <>
-            {subtitle && <hr />}
-            <div id="tags">
-              <InlineAttributes attributes={attributes} />
-            </div>
-          </>
-        )
-      }
-    </div>
+    {
+      attributes.length > 0 && (
+        <>
+          {subtitle && <hr />}
+          <div id="tags">
+            <InlineAttributes attributes={attributes} />
+          </div>
+        </>
+      )
+    }
   </div>
 </Card>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  :global(a > #card) {
-    & > #card > div > p > #title {
-      transition-duration: 150ms;
-      transition-property: color;
-    }
+  .generic_preview-card {
+    position: relative;
+    width: unset;
 
-    &:hover > #card > div > p {
+    &a:hover > #footer > p {
       color: var(--color-base-750);
     }
 
-    &:active > #card > div > p {
+    &a:active > #footer > p {
       color: var(--color-base-1000);
     }
-  }
-
-  #card {
-    position: relative;
 
     & > img {
       width: 100%;
@@ -140,7 +138,7 @@ const {
         display: grid;
         place-content: center;
 
-        & > :global(svg) {
+        & > svg {
           width: 64px;
           height: 64px;
         }
@@ -155,7 +153,11 @@ const {
         background-color: color-mix(in srgb, var(--color-elevation-2) 60%, transparent);
       }
 
-      border-radius: 0.7em;
+      &.rounded-top {
+        border-radius: 0.7em;
+      }
+
+      border-bottom-right-radius: 0.7em;
     }
 
     & > #footer {
@@ -165,6 +167,7 @@ const {
       gap: 1.2em;
 
       & > p {
+        transition: 150ms color;
         display: grid;
 
         & > #pretitle {

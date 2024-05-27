@@ -77,7 +77,7 @@ const metaAttributes = [
     video,
   }}>
   <div id="container">
-    <VideoPlayer video={video} />
+    <VideoPlayer class="video_id-video-player" video={video} />
 
     <div id="info">
       {
@@ -105,13 +105,13 @@ const metaAttributes = [
     gap: 6em;
     align-items: center;
 
-    > :global(video) {
-      max-height: 60vh;
-      width: auto;
-    }
-
     h1 {
       max-width: 35em;
+    }
+
+    & > .video_id-video-player {
+      max-height: 60vh;
+      width: auto;
     }
 
     & > #info {

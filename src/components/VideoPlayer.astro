@@ -4,16 +4,22 @@ import { formatLocale } from "src/utils/format";
 
 interface Props {
   video: EndpointVideo;
+  class?: string | undefined;
 }
 
 const {
   video: { url, thumbnail, mimeType, subtitles },
+  ...otherProps
 } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<video controls poster={thumbnail?.url} crossorigin="anonymous">
+<video
+  controls
+  poster={thumbnail?.url}
+  crossorigin="anonymous"
+  {...otherProps.class ? otherProps : {}}>
   <source src={url} type={mimeType} />
   {
     subtitles.map(({ language, url }) => (

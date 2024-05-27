@@ -11,6 +11,7 @@ interface Props {
   title: string;
   subtitle: string;
   href: string;
+  class?: string | undefined;
 }
 
 const {
@@ -18,12 +19,13 @@ const {
   title,
   subtitle,
   href,
+  ...otherProps
 } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<a href={href}>
+<a href={href} {...otherProps.class ? otherProps : {}}>
   <img
     src={url}
     srcset={sizesToSrcset(sizes)}
