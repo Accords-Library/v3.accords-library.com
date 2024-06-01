@@ -132,6 +132,9 @@ A parallax effect is applied on the webpages' background image. This effect can 
 
 ## CSS Utility classes
 
+- `.dark-theme`: force dark theming to the element and its children.
+- `.light-theme`: force light theming to the element and its children.
+
 - `when-js`: only display element if JavaScript is available
 - `when-no-js`: only display element if JavaScript is unavailable
 
@@ -140,21 +143,28 @@ A parallax effect is applied on the webpages' background image. This effect can 
 
 - `when-no-print`: only display when not printing
 
+- `font-serif`: by default, everything use sans-serif. Use this class to make the font serif.
+- `font-[size]`: apply size from font size system. Valid sizes are `xs`, `s`, `m`, `l`, `xl`, `2xl`, `3xl`, `4xl`, and `5xl`
+
 - `hide-scrollbar`: hide the element scrollbar
 - `texture-dots`: add a background paper like texture to the element
-
-- `font-serif`: by default, everything use sans-serif. Use this class to make the font serif.
 - `high-contrast-text`: add a shadow around the text to increase perceived contrast.
 - `prose`: apply typography rules. Useful for main text content
+- `error-message`: make the element flash with a red background.
+- `DEV_TODO`: completely hide the element. Useful if some element should remain in the codebase but shouldn't be visible on the page, such as WIP feature.
 
 ## CSS Component classes
 
 - `pressable-icon`: used to make a SVG/Text look pressable
+- `pressable-link`: used to make links look pressable (text with underline)
 - `pressable`: used to make a container look pressable
 
 ## CSS Global Variables
 
 - `--color-base-X`: the current theme colors. X can be between 0 and 1000, available in increments of 50.
+- `--scroll-relative`: the current vertical scroll position. The value is between 0 (at the top of the page) to 1 (at the bottom of the page)
+- `--scroll-absolute`: the current vertical scroll position in px.
+- `--font-size-[size]`: apply size from font size system. Valid sizes are `xs`, `s`, `m`, `l`, `xl`, `2xl`, `3xl`, `4xl`, and `5xl`
 
 ## Translations
 

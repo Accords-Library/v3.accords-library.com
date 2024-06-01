@@ -6,7 +6,6 @@ import type {
 } from "src/shared/payload/payload-sdk";
 import { getRandomId } from "src/utils/random";
 import { sizesToSrcset } from "src/utils/img";
-import { UAParser } from "ua-parser-js";
 
 interface Props {
   img: EndpointImage | EndpointMediaThumbnail | EndpointScanImage;
@@ -24,11 +23,6 @@ const style = `
       mask-image: linear-gradient( to bottom, rgba(0 0 0 / 30%) 0%, transparent 100% );
   }
 }`; // Required to be done like this because we can't insert variables in media queries with Astro.
-
-const userAgent = Astro.request.headers.get("user-agent") ?? "";
-const parser = new UAParser(userAgent);
-const isParallaxEnabled =
-  parser.getDevice().type !== "mobile" && parser.getDevice().type !== "tablet";
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -89,18 +83,18 @@ const isParallaxEnabled =
     user-select: none;
 
     animation: fadeIn 3s forwards;
+
+    @media (min-width: 650.5px) {
+      transform: translateY(calc(var(--scroll-absolute) * 0.4px));
+    }
   }
 </style>
 
 {/* ------------------------------------------- JS --------------------------------------------- */}
 
-<script define:vars={{ uniqueId, isParallaxEnabled }} is:inline>
+<script define:vars={{ uniqueId }} is:inline>
   const element = document.getElementById(uniqueId);
   element.style.animationPlayState = "paused";
-
-  if (isParallaxEnabled) {
-    window.backgroundParralaxElement = element;
-  }
 
   element.addEventListener(
     "load",
@@ -109,16 +103,4 @@ const isParallaxEnabled =
     },
     { once: true, passive: true }
   );
-</script>
-
-<script>
-  const refreshParallax = () => {
-    if (!("backgroundParralaxElement" in window)) return;
-    if (!(window.backgroundParralaxElement instanceof HTMLElement)) return;
-
-    const parallaxAmount = window.scrollY * 0.4;
-    window.backgroundParralaxElement.style.transform = `translateY(${parallaxAmount}px)`;
-  };
-
-  document.addEventListener("scroll", refreshParallax, { passive: true });
 </script>

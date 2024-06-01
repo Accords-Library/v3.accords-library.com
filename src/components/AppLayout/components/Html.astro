@@ -758,3 +758,17 @@ const { currentTheme } = Astro.locals;
     });
   });
 </script>
+
+<script is:inline>
+  window.addEventListener(
+    "scroll",
+    () => {
+      document.body.style.setProperty(
+        "--scroll-relative",
+        window.scrollY / (document.documentElement.offsetHeight - window.innerHeight)
+      );
+      document.body.style.setProperty("--scroll-absolute", window.scrollY);
+    },
+    false
+  );
+</script>
