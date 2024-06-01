@@ -13,7 +13,6 @@
 - [Feat] Add languages to collectibles and pages previews
 - [Feat] [RichTextContent] Handle relationship
 - [Bugs] Vollkorn doesn't support many languages
-- [Bugs] [Scans] Lack of spacing above credits if no description (e.g: https://v3.accords-library.com/en/collectibles/dod-official-guide-book-complete-edition/scans)
 - [Feat] [Timeline] Improve layout/spacing on mobile
 - [Feat] Display if a content has a source language
 - [Feat] [JSLess] Display if a content is available in more than one language

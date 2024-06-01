@@ -52,9 +52,11 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
     subtitle={translation.subtitle}
   />
 
-  {translation.description && <AppLayoutDescription description={translation.description} />}
+  <div id="meta" class:list={{ "with-description": translation.description }}>
+    {translation.description && <AppLayoutDescription description={translation.description} />}
 
-  {credits.length > 0 && <Credits credits={credits} />}
+    {credits.length > 0 && <Credits credits={credits} />}
+  </div>
 
   {
     cover && (
@@ -305,6 +307,10 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
+  #meta:not(.with-description) {
+    margin-block: 3em;
+  }
+
   section {
     margin-block: 6em;
 
