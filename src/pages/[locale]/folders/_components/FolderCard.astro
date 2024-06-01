@@ -13,7 +13,7 @@ const { icon = "material-symbols:folder-outline", title, href } = Astro.props;
 
 <a href={href} class="pressable">
   <Icon name={icon} />
-  <div id="right" class="font-xl">
+  <div id="right" class="font-l">
     {title}
   </div>
 </a>
@@ -22,6 +22,11 @@ const { icon = "material-symbols:folder-outline", title, href } = Astro.props;
 
 <style>
   a {
+    
+    @media (max-width: 600.5px) {
+      flex-grow: 1;
+    }
+
     display: flex;
     place-items: center;
     gap: 1em;

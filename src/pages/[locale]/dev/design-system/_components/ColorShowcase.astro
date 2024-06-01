@@ -10,7 +10,7 @@ const { baseColors, theme } = Astro.props;
 ---
 
 <div id="container" class:list={[theme, "manual-theme"]}>
-  <h4>Base colors</h4>
+  <h4 class="font-xl">Base colors</h4>
   <div class="colors">
     {
       baseColors.map((color) => (
@@ -32,7 +32,7 @@ const { baseColors, theme } = Astro.props;
 
   <div class="group">
     <div>
-      <h4>Elevation</h4>
+      <h4 class="font-xl">Elevation</h4>
       <div class="colors">
         <div style="background-color: var(--color-elevation-0);">0</div>
         <div style="background-color: var(--color-elevation-1);">1</div>
@@ -41,7 +41,7 @@ const { baseColors, theme } = Astro.props;
     </div>
 
     <div>
-      <h4>Shadows</h4>
+      <h4 class="font-xl">Shadows</h4>
       <div class="colors">
         <div style="background-color: var(--color-shadow-0);">0</div>
         <div style="background-color: var(--color-shadow-1);">1</div>
@@ -50,7 +50,7 @@ const { baseColors, theme } = Astro.props;
     </div>
 
     <div>
-      <h4>Others</h4>
+      <h4 class="font-xl">Others</h4>
       <div class="colors">
         <div style="background-color: var(--color-critical-error); color: var(--color-base-0);">
           Error
@@ -97,7 +97,6 @@ const { baseColors, theme } = Astro.props;
   h4 {
     line-height: 2;
     margin-bottom: 4px;
-    font-size: 120%;
   }
 
   .colors {

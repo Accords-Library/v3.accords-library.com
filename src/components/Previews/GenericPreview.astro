@@ -78,9 +78,7 @@ const {
               {pretitle}
             </span>
           )}
-          <span id="title" class="font-serif font-2xl">
-            {title}
-          </span>
+          <span class="font-serif font-2xl">{title}</span>
           {subtitle && (
             <span id="subtitle" class="font-serif font-m">
               {subtitle}
@@ -168,18 +166,18 @@ const {
 
       & > p {
         transition: 150ms color;
-        display: grid;
+        line-height: 0.8;
 
         & > #pretitle {
-          margin-bottom: 0.4em;
-        }
-
-        & > #title {
-          line-height: 0.8;
+          margin-bottom: 0.8em;
         }
 
         & > #subtitle {
-          margin-top: 0.4em;
+          margin-top: 0.5em;
+        }
+
+        & > span {
+          display: block;
         }
       }
 

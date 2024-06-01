@@ -142,19 +142,18 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     gap: 1em;
 
     & > svg {
-      width: 64px;
-      height: 64px;
+      width: calc(var(--font-size-5xl) * 1.2);
     }
 
     & > div {
       & > h1 {
-        font-size: 54.5px;
+        font-size: var(--font-size-5xl);
         font-variation-settings: "wght" 800;
       }
 
       & > p {
         margin-top: -0.5em;
-        font-size: 20px;
+        font-size: calc(var(--font-size-5xl) * 0.365);
         font-variation-settings: "wght" 600;
       }
     }

@@ -226,7 +226,7 @@ const { currentTheme } = Astro.locals;
     --color-elevation-0: var(--color-base-150);
 
     --color-shadow-0: var(--color-base-500);
-    --color-shadow-1: var(--color-base-350);
+    --color-shadow-1: var(--color-base-400);
     --color-shadow-2: var(--color-base-300);
 
     --color-critical-error: #940000;
@@ -397,15 +397,17 @@ const { currentTheme } = Astro.locals;
   }
 
   :root {
+    --font-size-increase: 4px + min(0.2vw, 3px);
+
     --font-size-xs: 0.75rem;
     --font-size-s: 0.875rem;
     --font-size-m: 1rem;
-    --font-size-l: 1.125rem;
-    --font-size-xl: 1.25rem;
-    --font-size-2xl: 1.5rem;
-    --font-size-3xl: 1.875rem;
-    --font-size-4xl: 2.5rem;
-    --font-size-5xl: 4rem;
+    --font-size-l: calc(1rem + var(--font-size-increase) * 1);
+    --font-size-xl: calc(1rem + var(--font-size-increase) * 2);
+    --font-size-2xl: calc(1rem + var(--font-size-increase) * 3);
+    --font-size-3xl: calc(1rem + var(--font-size-increase) * 4);
+    --font-size-4xl: calc(1rem + var(--font-size-increase) * 6);
+    --font-size-5xl: calc(1rem + var(--font-size-increase) * 16);
   }
 
   html,
@@ -698,6 +700,10 @@ const { currentTheme } = Astro.locals;
     > h5 + h6 {
       margin-top: -0.75em;
     }
+  }
+
+  @view-transition {
+    navigation: auto;
   }
 
   .DEV_TODO {
