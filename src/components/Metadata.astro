@@ -32,23 +32,16 @@ if (values.length === 0) return;
 
 <style>
   #container {
-    display: grid;
-    grid-template-columns: auto 1fr;
+    display: flex;
     gap: 0.5em 1em;
-
-    @media (max-width: 35em) {
-      grid-template-columns: 1fr;
-    }
+    flex-wrap: wrap;
 
     & > #values {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-
-      &:not(.with-border) {
-        translate: 0px 5px;
-        line-height: 1.2;
-      }
+      place-items: center;
+      translate: 0px 3px;
 
       &.with-border {
         & > div,

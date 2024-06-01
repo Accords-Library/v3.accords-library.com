@@ -13,7 +13,7 @@ const { formatPounds, formatGrams, t } = await getI18n(Astro.locals.currentLocal
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div id="container">
-  <TitleIcon title={t("collectibles.weight")} icon="material-symbols:scale-outline" />
+  <TitleIcon title={t("collectibles.weight")} icon="material-symbols:scale" />
   <p>{formatGrams(weight)}{" "}({formatPounds(weight)})</p>
 </div>
 

@@ -22,7 +22,6 @@
 ## Mid term
 
 - [Feat] [Payload] Home as parent folders for home folders
-- [Feat] Change icons to filled one
 - [Bugs] [Timeline] Error if collectible not published?
 - [Feat] [Timeline] display source language
 - [Feat] [Timeline] Add details button in footer with credits + last updated / created

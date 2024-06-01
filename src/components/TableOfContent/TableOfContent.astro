@@ -15,7 +15,7 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div>
-  <TitleIcon title={t("pages.tableOfContent")} icon="material-symbols:list-alt-outline" />
+  <TitleIcon title={t("pages.tableOfContent")} icon="material-symbols:list-alt" />
   <ol>
     {toc.map((entry) => <TableOfContentItem entry={entry} />)}
   </ol>

@@ -41,7 +41,7 @@ const metaAttributes = [
     ? [
         {
           title: t("global.media.attributes.filename"),
-          icon: "material-symbols:audio-file-outline",
+          icon: "material-symbols:audio-file",
           values: [{ name: filename }],
           withBorder: false,
         },
@@ -49,13 +49,13 @@ const metaAttributes = [
     : []),
   {
     title: t("global.media.attributes.filesize"),
-    icon: "material-symbols:hard-drive-outline",
+    icon: "material-symbols:hard-drive",
     values: [{ name: formatFilesize(filesize) }],
     withBorder: false,
   },
   {
     title: t("global.media.attributes.createdAt"),
-    icon: "material-symbols:calendar-add-on-outline",
+    icon: "material-symbols:calendar-add-on",
     values: [{ name: formatDate(new Date(createdAt)) }],
     withBorder: false,
   },

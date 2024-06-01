@@ -15,7 +15,7 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div id="container">
-  <TitleIcon title={t("collectibles.contents")} icon="material-symbols:box-outline" />
+  <TitleIcon title={t("collectibles.contents")} icon="material-symbols:box" />
 
   <div id="values">
     {subitems.map((subitem) => <CollectiblePreview collectible={subitem} />)}

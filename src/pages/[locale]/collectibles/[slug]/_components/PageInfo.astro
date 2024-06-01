@@ -21,7 +21,7 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div id="container">
-  <TitleIcon title={t("collectibles.bookFormat")} icon="material-symbols:note-stack-outline" />
+  <TitleIcon title={t("collectibles.bookFormat")} icon="material-symbols:note-stack" />
 
   <div id="values">
     <p>{t("collectibles.bookFormat.pageCount", { count: pageCount })}</p>

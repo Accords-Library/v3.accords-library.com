@@ -66,13 +66,13 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       <div class="grid">
         <div class="DEV_TODO">
           <LinkCard
-            icon="material-symbols:movie-outline"
+            icon="material-symbols:movie"
             title={t("footer.links.videos.title")}
             subtitle={t("footer.links.videos.subtitle", { count: 2115 })}
             href={getLocalizedUrl("/videos")}
           />
           <LinkCard
-            icon="material-symbols:folder-zip-outline"
+            icon="material-symbols:folder-zip"
             title={t("footer.links.webArchives.title")}
             subtitle={t("footer.links.webArchives.subtitle", { count: 20 })}
             href={getLocalizedUrl("/archives")}
@@ -80,7 +80,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
         </div>
 
         <LinkCard
-          icon="material-symbols:calendar-month-outline"
+          icon="material-symbols:calendar-month"
           title={t("footer.links.timeline.title")}
           subtitle={t("footer.links.timeline.subtitle", {
             eraCount: cache.config.timeline.eras.length,
@@ -90,7 +90,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
         />
 
         <LinkCard
-          icon="material-symbols:perm-media-outline"
+          icon="material-symbols:perm-media"
           title={t("footer.links.gallery.title")}
           subtitle={t("footer.links.gallery.subtitle", { count: 5750 })}
           href="https://gallery.accords-library.com/posts"
@@ -120,9 +120,9 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
           subtitle={t("footer.socials.github.subtitle")}
           href="https://github.com/Accords-Library"
         />
-        <div class="DEV_TODO">
+        <div>
           <LinkCard
-            icon="material-symbols:mail-outline"
+            icon="material-symbols:mail"
             title={t("footer.socials.contact.title")}
             subtitle={t("footer.socials.contact.subtitle")}
             href={getLocalizedUrl("/contact")}

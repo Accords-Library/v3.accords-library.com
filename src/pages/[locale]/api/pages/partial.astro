@@ -37,7 +37,7 @@ const { pretitle, title, subtitle, summary, content, credits, toc, language, sou
 const metaAttributes: Attribute[] = [
   {
     title: t("global.media.attributes.createdAt"),
-    icon: "material-symbols:calendar-add-on-outline",
+    icon: "material-symbols:calendar-add-on",
     values: [{ name: formatDate(new Date(createdAt)) }],
     withBorder: false,
   },
@@ -52,7 +52,7 @@ const metaAttributes: Attribute[] = [
 if (updatedBy) {
   metaAttributes.push({
     title: t("global.media.attributes.updatedBy"),
-    icon: "material-symbols:person-edit-outline",
+    icon: "material-symbols:person-edit",
     values: [{ name: updatedBy.username, href: getLocalizedUrl(`/recorders/${updatedBy.id}`) }],
     withBorder: true,
   });
