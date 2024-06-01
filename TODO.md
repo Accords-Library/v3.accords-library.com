@@ -10,7 +10,6 @@
 
 - [Feat] 404, 500 pages
 - [Bugs] [iOS] Video doesn't seem to start
-- [Bugs] TitleIcon is broken when there a lot of values https://v3.accords-library.com/en/pages/dod3-story-side-character-introduction
 - [Feat] Add languages to collectibles and pages previews
 - [Bugs] Folder icon is shrinking when title is too long https://v3.accords-library.com/en/folders/drakengard-1-3-shi-ni-itaru-aka
 - [Bugs] Missing title fontsize on simple titles https://v3.accords-library.com/en/images/6656a0113fe38b258ef5f852
