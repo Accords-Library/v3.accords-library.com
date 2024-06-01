@@ -8,7 +8,7 @@
 
 ## Short term
 
-- [Bugs] [Safari] Aspect ratio broken for home IPs card
+- [Feat] 404, 500 pages
 - [Bugs] [iOS] Notch area is light mode color
 - [Bugs] [iOS] Multi-parent page button is blue
 - [Bugs] [iOS] Video doesn't seem to start
@@ -27,6 +27,7 @@
 
 ## Mid term
 
+- [Feat] [Payload] Home as parent folders for home folders
 - [Feat] Change icons to filled one
 - [Bugs] [Timeline] Error if collectible not published?
 - [Feat] [Timeline] display source language
@@ -61,6 +62,9 @@
 - [Feat] [Images] add images group (which could be named or not)
 - [Feat] [Recorders] add list of contributions on recorders' pages
 - [Feat] Detect unused wording keys
+- [Feat] Replace tippy with native tooltip
+  - https://caniuse.com/css-anchor-positioning
+  - https://caniuse.com/mdn-api_htmlelement_popover
 
 ## Bonus
 
