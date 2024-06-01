@@ -11,8 +11,6 @@
 - [Feat] 404, 500 pages
 - [Bugs] [iOS] Video doesn't seem to start
 - [Feat] Add languages to collectibles and pages previews
-- [Bugs] Folder icon is shrinking when title is too long https://v3.accords-library.com/en/folders/drakengard-1-3-shi-ni-itaru-aka
-- [Bugs] Missing title fontsize on simple titles https://v3.accords-library.com/en/images/6656a0113fe38b258ef5f852
 - [Feat] [RichTextContent] Handle relationship
 - [Bugs] Vollkorn doesn't support many languages
 - [Bugs] [Scans] Lack of spacing above credits if no description (e.g: https://v3.accords-library.com/en/collectibles/dod-official-guide-book-complete-edition/scans)
