@@ -188,29 +188,14 @@ const hasNavigation = previousImageHref || nextImageHref;
 {/* ------------------------------------------- JS --------------------------------------------- */}
 
 <script>
-  import { navigate } from "astro:transitions/client";
-
-  let queueCount = 0;
-
   document.addEventListener("keydown", async (e) => {
-    queueCount++;
-    if (queueCount > 1) return;
+    const previousButton = document.getElementById("previous-button");
+    const nextButton = document.getElementById("next-button");
 
-    const handle = async () => {
-      const previousHref = document.getElementById("previous-button")?.getAttribute("href");
-      const nextHref = document.getElementById("next-button")?.getAttribute("href");
-
-      if (previousHref && e.key === "ArrowLeft") {
-        await navigate(previousHref);
-      } else if (nextHref && e.key === "ArrowRight") {
-        await navigate(nextHref);
-      }
-
-      queueCount--;
-    };
-
-    while (queueCount > 0) {
-      await handle();
+    if (previousButton && e.key === "ArrowLeft") {
+      previousButton.click();
+    } else if (nextButton && e.key === "ArrowRight") {
+      nextButton.click();
     }
   });
 </script>

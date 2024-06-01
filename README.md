@@ -9,6 +9,8 @@
 
 ## Core
 
+- https://resilientwebdesign.com/
+
 Accord's Library v3.0 (shorten to AL3.0) follows the Metamodernist Web model described by Frédéric Bonnet in his article [From Classicism to Metamodernism — A Short History of Web Development](https://dev.to/fredericbonnet/the-third-age-of-web-development-kgj#the-metamodernist-period).
 
 - Embrace web standards instead of reinventing the wheel
@@ -93,8 +95,6 @@ Accord's Library v3.0 (shorten to AL3.0) follows the Metamodernist Web model des
 - Navigation
 
   - Smooth scrolling when using anchor links
-  - Loading animation when navigation takes more than 500ms
-  - View transitions on compatible browsers: when navigating, the next page has a fade-in animation.
   - On image pages (scans, gallery, image files), allow the user to navigate to the previous or next image using keyboard arrows.
 
 - On media pages (scans, images, audios, videos), provide a download button. This way, the user doesn't have to right-click -> "save media as..."
@@ -110,7 +110,6 @@ Accord's Library v3.0 (shorten to AL3.0) follows the Metamodernist Web model des
 
 ## Drawback of JavaScript
 
-When going back in the navigation history, the page seems to load slower when JavaScript is enabled.
 The parallax effect on background images is a bit demanding, it is disabled on mobiles and tablets to lessen the impact.
 
 ## Browser-specific tricks
@@ -303,3 +302,9 @@ Things to consider:
 
 - The root element of Component B (the one where we applied the CID) is now in the scope of Component A's CSS.
 - The opposite isn't true: Component B's scoped CSS cannot affect Component A.
+
+### Standards for this repo regarding Scope-CSS
+
+- Avoid :global()
+- Try to avoid passing a class to custom elements
+- If you do, the naming scheme should be `parent_name-child_name`

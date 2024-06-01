@@ -1,8 +1,6 @@
 ---
 import UAParser from "ua-parser-js";
-import { ViewTransitions } from "astro:transitions";
 import { getI18n } from "src/i18n/i18n";
-import AppLayoutSpinner from "./AppLayoutSpinner.astro";
 import type {
   EndpointAudio,
   EndpointImage,
@@ -135,14 +133,11 @@ const { currentTheme } = Astro.locals;
         }
       </style>
     </noscript>
-    <ViewTransitions />
   </head>
 
   <body>
     <slot />
   </body>
-
-  <AppLayoutSpinner />
 </html>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
@@ -742,13 +737,9 @@ const { currentTheme } = Astro.locals;
 
 <script is:inline>
   Array.from(document.querySelectorAll(".when-no-js")).forEach((node) => node.remove());
-
-  document.addEventListener("astro:before-swap", ({ newDocument }) => {
-    Array.from(newDocument.querySelectorAll(".when-no-js")).forEach((node) => node.remove());
-  });
 </script>
 
-<script is:inline data-astro-rerun>
+<script is:inline>
   document.querySelectorAll("a").forEach((element) => {
     const href = element.getAttribute("href");
     if (!href || !href.startsWith("#")) return;
