@@ -769,6 +769,6 @@ const { currentTheme } = Astro.locals;
       );
       document.body.style.setProperty("--scroll-absolute", window.scrollY);
     },
-    false
+    { passive: true }
   );
 </script>

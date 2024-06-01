@@ -28,7 +28,6 @@
 ## Mid term
 
 - [Feat] Change icons to filled one
-- [Feat] Save cookies for longer than just the session
 - [Bugs] [Timeline] Error if collectible not published?
 - [Feat] [Timeline] display source language
 - [Feat] [Timeline] Add details button in footer with credits + last updated / created

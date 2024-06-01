@@ -6,6 +6,8 @@ import { z } from "astro:content";
 import { trackRequest, trackEvent } from "src/shared/analytics/analytics";
 import { defaultLocale } from "src/i18n/i18n";
 
+const ninetyDaysInSeconds = 60 * 60 * 24 * 90;
+
 const getAbsoluteLocaleUrl = (locale: string, url: string) => `/${locale}${url}`;
 
 const redirect = (redirectURL: string, headers: Record<string, string> = {}): Response => {
@@ -44,43 +46,99 @@ const localeNegotiator = defineMiddleware(({ cookies, url, request }, next) => {
   return next();
 });
 
-const handleActionsSearchParams = defineMiddleware(async ({ url }, next) => {
-  const actionLang = url.searchParams.get("action-lang");
-  if (isValidLocale(actionLang)) {
-    const currentLocale = getCurrentLocale(url.pathname);
-    const pathnameWithoutLocale = currentLocale
-      ? url.pathname.substring(currentLocale.length + 1)
-      : url.pathname;
-    const redirectURL = getAbsoluteLocaleUrl(actionLang, pathnameWithoutLocale);
-    trackEvent("action-lang");
-    return redirect(redirectURL, {
-      "Set-Cookie": `${CookieKeys.Languages}=${JSON.stringify([actionLang])}; Path=/`,
-    });
-  }
-
-  const actionCurrency = url.searchParams.get("action-currency");
-  if (isValidCurrency(actionCurrency)) {
-    trackEvent("action-currency");
-    return redirect(url.pathname, {
-      "Set-Cookie": `${CookieKeys.Currency}=${JSON.stringify(actionCurrency)}; Path=/`,
-    });
-  }
-
-  const actionTheme = url.searchParams.get("action-theme");
-  const verifiedActionTheme = themeSchema.safeParse(actionTheme);
-  if (verifiedActionTheme.success) {
-    trackEvent("action-theme");
-    if (verifiedActionTheme.data === "auto") {
-      return redirect(url.pathname, {
-        "Set-Cookie": `${CookieKeys.Theme}=; Path=/; Expires=${new Date(0).toUTCString()}`,
+const handleActionsSearchParams = defineMiddleware(
+  async ({ url: { pathname, searchParams }, cookies }, next) => {
+    const language = searchParams.get("action-lang");
+    if (isValidLocale(language)) {
+      const currentLocale = getCurrentLocale(pathname);
+      const pathnameWithoutLocale = currentLocale
+        ? pathname.substring(currentLocale.length + 1)
+        : pathname;
+      const redirectURL = getAbsoluteLocaleUrl(language, pathnameWithoutLocale);
+      trackEvent("action-lang");
+      cookies.set(CookieKeys.Language, language, {
+        maxAge: ninetyDaysInSeconds,
+        path: "/",
+        sameSite: "strict",
       });
+      return redirect(redirectURL);
     }
-    return redirect(url.pathname, {
-      "Set-Cookie": `${CookieKeys.Theme}=${verifiedActionTheme.data}; Path=/`,
+
+    const currency = searchParams.get("action-currency");
+    if (isValidCurrency(currency)) {
+      trackEvent("action-currency");
+      cookies.set(CookieKeys.Currency, currency, {
+        maxAge: ninetyDaysInSeconds,
+        path: "/",
+        sameSite: "strict",
+      });
+      return redirect(pathname);
+    }
+
+    const theme = searchParams.get("action-theme");
+    if (isValidTheme(theme)) {
+      trackEvent("action-theme");
+      cookies.set(CookieKeys.Theme, theme, {
+        maxAge: theme === "auto" ? 0 : ninetyDaysInSeconds,
+        path: "/",
+        sameSite: "strict",
+      });
+      return redirect(pathname);
+    }
+
+    return next();
+  }
+);
+
+const refreshCookiesMaxAge = defineMiddleware(async ({ cookies }, next) => {
+  const response = await next();
+
+  const theme = cookies.get(CookieKeys.Theme)?.value;
+  if (isValidTheme(theme) && theme !== "auto") {
+    cookies.set(CookieKeys.Theme, theme, {
+      maxAge: ninetyDaysInSeconds,
+      path: "/",
+      sameSite: "strict",
+    });
+  } else if (theme) {
+    cookies.set(CookieKeys.Theme, theme, {
+      maxAge: 0,
+      path: "/",
+      sameSite: "strict",
     });
   }
 
-  return next();
+  const currency = cookies.get(CookieKeys.Currency)?.value;
+  if (isValidCurrency(currency)) {
+    cookies.set(CookieKeys.Currency, currency, {
+      maxAge: ninetyDaysInSeconds,
+      path: "/",
+      sameSite: "strict",
+    });
+  } else if (currency) {
+    cookies.set(CookieKeys.Currency, currency, {
+      maxAge: 0,
+      path: "/",
+      sameSite: "strict",
+    });
+  }
+
+  const language = cookies.get(CookieKeys.Language)?.value;
+  if (isValidLocale(language)) {
+    cookies.set(CookieKeys.Language, language, {
+      maxAge: ninetyDaysInSeconds,
+      path: "/",
+      sameSite: "strict",
+    });
+  } else if (language) {
+    cookies.set(CookieKeys.Language, language, {
+      maxAge: 0,
+      path: "/",
+      sameSite: "strict",
+    });
+  }
+
+  return response;
 });
 
 const addContentLanguageResponseHeader = defineMiddleware(async ({ url }, next) => {
@@ -110,6 +168,7 @@ const analytics = defineMiddleware(async (context, next) => {
 export const onRequest = sequence(
   addContentLanguageResponseHeader,
   handleActionsSearchParams,
+  refreshCookiesMaxAge,
   localeNegotiator,
   provideLocalsToRequest,
   analytics
@@ -140,25 +199,14 @@ const getBestAcceptedLanguage = (request: Request): string | undefined => {
 export enum CookieKeys {
   Currency = "al_pref_currency",
   Theme = "al_pref_theme",
-  Languages = "al_pref_languages",
+  Language = "al_pref_language",
 }
 
-export const themeSchema = z.enum(["dark", "light", "auto"]);
+const themeSchema = z.enum(["dark", "light", "auto"]);
 
 export const getCookieLocale = (cookies: AstroCookies): string | undefined => {
-  const cookie = cookies.get(CookieKeys.Languages);
-
-  try {
-    const json = cookie?.json();
-    const result = z.array(z.string()).nonempty().safeParse(json);
-    if (result.success && isValidLocale(result.data[0])) {
-      return result.data[0];
-    }
-  } catch (e) {
-    console.error(e);
-  }
-
-  return undefined;
+  const cookieValue = cookies.get(CookieKeys.Language)?.value;
+  return isValidLocale(cookieValue) ? cookieValue : undefined;
 };
 
 export const getCookieCurrency = (cookies: AstroCookies): string | undefined => {
@@ -168,8 +216,7 @@ export const getCookieCurrency = (cookies: AstroCookies): string | undefined => 
 
 export const getCookieTheme = (cookies: AstroCookies): z.infer<typeof themeSchema> | undefined => {
   const cookieValue = cookies.get(CookieKeys.Theme)?.value;
-  const result = themeSchema.safeParse(cookieValue);
-  return result.success ? result.data : undefined;
+  return isValidTheme(cookieValue) ? cookieValue : undefined;
 };
 
 export const isValidCurrency = (currency: string | null | undefined): currency is string =>
@@ -177,3 +224,10 @@ export const isValidCurrency = (currency: string | null | undefined): currency i
 
 export const isValidLocale = (locale: string | null | undefined): locale is string =>
   locale !== null && locale != undefined && cache.locales.map(({ id }) => id).includes(locale);
+
+export const isValidTheme = (
+  theme: string | null | undefined
+): theme is z.infer<typeof themeSchema> => {
+  const result = themeSchema.safeParse(theme);
+  return result.success;
+};
