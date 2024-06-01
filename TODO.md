@@ -9,8 +9,6 @@
 ## Short term
 
 - [Feat] 404, 500 pages
-- [Bugs] [iOS] Notch area is light mode color
-- [Bugs] [iOS] Multi-parent page button is blue
 - [Bugs] [iOS] Video doesn't seem to start
 - [Bugs] TitleIcon is broken when there a lot of values https://v3.accords-library.com/en/pages/dod3-story-side-character-introduction
 - [Feat] Add languages to collectibles and pages previews
