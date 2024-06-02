@@ -9,7 +9,6 @@
 ## Short term
 
 - [Feat] 404, 500 pages
-- [Bugs] [iOS] Video doesn't seem to start
 - [Feat] Add languages to collectibles and pages previews
 - [Feat] [RichTextContent] Handle relationship
 - [Bugs] Vollkorn doesn't support many languages
@@ -21,7 +20,6 @@
 
 ## Mid term
 
-- [Feat] [Payload] Home as parent folders for home folders
 - [Bugs] [Timeline] Error if collectible not published?
 - [Feat] [Timeline] display source language
 - [Feat] [Timeline] Add details button in footer with credits + last updated / created
@@ -32,6 +30,8 @@
 
 ## Long term
 
+- [Bugs] [iOS] Video doesn't seem to start
+- [Feat] [Folders] Provide a list view, and a list/grid toggle
 - [Feat] [Payload] Endpoints should provide a simple text-based version of the content (for OG purposes)
 - [Feat] [WebManifest] Add shortcuts https://web.dev/patterns/web-apps/shortcuts
 - [Feat] [PWA] Rich install UI https://web.dev/patterns/web-apps/richer-install-ui/

@@ -2,18 +2,30 @@
 import GenericPreview from "components/Previews/GenericPreview.astro";
 import { getI18n } from "src/i18n/i18n";
 import type { EndpointPage } from "src/shared/payload/payload-sdk";
+import type { Attribute } from "src/utils/attributes";
 
 interface Props {
   page: EndpointPage;
 }
 
-const { getLocalizedMatch, getLocalizedUrl, t } = await getI18n(Astro.locals.currentLocale);
+const { getLocalizedMatch, getLocalizedUrl, t, formatDate } = await getI18n(
+  Astro.locals.currentLocale
+);
 
 const {
-  page: { slug, translations, thumbnail, attributes },
+  page: { slug, translations, thumbnail, attributes, updatedAt },
 } = Astro.props;
 
 const { title, pretitle, subtitle } = getLocalizedMatch(translations);
+
+const metaAttributes: Attribute[] = [
+  {
+    title: t("global.media.attributes.updatedAt"),
+    icon: "material-symbols:edit-calendar",
+    values: [{ name: formatDate(new Date(updatedAt)) }],
+    withBorder: false,
+  },
+];
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -24,7 +36,7 @@ const { title, pretitle, subtitle } = getLocalizedMatch(translations);
   subtitle={subtitle}
   thumbnail={thumbnail}
   href={getLocalizedUrl(`/pages/${slug}`)}
-  attributes={attributes}
+  attributes={[...attributes, ...metaAttributes]}
   icon="material-symbols:docs"
   iconHoverLabel={t("global.previewTypes.page")}
 />

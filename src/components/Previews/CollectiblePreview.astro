@@ -2,18 +2,61 @@
 import GenericPreview from "components/Previews/GenericPreview.astro";
 import { getI18n } from "src/i18n/i18n";
 import type { EndpointCollectible } from "src/shared/payload/payload-sdk";
+import type { Attribute } from "src/utils/attributes";
+import { convert } from "src/utils/currencies";
+import { formatLocale } from "src/utils/format";
 
 interface Props {
   collectible: EndpointCollectible;
 }
 
-const { getLocalizedMatch, getLocalizedUrl, t } = await getI18n(Astro.locals.currentLocale);
+const { getLocalizedMatch, getLocalizedUrl, t, formatPrice, formatDate } = await getI18n(
+  Astro.locals.currentLocale
+);
 
 const {
-  collectible: { slug, translations, thumbnail, attributes },
+  collectible: { slug, translations, thumbnail, attributes, languages, price, releaseDate },
 } = Astro.props;
 
 const { title, pretitle, subtitle } = getLocalizedMatch(translations);
+
+const additionalAttributes: Attribute[] = [];
+
+if (languages.length > 0) {
+  additionalAttributes.push({
+    title: t("collectibles.languages"),
+    icon: "material-symbols:translate",
+    values: languages.map((lang) => ({ name: formatLocale(lang) })),
+    withBorder: true,
+  });
+}
+
+if (releaseDate) {
+  additionalAttributes.push({
+    title: t("collectibles.releaseDate"),
+    icon: "material-symbols:calendar-month",
+    values: [{ name: formatDate(new Date(releaseDate)) }],
+    withBorder: false,
+  });
+}
+
+if (price) {
+  const preferredCurrency = Astro.locals.currentCurrency;
+
+  const convertedPrice = {
+    amount: convert(price.currency, preferredCurrency, price.amount),
+    currency: preferredCurrency,
+  };
+
+  additionalAttributes.push({
+    title: t("collectibles.price"),
+    icon: "material-symbols:sell",
+    values: [
+      { name: price.amount === 0 ? t("collectibles.price.free") : formatPrice(convertedPrice) },
+    ],
+    withBorder: false,
+  });
+}
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -24,7 +67,7 @@ const { title, pretitle, subtitle } = getLocalizedMatch(translations);
   subtitle={subtitle}
   thumbnail={thumbnail}
   href={getLocalizedUrl(`/collectibles/${slug}`)}
-  attributes={attributes}
+  attributes={[...attributes, ...additionalAttributes]}
   icon="material-symbols:category"
   iconHoverLabel={t("global.previewTypes.collectible")}
   disableRoundedTop

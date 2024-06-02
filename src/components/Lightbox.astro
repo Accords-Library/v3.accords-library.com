@@ -27,6 +27,7 @@ interface Props {
   metaAttributes?: ComponentProps<typeof Attributes>["attributes"] | undefined;
   credits?: EndpointCredit[] | undefined;
   filename?: string | undefined;
+  smallTitle?: boolean | undefined;
 }
 
 const {
@@ -41,9 +42,8 @@ const {
   title,
   subtitle,
   filename,
+  smallTitle = false,
 } = Astro.props;
-
-const smallTitle = !subtitle && !pretitle;
 
 const hasNavigation = previousImageHref || nextImageHref;
 ---
@@ -96,7 +96,7 @@ const hasNavigation = previousImageHref || nextImageHref;
     <div>
       {
         smallTitle ? (
-          <h1 class="font-3xl">{title}</h1>
+          <h1 class="font-4xl">{title}</h1>
         ) : (
           <AppLayoutTitle pretitle={pretitle} title={title} subtitle={subtitle} />
         )

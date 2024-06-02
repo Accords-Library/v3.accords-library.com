@@ -1,0 +1,35 @@
+---
+import AppLayout from "components/AppLayout/AppLayout.astro";
+import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
+import { getI18n } from "src/i18n/i18n";
+
+const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<AppLayout>
+  <AppLayoutTitle pretitle="Welcome to" title="The Dev Room" />
+  <ul>
+    <li>
+      <a href={getLocalizedUrl("/dev/design-system")} class="pressable-link">Design System</a>
+    </li>
+    <li>
+      <a href={getLocalizedUrl("/dev/rich-text")} class="pressable-link">
+        Guide to the Rich Text Editor
+      </a>
+    </li>
+  </ul>
+</AppLayout>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  ul {
+    margin-block: 2em;
+  }
+
+  li {
+    margin-block: 0.5em;
+  }
+</style>
