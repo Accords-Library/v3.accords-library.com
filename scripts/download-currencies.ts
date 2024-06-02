@@ -1,6 +1,21 @@
-import { writeFileSync } from "fs";
+import { writeFileSync, readFileSync, existsSync } from "fs";
 
 const OPEN_EXCHANGE_FOLDER = `${process.cwd()}/src/shared/openExchange`;
+const RATE_JSON_PATH = `${OPEN_EXCHANGE_FOLDER}/rates.json`;
+const CURRENCIES_JSON_PATH = `${OPEN_EXCHANGE_FOLDER}/currencies.json`;
+const ONE_DAY_IN_MS = 1_000 * 60 * 60 * 24;
+
+if (existsSync(RATE_JSON_PATH)) {
+  const rateBuffer = readFileSync(RATE_JSON_PATH, { encoding: "utf-8" });
+  const rateJSON = JSON.parse(rateBuffer);
+  const timestamp = rateJSON.timestamp * 1000;
+  const diff = Date.now() - timestamp;
+
+  if (diff < ONE_DAY_IN_MS) {
+    console.log("Currencies and rates are already up to date");
+    process.exit();
+  }
+}
 
 const ratesUrl = `https://openexchangerates.org/api/latest.json?app_id=${
   import.meta.env.OER_APP_ID
@@ -12,7 +27,7 @@ const currenciesUrl = `https://openexchangerates.org/api/currencies.json?app_id=
 const rates = await fetch(ratesUrl);
 
 if (rates.ok) {
-  writeFileSync(`${OPEN_EXCHANGE_FOLDER}/rates.json`, await rates.text(), {
+  writeFileSync(RATE_JSON_PATH, await rates.text(), {
     encoding: "utf-8",
   });
 } else {
@@ -22,7 +37,7 @@ if (rates.ok) {
 const currencies = await fetch(currenciesUrl);
 
 if (currencies.ok) {
-  writeFileSync(`${OPEN_EXCHANGE_FOLDER}/currencies.json`, await currencies.text(), {
+  writeFileSync(CURRENCIES_JSON_PATH, await currencies.text(), {
     encoding: "utf-8",
   });
 } else {
