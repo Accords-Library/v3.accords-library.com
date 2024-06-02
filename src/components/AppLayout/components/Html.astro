@@ -51,21 +51,28 @@ const { currentTheme } = Astro.locals;
     "light-theme": currentTheme === "light",
     "dark-theme": currentTheme === "dark",
     "texture-dots": !isIOS,
+    "font-m": true,
   }}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
+    <link rel="stylesheet" href="/css/tippy.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      rel="preload"
-      href="/css/tippy.css"
-      as="style"
-      onload="this.onload=null;this.rel='stylesheet'"
+      href=`https://fonts.googleapis.com/css2\
+?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900\
+&family=Noto+Sans+JP:wght@100..900\
+&family=Noto+Sans+SC:wght@100..900\
+&family=Noto+Serif:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900\
+&family=Noto+Serif+JP:wght@200..900\
+&family=Noto+Serif+SC:wght@200..900\
+&display=swap`
+      rel="stylesheet"
     />
-    <noscript>
-      <link rel="stylesheet" href="/css/tippy.css" />
-    </noscript>
 
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fdebd4" />
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#27231e" />
@@ -355,59 +362,58 @@ const { currentTheme } = Astro.locals;
 
   /* FONTS */
 
-  @font-face {
-    font-family: "Vollkorn Variable";
-    src: url("/fonts/Vollkorn-VariableFont_wght.woff2") format("woff2-variations");
-    src: url("/fonts/Vollkorn-VariableFont_wght.woff2") format("woff2") tech("variations");
-    font-weight: 400 900;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: "Murecho Variable";
-    src: url("/fonts/Murecho-VariableFont_wght.woff2") format("woff2-variations");
-    src: url("/fonts/Murecho-VariableFont_wght.woff2") format("woff2") tech("variations");
-    font-weight: 100 900;
-    font-style: normal;
-    font-display: swap;
-  }
-
-  html,
-  body {
-    font-family: "Murecho Variable", sans-serif;
-    font-variation-settings: "wght" 430;
+  html {
+    font-family: "Noto Sans", "Noto Sans JP", sans-serif;
     font-variant-numeric: tabular-nums;
     line-height: 1;
     text-size-adjust: 100%;
-    font-size: 16px;
-  }
-
-  strong {
-    font-variation-settings: "wght" 600;
-  }
-
-  b {
-    font-variation-settings: "wght" 700;
   }
 
   .font-serif {
-    font-family: "Vollkorn Variable", serif;
+    font-family: "Noto Serif", "Noto Serif JP", serif;
+    font-stretch: 100%;
+    font-weight: 430;
     letter-spacing: -0.055em;
   }
 
-  :root {
-    --font-size-increase: 4px + min(0.2vw, 3px);
+  [lang] {
+    .font-serif [lang="zh"] {
+      font-family: "Noto Serif", "Noto Serif SC", serif;
+    }
 
-    --font-size-xs: 0.75rem;
-    --font-size-s: 0.875rem;
-    --font-size-m: 1rem;
-    --font-size-l: calc(1rem + var(--font-size-increase) * 1);
-    --font-size-xl: calc(1rem + var(--font-size-increase) * 2);
-    --font-size-2xl: calc(1rem + var(--font-size-increase) * 3);
-    --font-size-3xl: calc(1rem + var(--font-size-increase) * 4);
-    --font-size-4xl: calc(1rem + var(--font-size-increase) * 6);
-    --font-size-5xl: calc(1rem + var(--font-size-increase) * 16);
+    [lang="zh"] {
+      font-family: "Noto Sans", "Noto Sans SC", sans-serif;
+      &.font-serif,
+      .font-serif {
+        font-family: "Noto Serif", "Noto Serif SC", serif;
+      }
+    }
+
+    .font-serif [lang="ja"] {
+      font-family: "Noto Serif", "Noto Serif JP", serif;
+    }
+
+    [lang="ja"] {
+      font-family: "Noto Sans", "Noto Sans JP", sans-serif;
+      &.font-serif,
+      .font-serif {
+        font-family: "Noto Serif", "Noto Serif JP", serif;
+      }
+    }
+  }
+
+  :root {
+    --font-size-increase: (2px + min(0.4vw, 5px));
+
+    --font-size-xs: 12px;
+    --font-size-s: 14px;
+    --font-size-m: 16px;
+    --font-size-l: calc(16px + var(--font-size-increase) * 0.4);
+    --font-size-xl: calc(16px + var(--font-size-increase) * 0.9);
+    --font-size-2xl: calc(16px + var(--font-size-increase) * 1.6);
+    --font-size-3xl: calc(16px + var(--font-size-increase) * 2.5);
+    --font-size-4xl: calc(16px + var(--font-size-increase) * 3.5);
+    --font-size-5xl: calc(16px + var(--font-size-increase) * 7.5);
   }
 
   html,
@@ -421,75 +427,118 @@ const { currentTheme } = Astro.locals;
     font-size: var(--font-size-m);
   }
 
+  strong,
+  b {
+    font-weight: 700;
+  }
+
   .font-xs {
     font-size: var(--font-size-xs);
-    font-variation-settings: "wght" 430;
+    letter-spacing: -0.02em;
+    font-stretch: 85%;
+    font-weight: 500;
+
+    &.font-serif {
+      font-stretch: 74%;
+    }
   }
 
   .font-s {
     font-size: var(--font-size-s);
-    font-variation-settings: "wght" 400;
+    letter-spacing: -0.02em;
+    font-stretch: 92%;
+    font-weight: 450;
+
+    &.font-serif {
+      font-stretch: 84%;
+    }
   }
 
   .font-m {
     font-size: var(--font-size-m);
-    font-variation-settings: "wght" 400;
+    letter-spacing: -0.02em;
+    font-stretch: 93%;
+    font-weight: 450;
 
     &.font-serif {
-      letter-spacing: -0.015em;
+      font-stretch: 85%;
     }
   }
 
-  .font-l {
+  .font-l,
+  .prose > h6 {
     font-size: var(--font-size-l);
-    font-variation-settings: "wght" 500;
+    letter-spacing: -0.02em;
+    font-stretch: 95%;
+    font-weight: 600;
 
     &.font-serif {
-      letter-spacing: -0.015em;
+      font-stretch: 87%;
     }
   }
 
-  .font-xl {
+  .font-xl,
+  .prose > h5 {
     font-size: var(--font-size-xl);
-    font-variation-settings: "wght" 600;
+    letter-spacing: -0.02em;
+    font-stretch: 95%;
+    font-weight: 700;
 
     &.font-serif {
-      font-variation-settings: "wght" 700;
-      letter-spacing: -0.04em;
+      font-stretch: 87%;
     }
   }
 
-  .font-2xl {
+  .font-2xl,
+  .prose > h4 {
     font-size: var(--font-size-2xl);
-    font-variation-settings: "wght" 700;
+    letter-spacing: -0.02em;
+    font-stretch: 95%;
+    font-weight: 750;
+
     &.font-serif {
-      font-variation-settings: "wght" 750;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.03em;
+      font-stretch: 89%;
     }
   }
 
-  .font-3xl {
+  .font-3xl,
+  .prose > h3 {
     font-size: var(--font-size-3xl);
-    font-variation-settings: "wght" 750;
+    letter-spacing: -0.025em;
+    font-stretch: 95%;
+    font-weight: 800;
+
     &.font-serif {
-      font-variation-settings: "wght" 800;
-      letter-spacing: -0.045em;
+      letter-spacing: -0.03em;
+      font-stretch: 87%;
     }
   }
 
-  .font-4xl {
+  .font-4xl,
+  .prose > h2 {
     font-size: var(--font-size-4xl);
-    font-variation-settings: "wght" 800;
+    letter-spacing: -0.03em;
+    font-stretch: 95%;
+    font-weight: 900;
 
     &.font-serif {
-      font-variation-settings: "wght" 850;
-      letter-spacing: -0.05em;
+      letter-spacing: -0.04em;
+      font-stretch: 89%;
     }
   }
 
-  .font-5xl {
+  .font-5xl,
+  .prose > h1 {
     font-size: var(--font-size-5xl);
-    font-variation-settings: "wght" 900;
+    letter-spacing: -0.03em;
+    font-stretch: 95%;
+    font-weight: 900;
+
+    &.font-serif {
+      letter-spacing: -0.04em;
+      font-stretch: 89%;
+    }
   }
 
   /* THEMING */
@@ -701,44 +750,10 @@ const { currentTheme } = Astro.locals;
     > h5 + h6 {
       margin-top: -0.75em;
     }
-
-    h2 {
-      font-size: var(--font-size-4xl);
-      font-variation-settings: "wght" 800;
-    }
-
-    h3 {
-      font-size: var(--font-size-3xl);
-      font-variation-settings: "wght" 750;
-    }
-
-    h4 {
-      font-size: var(--font-size-2xl);
-      font-variation-settings: "wght" 700;
-    }
-
-    h5 {
-      font-size: var(--font-size-xl);
-      font-variation-settings: "wght" 600;
-    }
-
-    h6 {
-      font-size: var(--font-size-l);
-      font-variation-settings: "wght" 500;
-    }
   }
 
   @view-transition {
     navigation: auto;
-  }
-
-  .DEV_TODO {
-    display: none !important;
-    visibility: none !important;
-    opacity: 0 !important;
-    height: 0 !important;
-    width: 0 !important;
-    overflow: hidden !important;
   }
 
   @keyframes flashingRed {

@@ -151,7 +151,6 @@ A parallax effect is applied on the webpages' background image. This effect can 
 - `high-contrast-text`: add a shadow around the text to increase perceived contrast.
 - `prose`: apply typography rules. Useful for main text content
 - `error-message`: make the element flash with a red background.
-- `DEV_TODO`: completely hide the element. Useful if some element should remain in the codebase but shouldn't be visible on the page, such as WIP feature.
 
 ## CSS Component classes
 

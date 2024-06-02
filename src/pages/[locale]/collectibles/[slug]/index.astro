@@ -172,31 +172,33 @@ if (price) {
           )
         }
 
-        <div id="gallery-scans" class="when-no-print">
-          {
-            gallery && (
-              <ImageTile
-                class="collectibles_id-image_tile"
-                image={gallery.thumbnail}
-                title={t("collectibles.gallery.title")}
-                subtitle={t("collectibles.gallery.subtitle", { count: gallery.count })}
-                href={getLocalizedUrl(`/collectibles/${slug}/gallery`)}
-              />
-            )
-          }
+        {
+          (gallery || scans) && (
+            <div
+              id="gallery-scans"
+              class:list={{ "when-no-print": true, "with-two": gallery && scans }}>
+              {gallery && (
+                <ImageTile
+                  class="collectibles_id-image_tile"
+                  image={gallery.thumbnail}
+                  title={t("collectibles.gallery.title")}
+                  subtitle={t("collectibles.gallery.subtitle", { count: gallery.count })}
+                  href={getLocalizedUrl(`/collectibles/${slug}/gallery`)}
+                />
+              )}
 
-          {
-            scans && (
-              <ImageTile
-                class="collectibles_id-image_tile"
-                image={scans.thumbnail}
-                title={t("collectibles.scans.title")}
-                subtitle={t("collectibles.scans.subtitle", { count: scans.count })}
-                href={getLocalizedUrl(`/collectibles/${slug}/scans`)}
-              />
-            )
-          }
-        </div>
+              {scans && (
+                <ImageTile
+                  class="collectibles_id-image_tile"
+                  image={scans.thumbnail}
+                  title={t("collectibles.scans.title")}
+                  subtitle={t("collectibles.scans.subtitle", { count: scans.count })}
+                  href={getLocalizedUrl(`/collectibles/${slug}/scans`)}
+                />
+              )}
+            </div>
+          )
+        }
       </div>
     </Fragment>
 
@@ -273,25 +275,36 @@ if (price) {
     }
 
     & > #gallery-scans {
-      display: flex;
       max-width: 35rem;
-      flex-direction: column;
-      gap: 2.5em;
       width: 100%;
 
-      @media (max-width: 23rem) {
-        > .collectibles_id-image_tile {
-          aspect-ratio: 2 / 1;
+      &:not(.with-two) {
+        @media (max-width: 52rem) {
+          > .collectibles_id-image_tile {
+            aspect-ratio: 2 / 1;
+          }
         }
       }
 
-      @media (min-width: 23rem) {
-        gap: clamp(1em, 0.5em + 3vw, 2em);
-        flex-direction: row;
+      &.with-two {
+        display: flex;
+        flex-direction: column;
+        gap: 2.5em;
 
-        @media (min-width: 52rem) {
-          max-width: 15rem;
-          flex-direction: column;
+        @media (max-width: 23rem) {
+          > .collectibles_id-image_tile {
+            aspect-ratio: 2 / 1;
+          }
+        }
+
+        @media (min-width: 23rem) {
+          gap: clamp(1em, 0.5em + 3vw, 2em);
+          flex-direction: row;
+
+          @media (min-width: 52rem) {
+            max-width: 15rem;
+            flex-direction: column;
+          }
         }
       }
     }

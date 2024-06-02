@@ -35,13 +35,10 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
   }
 
   <div id="toolbar" class="hide-scrollbar">
-    <a
-      href={getLocalizedUrl("/search")}
-      aria-label={t("header.topbar.search.tooltip")}
-      class="DEV_TODO">
+    <a href={getLocalizedUrl("/search")} aria-label={t("header.topbar.search.tooltip")} hidden>
       <Button icon="material-symbols:search" />
     </a>
-    <div class="separator DEV_TODO"></div>
+    <div class="separator" hidden></div>
 
     <div class="when-no-js">
       <a href="/settings">

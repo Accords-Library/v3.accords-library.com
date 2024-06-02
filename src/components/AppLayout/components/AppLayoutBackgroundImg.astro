@@ -27,7 +27,7 @@ const style = `
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<div>
+<div inert>
   <img
     id={uniqueId}
     src={url}
@@ -79,8 +79,6 @@ const style = `
       rgba(0 0 0 / 5%) 80%,
       transparent 100%
     );
-
-    user-select: none;
 
     animation: fadeIn 3s forwards;
 

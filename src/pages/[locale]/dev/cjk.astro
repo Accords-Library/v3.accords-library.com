@@ -1,0 +1,109 @@
+---
+import AppLayout from "components/AppLayout/AppLayout.astro";
+import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<AppLayout>
+  <AppLayoutTitle pretitle="CJK font" title="Testing Ground" />
+  <div id="cjk">
+    <div lang="en">
+      <p class="title">lang="en"</p>
+
+      <p>今 込 空</p>
+
+      <div class="font-serif">
+        <p class="title">class="font-serif"</p>
+        <p>今 込 空</p>
+      </div>
+    </div>
+
+    <div lang="ja">
+      <p class="title">lang="ja"</p>
+
+      <p>今 込 空</p>
+
+      <div class="font-serif">
+        <p class="title">class="font-serif"</p>
+        <p>今 込 空</p>
+      </div>
+    </div>
+
+    <div lang="zh">
+      <p class="title">lang="zh"</p>
+
+      <p>今 込 空</p>
+
+      <div class="font-serif">
+        <p class="title">class="font-serif"</p>
+        <p>今 込 空</p>
+      </div>
+    </div>
+
+    <div lang="en" class="font-serif">
+      <p class="title">lang="en" class="font-serif"</p>
+      今 込 空
+    </div>
+
+    <div lang="ja" class="font-serif">
+      <p class="title">lang="ja" class="font-serif"</p>
+      今 込 空
+    </div>
+
+    <div lang="zh" class="font-serif">
+      <p class="title">lang="zh" class="font-serif"</p>
+      今 込 空
+    </div>
+
+    <div class="font-serif">
+      <p class="title">class="font-serif"</p>
+
+      <div lang="en">
+        <p class="title">lang="en"</p>
+        <p>今 込 空</p>
+      </div>
+
+      <div lang="ja">
+        <p class="title">lang="ja"</p>
+        <p>今 込 空</p>
+      </div>
+
+      <div lang="zh">
+        <p class="title">lang="zh"</p>
+        <p>今 込 空</p>
+      </div>
+    </div>
+  </div>
+</AppLayout>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  p {
+    margin-block: 0.5em;
+  }
+
+  #cjk {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin-top: 4em;
+    place-items: start;
+
+    div {
+      border: 1px solid var(--color-base-650);
+      width: fit-content;
+      padding: 1em;
+
+      & > .title {
+        margin: -1em;
+        margin-bottom: 1em;
+        padding: 0.5em;
+        border-bottom: 1px solid var(--color-base-650);
+        font-weight: 600;
+        text-align: center;
+      }
+    }
+  }
+</style>

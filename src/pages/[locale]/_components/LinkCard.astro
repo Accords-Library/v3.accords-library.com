@@ -5,14 +5,15 @@ interface Props {
   icon: string;
   subtitle: string;
   href: string;
+  hidden?: boolean;
 }
 
-const { icon, subtitle, title, href } = Astro.props;
+const { icon, subtitle, title, href, hidden } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<a href={href} class="pressable">
+<a href={href} class="pressable" hidden={hidden}>
   <Icon name={icon} />
   <div id="right">
     <p class="font-xl">{title}</p>
@@ -23,7 +24,7 @@ const { icon, subtitle, title, href } = Astro.props;
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  a {
+  a:not([hidden]) {
     display: flex;
     place-items: center;
     gap: 1em;
