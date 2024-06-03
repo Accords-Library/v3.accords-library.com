@@ -21,8 +21,10 @@ const { t, getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.cur
 
 const { username, languages, avatar, translations } = recorder;
 
-const { biography } =
-  translations.length > 0 ? getLocalizedMatch(translations) : { biography: undefined };
+const { biography, language } =
+  translations.length > 0
+    ? getLocalizedMatch(translations)
+    : { biography: undefined, language: undefined };
 
 const additionalAttributes: Attribute[] = [];
 
@@ -76,7 +78,7 @@ if (languages.length > 0) {
           <Attributes attributes={additionalAttributes} />
         )
       }
-      {biography && <RichText content={biography} />}
+      {biography && <RichText content={biography} context={{ lang: language }} />}
     </div>
   </AsideLayout>
 </AppLayout>

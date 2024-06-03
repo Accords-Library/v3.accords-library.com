@@ -33,9 +33,14 @@ const translation = getLocalizedMatch(translations);
     title={translation.title}
     pretitle={translation.pretitle}
     subtitle={translation.subtitle}
+    lang={translation.language}
   />
 
-  {translation.description && <AppLayoutDescription description={translation.description} />}
+  {
+    translation.description && (
+      <AppLayoutDescription description={translation.description} lang={translation.language} />
+    )
+  }
 
   <div>
     {

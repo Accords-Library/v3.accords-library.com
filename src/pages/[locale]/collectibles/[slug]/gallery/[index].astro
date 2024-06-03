@@ -20,10 +20,16 @@ if (galleryImage instanceof Response) {
 const { parentPages, previousIndex, nextIndex, image } = galleryImage;
 const { filename, translations, createdAt, updatedAt, credits, attributes } = image;
 
-const { pretitle, title, subtitle, description } =
+const { pretitle, title, subtitle, description, language } =
   translations.length > 0
     ? getLocalizedMatch(translations)
-    : { pretitle: undefined, title: filename, subtitle: undefined, description: undefined };
+    : {
+        pretitle: undefined,
+        title: filename,
+        subtitle: undefined,
+        description: undefined,
+        language: undefined,
+      };
 
 const metaAttributes = [
   ...(filename && title !== filename
@@ -65,13 +71,14 @@ const metaAttributes = [
     pretitle={pretitle}
     title={title}
     subtitle={subtitle}
+    description={description}
+    lang={language}
     previousImageHref={previousIndex
       ? getLocalizedUrl(`/collectibles/${slug}/gallery/${previousIndex}`)
       : undefined}
     nextImageHref={nextIndex
       ? getLocalizedUrl(`/collectibles/${slug}/gallery/${nextIndex}`)
       : undefined}
-    description={description}
     filename={filename}
     attributes={attributes}
     metaAttributes={metaAttributes}

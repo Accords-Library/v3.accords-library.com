@@ -4,7 +4,7 @@ import type { Attribute } from "src/utils/attributes";
 
 interface Props extends Attribute {}
 
-const { icon, title, values } = Astro.props;
+const { icon, title, values, lang: titleLang } = Astro.props;
 
 if (values.length === 0) return;
 ---
@@ -14,9 +14,11 @@ if (values.length === 0) return;
 <div id="container">
   <div class="title">
     <Icon name={icon} />
-    <p class="font-xs">{title}</p>
+    <p class="font-xs" lang={titleLang}>{title}</p>
   </div>
-  <div class="font-xs">{values.map(({ name }) => name).join(", ")}</div>
+  <div id="values" class="font-xs">
+    {values.map(({ name, lang }) => <span lang={lang}>{name}</span>)}
+  </div>
 </div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
@@ -33,6 +35,12 @@ if (values.length === 0) return;
       gap: 0.2em;
       color: var(--color-base-750);
       flex-shrink: 0;
+    }
+
+    & > #values {
+      & > span:not(:last-child)::after {
+        content: ", ";
+      }
     }
   }
 </style>

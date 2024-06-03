@@ -2,16 +2,17 @@
 import { Icon } from "astro-icon/components";
 interface Props {
   title: string;
+  lang?: string | undefined;
   icon?: string | undefined;
   href: string;
 }
 
-const { icon = "material-symbols:folder", title, href } = Astro.props;
+const { icon = "material-symbols:folder", title, href, lang } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<a href={href} class="pressable">
+<a href={href} class="pressable" lang={lang}>
   <Icon name={icon} />
   <div id="right" class="font-l">
     {title}

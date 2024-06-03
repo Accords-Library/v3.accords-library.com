@@ -50,10 +50,15 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
     title={translation.title}
     pretitle={translation.pretitle}
     subtitle={translation.subtitle}
+    lang={translation.language}
   />
 
   <div id="meta" class:list={{ "with-description": translation.description }}>
-    {translation.description && <AppLayoutDescription description={translation.description} />}
+    {
+      translation.description && (
+        <AppLayoutDescription description={translation.description} lang={translation.language} />
+      )
+    }
 
     {credits.length > 0 && <Credits credits={credits} />}
   </div>

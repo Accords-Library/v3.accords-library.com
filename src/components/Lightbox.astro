@@ -23,6 +23,7 @@ interface Props {
   title: string;
   subtitle?: string | undefined;
   description?: RichTextContent | undefined;
+  lang?: string | undefined;
   attributes?: ComponentProps<typeof Attributes>["attributes"] | undefined;
   metaAttributes?: ComponentProps<typeof Attributes>["attributes"] | undefined;
   credits?: EndpointCredit[] | undefined;
@@ -38,6 +39,7 @@ const {
   metaAttributes = [],
   credits = [],
   description,
+  lang,
   pretitle,
   title,
   subtitle,
@@ -96,12 +98,14 @@ const hasNavigation = previousImageHref || nextImageHref;
     <div>
       {
         smallTitle ? (
-          <h1 class="font-4xl">{title}</h1>
+          <h1 class="font-4xl" lang={lang}>
+            {title}
+          </h1>
         ) : (
-          <AppLayoutTitle pretitle={pretitle} title={title} subtitle={subtitle} />
+          <AppLayoutTitle pretitle={pretitle} title={title} subtitle={subtitle} lang={lang} />
         )
       }
-      {description && <AppLayoutDescription description={description} />}
+      {description && <AppLayoutDescription description={description} lang={lang} />}
     </div>
     {attributes.length > 0 && <Attributes attributes={attributes} />}
     {credits.length > 0 && <Credits credits={credits} />}

@@ -4,14 +4,15 @@ import { Icon } from "astro-icon/components";
 interface Props {
   icon: string;
   title: string;
+  lang?: string | undefined;
 }
 
-const { icon, title } = Astro.props;
+const { icon, title, lang } = Astro.props;
 ---
 
 <div>
   <Icon name={icon} width={24} height={24} />
-  <p class="font-2xl">{title}</p>
+  <p class="font-2xl" lang={lang}>{title}</p>
 </div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}

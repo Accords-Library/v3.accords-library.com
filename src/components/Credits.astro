@@ -15,16 +15,20 @@ const { getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.curren
 
 <div>
   {
-    credits.map(({ recorders, role: { icon, translations } }) => (
-      <Metadata
-        icon={icon}
-        title={getLocalizedMatch(translations).name}
-        values={recorders.map(({ username, id }) => ({
-          name: username,
-          href: getLocalizedUrl(`/recorders/${id}`),
-        }))}
-      />
-    ))
+    credits.map(({ recorders, role: { icon, translations } }) => {
+      const { language, name } = getLocalizedMatch(translations);
+      return (
+        <Metadata
+          icon={icon}
+          title={name}
+          lang={language}
+          values={recorders.map(({ username, id }) => ({
+            name: username,
+            href: getLocalizedUrl(`/recorders/${id}`),
+          }))}
+        />
+      );
+    })
   }
 </div>
 

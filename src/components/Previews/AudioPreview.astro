@@ -15,10 +15,10 @@ const {
   audio: { id, translations, attributes, filename, thumbnail, duration },
 } = Astro.props;
 
-const { pretitle, title, subtitle } =
+const { pretitle, title, subtitle, language } =
   translations.length > 0
     ? getLocalizedMatch(translations)
-    : { pretitle: undefined, title: filename, subtitle: undefined };
+    : { pretitle: undefined, title: filename, subtitle: undefined, language: undefined };
 
 const attributesWithMeta = [
   ...attributes,
@@ -36,6 +36,7 @@ const attributesWithMeta = [
   pretitle={pretitle}
   title={title}
   subtitle={subtitle}
+  lang={language}
   thumbnail={thumbnail}
   href={getLocalizedUrl(`/audios/${id}`)}
   attributes={attributesWithMeta}

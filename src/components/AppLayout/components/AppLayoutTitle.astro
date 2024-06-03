@@ -3,14 +3,15 @@ interface Props {
   pretitle?: string | undefined;
   title: string;
   subtitle?: string | undefined;
+  lang?: string | undefined;
 }
 
-const { title, subtitle, pretitle } = Astro.props;
+const { title, subtitle, pretitle, lang } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<h1 class="high-contrast-text">
+<h1 class="high-contrast-text" lang={lang}>
   {
     pretitle && (
       <span id="pretitle" class="font-2xl">

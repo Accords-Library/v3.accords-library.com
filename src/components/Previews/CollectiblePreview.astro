@@ -18,7 +18,7 @@ const {
   collectible: { slug, translations, thumbnail, attributes, languages, price, releaseDate },
 } = Astro.props;
 
-const { title, pretitle, subtitle } = getLocalizedMatch(translations);
+const { title, pretitle, subtitle, language } = getLocalizedMatch(translations);
 
 const additionalAttributes: Attribute[] = [];
 
@@ -65,6 +65,7 @@ if (price) {
   title={title}
   pretitle={pretitle}
   subtitle={subtitle}
+  lang={language}
   thumbnail={thumbnail}
   href={getLocalizedUrl(`/collectibles/${slug}`)}
   attributes={[...attributes, ...additionalAttributes]}

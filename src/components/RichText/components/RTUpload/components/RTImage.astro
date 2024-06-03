@@ -31,7 +31,7 @@ const mediaPage = getLocalizedUrl(`/images/${id}`);
 <div>
   {
     title && (
-      <HeaderTitle header={context.depth + 2}>
+      <HeaderTitle header={context.depth + 2} lang={context.lang}>
         <Icon name="material-symbols:imagesmode" />
         {title}
       </HeaderTitle>

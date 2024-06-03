@@ -3,11 +3,11 @@ import ErrorMessage from "components/ErrorMessage.astro";
 import RichText from "components/RichText/RichText.astro";
 import { getI18n } from "src/i18n/i18n";
 import { Collections, type EndpointCollectible } from "src/shared/payload/payload-sdk";
-import { formatInlineTitle } from "src/utils/format";
 import Card from "components/Card.astro";
 import AudioPlayer from "components/AudioPlayer.astro";
 import VideoPlayer from "components/VideoPlayer.astro";
 import InlineAttributes from "components/InlineAttributes.astro";
+import { formatInlineTitle } from "src/utils/format";
 
 interface Props {
   content: EndpointCollectible["contents"][number];
@@ -33,6 +33,34 @@ const href = (() => {
       return undefined;
   }
 })();
+
+const { title, language } = (() => {
+  switch (content.relationTo) {
+    case Collections.GenericContents: {
+      const { language, name } = getLocalizedMatch(content.value.translations);
+      return { title: name, language };
+    }
+
+    case Collections.Pages: {
+      const translation = getLocalizedMatch(content.value.translations);
+      return { title: formatInlineTitle(translation), language: translation.language };
+    }
+
+    case Collections.Audios: {
+      const translation = getLocalizedMatch(content.value.translations);
+      return { title: formatInlineTitle(translation), language: translation.language };
+    }
+
+    case Collections.Videos: {
+      const translation = getLocalizedMatch(content.value.translations);
+      return { title: formatInlineTitle(translation), language: translation.language };
+    }
+
+    default: {
+      return { title: undefined, language: undefined };
+    }
+  }
+})();
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -40,14 +68,8 @@ const href = (() => {
 <Card href={href} class="content_row-card">
   <div id="title">
     {
-      content.relationTo === Collections.GenericContents ? (
-        <p>{getLocalizedMatch(content.value.translations).name}</p>
-      ) : content.relationTo === Collections.Pages ? (
-        <p>{formatInlineTitle(getLocalizedMatch(content.value.translations))}</p>
-      ) : content.relationTo === Collections.Audios ? (
-        <p>{formatInlineTitle(getLocalizedMatch(content.value.translations))}</p>
-      ) : content.relationTo === Collections.Videos ? (
-        <p>{formatInlineTitle(getLocalizedMatch(content.value.translations))}</p>
+      title ? (
+        <p lang={language}>{title}</p>
       ) : (
         <ErrorMessage
           title="Unknown content type"
@@ -68,7 +90,9 @@ const href = (() => {
           ) : range.type === "timeRange" ? (
             range.start
           ) : range.type === "other" ? (
-            <RichText content={getLocalizedMatch(range.translations).note} />
+            <RichText
+              content={getLocalizedMatch(range.translations).note}
+            /> /* TODO: Provide lang */
           ) : (
             <ErrorMessage
               title="Unknown range type"

@@ -24,7 +24,7 @@ const { title } = getLocalizedMatch(value.translations);
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div>
-  <HeaderTitle header={context.depth + 2}>
+  <HeaderTitle header={context.depth + 2} lang={context.lang}>
     <Icon name="material-symbols:music-note" />
     {title}
   </HeaderTitle>

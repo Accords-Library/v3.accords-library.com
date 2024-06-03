@@ -14,10 +14,10 @@ const {
   image: { id, translations, attributes, filename },
 } = Astro.props;
 
-const { pretitle, title, subtitle } =
+const { pretitle, title, subtitle, language } =
   translations.length > 0
     ? getLocalizedMatch(translations)
-    : { pretitle: undefined, title: filename, subtitle: undefined };
+    : { pretitle: undefined, title: filename, subtitle: undefined, language: undefined };
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -26,6 +26,7 @@ const { pretitle, title, subtitle } =
   pretitle={pretitle}
   title={title}
   subtitle={subtitle}
+  lang={language}
   thumbnail={thumbnail}
   href={getLocalizedUrl(`/images/${id}`)}
   attributes={attributes}

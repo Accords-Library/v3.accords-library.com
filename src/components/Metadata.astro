@@ -4,7 +4,7 @@ import TitleIcon from "./TitleIcon.astro";
 
 interface Props extends Attribute {}
 
-const { icon, title, values, withBorder = true } = Astro.props;
+const { icon, title, values, withBorder = true, lang: titleLang } = Astro.props;
 
 if (values.length === 0) return;
 ---
@@ -12,16 +12,16 @@ if (values.length === 0) return;
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div id="container">
-  <TitleIcon title={title} icon={icon} />
+  <TitleIcon title={title} icon={icon} lang={titleLang} />
   <div id="values" class:list={{ "with-border": withBorder }}>
     {
-      values.map(({ name, href }) =>
+      values.map(({ name, href, lang }) =>
         href ? (
-          <a class="pressable high-contrast-text" href={href}>
+          <a class="pressable high-contrast-text" href={href} lang={lang}>
             {name}
           </a>
         ) : (
-          <div>{name}</div>
+          <div lang={lang}>{name}</div>
         )
       )
     }

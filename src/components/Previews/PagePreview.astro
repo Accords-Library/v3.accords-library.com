@@ -16,7 +16,7 @@ const {
   page: { slug, translations, thumbnail, attributes, updatedAt },
 } = Astro.props;
 
-const { title, pretitle, subtitle } = getLocalizedMatch(translations);
+const { title, pretitle, subtitle, language } = getLocalizedMatch(translations);
 
 const metaAttributes: Attribute[] = [
   {
@@ -34,6 +34,7 @@ const metaAttributes: Attribute[] = [
   title={title}
   pretitle={pretitle}
   subtitle={subtitle}
+  lang={language}
   thumbnail={thumbnail}
   href={getLocalizedUrl(`/pages/${slug}`)}
   attributes={[...attributes, ...metaAttributes]}

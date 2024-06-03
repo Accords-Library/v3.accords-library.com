@@ -1,5 +1,4 @@
 export type RichTextContext = {
   depth: number;
+  lang?: string | undefined;
 };
-
-export const defaultContext: RichTextContext = { depth: 1 };

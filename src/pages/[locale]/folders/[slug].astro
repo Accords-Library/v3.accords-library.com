@@ -34,8 +34,8 @@ const meta = getLocalizedMatch(folder.translations);
     description: meta.description && formatRichTextToString(meta.description),
   }}
   parentPages={folder.parentPages}>
-  <AppLayoutTitle title={meta.name} />
-  {meta.description && <AppLayoutDescription description={meta.description} />}
+  <AppLayoutTitle title={meta.name} lang={meta.language} />
+  {meta.description && <AppLayoutDescription description={meta.description} lang={meta.language} />}
 
   <div id="main" class:list={{ complex: folder.sections.type === "multiple" }}>
     {
@@ -45,17 +45,10 @@ const meta = getLocalizedMatch(folder.translations);
         folder.sections.type === "multiple" &&
         folder.sections.sections.length > 0 && (
           <div id="sections">
-            {folder.sections.sections.map(({ subfolders, translations }) => (
-              <FoldersSection
-                folders={subfolders}
-                title={
-                  getLocalizedMatch<{
-                    language: string;
-                    name: string | undefined;
-                  }>(translations).name
-                }
-              />
-            ))}
+            {folder.sections.sections.map(({ subfolders, translations }) => {
+              const { language, name } = getLocalizedMatch(translations);
+              return <FoldersSection folders={subfolders} title={name} lang={language} />;
+            })}
           </div>
         )
       )

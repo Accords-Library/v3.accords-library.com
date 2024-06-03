@@ -236,9 +236,18 @@ export const getI18n = async (locale: string) => {
     }
   };
 
-  const formatEndpointSource = (source: EndpointSource) => {
+  const formatEndpointSource = (
+    source: EndpointSource
+  ): {
+    href: string;
+    typeLabel: string;
+    label: string;
+    lang?: string;
+    target?: string;
+    rel?: string;
+  } => {
     switch (source.type) {
-      case "url":
+      case "url": {
         return {
           href: source.url,
           typeLabel: t("global.sources.typeLabel.url"),
@@ -246,8 +255,9 @@ export const getI18n = async (locale: string) => {
           target: "_blank",
           rel: "noopener noreferrer",
         };
+      }
 
-      case "collectible":
+      case "collectible": {
         const rangeLabel = (() => {
           switch (source.range?.type) {
             case "timestamp":
@@ -271,46 +281,62 @@ export const getI18n = async (locale: string) => {
           }
         })();
 
+        const translation = getLocalizedMatch(source.collectible.translations);
         return {
           href: getLocalizedUrl(`/collectibles/${source.collectible.slug}`),
           typeLabel: t("global.sources.typeLabel.collectible"),
-          label: formatInlineTitle(getLocalizedMatch(source.collectible.translations)) + rangeLabel,
+          label: formatInlineTitle(translation) + rangeLabel,
+          lang: translation.language,
         };
+      }
 
-      case "page":
+      case "page": {
+        const translation = getLocalizedMatch(source.page.translations);
         return {
           href: getLocalizedUrl(`/pages/${source.page.slug}`),
           typeLabel: t("global.sources.typeLabel.page"),
-          label: formatInlineTitle(getLocalizedMatch(source.page.translations)),
+          label: formatInlineTitle(translation),
+          lang: translation.language,
         };
+      }
 
-      case "folder":
+      case "folder": {
+        const translation = getLocalizedMatch(source.folder.translations);
         return {
           href: getLocalizedUrl(`/folders/${source.folder.slug}`),
           typeLabel: t("global.sources.typeLabel.folder"),
           label: getLocalizedMatch(source.folder.translations).name,
+          lang: translation.language,
         };
+      }
 
-      case "scans":
+      case "scans": {
+        const translation = getLocalizedMatch(source.collectible.translations);
         return {
           href: getLocalizedUrl(`/collectibles/${source.collectible.slug}/scans`),
           typeLabel: t("global.sources.typeLabel.scans"),
           label: formatInlineTitle(getLocalizedMatch(source.collectible.translations)),
+          lang: translation.language,
         };
+      }
 
-      case "gallery":
+      case "gallery": {
+        const translation = getLocalizedMatch(source.collectible.translations);
         return {
           href: getLocalizedUrl(`/collectibles/${source.collectible.slug}/gallery`),
           typeLabel: t("global.sources.typeLabel.gallery"),
           label: formatInlineTitle(getLocalizedMatch(source.collectible.translations)),
+          lang: translation.language,
         };
+      }
 
-      default:
+      default: {
         return {
           href: "/404",
           label: `Invalid type ${source["type"]}`,
           typeLabel: "Error",
         };
+      }
     }
   };
 

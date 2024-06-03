@@ -32,7 +32,7 @@ const {
   thumbnail,
 } = video;
 
-const { pretitle, title, subtitle, description } = getLocalizedMatch(translations);
+const { pretitle, title, subtitle, description, language } = getLocalizedMatch(translations);
 
 const metaAttributes = [
   ...(filename && title !== filename
@@ -79,8 +79,8 @@ const metaAttributes = [
     <VideoPlayer class="video_id-video-player" video={video} />
 
     <div id="info">
-      <AppLayoutTitle pretitle={pretitle} title={title} subtitle={subtitle} />
-      {description && <RichText content={description} />}
+      <AppLayoutTitle pretitle={pretitle} title={title} subtitle={subtitle} lang={language} />
+      {description && <RichText content={description} context={{ lang: language }} />}
       {attributes.length > 0 && <Attributes attributes={attributes} />}
       {credits.length > 0 && <Credits credits={credits} />}
       {metaAttributes.length > 0 && <Attributes attributes={metaAttributes} />}

@@ -54,7 +54,7 @@ const {
 } = collectible;
 
 const translation = getLocalizedMatch(translations);
-const { pretitle, title, subtitle, description } = translation;
+const { pretitle, title, subtitle, description, language } = translation;
 
 const metaAttributes: Attribute[] = [
   {
@@ -150,7 +150,7 @@ if (price) {
   backgroundImage={backgroundImage ?? thumbnail}>
   <AsideLayout>
     <Fragment slot="header">
-      <AppLayoutTitle title={title} pretitle={pretitle} subtitle={subtitle} />
+      <AppLayoutTitle title={title} pretitle={pretitle} subtitle={subtitle} lang={language} />
     </Fragment>
 
     <Fragment slot="header-aside">
@@ -213,7 +213,7 @@ if (price) {
     </Fragment>
 
     <Fragment slot="meta">
-      {description && <AppLayoutDescription description={description} />}
+      {description && <AppLayoutDescription description={description} lang={language} />}
 
       <div id="tags">
         <Attributes attributes={[...attributes, ...additionalAttributes]}>

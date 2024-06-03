@@ -4,15 +4,16 @@ import type { CueBlock } from "src/shared/payload/payload-sdk";
 
 interface Props {
   block: CueBlock;
+  lang?: string | undefined;
 }
 
-const { block } = Astro.props;
+const { block, lang } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div>
-  <RichText content={block.content} />
+  <RichText content={block.content} context={{ lang }} />
 </div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}

@@ -6,9 +6,10 @@ import TitleIcon from "components/TitleIcon.astro";
 
 interface Props {
   toc: TableOfContentEntry[];
+  lang?: string | undefined;
 }
 
-const { toc } = Astro.props;
+const { toc, lang } = Astro.props;
 const { t } = await getI18n(Astro.locals.currentLocale);
 ---
 
@@ -16,7 +17,7 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 
 <div>
   <TitleIcon title={t("pages.tableOfContent")} icon="material-symbols:list-alt" />
-  <ol>
+  <ol lang={lang}>
     {toc.map((entry) => <TableOfContentItem entry={entry} />)}
   </ol>
 </div>

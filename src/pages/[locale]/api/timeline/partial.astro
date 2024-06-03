@@ -27,7 +27,7 @@ const { sources, translations } = event.events[index]!;
 
 const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 const { getLocalizedMatch } = await getI18n(lang);
-const { title, description, notes, credits } = getLocalizedMatch(translations);
+const { title, description, notes, credits, language } = getLocalizedMatch(translations);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -36,8 +36,14 @@ const { title, description, notes, credits } = getLocalizedMatch(translations);
 <MasoTarget>
   <Card class="timeline_partial-card">
     <div id="content">
-      {title && <h4 class="font-xl">{title}</h4>}
-      {description && <RichText content={description} />}
+      {
+        title && (
+          <h4 lang={language} class="font-xl">
+            {title}
+          </h4>
+        )
+      }
+      {description && <RichText content={description} context={{ lang: language }} />}
     </div>
     <div id="bottom" class="when-js when-no-print">
       <TimelineSourcesButton sources={sources} />

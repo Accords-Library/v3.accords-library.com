@@ -16,6 +16,7 @@ const {
   label,
   target = undefined,
   rel = undefined,
+  lang,
 } = formatEndpointSource(parentPage);
 ---
 
@@ -23,10 +24,8 @@ const {
 
 <a class="pressable-label" href={href} target={target} rel={rel}>
   <Icon name="material-symbols:keyboard-return" />
-  <p>
-    <span class="font-xs">{typeLabel}</span>
-    {label}
-  </p>
+  <div class="font-xs">{typeLabel}</div>
+  <p lang={lang}>{label}</p>
 </a>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
@@ -35,16 +34,16 @@ const {
   a {
     height: 16px;
 
+    & > div {
+      border: 1px solid var(--color-base-1000);
+      border-radius: 9999px;
+      padding: 0.3em 0.5em;
+    }
+
     & > p {
       display: flex;
       place-items: center;
       gap: 0.5em;
-
-      span {
-        border: 1px solid var(--color-base-1000);
-        border-radius: 9999px;
-        padding: 0.3em 0.5em;
-      }
     }
   }
 </style>

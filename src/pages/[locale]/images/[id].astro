@@ -15,10 +15,16 @@ if (image instanceof Response) {
 const { getLocalizedMatch, formatDate, t } = await getI18n(Astro.locals.currentLocale);
 const { filename, translations, attributes, credits, createdAt, updatedAt } = image;
 
-const { pretitle, title, subtitle, description } =
+const { pretitle, title, subtitle, description, language } =
   translations.length > 0
     ? getLocalizedMatch(translations)
-    : { pretitle: undefined, title: filename, subtitle: undefined, description: undefined };
+    : {
+        pretitle: undefined,
+        title: filename,
+        subtitle: undefined,
+        description: undefined,
+        language: undefined,
+      };
 
 const metaAttributes = [
   ...(filename && title !== filename
@@ -60,6 +66,7 @@ const metaAttributes = [
     title={title}
     subtitle={subtitle}
     description={description}
+    lang={language}
     filename={filename}
     attributes={attributes}
     metaAttributes={metaAttributes}

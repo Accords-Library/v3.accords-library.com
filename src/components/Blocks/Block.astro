@@ -11,18 +11,19 @@ import ErrorMessage from "components/ErrorMessage.astro";
 
 interface Props {
   block: GenericBlock;
+  lang?: string | undefined;
 }
 
-const { block } = Astro.props;
+const { block, lang } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 {
   isBlockLineBlock(block) ? (
-    <LineBlock block={block} />
+    <LineBlock block={block} lang={lang} />
   ) : isBlockCueBlock(block) ? (
-    <CueBlock block={block} />
+    <CueBlock block={block} lang={lang} />
   ) : (
     <ErrorMessage
       title={`Unknown block type: ${block.blockType}`}

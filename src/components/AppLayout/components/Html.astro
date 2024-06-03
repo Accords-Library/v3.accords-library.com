@@ -52,6 +52,7 @@ const { currentTheme } = Astro.locals;
     "dark-theme": currentTheme === "dark",
     "texture-dots": !isIOS,
     "font-m": true,
+    "debug-lang": false,
   }}>
   <head>
     <meta charset="utf-8" />
@@ -150,6 +151,11 @@ const { currentTheme } = Astro.locals;
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style is:global>
+  /* DEBUG */
+  .debug-lang [lang] {
+    outline: 5px solid red !important;
+  }
+
   /* RESET */
 
   h1,

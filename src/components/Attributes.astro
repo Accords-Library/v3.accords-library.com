@@ -32,6 +32,7 @@ const { getLocalizedMatch, getLocalizedUrl, formatNumber } = await getI18n(
             <Metadata
               icon={icon}
               title={translation.name}
+              lang={translation.language}
               values={[{ name: formatNumber(value) }]}
               withBorder={false}
             />
@@ -42,6 +43,7 @@ const { getLocalizedMatch, getLocalizedUrl, formatNumber } = await getI18n(
             <Metadata
               icon={icon}
               title={translation.name}
+              lang={translation.language}
               values={[{ name: value }]}
               withBorder={false}
             />
@@ -52,10 +54,15 @@ const { getLocalizedMatch, getLocalizedUrl, formatNumber } = await getI18n(
             <Metadata
               icon={icon}
               title={translation.name}
-              values={value.map(({ translations, page }) => ({
-                name: getLocalizedMatch(translations).name,
-                ...(page ? { href: getLocalizedUrl(`/pages/${page.slug}`) } : {}),
-              }))}
+              lang={translation.language}
+              values={value.map(({ translations, page }) => {
+                const { name, language } = getLocalizedMatch(translations);
+                return {
+                  name,
+                  lang: language,
+                  ...(page ? { href: getLocalizedUrl(`/pages/${page.slug}`) } : {}),
+                };
+              })}
             />
           );
 

@@ -4,9 +4,10 @@ import type { RichTextContent } from "src/shared/payload/payload-sdk";
 
 interface Props {
   description: RichTextContent | string;
+  lang?: string | undefined;
 }
 
-const { description } = Astro.props;
+const { description, lang } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -16,7 +17,7 @@ const { description } = Astro.props;
     typeof description === "string" ? (
       <p class="prose" set:html={description} />
     ) : (
-      <RichText content={description} />
+      <RichText content={description} context={{ lang }} />
     )
   }
   <slot />

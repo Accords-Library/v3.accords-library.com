@@ -8,13 +8,13 @@ interface Props {
   context: RichTextContext;
 }
 
-const { node } = Astro.props;
+const { node, context } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div>
-  {node.fields.lines.map((block) => <Block block={block} />)}
+  {node.fields.lines.map((block) => <Block block={block} lang={context.lang} />)}
 </div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}

@@ -4,17 +4,18 @@ import type { LineBlock } from "src/shared/payload/payload-sdk";
 
 interface Props {
   block: LineBlock;
+  lang?: string | undefined;
 }
 
-const { block } = Astro.props;
+const { block, lang } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div id="line">
-  <p>{block.blockName}</p>
+  <p lang={lang}>{block.blockName}</p>
   <div>
-    <RichText content={block.content} />
+    <RichText content={block.content} context={{ lang }} />
   </div>
 </div>
 

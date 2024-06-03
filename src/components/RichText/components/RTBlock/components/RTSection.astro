@@ -14,7 +14,7 @@ const { node, context } = Astro.props;
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<HeaderTitle id={node.anchorHash} header={context.depth + 1}>
+<HeaderTitle id={node.anchorHash} header={context.depth + 1} lang={context.lang}>
   <span>{`${node.anchorHash} `}</span>
   {node.fields.blockName}
 </HeaderTitle>

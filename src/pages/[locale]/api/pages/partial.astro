@@ -65,7 +65,7 @@ if (updatedBy) {
 <MasoTarget>
   <AsideLayout>
     <Fragment slot="header">
-      <AppLayoutTitle title={title} pretitle={pretitle} subtitle={subtitle} />
+      <AppLayoutTitle title={title} pretitle={pretitle} subtitle={subtitle} lang={language} />
     </Fragment>
 
     <Fragment slot="header-aside">
@@ -88,7 +88,7 @@ if (updatedBy) {
     </Fragment>
 
     <Fragment slot="meta">
-      {summary && <AppLayoutDescription description={summary} />}
+      {summary && <AppLayoutDescription description={summary} lang={language} />}
       {
         attributes.length > 0 && (
           <div id="tags">
@@ -118,12 +118,12 @@ if (updatedBy) {
 
       {metaAttributes.length > 0 && <Attributes attributes={metaAttributes} />}
 
-      {toc.length > 0 && <TableOfContent toc={toc} />}
+      {toc.length > 0 && <TableOfContent toc={toc} lang={language} />}
     </div>
 
     <hr />
     <div id="text">
-      <RichText content={content} />
+      <RichText content={content} context={{ lang: language }} />
     </div>
   </AsideLayout>
 </MasoTarget>

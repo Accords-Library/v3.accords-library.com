@@ -15,12 +15,15 @@ const {
   label,
   target = undefined,
   rel = undefined,
+  lang,
 } = formatEndpointSource(source);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<a href={href} target={target} rel={rel}><div class="font-xs">{typeLabel}</div><p>{label}</p></a>
+<a href={href} target={target} rel={rel}>
+  <div class="font-xs">{typeLabel}</div><p lang={lang}>{label}</p>
+</a>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 

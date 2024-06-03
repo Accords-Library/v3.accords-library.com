@@ -2,15 +2,16 @@
 import type { RichTextContent } from "src/shared/payload/payload-sdk";
 import RTNode from "./components/RTNode.astro";
 import RTProse from "./components/RTProse.astro";
-import { type RichTextContext, defaultContext } from "src/utils/richText";
+import { type RichTextContext } from "src/utils/richText";
 import ConditionalWrapper from "components/ConditionalWrapper.astro";
 
 interface Props {
   content: RichTextContent;
-  context?: RichTextContext;
+  context?: Partial<RichTextContext>;
 }
 
-const { content, context = defaultContext } = Astro.props;
+const { content, context: partialContext } = Astro.props;
+const context: RichTextContext = { depth: partialContext?.depth ?? 1, lang: partialContext?.lang };
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}

@@ -5,10 +5,11 @@ import { getI18n } from "src/i18n/i18n";
 
 interface Props {
   title?: string | undefined;
+  lang?: string | undefined;
   folders: EndpointFolder[];
 }
 
-const { title, folders } = Astro.props;
+const { title, folders, lang } = Astro.props;
 
 const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 ---
@@ -16,16 +17,26 @@ const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.curren
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <div>
-  {title && <h3 class="font-serif font-3xl">{title}</h3>}
+  {
+    title && (
+      <h3 class="font-serif font-3xl" lang={lang}>
+        {title}
+      </h3>
+    )
+  }
   <section>
     {
-      folders.map(({ slug, translations, icon }) => (
-        <FolderCard
-          title={getLocalizedMatch(translations).name}
-          icon={icon}
-          href={getLocalizedUrl(`/folders/${slug}`)}
-        />
-      ))
+      folders.map(({ slug, translations, icon }) => {
+        const { name, language } = getLocalizedMatch(translations);
+        return (
+          <FolderCard
+            title={name}
+            lang={language}
+            icon={icon}
+            href={getLocalizedUrl(`/folders/${slug}`)}
+          />
+        );
+      })
     }
   </section>
 </div>
