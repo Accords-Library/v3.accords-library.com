@@ -35,6 +35,10 @@ const { title, subtitle, pretitle, lang } = Astro.props;
   h1 {
     line-height: 0.9;
 
+    /* Using z-index so that the title isn't below the description's backdrop filter */
+    position: relative;
+    z-index: 1;
+
     & > #pretitle {
       font-weight: 450;
       margin-bottom: 0.4em;

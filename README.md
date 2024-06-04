@@ -48,6 +48,10 @@ Accord's Library v3.0 (shorten to AL3.0) follows the Metamodernist Web model des
     2. Imply the visitor’s preferences using Accept-Language HTTP header
     3. Consider the language-specific URL
     4. If all fail, fallback to default language (English)
+  - The CJK languages (Chinese, Japanese, Korean) all uses Chinese ideographs. Some of these ideographs are drawn different in their respective languages, despite being encoded under the same Unicode character. In order to display the character correctly, a different font must be used depending on the content's language. Here are the fonts used:
+    - `Noto Sans JP` and `Noto Serif JP` for Japanese content
+    - `Noto Sans SC` and `Noto Serif SC` for Simplified Chinese content
+    - `Noto Sans` and `Noto Serif` for everything else.
 
 - Fast
 
