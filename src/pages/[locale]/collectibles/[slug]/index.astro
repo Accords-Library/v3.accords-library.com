@@ -179,7 +179,6 @@ if (price) {
               class:list={{ "when-no-print": true, "with-two": gallery && scans }}>
               {gallery && (
                 <ImageTile
-                  class="collectibles_id-image_tile"
                   image={gallery.thumbnail}
                   title={t("collectibles.gallery.title")}
                   subtitle={t("collectibles.gallery.subtitle", { count: gallery.count })}
@@ -189,7 +188,6 @@ if (price) {
 
               {scans && (
                 <ImageTile
-                  class="collectibles_id-image_tile"
                   image={scans.thumbnail}
                   title={t("collectibles.scans.title")}
                   subtitle={t("collectibles.scans.subtitle", { count: scans.count })}
@@ -252,22 +250,12 @@ if (price) {
     }
 
     & > #gallery-scans {
-      &:not(.with-two) {
-        & > .collectibles_id-image_tile {
-          aspect-ratio: 2 / 1;
-        }
-      }
-
       &.with-two {
         display: flex;
         gap: 24px;
 
         @media (max-width: 400.5px) {
           flex-direction: column;
-
-          & > .collectibles_id-image_tile {
-            aspect-ratio: 2 / 1;
-          }
         }
       }
 
