@@ -20,19 +20,20 @@ const uniqueId = getRandomId();
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<img
-  id={uniqueId}
-  src={url}
-  srcset={sizesToSrcset(sizes)}
-  sizes="100vw"
-  width={width}
-  height={height}
-  loading="lazy"
-  class="when-no-print"
-  decoding="async"
-  alt=""
-  inert
-/>
+<div inert>
+  <img
+    id={uniqueId}
+    src={url}
+    srcset={sizesToSrcset(sizes)}
+    sizes="100vw"
+    width={width}
+    height={height}
+    loading="lazy"
+    class="when-no-print"
+    decoding="async"
+    alt=""
+  />
+</div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
@@ -46,42 +47,59 @@ const uniqueId = getRandomId();
     }
   }
 
-  img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -9999;
+  @keyframes parallax {
+    from {
+      transform: translateY(0);
+    }
 
+    to {
+      transform: translateY(calc((100cqb - 100lvh) * var(--parallax-amount)));
+    }
+  }
+
+  div {
+    container-type: size;
+    position: absolute;
+    inset: 0;
+    z-index: -9999;
+    overflow: hidden;
+
+    animation: fadeIn 3s forwards;
+  }
+
+  img {
     width: 100%;
     max-height: 100%;
+    min-height: 100lvh;
 
     object-fit: cover;
     object-position: 50% 0;
 
-    animation: fadeIn 3s forwards;
-
-    @media (max-width: 650.5px) {
-      display: none;
-    }
-
     mask-image: linear-gradient(to bottom, rgba(0 0 0 / 100%) min(50vh, 50%), transparent),
-      linear-gradient(to right, rgba(0 0 0 / 10%), rgba(0 0 0 / 20%) 640px, black 1200px);
+      linear-gradient(to right, rgba(0 0 0 / 20%) 640px, black 1200px);
     mask-composite: intersect;
+
+    @supports (animation-timeline: scroll(root)) {
+      --parallax-amount: 0.4;
+      animation-name: parallax;
+      animation-timing-function: linear;
+      animation-timeline: scroll(root);
+    }
   }
 </style>
 
 {/* ------------------------------------------- JS --------------------------------------------- */}
 
 <script define:vars={{ uniqueId }} is:inline>
-  const element = document.getElementById(uniqueId);
-  element.style.animationPlayState = "paused";
+  const img = document.getElementById(uniqueId);
+  const parent = img.parentElement;
+  if (!parent || !img) return;
 
-  element.addEventListener(
+  parent.style.animationPlayState = "paused";
+  img.addEventListener(
     "load",
     () => {
-      element.style.animationPlayState = "running";
+      parent.style.animationPlayState = "running";
     },
     { once: true, passive: true }
   );

@@ -605,8 +605,9 @@ const { currentTheme } = Astro.locals;
       text-decoration: underline dotted 0.1em var(--color-base-650);
 
       border-radius: 9999px;
-      
-      &:hover, &:focus-visible {
+
+      &:hover,
+      &:focus-visible {
         color: var(--color-base-850);
         text-decoration-color: var(--color-base-750);
         outline: 3px solid var(--color-base-750);
@@ -635,7 +636,8 @@ const { currentTheme } = Astro.locals;
     cursor: pointer;
     border-radius: 9999px;
 
-    &:hover, &:focus-visible {
+    &:hover,
+    &:focus-visible {
       color: var(--color-base-700);
       outline-color: var(--color-base-700);
       outline-offset: 4px;
@@ -654,7 +656,7 @@ const { currentTheme } = Astro.locals;
     transition-property: text-decoration-color, color;
 
     border-radius: 9999px;
-    
+
     &:hover {
       color: var(--color-base-750);
       text-decoration-color: var(--color-base-650);

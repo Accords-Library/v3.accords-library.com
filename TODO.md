@@ -33,7 +33,6 @@
 - [Feat] [Payload] Endpoints should provide a simple text-based version of the content (for OG purposes)
 - [Feat] [WebManifest] Add shortcuts https://web.dev/patterns/web-apps/shortcuts
 - [Feat] [PWA] Rich install UI https://web.dev/patterns/web-apps/richer-install-ui/
-- [Feat] Try using CSS instead of JS for parallax effect
 - [Feat] More data caching between the CMS and Astro
 - [Feat] [Folders] Support for nameless section
 - [Feat] [Scripts] Can't run the scripts using node (ts-node?)
