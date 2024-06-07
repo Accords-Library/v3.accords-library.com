@@ -667,8 +667,6 @@ const { currentTheme } = Astro.locals;
     border-radius: 9999px;
     cursor: pointer;
 
-    backdrop-filter: blur(10px);
-
     transition: 150ms background-color;
 
     &:hover,
@@ -685,8 +683,8 @@ const { currentTheme } = Astro.locals;
     --foreground-color: var(--color-base-650);
     color: var(--foreground-color);
     outline-color: var(--foreground-color);
-    border: 0.1rem solid var(--foreground-color);
-    backdrop-filter: blur(10px);
+    border: 2px solid var(--foreground-color);
+    background-color: color-mix(in srgb, var(--color-elevation-0) 60%, transparent);
 
     transition-duration: 250ms;
     transition-property: padding-top, box-shadow, background-color, color, border-color;
@@ -804,18 +802,4 @@ const { currentTheme } = Astro.locals;
       event.preventDefault();
     });
   });
-</script>
-
-<script is:inline>
-  window.addEventListener(
-    "scroll",
-    () => {
-      document.body.style.setProperty(
-        "--scroll-relative",
-        window.scrollY / (document.documentElement.offsetHeight - window.innerHeight)
-      );
-      document.body.style.setProperty("--scroll-absolute", window.scrollY);
-    },
-    { passive: true }
-  );
 </script>

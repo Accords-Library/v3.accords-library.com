@@ -62,6 +62,17 @@ const style = `
     bottom: 0;
     overflow: hidden;
     z-index: -1;
+
+    mask-image: linear-gradient(
+      to right,
+      rgba(0 0 0 / 15%) 0%,
+      rgba(0 0 0 / 30%) 600px,
+      rgba(0 0 0 / 100%) 1200px
+    );
+
+    @media (max-width: 650.5px) {
+      display: none;
+    }
   }
 
   img {
@@ -81,10 +92,6 @@ const style = `
     );
 
     animation: fadeIn 3s forwards;
-
-    @media (min-width: 650.5px) {
-      transform: translateY(calc(var(--scroll-absolute) * 0.4px));
-    }
   }
 </style>
 

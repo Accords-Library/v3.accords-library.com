@@ -9,7 +9,7 @@
   background-color: var(--color-elevation-2);
   color: var(--color-base-1000);
   border-radius: 0.5rem;
-  border: 1px solid var(--color-base-650);
+  border: 2px solid var(--color-base-650);
   box-shadow:
     0 20px 25px -5px var(--color-shadow-2),
     0 0 10px -6px var(--color-shadow-2);

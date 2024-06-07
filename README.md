@@ -94,7 +94,6 @@ Accord's Library v3.0 (shorten to AL3.0) follows the Metamodernist Web model des
 - Background images
 
   - Only start the fade-in animation once the image is fully loaded. Without this, the image can suddently appear during the animation (or even after the animation is over) and it doesn't look as nice.
-  - Parallax effect
 
 - Navigation
 
@@ -111,10 +110,6 @@ Accord's Library v3.0 (shorten to AL3.0) follows the Metamodernist Web model des
   - Quicker access to user settings. Instead of going to a sepeare "settings" page, the user can set their favorite language, theme, and currency from any page.
   - If a page has multiple parent pages, when the user click on the "Go back" button, it will open a tooltip with the list of parent pages. Right now, the parent pages are only displayed to noscript users if there is only one parent page.
   - On the timeline, metadata such as credits, additional notes, language switching are not available to noscript users.
-
-## Drawback of JavaScript
-
-The parallax effect on background images is a bit demanding, it is disabled on mobiles and tablets to lessen the impact.
 
 ## Browser-specific tricks
 
@@ -165,8 +160,6 @@ A parallax effect is applied on the webpages' background image. This effect can 
 ## CSS Global Variables
 
 - `--color-base-X`: the current theme colors. X can be between 0 and 1000, available in increments of 50.
-- `--scroll-relative`: the current vertical scroll position. The value is between 0 (at the top of the page) to 1 (at the bottom of the page)
-- `--scroll-absolute`: the current vertical scroll position in px.
 - `--font-size-[size]`: apply size from font size system. Valid sizes are `xs`, `s`, `m`, `l`, `xl`, `2xl`, `3xl`, `4xl`, and `5xl`
 
 ## Translations

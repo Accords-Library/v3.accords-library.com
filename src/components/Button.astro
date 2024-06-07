@@ -16,7 +16,7 @@ const { title, icon, class: className, ariaLabel, id } = Astro.props;
 
 <button
   id={id}
-  class:list={["pressable", "high-contrast-text", { "with-title": !!title }, className]}
+  class:list={["pressable", { "with-title": !!title }, className]}
   aria-label={ariaLabel}
   title={ariaLabel}>
   {icon && <Icon name={icon} />}
@@ -31,8 +31,6 @@ const { title, icon, class: className, ariaLabel, id } = Astro.props;
     padding-left: 1em;
     padding-right: 1em;
     height: 2.5em;
-
-    backdrop-filter: blur(10px);
 
     display: flex;
     place-items: center;

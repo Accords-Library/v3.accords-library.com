@@ -1,6 +1,6 @@
 {
   "name": "v3.accords-library.com",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0-beta.3",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -22,19 +22,19 @@
     "@astrojs/check": "^0.7.0",
     "@astrojs/node": "^8.2.5",
     "accept-language": "^3.0.18",
-    "astro": "4.9.2",
+    "astro": "4.10.0",
     "astro-icon": "^1.1.0",
     "node-cache": "^5.1.2",
     "tippy.js": "^6.3.7",
     "ua-parser-js": "^1.0.38"
   },
   "devDependencies": {
-    "@iconify-json/material-symbols": "^1.1.81",
+    "@iconify-json/material-symbols": "^1.1.82",
     "@types/ua-parser-js": "^0.7.39",
     "astro-meta-tags": "^0.3.0",
     "autoprefixer": "^10.4.19",
     "postcss-preset-env": "^9.5.14",
-    "prettier": "^3.3.0",
+    "prettier": "^3.3.1",
     "prettier-plugin-astro": "^0.14.0",
     "typescript": "^5.4.5"
   }
