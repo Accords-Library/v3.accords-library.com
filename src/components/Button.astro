@@ -59,7 +59,7 @@ const { title, icon, class: className, ariaLabel, id } = Astro.props;
       height: 1.5em;
     }
 
-    &:hover {
+    &:hover, &:focus-visible {
       box-shadow: inset 0 0.1em 0.1em 0 var(--color-shadow-2);
       translate: unset;
     }
