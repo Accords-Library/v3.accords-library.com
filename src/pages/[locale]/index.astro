@@ -1,12 +1,11 @@
 ---
-import { Icon } from "astro-icon/components";
 import Button from "components/Button.astro";
 import LibraryGrid from "./_components/LibraryGrid.astro";
 import LinkCard from "./_components/LinkCard.astro";
 import { getI18n } from "src/i18n/i18n";
 import { cache } from "src/utils/payload";
 import AppLayout from "components/AppLayout/AppLayout.astro";
-import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
+import HomeTitle from "./_components/HomeTitle.astro";
 
 const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
@@ -17,23 +16,17 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
   openGraph={{ title: t("home.title") }}
   backgroundImage={cache.config.home.backgroundImage}
   hideFooterLinks
-  hideHomeButton>
-  <div id="title">
-    <Icon name="accords" />
-    <div>
-      <h1 class="font-serif font-5xl">{t("global.siteName")}</h1>
-      <p>{t("global.siteSubtitle")}</p>
-    </div>
-  </div>
-
-  <AppLayoutDescription description={t("home.description")} />
+  hideHomeButton
+  class="app">
+  <HomeTitle />
+  <p class="prose" set:html={t("home.description")} />
 
   <a href={getLocalizedUrl("/about")} hidden>
     <Button title={t("home.aboutUsButton")} icon="material-symbols:left-click" />
   </a>
 
   <div id="main">
-    <section id="library" class="high-contrast-text">
+    <section id="library">
       <h2 class="font-serif font-3xl">{t("home.librarySection.title")}</h2>
       <p set:html={t("home.librarySection.description")} />
       <a href={getLocalizedUrl("/search")} hidden>
@@ -137,96 +130,46 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
-  #title {
+  .app {
     display: flex;
-    place-items: center;
-    gap: 1em;
-
-    & > svg {
-      width: calc(var(--font-size-5xl) * 1.2);
-      margin-top: 0.5em;
-    }
-
-    & > div {
-      & > p {
-        margin-top: -0.15em;
-        font-size: calc(var(--font-size-5xl) * 0.39);
-        font-weight: 700;
-      }
-    }
-
-    @media (max-width: 35rem) {
-      flex-direction: column;
-      place-items: center;
-      margin-bottom: 3em;
-      --container-width: calc((100vw - 48px));
-
-      & > svg {
-        width: calc(var(--container-width) / 3);
-        height: calc(var(--container-width) / 3);
-      }
-
-      & > div {
-        & > h1 {
-          font-size: calc(var(--container-width) / 9);
-        }
-
-        & > p {
-          margin-top: -0.1em;
-          font-size: calc(var(--container-width) / 23);
-        }
-      }
-    }
+    flex-direction: column;
+    gap: 32px;
   }
 
   #main {
-    margin-top: 96px;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 64px;
+    margin-top: 64px;
+  }
 
-    & > section {
-      & > p {
-        max-width: 35em;
-        line-height: 1.5;
-        margin-top: 8px;
-        margin-bottom: 24px;
-      }
+  section {
+    & > p {
+      max-width: 35em;
+      line-height: 1.5;
+      margin-top: 12px;
+      margin-bottom: 24px;
+    }
 
-      &#library {
-        & > .grid {
-          @media (max-width: 40rem) {
-            grid-template-columns: 1fr 1fr;
-          }
-
-          @media (max-width: 22rem) {
-            grid-template-columns: 1fr;
-            gap: 12px;
-          }
-        }
-      }
-
+    &#library {
       & > .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      }
+        @media (max-width: 40rem) {
+          grid-template-columns: 1fr 1fr;
+        }
 
-      & > .flex {
-        display: flex;
-        flex-wrap: wrap;
-
-        @media (max-width: 35rem) {
-          display: grid;
+        @media (max-width: 22rem) {
           grid-template-columns: 1fr;
         }
       }
+    }
 
-      & > .grid,
-      & > .flex {
-        gap: clamp(6px, 2vmin, 16px);
+    & > .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: clamp(6px, 2vmin, 16px);
 
-        @media (max-width: 22rem) {
-          gap: 12px;
-        }
+      @media (max-width: 22rem) {
+        gap: 12px;
       }
     }
   }

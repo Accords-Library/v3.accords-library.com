@@ -12,8 +12,8 @@ import AudioPreview from "components/Previews/AudioPreview.astro";
 import VideoPreview from "components/Previews/VideoPreview.astro";
 import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
-import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 import { payload } from "src/utils/payload";
+import RichText from "components/RichText/RichText.astro";
 
 const slug = Astro.params.slug!;
 
@@ -33,9 +33,10 @@ const meta = getLocalizedMatch(folder.translations);
     title: meta.name,
     description: meta.description && formatRichTextToString(meta.description),
   }}
-  parentPages={folder.parentPages}>
+  parentPages={folder.parentPages}
+  class="app">
   <AppLayoutTitle title={meta.name} lang={meta.language} />
-  {meta.description && <AppLayoutDescription description={meta.description} lang={meta.language} />}
+  {meta.description && <RichText content={meta.description} context={{ lang: meta.language }} />}
 
   <div id="main" class:list={{ complex: folder.sections.type === "multiple" }}>
     {
@@ -90,16 +91,24 @@ const meta = getLocalizedMatch(folder.translations);
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
+  .app {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
   #main {
-    margin-top: 4.5em;
-    display: grid;
+    margin-top: 64px;
+    display: flex;
+    flex-direction: column;
     gap: 4em;
 
     &.complex {
       gap: 6em;
 
       & > #sections {
-        display: grid;
+        display: flex;
+        flex-direction: column;
         gap: 4em;
       }
     }

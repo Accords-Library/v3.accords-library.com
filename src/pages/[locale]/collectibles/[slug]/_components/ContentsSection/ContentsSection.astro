@@ -31,6 +31,10 @@ const { t } = await getI18n(Astro.locals.currentLocale);
     flex-direction: column;
     gap: 2em;
 
+    @media (min-width: 45rem) {
+      max-width: 35rem;
+    }
+
     & > #contents {
       display: grid;
       gap: 1em;

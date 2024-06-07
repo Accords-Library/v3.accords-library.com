@@ -8,7 +8,6 @@ import LanguageOverride from "components/LanguageOverride.astro";
 import Credits from "components/Credits.astro";
 import { getI18n } from "src/i18n/i18n";
 import AsideLayout from "components/AppLayout/AsideLayout.astro";
-import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 import Attributes from "components/Attributes.astro";
 import type { Attribute } from "src/utils/attributes";
 import { payload } from "src/utils/payload";
@@ -88,30 +87,24 @@ if (updatedBy) {
     </Fragment>
 
     <Fragment slot="meta">
-      {summary && <AppLayoutDescription description={summary} lang={language} />}
       {
-        attributes.length > 0 && (
-          <div id="tags">
-            <Attributes attributes={attributes} />
+        summary && (
+          <div id="summary">
+            <RichText content={summary} context={{ lang: language }} />
           </div>
         )
       }
+      {attributes.length > 0 && <Attributes attributes={attributes} />}
     </Fragment>
 
-    <div id="aside" slot="aside">
+    <Fragment slot="aside">
       <div id="credits">
-        {
-          translations.length > 1 && (
-            <LanguageOverride
-              currentLanguage={language}
-              currentSourceLanguage={sourceLanguage}
-              availableLanguages={translations.map(({ language }) => language)}
-              getPartialUrl={(lang) =>
-                getLocalizedUrl(`/api/pages/partial?lang=${lang}&slug=${slug}`)
-              }
-            />
-          )
-        }
+        <LanguageOverride
+          currentLanguage={language}
+          currentSourceLanguage={sourceLanguage}
+          availableLanguages={translations.map(({ language }) => language)}
+          getPartialUrl={(lang) => getLocalizedUrl(`/api/pages/partial?lang=${lang}&slug=${slug}`)}
+        />
 
         {credits.length > 0 && <Credits credits={credits} />}
       </div>
@@ -119,7 +112,7 @@ if (updatedBy) {
       {metaAttributes.length > 0 && <Attributes attributes={metaAttributes} />}
 
       {toc.length > 0 && <TableOfContent toc={toc} lang={language} />}
-    </div>
+    </Fragment>
 
     <hr />
     <div id="text">
@@ -134,39 +127,23 @@ if (updatedBy) {
   hr {
     border: none;
     border-top: 3px dotted var(--color-base-500);
-    margin-block: 3em;
-  }
-
-  #aside {
-    display: flex;
-    flex-direction: column;
-    gap: 4em;
-
-    @media (max-width: 35rem) {
-      gap: 6em;
-    }
-  }
-
-  #tags {
-    margin-block: 2em;
-
-    @media (max-width: 1280.5px) {
-      margin-bottom: 4em;
-    }
-
-    @media (max-width: 35rem) {
-      margin-top: 4em;
-      margin-bottom: 6em;
-    }
+    margin-block: 24px;
+    width: 100%;
   }
 
   #credits {
     display: flex;
     flex-direction: column;
-    gap: 1em;
+    gap: 16px;
 
     @media (max-width: 35rem) {
-      gap: 2em;
+      gap: 32px;
+    }
+  }
+
+  #summary {
+    @media (max-width: 1280.5px) {
+      margin-top: -2em;
     }
   }
 
@@ -180,14 +157,6 @@ if (updatedBy) {
     & > img {
       border-radius: 16px;
       box-shadow: 0 5px 20px -10px var(--color-shadow-0);
-    }
-
-    @media (max-width: 1280.5px) {
-      margin-top: 2em;
-    }
-
-    @media (min-width: 1280.5px) {
-      margin-bottom: 2em;
     }
 
     &:hover,

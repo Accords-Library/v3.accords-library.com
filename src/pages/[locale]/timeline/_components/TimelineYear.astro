@@ -27,26 +27,33 @@ if (year === 856) {
 
 {cache.config.timeline.breaks.includes(year) && <hr id={`hr-${year}`} />}
 
-<h2 class="font-2xl" class:list={{ multiple }} id={year.toString()}>
-  {formatTimelineDate(date)}
-</h2>
+<div>
+  <h2 class="font-2xl" class:list={{ multiple }} id={year.toString()}>
+    {formatTimelineDate(date)}
+  </h2>
 
-<div class="year-container" class:list={{ multiple }}>
-  {events.map((event) => <TimelineEvent event={event} displayDate={eventsHaveDifferentDates} />)}
+  <div class="year-container" class:list={{ multiple }}>
+    {events.map((event) => <TimelineEvent event={event} displayDate={eventsHaveDifferentDates} />)}
+  </div>
 </div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
+  div {
+    margin-bottom: 16px;
+  }
+
   hr {
     border: none;
     border-top: 3px dashed var(--color-base-500);
-    margin-block: 5em;
+    margin-top: 4em;
+    margin-bottom: 3em;
     scroll-margin-block: 5em;
+    width: 100%;
   }
 
   .year-container {
-    margin-bottom: 3em;
     width: fit-content;
 
     &.multiple {

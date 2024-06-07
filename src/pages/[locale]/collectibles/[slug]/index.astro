@@ -13,12 +13,12 @@ import SubitemSection from "./_components/SubitemSection.astro";
 import ContentsSection from "./_components/ContentsSection/ContentsSection.astro";
 import { formatInlineTitle, formatLocale, formatRichTextToString } from "src/utils/format";
 import AsideLayout from "components/AppLayout/AsideLayout.astro";
-import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 import { convert } from "src/utils/currencies";
 import Attributes from "components/Attributes.astro";
 import type { Attribute } from "src/utils/attributes";
 import { payload } from "src/utils/payload";
 import { sizesToSrcset } from "src/utils/img";
+import RichText from "components/RichText/RichText.astro";
 
 const slug = Astro.params.slug!;
 const { getLocalizedMatch, getLocalizedUrl, t, formatDate, formatPrice } = await getI18n(
@@ -148,7 +148,7 @@ if (price) {
   }}
   parentPages={parentPages}
   backgroundImage={backgroundImage ?? thumbnail}>
-  <AsideLayout>
+  <AsideLayout reducedAsideWidth>
     <Fragment slot="header">
       <AppLayoutTitle title={title} pretitle={pretitle} subtitle={subtitle} lang={language} />
     </Fragment>
@@ -203,19 +203,13 @@ if (price) {
     </Fragment>
 
     <Fragment slot="aside">
-      {
-        metaAttributes.length > 0 && (
-          <div id="attributes">
-            <Attributes attributes={metaAttributes} />
-          </div>
-        )
-      }
+      <Attributes attributes={metaAttributes} />
     </Fragment>
 
     <Fragment slot="meta">
-      {description && <AppLayoutDescription description={description} lang={language} />}
+      {description && <RichText content={description} context={{ lang: language }} />}
 
-      <div id="tags">
+      <div id="attributes">
         <Attributes attributes={[...attributes, ...additionalAttributes]}>
           <AvailabilityInfo urls={urls} price={price !== undefined} releaseDate={releaseDate} />
 
@@ -237,34 +231,17 @@ if (price) {
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
+  #attributes {
+    margin-block: 24px;
+  }
+
   #images {
-    display: grid;
-    place-content: start;
-    place-items: start;
-    margin-block: 2em;
-    gap: clamp(1em, 0.5em + 3vw, 2em);
-    grid-template-columns: 1fr;
-
-    @media (max-width: 23rem) {
-      gap: 2.5em;
-    }
-
-    @media (min-width: 52rem) {
-      grid-template-columns: auto 10rem;
-    }
-
-    @media (min-width: 1280.5px) {
-      grid-template-columns: 10rem 1fr;
-      margin-block: initial;
-
-      & > #gallery-scans {
-        order: -1;
-      }
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 
     & > #thumbnail {
       max-height: 80vh;
-      max-width: min(35rem, 100%);
       box-shadow: 0 5px 20px -10px var(--color-shadow-0);
       transition: 100ms scale;
 
@@ -275,58 +252,28 @@ if (price) {
     }
 
     & > #gallery-scans {
-      max-width: 35rem;
-      width: 100%;
-
       &:not(.with-two) {
-        @media (max-width: 52rem) {
-          > .collectibles_id-image_tile {
-            aspect-ratio: 2 / 1;
-          }
+        & > .collectibles_id-image_tile {
+          aspect-ratio: 2 / 1;
         }
       }
 
       &.with-two {
         display: flex;
-        flex-direction: column;
-        gap: 2.5em;
+        gap: 24px;
 
-        @media (max-width: 23rem) {
-          > .collectibles_id-image_tile {
+        @media (max-width: 400.5px) {
+          flex-direction: column;
+
+          & > .collectibles_id-image_tile {
             aspect-ratio: 2 / 1;
           }
         }
-
-        @media (min-width: 23rem) {
-          gap: clamp(1em, 0.5em + 3vw, 2em);
-          flex-direction: row;
-
-          @media (min-width: 52rem) {
-            max-width: 15rem;
-            flex-direction: column;
-          }
-        }
       }
-    }
-  }
 
-  #tags {
-    margin-block: 2em;
-
-    @media (max-width: 1280.5px) {
-      margin-bottom: 4em;
-    }
-
-    @media (max-width: 35rem) {
-      margin-top: 4em;
-      margin-bottom: 6em;
-    }
-  }
-
-  #attributes {
-    @media (min-width: 1280.5px) {
-      margin-left: 12em;
-      margin-top: 3em;
+      @media (max-width: 1280.5px) {
+        max-width: 35rem;
+      }
     }
   }
 </style>

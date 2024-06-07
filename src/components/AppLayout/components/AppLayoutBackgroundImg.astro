@@ -16,33 +16,25 @@ const {
 } = Astro.props;
 
 const uniqueId = getRandomId();
-
-const style = `
-@media (max-aspect-ratio: ${width}/${height * 0.85}) {
-  #${uniqueId} {
-      mask-image: linear-gradient( to bottom, rgba(0 0 0 / 30%) 0%, transparent 100% );
-  }
-}`; // Required to be done like this because we can't insert variables in media queries with Astro.
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<div inert>
-  <img
-    id={uniqueId}
-    src={url}
-    srcset={sizesToSrcset(sizes)}
-    sizes="100vw"
-    width={width}
-    height={height}
-    loading="lazy"
-    class="when-no-print"
-  />
-</div>
+<img
+  id={uniqueId}
+  src={url}
+  srcset={sizesToSrcset(sizes)}
+  sizes="100vw"
+  width={width}
+  height={height}
+  loading="lazy"
+  class="when-no-print"
+  decoding="async"
+  alt=""
+  inert
+/>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
-
-<style set:html={style} is:inline></style>
 
 <style>
   @keyframes fadeIn {
@@ -50,48 +42,33 @@ const style = `
       opacity: 0;
     }
     100% {
-      opacity: 1;
+      opacity: 0.3;
     }
   }
 
-  div {
+  img {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    overflow: hidden;
-    z-index: -1;
+    z-index: -9999;
 
-    mask-image: linear-gradient(
-      to right,
-      rgba(0 0 0 / 15%) 0%,
-      rgba(0 0 0 / 30%) 600px,
-      rgba(0 0 0 / 100%) 1200px
-    );
-
-    @media (max-width: 650.5px) {
-      display: none;
-    }
-  }
-
-  img {
     width: 100%;
-    height: auto;
     max-height: 100%;
 
     object-fit: cover;
     object-position: 50% 0;
 
-    mask-image: linear-gradient(
-      to bottom,
-      rgba(0 0 0 / 30%) 0%,
-      rgba(0 0 0 / 5%) 100vh,
-      rgba(0 0 0 / 5%) 80%,
-      transparent 100%
-    );
-
     animation: fadeIn 3s forwards;
+
+    @media (max-width: 650.5px) {
+      display: none;
+    }
+
+    mask-image: linear-gradient(to bottom, rgba(0 0 0 / 100%) min(50vh, 50%), transparent),
+      linear-gradient(to right, rgba(0 0 0 / 10%), rgba(0 0 0 / 20%) 640px, black 1200px);
+    mask-composite: intersect;
   }
 </style>
 

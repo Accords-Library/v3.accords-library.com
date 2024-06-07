@@ -1,12 +1,12 @@
 ---
 import AppLayout from "components/AppLayout/AppLayout.astro";
-import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/utils/payload";
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
 import { sizesToSrcset } from "src/utils/img";
+import RichText from "components/RichText/RichText.astro";
 
 const slug = Astro.params.slug!;
 const { getLocalizedMatch, getLocalizedUrl, t } = await getI18n(Astro.locals.currentLocale);
@@ -28,7 +28,8 @@ const translation = getLocalizedMatch(translations);
     description: translation.description && formatRichTextToString(translation.description),
     thumbnail,
   }}
-  parentPages={parentPages}>
+  parentPages={parentPages}
+  class="app">
   <AppLayoutTitle
     title={translation.title}
     pretitle={translation.pretitle}
@@ -38,7 +39,7 @@ const translation = getLocalizedMatch(translations);
 
   {
     translation.description && (
-      <AppLayoutDescription description={translation.description} lang={translation.language} />
+      <RichText content={translation.description} context={{ lang: translation.language }} />
     )
   }
 
@@ -67,6 +68,12 @@ const translation = getLocalizedMatch(translations);
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
+  .app {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
   div {
     margin-top: 3em;
     display: flex;

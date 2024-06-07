@@ -8,7 +8,6 @@ import Card from "components/Card.astro";
 import { getI18n } from "src/i18n/i18n";
 import { cache } from "src/utils/payload";
 import type { WordingKey } from "src/i18n/wordings-keys";
-import AppLayoutDescription from "components/AppLayout/components/AppLayoutDescription.astro";
 
 const events = await payload.getChronologyEvents();
 const groupedEvents = groupBy(events, (event) => event.date.year);
@@ -17,9 +16,9 @@ const { getLocalizedUrl, t, formatTimelineDate } = await getI18n(Astro.locals.cu
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppLayout backgroundImage={cache.config.timeline.backgroundImage}>
+<AppLayout backgroundImage={cache.config.timeline.backgroundImage} class="app">
   <AppLayoutTitle title={t("timeline.title")} />
-  <AppLayoutDescription description={t("timeline.description")} />
+  <p class="prose" set:html={t("timeline.description")} />
 
   <div class="card-container">
     <Card>
@@ -73,6 +72,12 @@ const { getLocalizedUrl, t, formatTimelineDate } = await getI18n(Astro.locals.cu
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
+  .app {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
   .card-content {
     padding: clamp(1.5em, 4vw, 2em) clamp(1em, 4vw, 3em);
     max-width: 35rem;

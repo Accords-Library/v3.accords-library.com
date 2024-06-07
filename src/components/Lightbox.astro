@@ -10,10 +10,10 @@ import Credits from "./Credits.astro";
 import DownloadButton from "./DownloadButton.astro";
 import AppLayoutTitle from "./AppLayout/components/AppLayoutTitle.astro";
 import type { ComponentProps } from "astro/types";
-import AppLayoutDescription from "./AppLayout/components/AppLayoutDescription.astro";
 import Attributes from "./Attributes.astro";
 import { sizesToSrcset } from "src/utils/img";
 import { Icon } from "astro-icon/components";
+import RichText from "./RichText/RichText.astro";
 
 interface Props {
   previousImageHref?: string | undefined;
@@ -105,7 +105,7 @@ const hasNavigation = previousImageHref || nextImageHref;
           <AppLayoutTitle pretitle={pretitle} title={title} subtitle={subtitle} lang={lang} />
         )
       }
-      {description && <AppLayoutDescription description={description} lang={lang} />}
+      {description && <RichText content={description} context={{ lang }} />}
     </div>
     {attributes.length > 0 && <Attributes attributes={attributes} />}
     {credits.length > 0 && <Credits credits={credits} />}
@@ -180,6 +180,12 @@ const hasNavigation = previousImageHref || nextImageHref;
       &:not(.complex) {
         align-items: center;
         gap: 2em;
+      }
+
+      & > div {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
       }
     }
   }

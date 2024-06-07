@@ -1,4 +1,6 @@
 ---
+import Card from "components/Card.astro";
+
 /*
 
 On larger screens (>= 1280)
@@ -17,9 +19,15 @@ aside
 default slot
 
 */
+
+interface Props {
+  reducedAsideWidth?: boolean;
+}
+
+const { reducedAsideWidth = false } = Astro.props;
 ---
 
-<div id="layout">
+<div id="layout" class:list={{ "reduced-width": reducedAsideWidth }}>
   <div id="left">
     <slot name="header" />
     <div class="when-not-large">
@@ -32,34 +40,66 @@ default slot
     </div>
     <slot />
   </div>
-  <div id="right" class="when-large">
+  <Card class="when-large right">
     <slot name="header-aside" />
     <slot name="aside" />
-  </div>
+  </Card>
 </div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   #layout {
-    container-type: inline-size;
-
     @media (min-width: 1280.5px) {
       display: grid;
       justify-content: space-between;
       grid-template-columns: 35rem 35rem;
+
+      &.reduced-width {
+        grid-template-columns: 35rem 27rem;
+      }
+
+      align-items: start;
     }
   }
 
   .when-large {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
     @media (max-width: 1280.5px) {
       display: none !important;
     }
   }
 
   .when-not-large {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+
     @media (min-width: 1280.5px) {
       display: none !important;
     }
+  }
+
+  #left {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    @media (max-width: 1280.5px) {
+      gap: 64px;
+    }
+  }
+
+  .right {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+
+    background-color: color-mix(in srgb, var(--color-elevation-0) 65%, transparent) !important;
+    backdrop-filter: blur(15px);
+    padding: 2em;
   }
 </style>

@@ -12,6 +12,7 @@ interface Props {
   backgroundImage?: ComponentProps<typeof AppLayoutBackgroundImg>["img"] | undefined;
   hideFooterLinks?: boolean;
   hideHomeButton?: boolean;
+  class?: string | undefined;
 }
 
 const {
@@ -20,6 +21,7 @@ const {
   backgroundImage,
   hideFooterLinks = false,
   hideHomeButton = false,
+  ...otherProps
 } = Astro.props;
 ---
 
@@ -30,7 +32,7 @@ const {
   <header>
     <Topbar parentPages={parentPages} hideHomeButton={hideHomeButton} />
   </header>
-  <main><slot /></main>
+  <main {...otherProps.class ? otherProps : {}}><slot /></main>
   <Footer withLinks={!hideFooterLinks} />
 </Html>
 
