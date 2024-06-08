@@ -33,8 +33,20 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 
     & > #values {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: clamp(6px, 2vmin, 16px);
+
+      grid-template-columns: repeat(auto-fill, 270px);
+
+      @media (max-width: 600.5px) {
+        grid-template-columns: 1fr 1fr;
+        row-gap: 12px;
+      }
+
+      @media (max-width: 24rem) {
+        grid-template-columns: 1fr;
+      }
+
+      align-items: start;
     }
   }
 </style>

@@ -154,50 +154,50 @@ if (price) {
     </Fragment>
 
     <Fragment slot="header-aside">
-      <div id="images">
-        {
-          thumbnail && (
-            <a
-              id="thumbnail"
-              href={getLocalizedUrl(`/images/${thumbnail.id}`)}
-              style={`aspect-ratio: ${thumbnail.width}/${thumbnail.height};`}>
-              <img
-                src={thumbnail.url}
-                srcset={sizesToSrcset(thumbnail.sizes)}
-                sizes={`(max-width: 550px) 90vw, 550px`}
-                width={thumbnail.width}
-                height={thumbnail.height}
-              />
-            </a>
-          )
-        }
-
-        {
-          (gallery || scans) && (
-            <div
-              id="gallery-scans"
-              class:list={{ "when-no-print": true, "with-two": gallery && scans }}>
-              {gallery && (
-                <ImageTile
-                  image={gallery.thumbnail}
-                  title={t("collectibles.gallery.title")}
-                  subtitle={t("collectibles.gallery.subtitle", { count: gallery.count })}
-                  href={getLocalizedUrl(`/collectibles/${slug}/gallery`)}
+      {
+        (thumbnail || gallery || scans) && (
+          <div id="images">
+            {thumbnail && (
+              <a
+                id="thumbnail"
+                href={getLocalizedUrl(`/images/${thumbnail.id}`)}
+                style={`aspect-ratio: ${thumbnail.width}/${thumbnail.height};`}>
+                <img
+                  src={thumbnail.url}
+                  srcset={sizesToSrcset(thumbnail.sizes)}
+                  sizes={`(max-width: 550px) 90vw, 550px`}
+                  width={thumbnail.width}
+                  height={thumbnail.height}
                 />
-              )}
+              </a>
+            )}
 
-              {scans && (
-                <ImageTile
-                  image={scans.thumbnail}
-                  title={t("collectibles.scans.title")}
-                  subtitle={t("collectibles.scans.subtitle", { count: scans.count })}
-                  href={getLocalizedUrl(`/collectibles/${slug}/scans`)}
-                />
-              )}
-            </div>
-          )
-        }
-      </div>
+            {(gallery || scans) && (
+              <div
+                id="gallery-scans"
+                class:list={{ "when-no-print": true, "with-two": gallery && scans }}>
+                {gallery && (
+                  <ImageTile
+                    image={gallery.thumbnail}
+                    title={t("collectibles.gallery.title")}
+                    subtitle={t("collectibles.gallery.subtitle", { count: gallery.count })}
+                    href={getLocalizedUrl(`/collectibles/${slug}/gallery`)}
+                  />
+                )}
+
+                {scans && (
+                  <ImageTile
+                    image={scans.thumbnail}
+                    title={t("collectibles.scans.title")}
+                    subtitle={t("collectibles.scans.subtitle", { count: scans.count })}
+                    href={getLocalizedUrl(`/collectibles/${slug}/scans`)}
+                  />
+                )}
+              </div>
+            )}
+          </div>
+        )
+      }
     </Fragment>
 
     <Fragment slot="aside">

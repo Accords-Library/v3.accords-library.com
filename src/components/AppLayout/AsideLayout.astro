@@ -53,10 +53,11 @@ const { reducedAsideWidth = false } = Astro.props;
     @media (min-width: 1280.5px) {
       display: grid;
       justify-content: space-between;
-      grid-template-columns: 35rem 35rem;
+      gap: 5rem;
+      grid-template-columns: 1fr 35rem;
 
       &.reduced-width {
-        grid-template-columns: 35rem 27rem;
+        grid-template-columns: 1fr 27rem;
       }
 
       align-items: start;
