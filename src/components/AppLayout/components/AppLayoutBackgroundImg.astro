@@ -20,7 +20,7 @@ const uniqueId = getRandomId();
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<div inert>
+<div inert class="when-no-print">
   <img
     id={uniqueId}
     src={url}
@@ -29,7 +29,6 @@ const uniqueId = getRandomId();
     width={width}
     height={height}
     loading="lazy"
-    class="when-no-print"
     decoding="async"
     alt=""
   />
@@ -75,15 +74,22 @@ const uniqueId = getRandomId();
     object-fit: cover;
     object-position: 50% 0;
 
+    --starting-opacity: 20%;
+    @media (prefers-reduced-transparency) or (prefers-contrast: more) {
+      --starting-opacity: 0%;
+    }
+
     mask-image: linear-gradient(to bottom, rgba(0 0 0 / 100%) min(50vh, 50%), transparent),
-      linear-gradient(to right, rgba(0 0 0 / 20%) 640px, black 1200px);
+      linear-gradient(to right, rgba(0 0 0 / var(--starting-opacity)) 640px, black 1200px);
     mask-composite: intersect;
 
-    @supports (animation-timeline: scroll(root)) {
-      --parallax-amount: 0.4;
-      animation-name: parallax;
-      animation-timing-function: linear;
-      animation-timeline: scroll(root);
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: scroll(root)) {
+        --parallax-amount: 0.4;
+        animation-name: parallax;
+        animation-timing-function: linear;
+        animation-timeline: scroll(root);
+      }
     }
   }
 </style>

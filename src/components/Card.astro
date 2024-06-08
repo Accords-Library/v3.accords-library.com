@@ -44,6 +44,11 @@ const { href, disableRoundedTop = false, class: className, ...otherProps } = Ast
     box-shadow: 0 1px 2px 0 var(--color-shadow-2);
     background-color: color-mix(in srgb, var(--color-elevation-2) 30%, transparent);
 
+    @media (prefers-reduced-transparency) or (prefers-contrast: more) {
+      background-color: var(--color-elevation-1);
+      border: 2px solid var(--color-base-650);
+    }
+
     &a {
       transition-duration: 150ms;
       transition-property: border-color, box-shadow, background-color;

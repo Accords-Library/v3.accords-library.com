@@ -610,6 +610,9 @@ const { currentTheme } = Astro.locals;
       &:focus-visible {
         color: var(--color-base-850);
         text-decoration-color: var(--color-base-750);
+      }
+
+      &:focus-visible {
         outline: 3px solid var(--color-base-750);
         outline-offset: 2px;
       }
@@ -703,6 +706,14 @@ const { currentTheme } = Astro.locals;
     outline-color: var(--foreground-color);
     border: 2px solid var(--foreground-color);
     background-color: color-mix(in srgb, var(--color-elevation-0) 60%, transparent);
+
+    @media (prefers-reduced-transparency) or (prefers-contrast: more) {
+      background-color: var(--color-elevation-0);
+    }
+
+    @media print {
+      background-color: var(--color-base-0);
+    }
 
     transition-duration: 250ms;
     transition-property: padding-top, box-shadow, background-color, color, border-color;

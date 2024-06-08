@@ -2,6 +2,7 @@
 
 ## Ongoing
 
+- [Bugs] Keziah reported some lag spikes when scrolling on the home page (Firefox on Windows)
 - [Feat] [Analytics] Add analytics
 - [Bugs] [Tooltips] Tooltip in under next element (example in timeline)
 - [Bugs] [Language override] Maso actor is not focusable with keyboard nav
@@ -28,6 +29,7 @@
 
 ## Long term
 
+- [Feat] Add reduce motion to element that zoom when hovering
 - [Bugs] [iOS] Video doesn't seem to start
 - [Feat] [Folders] Provide a list view, and a list/grid toggle
 - [Feat] [Payload] Endpoints should provide a simple text-based version of the content (for OG purposes)

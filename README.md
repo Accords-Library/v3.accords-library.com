@@ -37,6 +37,12 @@ Accord's Library v3.0 (shorten to AL3.0) follows the Metamodernist Web model des
   - Keyboard navigation
   - Hotkeys when applicable
 
+- Respect user preferences
+
+  - Support for prefers-reduced-transparency, prefers-contrast, and prefers-reduced-motion
+  - Theme switch: light, dark, auto
+  - Language and currency selection
+
 - Multilingual
 
   - Contents can be available in any number of languages

@@ -100,6 +100,16 @@ const { reducedAsideWidth = false } = Astro.props;
 
     background-color: color-mix(in srgb, var(--color-elevation-0) 65%, transparent) !important;
     backdrop-filter: blur(15px);
+
+    @media (prefers-reduced-transparency) or (prefers-contrast: more) {
+      background-color: var(--color-elevation-0) !important;
+      backdrop-filter: unset;
+    }
+
+    @media print {
+      background-color: var(--color-base-0) !important;
+    }
+
     padding: 2em;
   }
 </style>
