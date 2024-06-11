@@ -64,13 +64,20 @@ for (const attribute of attributes) {
     clippedAttributes.push(attribute);
   } else {
     metaLength += getLocalizedMatch(attribute.translations).name.length;
-    if (attribute.type === AttributeTypes.Tags) {
-      metaLength += attribute.value
-        .map(({ translations }) => getLocalizedMatch(translations).name)
-        .join(", ").length;
-      metaLength += clippedAttributes.push(attribute);
+    switch (attribute.type) {
+      case AttributeTypes.Number:
+        metaLength += attribute.value.toString().length;
+        break;
+      case AttributeTypes.Text:
+        metaLength += attribute.value.length;
+        break;
+      case AttributeTypes.Tags:
+        metaLength += attribute.value
+          .map(({ translations }) => getLocalizedMatch(translations).name)
+          .join(", ").length;
+        break;
     }
-    // TODO: Handle other attribute types
+    metaLength += clippedAttributes.push(attribute);
   }
   metaLength += 8;
 }
