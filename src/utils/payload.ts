@@ -4,39 +4,47 @@ import {
   type EndpointWebsiteConfig,
 } from "src/shared/payload/payload-sdk";
 import { getPayloadSDK } from "src/shared/payload/payload-sdk";
-import NodeCache from "node-cache";
 
-const REFRESH_FREQUENCY_IN_SEC = 60;
-const nodeCache = new NodeCache({
-  checkperiod: REFRESH_FREQUENCY_IN_SEC,
-  deleteOnExpire: true,
-  forceString: true,
-  maxKeys: 1,
-});
-const TOKEN_KEY = "token";
+let token: string | undefined = undefined;
+let expiration: number | undefined = undefined;
+
+const responseCache = new Map<string, any>();
 
 export const payload = getPayloadSDK({
   apiURL: import.meta.env.PAYLOAD_API_URL,
   email: import.meta.env.PAYLOAD_USER,
   password: import.meta.env.PAYLOAD_PASSWORD,
-  cache: {
+  tokenCache: {
     get: () => {
-      const cachedToken = nodeCache.get<string>(TOKEN_KEY);
-      if (cachedToken !== undefined) {
-        const cachedTokenTtl = nodeCache.getTtl(TOKEN_KEY) as number;
-        const diffInMinutes = Math.floor((cachedTokenTtl - Date.now()) / 1000 / 60);
-        console.log("Retrieved token from cache. TTL is", diffInMinutes, "minutes.");
-        return cachedToken;
+      if (!token) return undefined;
+      if (!expiration || expiration < Date.now()) {
+        console.log("[PayloadSDK] No token to be retrieved or the token expired");
+        return undefined;
       }
-      console.log("No token to be retrieved or the token expired");
-      return undefined;
+      const diffInMinutes = Math.floor((expiration - Date.now()) / 1000 / 60);
+      console.log("[PayloadSDK] Retrieved token from cache. TTL is", diffInMinutes, "minutes.");
+      return token;
     },
-    set: (token, exp) => {
-      const now = Math.floor(Date.now() / 1000);
-      const ttl = Math.floor(exp - now - REFRESH_FREQUENCY_IN_SEC * 2);
-      const ttlInMinutes = Math.floor(ttl / 60);
-      console.log("Token was refreshed. TTL is", ttlInMinutes, "minutes.");
-      nodeCache.set(TOKEN_KEY, token, ttl);
+    set: (newToken, newExpiration) => {
+      token = newToken;
+      expiration = newExpiration * 1000;
+      const diffInMinutes = Math.floor((expiration - Date.now()) / 1000 / 60);
+      console.log("[PayloadSDK] New token set. TTL is", diffInMinutes, "minutes.");
+    },
+  },
+  responseCache: {
+    get: (url) => {
+      const cachedResponse = responseCache.get(url);
+      if (!cachedResponse) {
+        console.log("[ResponseCaching] No cached response found for", url);
+        return undefined;
+      }
+      console.log("[ResponseCaching] Retrieved cache response for", url);
+      return cachedResponse;
+    },
+    set: (url, response) => {
+      console.log("[ResponseCaching] Caching response for", url);
+      responseCache.set(url, response);
     },
   },
 });

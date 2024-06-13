@@ -1953,17 +1953,23 @@ type GetPayloadSDKParams = {
   apiURL: string;
   email: string;
   password: string;
-  cache: Cache;
+  tokenCache?: TokenCache;
+  responseCache?: ResponseCache;
 };
 
-type Cache = {
+type TokenCache = {
   set: (token: string, expirationTimestamp: number) => void;
   get: () => string | undefined;
 };
 
+type ResponseCache = {
+  set: (url: string, response: any) => void;
+  get: (url: string) => any | undefined;
+};
+
 const logResponse = (res: Response) => console.log(res.status, res.statusText, res.url);
 
-export const getPayloadSDK = ({ apiURL, email, password, cache }: GetPayloadSDKParams) => {
+export const getPayloadSDK = ({ apiURL, email, password, tokenCache, responseCache }: GetPayloadSDKParams) => {
   const refreshToken = async () => {
     const loginUrl = payloadApiUrl(Collections.Recorders, "login");
     const loginResult = await fetch(loginUrl, {
@@ -1981,72 +1987,80 @@ export const getPayloadSDK = ({ apiURL, email, password, cache }: GetPayloadSDKP
       token: string;
       exp: number;
     };
-    cache.set(token, exp);
+    tokenCache?.set(token, exp);
     return token;
   };
 
   const payloadApiUrl = (collection: Collections, endpoint?: string, isGlobal?: boolean): string =>
     `${apiURL}/${isGlobal === undefined ? "" : "globals/"}${collection}${endpoint === undefined ? "" : `/${endpoint}`}`;
 
-  const request = async (url: string): Promise<Response> => {
+  const request = async (url: string): Promise<any> => {
+    const cachedResponse = responseCache?.get(url)
+    if (cachedResponse) {
+      return cachedResponse;
+    }
+
     const result = await fetch(url, {
       headers: {
-        Authorization: `JWT ${cache.get() ?? (await refreshToken())}`,
+        Authorization: `JWT ${tokenCache?.get() ?? (await refreshToken())}`,
       },
     });
     logResponse(result);
 
-    if (result.status !== 200) {
+    if (!result.ok) {
       throw new Error("Unhandled fetch error");
     }
 
-    return result;
+    const data = await result.json()
+    responseCache?.set(url, data);
+
+    return data;
   };
 
   return {
     getConfig: async (): Promise<EndpointWebsiteConfig> =>
-      await (await request(payloadApiUrl(Collections.WebsiteConfig, `config`, true))).json(),
+      await request(payloadApiUrl(Collections.WebsiteConfig, `config`, true)),
     getFolder: async (slug: string): Promise<EndpointFolder> =>
-      await (await request(payloadApiUrl(Collections.Folders, `slug/${slug}`))).json(),
+      await request(payloadApiUrl(Collections.Folders, `slug/${slug}`)),
     getLanguages: async (): Promise<Language[]> =>
-      await (await request(payloadApiUrl(Collections.Languages, `all`))).json(),
+      await request(payloadApiUrl(Collections.Languages, `all`)),
     getCurrencies: async (): Promise<Currency[]> =>
-      await (await request(payloadApiUrl(Collections.Currencies, `all`))).json(),
+      await request(payloadApiUrl(Collections.Currencies, `all`)),
     getWordings: async (): Promise<EndpointWording[]> =>
-      await (await request(payloadApiUrl(Collections.Wordings, `all`))).json(),
+      await request(payloadApiUrl(Collections.Wordings, `all`)),
     getPage: async (slug: string): Promise<EndpointPage> =>
-      await (await request(payloadApiUrl(Collections.Pages, `slug/${slug}`))).json(),
+      await request(payloadApiUrl(Collections.Pages, `slug/${slug}`)),
     getCollectible: async (slug: string): Promise<EndpointCollectible> =>
-      await (await request(payloadApiUrl(Collections.Collectibles, `slug/${slug}`))).json(),
+      await request(payloadApiUrl(Collections.Collectibles, `slug/${slug}`)),
     getCollectibleScans: async (slug: string): Promise<EndpointCollectibleScans> =>
-      await (await request(payloadApiUrl(Collections.Collectibles, `slug/${slug}/scans`))).json(),
+      await request(payloadApiUrl(Collections.Collectibles, `slug/${slug}/scans`)),
     getCollectibleScanPage: async (
       slug: string,
       index: string
     ): Promise<EndpointCollectibleScanPage> =>
-      await (
+      
         await request(payloadApiUrl(Collections.Collectibles, `slug/${slug}/scans/${index}`))
-      ).json(),
+      ,
     getCollectibleGallery: async (slug: string): Promise<EndpointCollectibleGallery> =>
-      await (await request(payloadApiUrl(Collections.Collectibles, `slug/${slug}/gallery`))).json(),
+      await request(payloadApiUrl(Collections.Collectibles, `slug/${slug}/gallery`)),
     getCollectibleGalleryImage: async (
       slug: string,
       index: string
     ): Promise<EndpointCollectibleGalleryImage> =>
-      await (
+      
         await request(payloadApiUrl(Collections.Collectibles, `slug/${slug}/gallery/${index}`))
-      ).json(),
+      ,
     getChronologyEvents: async (): Promise<EndpointChronologyEvent[]> =>
-      await (await request(payloadApiUrl(Collections.ChronologyEvents, `all`))).json(),
+      await request(payloadApiUrl(Collections.ChronologyEvents, `all`)),
     getChronologyEventByID: async (id: string): Promise<EndpointChronologyEvent> =>
-      await (await request(payloadApiUrl(Collections.ChronologyEvents, `id/${id}`))).json(),
+      await request(payloadApiUrl(Collections.ChronologyEvents, `id/${id}`)),
     getImageByID: async (id: string): Promise<EndpointImage> =>
-      await (await request(payloadApiUrl(Collections.Images, `id/${id}`))).json(),
+      await request(payloadApiUrl(Collections.Images, `id/${id}`)),
     getAudioByID: async (id: string): Promise<EndpointAudio> =>
-      await (await request(payloadApiUrl(Collections.Audios, `id/${id}`))).json(),
+      await request(payloadApiUrl(Collections.Audios, `id/${id}`)),
     getVideoByID: async (id: string): Promise<EndpointVideo> =>
-      await (await request(payloadApiUrl(Collections.Videos, `id/${id}`))).json(),
+      await request(payloadApiUrl(Collections.Videos, `id/${id}`)),
     getRecorderByID: async (id: string): Promise<EndpointRecorder> =>
-      await (await request(payloadApiUrl(Collections.Recorders, `id/${id}`))).json(),
+      await request(payloadApiUrl(Collections.Recorders, `id/${id}`)),
   };
 };
