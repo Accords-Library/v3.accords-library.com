@@ -25,7 +25,7 @@ const { getLocalizedMatch, getLocalizedUrl, t, formatDate, formatPrice } = await
   Astro.locals.currentLocale
 );
 
-const collectible = await fetchOr404(() => payload.getCollectible(slug));
+const collectible = await fetchOr404(Astro, () => payload.getCollectible(slug));
 if (collectible instanceof Response) {
   return collectible;
 }

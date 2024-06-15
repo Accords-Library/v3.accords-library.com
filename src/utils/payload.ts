@@ -57,26 +57,26 @@ type Cache = {
 };
 
 const fetchNewData = async (): Promise<Cache> => ({
-  locales: await payload.getLanguages(),
-  currencies: (await payload.getCurrencies()).map(({ id }) => id),
-  wordings: await payload.getWordings(),
-  config: await payload.getConfig(),
+  locales: (await payload.getLanguages()).data,
+  currencies: (await payload.getCurrencies()).data.map(({ id }) => id),
+  wordings: (await payload.getWordings()).data,
+  config: (await payload.getConfig()).data,
 });
 
 export let cache = await fetchNewData();
 
 export const refreshWordings = async () => {
-  cache.wordings = await payload.getWordings();
+  cache.wordings = (await payload.getWordings()).data;
 };
 
 export const refreshCurrencies = async () => {
-  cache.currencies = (await payload.getCurrencies()).map(({ id }) => id);
+  cache.currencies = (await payload.getCurrencies()).data.map(({ id }) => id);
 };
 
 export const refreshLocales = async () => {
-  cache.locales = await payload.getLanguages();
+  cache.locales = (await payload.getLanguages()).data;
 };
 
 export const refreshWebsiteConfig = async () => {
-  cache.config = await payload.getConfig();
+  cache.config = (await payload.getConfig()).data;
 };

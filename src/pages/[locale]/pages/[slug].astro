@@ -8,7 +8,7 @@ import { fetchOr404 } from "src/utils/responses";
 
 const slug = Astro.params.slug!;
 
-const page = await fetchOr404(() => payload.getPage(slug));
+const page = await fetchOr404(Astro, () => payload.getPage(slug));
 if (page instanceof Response) {
   return page;
 }

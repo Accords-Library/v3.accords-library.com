@@ -11,7 +11,7 @@ import RichText from "components/RichText/RichText.astro";
 const slug = Astro.params.slug!;
 const { getLocalizedMatch, getLocalizedUrl, t } = await getI18n(Astro.locals.currentLocale);
 
-const gallery = await fetchOr404(() => payload.getCollectibleGallery(slug));
+const gallery = await fetchOr404(Astro, () => payload.getCollectibleGallery(slug));
 if (gallery instanceof Response) {
   return gallery;
 }

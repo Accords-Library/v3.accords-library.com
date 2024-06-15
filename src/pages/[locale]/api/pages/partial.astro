@@ -25,7 +25,7 @@ const reqUrl = new URL(Astro.request.url);
 const lang = Astro.props.lang ?? reqUrl.searchParams.get("lang")!;
 const slug = Astro.props.slug ?? reqUrl.searchParams.get("slug")!;
 const { translations, thumbnail, createdAt, updatedAt, updatedBy, attributes } =
-  Astro.props.page ?? (await payload.getPage(slug));
+  Astro.props.page ?? (await payload.getPage(slug)).data;
 
 const { getLocalizedUrl, t, formatDate } = await getI18n(Astro.locals.currentLocale);
 const { getLocalizedMatch } = await getI18n(lang);

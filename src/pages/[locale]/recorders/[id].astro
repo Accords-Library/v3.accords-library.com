@@ -12,7 +12,7 @@ import { fetchOr404 } from "src/utils/responses";
 import { sizesToSrcset } from "src/utils/img";
 
 const id = Astro.params.id!;
-const recorder = await fetchOr404(() => payload.getRecorderByID(id));
+const recorder = await fetchOr404(Astro, () => payload.getRecorderByID(id));
 if (recorder instanceof Response) {
   return recorder;
 }

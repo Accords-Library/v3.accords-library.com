@@ -12,7 +12,7 @@ import RichText from "components/RichText/RichText.astro";
 const slug = Astro.params.slug!;
 const { getLocalizedMatch, t } = await getI18n(Astro.locals.currentLocale);
 
-const scans = await fetchOr404(() => payload.getCollectibleScans(slug));
+const scans = await fetchOr404(Astro, () => payload.getCollectibleScans(slug));
 if (scans instanceof Response) {
   return scans;
 }

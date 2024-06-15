@@ -12,7 +12,7 @@ import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
 
 const id = Astro.params.id!;
-const video = await fetchOr404(() => payload.getVideoByID(id));
+const video = await fetchOr404(Astro, () => payload.getVideoByID(id));
 if (video instanceof Response) {
   return video;
 }

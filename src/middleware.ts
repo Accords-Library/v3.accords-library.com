@@ -151,6 +151,15 @@ const addContentLanguageResponseHeader = defineMiddleware(async ({ url }, next) 
   return response;
 });
 
+const addCacheControlHeaders = defineMiddleware(async (_, next) => {
+  const response = await next();
+  if (response.ok) {
+    response.headers.set("Cache-Control", "max-age=60, stale-while-revalidate=60");
+    response.headers.set("Vary", "Cookie")
+  }
+  return response;
+});
+
 const provideLocalsToRequest = defineMiddleware(async ({ url, locals, cookies }, next) => {
   locals.currentLocale = getCurrentLocale(url.pathname) ?? "en";
   locals.currentCurrency = getCookieCurrency(cookies) ?? "USD";
@@ -170,6 +179,7 @@ export const onRequest = sequence(
   handleActionsSearchParams,
   refreshCookiesMaxAge,
   localeNegotiator,
+  addCacheControlHeaders,
   provideLocalsToRequest,
   analytics
 );

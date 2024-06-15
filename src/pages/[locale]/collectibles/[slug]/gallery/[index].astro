@@ -12,7 +12,7 @@ const { getLocalizedUrl, getLocalizedMatch, t, formatDate } = await getI18n(
   Astro.locals.currentLocale
 );
 
-const galleryImage = await fetchOr404(() => payload.getCollectibleGalleryImage(slug, index));
+const galleryImage = await fetchOr404(Astro, () => payload.getCollectibleGalleryImage(slug, index));
 if (galleryImage instanceof Response) {
   return galleryImage;
 }

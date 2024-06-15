@@ -12,7 +12,7 @@ const { formatScanIndexShort, getLocalizedMatch, getLocalizedUrl } = await getI1
   Astro.locals.currentLocale
 );
 
-const scanPage = await fetchOr404(() => payload.getCollectibleScanPage(slug, index));
+const scanPage = await fetchOr404(Astro, () => payload.getCollectibleScanPage(slug, index));
 if (scanPage instanceof Response) {
   return scanPage;
 }

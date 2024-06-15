@@ -17,7 +17,7 @@ import RichText from "components/RichText/RichText.astro";
 
 const slug = Astro.params.slug!;
 
-const folder = await fetchOr404(() => payload.getFolder(slug));
+const folder = await fetchOr404(Astro, () => payload.getFolder(slug));
 if (folder instanceof Response) {
   return folder;
 }

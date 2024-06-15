@@ -8,8 +8,13 @@ import Card from "components/Card.astro";
 import { getI18n } from "src/i18n/i18n";
 import { cache } from "src/utils/payload";
 import type { WordingKey } from "src/i18n/wordings-keys";
+import { fetchOr404 } from "src/utils/responses";
 
-const events = await payload.getChronologyEvents();
+const events = await fetchOr404(Astro, payload.getChronologyEvents);
+if (events instanceof Response) {
+  return events;
+}
+
 const groupedEvents = groupBy(events, (event) => event.date.year);
 const { getLocalizedUrl, t, formatTimelineDate } = await getI18n(Astro.locals.currentLocale);
 ---

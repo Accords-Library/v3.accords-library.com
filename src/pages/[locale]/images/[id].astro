@@ -7,7 +7,7 @@ import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
 
 const id = Astro.params.id!;
-const image = await fetchOr404(() => payload.getImageByID(id));
+const image = await fetchOr404(Astro, () => payload.getImageByID(id));
 if (image instanceof Response) {
   return image;
 }

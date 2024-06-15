@@ -12,7 +12,7 @@ import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
 
 const id = Astro.params.id!;
-const audio = await fetchOr404(() => payload.getAudioByID(id));
+const audio = await fetchOr404(Astro, () => payload.getAudioByID(id));
 if (audio instanceof Response) {
   return audio;
 }
