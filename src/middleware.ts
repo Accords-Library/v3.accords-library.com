@@ -21,7 +21,7 @@ const redirect = (redirectURL: string, headers: Record<string, string> = {}): Re
 const localeAgnosticPaths = ["/api/"];
 
 const localeNegotiator = defineMiddleware(({ cookies, url, request }, next) => {
-  if (localeAgnosticPaths.some((prefix) => url.pathname.startsWith(prefix))) {
+  if (localeAgnosticPaths.some((prefix) => url.pathname.includes(prefix))) {
     return next();
   }
 
