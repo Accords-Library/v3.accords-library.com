@@ -1,12 +1,12 @@
 ---
-import type { EndpointFolder } from "src/shared/payload/payload-sdk";
+import type { EndpointFolderPreview } from "src/shared/payload/payload-sdk";
 import FolderCard from "./FolderCard.astro";
 import { getI18n } from "src/i18n/i18n";
 
 interface Props {
   title?: string | undefined;
   lang?: string | undefined;
-  folders: EndpointFolder[];
+  folders: EndpointFolderPreview[];
 }
 
 const { title, folders, lang } = Astro.props;
@@ -27,10 +27,10 @@ const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.curren
   <section>
     {
       folders.map(({ slug, translations, icon }) => {
-        const { name, language } = getLocalizedMatch(translations);
+        const { title, language } = getLocalizedMatch(translations);
         return (
           <FolderCard
-            title={name}
+            title={title}
             lang={language}
             icon={icon}
             href={getLocalizedUrl(`/folders/${slug}`)}

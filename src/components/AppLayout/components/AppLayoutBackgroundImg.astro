@@ -1,14 +1,14 @@
 ---
 import type {
   EndpointImage,
-  EndpointMediaThumbnail,
+  EndpointPayloadImage,
   EndpointScanImage,
 } from "src/shared/payload/payload-sdk";
 import { getRandomId } from "src/utils/random";
 import { sizesToSrcset } from "src/utils/img";
 
 interface Props {
-  img: EndpointImage | EndpointMediaThumbnail | EndpointScanImage;
+  img: EndpointImage | EndpointPayloadImage | EndpointScanImage;
 }
 
 const {

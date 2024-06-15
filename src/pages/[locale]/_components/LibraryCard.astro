@@ -1,9 +1,9 @@
 ---
-import type { EndpointImage } from "src/shared/payload/payload-sdk";
+import type { EndpointPayloadImage } from "src/shared/payload/payload-sdk";
 import { sizesForGridLayout, sizesToSrcset } from "src/utils/img";
 
 interface Props {
-  img?: { light: EndpointImage; dark: EndpointImage } | undefined;
+  img?: { light: EndpointPayloadImage; dark: EndpointPayloadImage } | undefined;
   name: string;
   href: string;
 }

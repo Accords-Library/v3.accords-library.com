@@ -30,12 +30,12 @@ const meta = getLocalizedMatch(folder.translations);
 
 <AppLayout
   openGraph={{
-    title: meta.name,
+    title: meta.title,
     description: meta.description && formatRichTextToString(meta.description),
   }}
   parentPages={folder.parentPages}
   class="app">
-  <AppLayoutTitle title={meta.name} lang={meta.language} />
+  <AppLayoutTitle title={meta.title} lang={meta.language} />
   {meta.description && <RichText content={meta.description} context={{ lang: meta.language }} />}
 
   <div id="main" class:list={{ complex: folder.sections.type === "multiple" }}>

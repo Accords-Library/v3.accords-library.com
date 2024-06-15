@@ -305,7 +305,7 @@ export const getI18n = async (locale: string) => {
         return {
           href: getLocalizedUrl(`/folders/${source.folder.slug}`),
           typeLabel: t("global.sources.typeLabel.folder"),
-          label: getLocalizedMatch(source.folder.translations).name,
+          label: formatInlineTitle(translation),
           lang: translation.language,
         };
       }
@@ -315,7 +315,7 @@ export const getI18n = async (locale: string) => {
         return {
           href: getLocalizedUrl(`/collectibles/${source.collectible.slug}/scans`),
           typeLabel: t("global.sources.typeLabel.scans"),
-          label: formatInlineTitle(getLocalizedMatch(source.collectible.translations)),
+          label: formatInlineTitle(translation),
           lang: translation.language,
         };
       }
@@ -325,7 +325,7 @@ export const getI18n = async (locale: string) => {
         return {
           href: getLocalizedUrl(`/collectibles/${source.collectible.slug}/gallery`),
           typeLabel: t("global.sources.typeLabel.gallery"),
-          label: formatInlineTitle(getLocalizedMatch(source.collectible.translations)),
+          label: formatInlineTitle(translation),
           lang: translation.language,
         };
       }

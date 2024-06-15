@@ -17,7 +17,7 @@ if (scanPage instanceof Response) {
   return scanPage;
 }
 
-const { parentPages, previousIndex, nextIndex, image, translations, thumbnail } = scanPage;
+const { parentPages, previousIndex, nextIndex, image, translations } = scanPage;
 const translation = getLocalizedMatch(translations);
 ---
 
@@ -27,7 +27,6 @@ const translation = getLocalizedMatch(translations);
   openGraph={{
     title: `${formatInlineTitle(translation)} (${index})`,
     description: translation.description && formatRichTextToString(translation.description),
-    thumbnail,
   }}
   parentPages={parentPages}>
   <Lightbox

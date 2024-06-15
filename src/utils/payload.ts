@@ -19,7 +19,7 @@ export const payload = getPayloadSDK({
   apiURL: import.meta.env.PAYLOAD_API_URL,
   email: import.meta.env.PAYLOAD_USER,
   password: import.meta.env.PAYLOAD_PASSWORD,
-  cache: {
+  tokenCache: {
     get: () => {
       const cachedToken = nodeCache.get<string>(TOKEN_KEY);
       if (cachedToken !== undefined) {

@@ -2,8 +2,8 @@
 import {
   AttributeTypes,
   type EndpointAttribute,
-  type EndpointImage,
-  type EndpointMediaThumbnail,
+  type EndpointImagePreview,
+  type EndpointPayloadImage,
   type EndpointScanImage,
 } from "src/shared/payload/payload-sdk";
 import Card from "components/Card.astro";
@@ -15,7 +15,7 @@ import { sizesToSrcset, sizesForGridLayout } from "src/utils/img";
 import type { Attribute } from "src/utils/attributes";
 
 interface Props {
-  thumbnail?: EndpointImage | EndpointMediaThumbnail | EndpointScanImage | undefined;
+  thumbnail?: EndpointImagePreview | EndpointPayloadImage | EndpointScanImage | undefined;
   pretitle?: string | undefined;
   title: string;
   subtitle?: string | undefined;

@@ -14,7 +14,7 @@ const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.curren
       img={
         darkThumbnail && lightThumbnail ? { dark: darkThumbnail, light: lightThumbnail } : undefined
       }
-      name={getLocalizedMatch(translations).name}
+      name={getLocalizedMatch(translations).title}
       href={getLocalizedUrl(`/folders/${slug}`)}
     />
   ))

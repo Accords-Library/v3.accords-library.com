@@ -2,7 +2,7 @@
 import {
   type EndpointCredit,
   type EndpointImage,
-  type EndpointMediaThumbnail,
+  type EndpointPayloadImage,
   type EndpointScanImage,
   type RichTextContent,
 } from "src/shared/payload/payload-sdk";
@@ -18,7 +18,7 @@ import RichText from "./RichText/RichText.astro";
 interface Props {
   previousImageHref?: string | undefined;
   nextImageHref?: string | undefined;
-  image: EndpointImage | EndpointScanImage | EndpointMediaThumbnail;
+  image: EndpointImage | EndpointScanImage | EndpointPayloadImage;
   pretitle?: string | undefined;
   title: string;
   subtitle?: string | undefined;
@@ -59,8 +59,7 @@ const hasNavigation = previousImageHref || nextImageHref;
         <a
           id="previous-button"
           class:list={{ hidden: !previousImageHref, pressable: true }}
-          href={previousImageHref}
-          data-astro-history="replace">
+          href={previousImageHref}>
           <Icon name="material-symbols:chevron-left" />
         </a>
       )
@@ -81,8 +80,7 @@ const hasNavigation = previousImageHref || nextImageHref;
         <a
           id="next-button"
           class:list={{ hidden: !nextImageHref, pressable: true }}
-          href={nextImageHref}
-          data-astro-history="replace">
+          href={nextImageHref}>
           <Icon name="material-symbols:chevron-right" />
         </a>
       )

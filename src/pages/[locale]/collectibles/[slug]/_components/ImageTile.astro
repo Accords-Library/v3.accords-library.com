@@ -1,13 +1,13 @@
 ---
 import type {
   EndpointImage,
-  EndpointMediaThumbnail,
+  EndpointPayloadImage,
   EndpointScanImage,
 } from "src/shared/payload/payload-sdk";
 import { sizesToSrcset } from "src/utils/img";
 
 interface Props {
-  image: EndpointImage | EndpointScanImage | EndpointMediaThumbnail;
+  image: EndpointImage | EndpointScanImage | EndpointPayloadImage;
   title: string;
   subtitle: string;
   href: string;

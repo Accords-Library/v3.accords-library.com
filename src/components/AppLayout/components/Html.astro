@@ -4,7 +4,7 @@ import { getI18n } from "src/i18n/i18n";
 import type {
   EndpointAudio,
   EndpointImage,
-  EndpointMediaThumbnail,
+  EndpointPayloadImage,
   EndpointVideo,
 } from "src/shared/payload/payload-sdk";
 import { cache } from "src/utils/payload";
@@ -14,7 +14,7 @@ interface Props {
     | {
         title?: string | undefined;
         description?: string | undefined;
-        thumbnail?: EndpointImage | EndpointMediaThumbnail | undefined;
+        thumbnail?: EndpointImage | EndpointPayloadImage | undefined;
         audio?: EndpointAudio | undefined;
         video?: EndpointVideo | undefined;
       }
