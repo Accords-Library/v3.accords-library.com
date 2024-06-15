@@ -83,6 +83,7 @@
 ## DOD3
 
 - Missing collectibles
+
   - https://accords-library.com/library/utahime-five
   - https://accords-library.com/library/dod3-official-score-book
   - Soundtrack
@@ -90,6 +91,7 @@
     - https://accords-library.com/library/dod3-original-soundtrack
 
 - Missing content
+
   - https://v3.accords-library.com/en/collectibles/dod-chips-music
   - https://v3.accords-library.com/en/collectibles/dod-history-films
   - https://accords-library.com/library/dod3-collector-edition
@@ -102,6 +104,7 @@
   - https://accords-library.com/contents/dod-history
 
 - Missing parent page
+
   - Novellas
     - https://accords-library.com/contents/folder/dod3-prelude-novellas
     - https://accords-library.com/contents/folder/dod3-dlc-short-stories
@@ -109,6 +112,7 @@
     - https://accords-library.com/contents/folder/dod3-story-side
 
 - Missing scans
+
   - https://v3.accords-library.com/en/collectibles/novel-prelude
   - Wrong rotation on pages for https://v3.accords-library.com/en/collectibles/visual-artbook/scans
   - https://v3.accords-library.com/en/collectibles/dod10-dlc-code

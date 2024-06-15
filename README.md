@@ -68,10 +68,11 @@ Accord's Library v3.0 (shorten to AL3.0) follows the Metamodernist Web model des
     - Lazy loaded
     - Space reservation to reduce Cumulative Layout Shift
     - Use of efficient formats (mostly WebP) and meaningful quality settings
-  - Server side rendered (both good and bad for speed)
+  - Server side rendered
     - Reduced data transfer
     - Reduced client-side complexity
     - Would require edge computing to reduce latency
+    - Data caching to speed up response time
   - Astro built-in View transitions and client-side navigation
   - Some data caching between the web server and CMS (to be improved)
 

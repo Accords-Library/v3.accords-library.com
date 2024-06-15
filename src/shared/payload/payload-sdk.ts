@@ -2016,6 +2016,16 @@ export type PayloadImage = PayloadMedia & {
   height: number;
 };
 
+export type EndpointAllPaths = {
+  collectibles: string[];
+  pages: string[];
+  folders: string[];
+  videos: string[];
+  audios: string[];
+  images: string[];
+  recorders: string[];
+};
+
 // SDK
 
 type GetPayloadSDKParams = {
@@ -2042,7 +2052,7 @@ export const getPayloadSDK = ({
   responseCache,
 }: GetPayloadSDKParams) => {
   const refreshToken = async () => {
-    const loginUrl = payloadApiUrl(Collections.Recorders, "login");
+    const loginUrl = `${apiURL}/${Collections.Recorders}/login`;
     const loginResult = await fetch(loginUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -2061,9 +2071,6 @@ export const getPayloadSDK = ({
     tokenCache?.set(token, exp);
     return token;
   };
-
-  const payloadApiUrl = (collection: Collections, endpoint?: string, isGlobal?: boolean): string =>
-    `${apiURL}/${isGlobal === undefined ? "" : "globals/"}${collection}${endpoint === undefined ? "" : `/${endpoint}`}`;
 
   const request = async (url: string): Promise<any> => {
     const cachedResponse = responseCache?.get(url);
@@ -2089,45 +2096,46 @@ export const getPayloadSDK = ({
 
   return {
     getConfig: async (): Promise<EndpointWebsiteConfig> =>
-      await request(payloadApiUrl(Collections.WebsiteConfig, `config`, true)),
+      await request(`${apiURL}/globals/${Collections.WebsiteConfig}/config`),
     getFolder: async (slug: string): Promise<EndpointFolder> =>
-      await request(payloadApiUrl(Collections.Folders, `slug/${slug}`)),
+      await request(`${apiURL}/${Collections.Folders}/slug/${slug}`),
     getLanguages: async (): Promise<Language[]> =>
-      await request(payloadApiUrl(Collections.Languages, `all`)),
+      await request(`${apiURL}/${Collections.Languages}/all`),
     getCurrencies: async (): Promise<Currency[]> =>
-      await request(payloadApiUrl(Collections.Currencies, `all`)),
+      await request(`${apiURL}/${Collections.Currencies}/all`),
     getWordings: async (): Promise<EndpointWording[]> =>
-      await request(payloadApiUrl(Collections.Wordings, `all`)),
+      await request(`${apiURL}/${Collections.Wordings}/all`),
     getPage: async (slug: string): Promise<EndpointPage> =>
-      await request(payloadApiUrl(Collections.Pages, `slug/${slug}`)),
+      await request(`${apiURL}/${Collections.Pages}/slug/${slug}`),
     getCollectible: async (slug: string): Promise<EndpointCollectible> =>
-      await request(payloadApiUrl(Collections.Collectibles, `slug/${slug}`)),
+      await request(`${apiURL}/${Collections.Collectibles}/slug/${slug}`),
     getCollectibleScans: async (slug: string): Promise<EndpointCollectibleScans> =>
-      await request(payloadApiUrl(Collections.Collectibles, `slug/${slug}/scans`)),
+      await request(`${apiURL}/${Collections.Collectibles}/slug/${slug}/scans`),
     getCollectibleScanPage: async (
       slug: string,
       index: string
     ): Promise<EndpointCollectibleScanPage> =>
-      await request(payloadApiUrl(Collections.Collectibles, `slug/${slug}/scans/${index}`)),
+      await request(`${apiURL}/${Collections.Collectibles}/slug/${slug}/scans/${index}`),
     getCollectibleGallery: async (slug: string): Promise<EndpointCollectibleGallery> =>
-      await request(payloadApiUrl(Collections.Collectibles, `slug/${slug}/gallery`)),
+      await request(`${apiURL}/${Collections.Collectibles}/slug/${slug}/gallery`),
     getCollectibleGalleryImage: async (
       slug: string,
       index: string
     ): Promise<EndpointCollectibleGalleryImage> =>
-      await request(payloadApiUrl(Collections.Collectibles, `slug/${slug}/gallery/${index}`)),
+      await request(`${apiURL}/${Collections.Collectibles}/slug/${slug}/gallery/${index}`),
     getChronologyEvents: async (): Promise<EndpointChronologyEvent[]> =>
-      await request(payloadApiUrl(Collections.ChronologyEvents, `all`)),
+      await request(`${apiURL}/${Collections.ChronologyEvents}/all`),
     getChronologyEventByID: async (id: string): Promise<EndpointChronologyEvent> =>
-      await request(payloadApiUrl(Collections.ChronologyEvents, `id/${id}`)),
+      await request(`${apiURL}/${Collections.ChronologyEvents}/id/${id}`),
     getImageByID: async (id: string): Promise<EndpointImage> =>
-      await request(payloadApiUrl(Collections.Images, `id/${id}`)),
+      await request(`${apiURL}/${Collections.Images}/id/${id}`),
     getAudioByID: async (id: string): Promise<EndpointAudio> =>
-      await request(payloadApiUrl(Collections.Audios, `id/${id}`)),
+      await request(`${apiURL}/${Collections.Audios}/id/${id}`),
     getVideoByID: async (id: string): Promise<EndpointVideo> =>
-      await request(payloadApiUrl(Collections.Videos, `id/${id}`)),
+      await request(`${apiURL}/${Collections.Videos}/id/${id}`),
     getRecorderByID: async (id: string): Promise<EndpointRecorder> =>
-      await request(payloadApiUrl(Collections.Recorders, `id/${id}`)),
+      await request(`${apiURL}/${Collections.Recorders}/id/${id}`),
+    getAllPaths: async (): Promise<EndpointAllPaths> => await request(`${apiURL}/all-paths`),
     request: async (url: string): Promise<any> => await request(url),
   };
 };

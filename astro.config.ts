@@ -15,6 +15,16 @@ export default defineConfig({
     mode: "standalone",
   }),
   integrations: [
+    // We can't just call a function on startup because of some Vite's BS...
+    // So instead I'm exposing some endpoint that only does something the first time it's called.
+    {
+      name: "on-server-start",
+      hooks: {
+        "astro:server:start": async () => {
+          await fetch(`http://${ASTRO_HOST}:${ASTRO_PORT}/en/api/on-startup`);
+        },
+      },
+    },
     astroMetaTags(),
     icon({
       include: {
@@ -23,7 +33,7 @@ export default defineConfig({
     }),
   ],
   prefetch: false,
-  // devToolbar: { enabled: false },
+  devToolbar: { enabled: false },
   server: {
     port: parseInt(ASTRO_PORT ?? "4321"),
     host: ASTRO_HOST ?? true,

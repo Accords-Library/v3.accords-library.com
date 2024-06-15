@@ -1,5 +1,9 @@
 import type { APIRoute } from "astro";
-import { Collections, type WebHookMessage } from "src/shared/payload/payload-sdk";
+import {
+  Collections,
+  WebHookOperationType,
+  type WebHookMessage,
+} from "src/shared/payload/payload-sdk";
 import {
   invalidateDataCache,
   refreshCurrencies,
@@ -15,14 +19,14 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(null, { status: 403, statusText: "Forbidden" });
   }
 
-  const message = (await request.json()) as WebHookMessage;
-  console.log("[Webhook] Received message from CMS:", message);
+  const { collection, operation, id } = (await request.json()) as WebHookMessage;
+  console.log("[Webhook] Received message from CMS:", { collection, Collections, id });
 
-  if (message.id) {
-    await invalidateDataCache(message.id);
+  if (id && operation !== WebHookOperationType.create) {
+    await invalidateDataCache(id);
   }
 
-  switch (message.collection) {
+  switch (collection) {
     case Collections.Wordings:
       await refreshWordings();
       break;

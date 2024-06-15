@@ -59,6 +59,7 @@ type AnalyticsBody = Record<string, unknown> & {
 };
 
 const track = async (body: AnalyticsBody) => {
+  if (!import.meta.env.ANALYTICS_URL) return;
   try {
     await fetch(import.meta.env.ANALYTICS_URL, {
       method: "POST",

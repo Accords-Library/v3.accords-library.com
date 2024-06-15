@@ -22,8 +22,6 @@ export const payload = getPayloadSDK({
         console.log("[PayloadSDK] No token to be retrieved or the token expired");
         return undefined;
       }
-      const diffInMinutes = Math.floor((expiration - Date.now()) / 1000 / 60);
-      console.log("[PayloadSDK] Retrieved token from cache. TTL is", diffInMinutes, "minutes.");
       return token;
     },
     set: (newToken, newExpiration) => {
@@ -36,13 +34,10 @@ export const payload = getPayloadSDK({
   responseCache: {
     get: (url) => {
       const cachedResponse = responseCache.get(url);
-      if (!cachedResponse) {
-        console.log("[ResponseCaching] No cached response found for", url);
-        return undefined;
+      if (cachedResponse) {
+        console.log("[ResponseCaching] Retrieved cache response for", url);
+        return cachedResponse;
       }
-      console.log("[ResponseCaching] Retrieved cache response for", url);
-
-      return cachedResponse;
     },
     set: (url, response) => {
       const stringData = JSON.stringify(response);
@@ -113,4 +108,52 @@ export const refreshLocales = async () => {
 
 export const refreshWebsiteConfig = async () => {
   cache.config = await payload.getConfig();
+};
+
+let payloadInitialized = false;
+export const initPayload = async () => {
+  if (!payloadInitialized) {
+    const result = await payload.getAllPaths();
+
+    for (const slug of result.pages) {
+      await payload.getPage(slug);
+    }
+
+    for (const slug of result.folders) {
+      await payload.getFolder(slug);
+    }
+
+    for (const slug of result.collectibles) {
+      const collectible = await payload.getCollectible(slug);
+      if (collectible.scans) {
+        await payload.getCollectibleScans(slug);
+      }
+      if (collectible.gallery) {
+        await payload.getCollectibleGallery(slug);
+      }
+    }
+
+    for (const id of result.recorders) {
+      await payload.getRecorderByID(id);
+    }
+
+    for (const id of result.recorders) {
+      await payload.getRecorderByID(id);
+    }
+
+    for (const id of result.audios) {
+      await payload.getAudioByID(id);
+    }
+
+    for (const id of result.videos) {
+      await payload.getVideoByID(id);
+    }
+
+    for (const id of result.images) {
+      await payload.getImageByID(id);
+    }
+
+    payloadInitialized = true;
+    console.log("[ResponseCaching] Precaching completed!", responseCache.size, "responses cached");
+  }
 };
