@@ -3,7 +3,7 @@
 ## Tech overview
 
 - Client-side framework: None
-- Web framework / server: [Astro](https://astro.build)
+- Web framework / SSR: [Astro](https://astro.build)
 - Content management system: [Payload](https://payloadcms.com)
 - Database: MongoDB
 

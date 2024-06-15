@@ -19,6 +19,11 @@
 
 ## Mid term
 
+- [Feat] Improve page load speed by using
+  - streaming https://docs.astro.build/en/recipes/streaming-improve-page-performance/
+  - ISR https://logsnag.com/blog/implementing-isr-in-astro
+- [Feat] History replace instead of push when browsing scans and gallery
+- [Feat] Use subgrid to align the generic previews
 - [Bugs] [Timeline] Error if collectible not published?
 - [Feat] [Timeline] display source language
 - [Feat] [Timeline] Add details button in footer with credits + last updated / created
@@ -26,16 +31,21 @@
 - [Feat] [Videos] Display platform info + channel page
 - [Feat] [JSLess] Provide JS-less alternative for timeline card footers
 - [Feat] [JSLess] Provide JS-less alternative for parent pages
+- [Feat] Add a sitemap https://straffesites.com/en/blog/localized-sitemap-astro-storyblok
 
 ## Long term
 
+- [Feat] Speed up loading with https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API
+- [Feat] More data caching between the CMS and Astro
+  - Etag? Last-Modified? Cache-control
+- [Feat] Explore posibilities for View Transitions
+- [Feat] Revemp theme system using light-dark https://caniuse.com/mdn-css_types_color_light-dark
 - [Feat] Add reduce motion to element that zoom when hovering
 - [Bugs] [iOS] Video doesn't seem to start
 - [Feat] [Folders] Provide a list view, and a list/grid toggle
 - [Feat] [Payload] Endpoints should provide a simple text-based version of the content (for OG purposes)
 - [Feat] [WebManifest] Add shortcuts https://web.dev/patterns/web-apps/shortcuts
 - [Feat] [PWA] Rich install UI https://web.dev/patterns/web-apps/richer-install-ui/
-- [Feat] More data caching between the CMS and Astro
 - [Feat] [Folders] Support for nameless section
 - [Feat] [Scripts] Can't run the scripts using node (ts-node?)
 - [Feat] [Scans] Order of cover/dustjacket/obi should be based on the book's page order.
@@ -62,3 +72,4 @@
 
 - [Feat] Static HTML site export for archival
 - [Feat] Secret Terminal mode
+- [Feat] Add RSS
