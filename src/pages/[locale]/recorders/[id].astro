@@ -41,7 +41,7 @@ if (languages.length > 0) {
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <AppLayout>
-  <AsideLayout>
+  <AsideLayout withAside={avatar !== undefined && additionalAttributes.length > 0}>
     <Fragment slot="header">
       <AppLayoutTitle pretitle={`Recorder#${id.substring(0, 5)}`} title={username} />
     </Fragment>

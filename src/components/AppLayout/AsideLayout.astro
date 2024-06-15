@@ -22,9 +22,10 @@ default slot
 
 interface Props {
   reducedAsideWidth?: boolean;
+  withAside?: boolean | undefined;
 }
 
-const { reducedAsideWidth = false } = Astro.props;
+const { reducedAsideWidth = false, withAside = true } = Astro.props;
 ---
 
 <div id="layout" class:list={{ "reduced-width": reducedAsideWidth }}>
@@ -40,10 +41,14 @@ const { reducedAsideWidth = false } = Astro.props;
     </div>
     <slot />
   </div>
-  <Card class="when-large right">
-    <slot name="header-aside" />
-    <slot name="aside" />
-  </Card>
+  {
+    withAside && (
+      <Card class="when-large right">
+        <slot name="header-aside" />
+        <slot name="aside" />
+      </Card>
+    )
+  }
 </div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
