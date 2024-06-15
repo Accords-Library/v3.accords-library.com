@@ -1,0 +1,257 @@
+---
+import { Icon } from "astro-icon/components";
+import { getI18n } from "src/i18n/i18n";
+import {
+  Collections,
+  type EndpointFolder,
+  type EndpointImage,
+} from "src/shared/payload/payload-sdk";
+import { type Attribute, convertEndpointAttributeToAttribute } from "src/utils/attributes";
+import { formatLocale } from "src/utils/format";
+
+interface Props {
+  files: EndpointFolder["files"];
+}
+
+const { files } = Astro.props;
+
+type Row = {
+  thumbnail?: EndpointImage | undefined;
+  pretitle?: string | undefined;
+  title: string;
+  lang?: string | undefined;
+  subtitle?: string | undefined;
+  icon?: string;
+  iconHoverLabel?: string;
+  attributes: Attribute[];
+};
+
+const i18n = await getI18n(Astro.locals.currentLocale);
+const { t, getLocalizedMatch } = i18n;
+
+const rows = files.map<Row>(({ relationTo, value }) => {
+  switch (relationTo) {
+    case Collections.Collectibles: {
+      const { title, pretitle, subtitle, language } = getLocalizedMatch(value.translations);
+
+      const attributes = value.attributes.map((attribute) =>
+        convertEndpointAttributeToAttribute(attribute, i18n)
+      );
+
+      const additionalAttributes: Attribute[] = [];
+
+      if (value.languages.length > 0) {
+        additionalAttributes.push({
+          title: t("collectibles.languages"),
+          icon: "material-symbols:translate",
+          values: value.languages.map((lang) => ({ name: formatLocale(lang) })),
+          withBorder: true,
+        });
+      }
+
+      return {
+        thumbnail: value.thumbnail,
+        title,
+        pretitle,
+        subtitle,
+        lang: language,
+        icon: "material-symbols:category",
+        iconHoverLabel: t("global.previewTypes.collectible"),
+        attributes: [...attributes, ...additionalAttributes],
+      };
+    }
+  }
+  return { title: "Error", attributes: [] };
+});
+
+const commomAttributes = [
+  ...new Map<string, Omit<Attribute, "values" | "withBorder">>(
+    rows.flatMap(({ attributes }) => attributes.map((attribute) => [attribute.title, attribute]))
+  ).values(),
+];
+---
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      {
+        commomAttributes.map(({ title, icon }) => (
+          <th>
+            <div>
+              <Icon name={icon} width={20} height={20} />
+              <p class="font-l">{title}</p>
+            </div>
+          </th>
+        ))
+      }
+    </tr>
+  </thead>
+  <tbody>
+    {
+      rows.map(
+        ({ thumbnail, pretitle, title, subtitle, lang, icon, iconHoverLabel, attributes }) => (
+          <tr>
+            <td>
+              {thumbnail ? (
+                <img src={thumbnail.url} />
+              ) : (
+                <div title={iconHoverLabel} class="thumbnail-alt">
+                  <Icon name={icon} width={32} height={32} />
+                </div>
+              )}
+            </td>
+            <td>
+              <p lang={lang}>
+                {pretitle && (
+                  <span id="pretitle" class="font-s">
+                    {pretitle}
+                  </span>
+                )}
+                <span class="font-serif font-2xl">{title}</span>
+                {subtitle && (
+                  <span id="subtitle" class="font-serif font-m">
+                    {subtitle}
+                  </span>
+                )}
+              </p>
+            </td>
+            {commomAttributes.map((attributeToFind) => {
+              const attribute = attributes.find(({ title }) => title === attributeToFind.title);
+              if (!attribute) return <td class="center">–</td>;
+              return (
+                <td>
+                  <div id="values" class:list={{ "with-border": attribute.withBorder }}>
+                    {attribute.values.map(({ name }) => (
+                      <div class="pill" lang={lang}>
+                        {name}
+                      </div>
+                    ))}
+                  </div>
+                </td>
+              );
+            })}
+          </tr>
+        )
+      )
+    }
+  </tbody>
+</table>
+
+<style>
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    /* TODO: stop using this stupid hack */
+    max-width: calc(100vw - clamp(24px, 4vw, 64px) * 2);
+    
+
+    border-collapse: collapse;
+    border: 2px solid var(--color-base-400);
+
+    & > thead {
+      background-color: var(--color-elevation-1);
+
+      & > tr > th {
+        padding: 1em 1.5em;
+
+        & > div {
+          display: flex;
+          place-content: center;
+          place-items: center;
+          gap: 0.5em;
+
+          & > svg {
+            flex-shrink: 0;
+          }
+        }
+      }
+    }
+
+    & > tbody {
+      & > tr {
+        img,
+        .thumbnail-alt {
+          height: 5em;
+          width: 5em;
+          object-fit: cover;
+          border-radius: 16px;
+        }
+
+        & > td:nth-child(1) {
+          padding-right: unset;
+        }
+      }
+    }
+
+    .thumbnail-alt {
+      background-color: var(--color-elevation-2);
+      color: var(--color-base-400);
+      display: grid;
+      place-content: center;
+      border-radius: 0.7em;
+
+      & > svg {
+        width: 32px;
+        height: 32px;
+      }
+    }
+
+    p {
+      transition: 150ms color;
+      line-height: 0.9;
+
+      & > #pretitle {
+        margin-bottom: 0.5em;
+      }
+
+      & > #subtitle {
+        margin-top: 0.5em;
+      }
+
+      & > span {
+        display: block;
+      }
+    }
+  }
+
+  td {
+    border-block: 1px solid var(--color-base-400);
+
+    & > #values {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      place-items: center;
+      place-content: center;
+      text-align: center;
+
+      &.with-border {
+        & > div,
+        & > a {
+          border-radius: 9999px;
+          padding-bottom: 0.25em;
+          padding-top: 0.15em;
+          padding-inline: 0.6em;
+          border-width: 1px;
+        }
+
+        & > div {
+          border: 1px solid var(--color-base-1000);
+        }
+      }
+    }
+  }
+
+  th,
+  td {
+    padding: 0.5em 1.5em;
+  }
+
+  td.center {
+    text-align: center;
+  }
+</style>

@@ -5,6 +5,8 @@ import { capitalize, formatInlineTitle } from "src/utils/format";
 
 export const defaultLocale = "en";
 
+export type I18n = Awaited<ReturnType<typeof getI18n>>;
+
 export const getI18n = async (locale: string) => {
   const formatWithValues = (
     templateName: string,
