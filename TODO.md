@@ -21,7 +21,10 @@
 
 - [Feat] Improve page load speed by using
   - streaming https://docs.astro.build/en/recipes/streaming-improve-page-performance/
-  - ISR https://logsnag.com/blog/implementing-isr-in-astro
+  - https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API
+- [Feat] Continue improving cache system
+  - Etag? Last-Modified? Cache-control?
+  - Persistence
 - [Feat] History replace instead of push when browsing scans and gallery
 - [Feat] Use subgrid to align the generic previews
 - [Bugs] [Timeline] Error if collectible not published?
@@ -35,8 +38,6 @@
 
 ## Long term
 
-- [Feat] Speed up loading with https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API
-- [Feat] Etag? Last-Modified? Cache-control?
 - [Feat] Explore posibilities for View Transitions
 - [Feat] Revemp theme system using light-dark https://caniuse.com/mdn-css_types_color_light-dark
 - [Feat] Add reduce motion to element that zoom when hovering

@@ -153,6 +153,8 @@ export const initPayload = async () => {
       await payload.getImageByID(id);
     }
 
+    await payload.getChronologyEvents();
+
     payloadInitialized = true;
     console.log("[ResponseCaching] Precaching completed!", responseCache.size, "responses cached");
   }
