@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { Collections, type WebHookMessage } from "src/shared/payload/payload-sdk";
 import {
+  invalidateDataCache,
   refreshCurrencies,
   refreshLocales,
   refreshWebsiteConfig,
@@ -16,6 +17,10 @@ export const POST: APIRoute = async ({ request }) => {
 
   const message = (await request.json()) as WebHookMessage;
   console.log("[Webhook] Received message from CMS:", message);
+
+  if (message.id) {
+    await invalidateDataCache(message.id);
+  }
 
   switch (message.collection) {
     case Collections.Wordings:

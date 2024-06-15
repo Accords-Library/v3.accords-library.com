@@ -8,6 +8,9 @@ import { getPayloadSDK } from "src/shared/payload/payload-sdk";
 let token: string | undefined = undefined;
 let expiration: number | undefined = undefined;
 
+const responseCache = new Map<string, any>();
+const idsCacheMap = new Map<string, Set<string>>();
+
 export const payload = getPayloadSDK({
   apiURL: import.meta.env.PAYLOAD_API_URL,
   email: import.meta.env.PAYLOAD_USER,
@@ -30,7 +33,55 @@ export const payload = getPayloadSDK({
       console.log("[PayloadSDK] New token set. TTL is", diffInMinutes, "minutes.");
     },
   },
+  responseCache: {
+    get: (url) => {
+      const cachedResponse = responseCache.get(url);
+      if (!cachedResponse) {
+        console.log("[ResponseCaching] No cached response found for", url);
+        return undefined;
+      }
+      console.log("[ResponseCaching] Retrieved cache response for", url);
+
+      return cachedResponse;
+    },
+    set: (url, response) => {
+      const stringData = JSON.stringify(response);
+      const regex = /[a-f0-9]{24}/g;
+      const ids = [...stringData.matchAll(regex)].map((match) => match[0]);
+      const uniqueIds = [...new Set(ids)];
+
+      uniqueIds.forEach((id) => {
+        const current = idsCacheMap.get(id);
+        if (current) {
+          current.add(url);
+        } else {
+          idsCacheMap.set(id, new Set([url]));
+        }
+      });
+
+      console.log("[ResponseCaching] Caching response for", url);
+      responseCache.set(url, response);
+    },
+  },
 });
+
+export const invalidateDataCache = async (id: string) => {
+  const responsesToInvalidate = idsCacheMap.get(id);
+  if (!responsesToInvalidate) return;
+  idsCacheMap.delete(id);
+
+  for (const url of responsesToInvalidate) {
+    responseCache.delete(url);
+    try {
+      await payload.request(url);
+      console.log("[ResponseCaching][Invalidation] Success for", url);
+    } catch (e) {
+      console.log("[ResponseCaching][Invalidation] Failure for", url);
+    }
+  }
+
+  console.log("[ResponseCaching] There are currently", responseCache.size, "responses in cache.");
+};
 
 type Cache = {
   locales: Language[];
