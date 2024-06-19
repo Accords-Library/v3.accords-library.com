@@ -10,7 +10,6 @@
 ## Short term
 
 - [Feat] [caching] Use getURLs for precaching + precache everything
-- [Feat] [caching] Refresh payload cache (wordings, languages...) when receiving webhook
 - [Bugs] Make sure uploads name are slug-like and with an extension.
 - [Bugs] Nyupun can't upload subtitles files
 - [Bugs] https://v3.accords-library.com/en/collectibles/dod-original-soundtrack/scans obi is way too big

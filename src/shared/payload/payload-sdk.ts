@@ -1279,6 +1279,7 @@ export enum AttributeTypes {
 /* WEB HOOKS */
 
 export type AfterOperationWebHookMessage = {
+  collection: Collections;
   id?: string;
   addedDependantIds: string[];
   urls: string[];
