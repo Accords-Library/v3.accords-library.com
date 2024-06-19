@@ -1278,18 +1278,11 @@ export enum AttributeTypes {
 
 /* WEB HOOKS */
 
-export interface WebHookMessage {
-  collection: Collections;
-  operation: WebHookOperationType;
+export type AfterOperationWebHookMessage = {
   id?: string;
-}
-
-export enum WebHookOperationType {
-  create = "create",
-  update = "update",
-  delete = "delete",
-}
-
+  addedDependantIds: string[];
+  urls: string[];
+};
 /* RICH TEXT */
 
 export type RichTextContent = {
@@ -2024,6 +2017,7 @@ export type EndpointAllPaths = {
   audios: string[];
   images: string[];
   recorders: string[];
+  chronologyEvents: string[];
 };
 
 // SDK
@@ -2044,6 +2038,31 @@ type GetPayloadSDKParams = {
 
 const logResponse = (res: Response) => console.log(res.status, res.statusText, res.url);
 
+export const getSDKEndpoint = {
+  getConfigEndpoint: () => `/globals/${Collections.WebsiteConfig}/config`,
+  getFolderEndpoint: (slug: string) => `/${Collections.Folders}/slug/${slug}`,
+  getLanguagesEndpoint: () => `/${Collections.Languages}/all`,
+  getCurrenciesEndpoint: () => `/${Collections.Currencies}/all`,
+  getWordingsEndpoint: () => `/${Collections.Wordings}/all`,
+  getPageEndpoint: (slug: string) => `/${Collections.Pages}/slug/${slug}`,
+  getCollectibleEndpoint: (slug: string) => `/${Collections.Collectibles}/slug/${slug}`,
+  getCollectibleScansEndpoint: (slug: string) => `/${Collections.Collectibles}/slug/${slug}/scans`,
+  getCollectibleScanPageEndpoint: (slug: string, index: string) =>
+    `/${Collections.Collectibles}/slug/${slug}/scans/${index}`,
+  getCollectibleGalleryEndpoint: (slug: string) =>
+    `/${Collections.Collectibles}/slug/${slug}/gallery`,
+  getCollectibleGalleryImageEndpoint: (slug: string, index: string) =>
+    `/${Collections.Collectibles}/slug/${slug}/gallery/${index}`,
+  getChronologyEventsEndpoint: () => `/${Collections.ChronologyEvents}/all`,
+  getChronologyEventByIDEndpoint: (id: string) => `/${Collections.ChronologyEvents}/id/${id}`,
+  getImageByIDEndpoint: (id: string) => `/${Collections.Images}/id/${id}`,
+  getAudioByIDEndpoint: (id: string) => `/${Collections.Audios}/id/${id}`,
+  getVideoByIDEndpoint: (id: string) => `/${Collections.Videos}/id/${id}`,
+  getRecorderByIDEndpoint: (id: string) => `/${Collections.Recorders}/id/${id}`,
+  getAllPathsEndpoint: () => `/all-paths`,
+  getLoginEndpoint: () => `/${Collections.Recorders}/login`,
+};
+
 export const getPayloadSDK = ({
   apiURL,
   email,
@@ -2052,7 +2071,7 @@ export const getPayloadSDK = ({
   responseCache,
 }: GetPayloadSDKParams) => {
   const refreshToken = async () => {
-    const loginUrl = `${apiURL}/${Collections.Recorders}/login`;
+    const loginUrl = `${apiURL}${getSDKEndpoint.getLoginEndpoint()}`;
     const loginResult = await fetch(loginUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -2072,13 +2091,13 @@ export const getPayloadSDK = ({
     return token;
   };
 
-  const request = async (url: string): Promise<any> => {
-    const cachedResponse = responseCache?.get(url);
+  const request = async (endpoint: string): Promise<any> => {
+    const cachedResponse = responseCache?.get(endpoint);
     if (cachedResponse) {
       return cachedResponse;
     }
 
-    const result = await fetch(url, {
+    const result = await fetch(`${apiURL}${endpoint}`, {
       headers: {
         Authorization: `JWT ${tokenCache?.get() ?? (await refreshToken())}`,
       },
@@ -2090,52 +2109,53 @@ export const getPayloadSDK = ({
     }
 
     const data = await result.json();
-    responseCache?.set(url, data);
+    responseCache?.set(endpoint, data);
     return data;
   };
 
   return {
     getConfig: async (): Promise<EndpointWebsiteConfig> =>
-      await request(`${apiURL}/globals/${Collections.WebsiteConfig}/config`),
+      await request(getSDKEndpoint.getConfigEndpoint()),
     getFolder: async (slug: string): Promise<EndpointFolder> =>
-      await request(`${apiURL}/${Collections.Folders}/slug/${slug}`),
+      await request(getSDKEndpoint.getFolderEndpoint(slug)),
     getLanguages: async (): Promise<Language[]> =>
-      await request(`${apiURL}/${Collections.Languages}/all`),
+      await request(getSDKEndpoint.getLanguagesEndpoint()),
     getCurrencies: async (): Promise<Currency[]> =>
-      await request(`${apiURL}/${Collections.Currencies}/all`),
+      await request(getSDKEndpoint.getCurrenciesEndpoint()),
     getWordings: async (): Promise<EndpointWording[]> =>
-      await request(`${apiURL}/${Collections.Wordings}/all`),
+      await request(getSDKEndpoint.getWordingsEndpoint()),
     getPage: async (slug: string): Promise<EndpointPage> =>
-      await request(`${apiURL}/${Collections.Pages}/slug/${slug}`),
+      await request(getSDKEndpoint.getPageEndpoint(slug)),
     getCollectible: async (slug: string): Promise<EndpointCollectible> =>
-      await request(`${apiURL}/${Collections.Collectibles}/slug/${slug}`),
+      await request(getSDKEndpoint.getCollectibleEndpoint(slug)),
     getCollectibleScans: async (slug: string): Promise<EndpointCollectibleScans> =>
-      await request(`${apiURL}/${Collections.Collectibles}/slug/${slug}/scans`),
+      await request(getSDKEndpoint.getCollectibleScansEndpoint(slug)),
     getCollectibleScanPage: async (
       slug: string,
       index: string
     ): Promise<EndpointCollectibleScanPage> =>
-      await request(`${apiURL}/${Collections.Collectibles}/slug/${slug}/scans/${index}`),
+      await request(getSDKEndpoint.getCollectibleScanPageEndpoint(slug, index)),
     getCollectibleGallery: async (slug: string): Promise<EndpointCollectibleGallery> =>
-      await request(`${apiURL}/${Collections.Collectibles}/slug/${slug}/gallery`),
+      await request(getSDKEndpoint.getCollectibleGalleryEndpoint(slug)),
     getCollectibleGalleryImage: async (
       slug: string,
       index: string
     ): Promise<EndpointCollectibleGalleryImage> =>
-      await request(`${apiURL}/${Collections.Collectibles}/slug/${slug}/gallery/${index}`),
+      await request(getSDKEndpoint.getCollectibleGalleryImageEndpoint(slug, index)),
     getChronologyEvents: async (): Promise<EndpointChronologyEvent[]> =>
-      await request(`${apiURL}/${Collections.ChronologyEvents}/all`),
+      await request(getSDKEndpoint.getChronologyEventsEndpoint()),
     getChronologyEventByID: async (id: string): Promise<EndpointChronologyEvent> =>
-      await request(`${apiURL}/${Collections.ChronologyEvents}/id/${id}`),
+      await request(getSDKEndpoint.getChronologyEventByIDEndpoint(id)),
     getImageByID: async (id: string): Promise<EndpointImage> =>
-      await request(`${apiURL}/${Collections.Images}/id/${id}`),
+      await request(getSDKEndpoint.getImageByIDEndpoint(id)),
     getAudioByID: async (id: string): Promise<EndpointAudio> =>
-      await request(`${apiURL}/${Collections.Audios}/id/${id}`),
+      await request(getSDKEndpoint.getAudioByIDEndpoint(id)),
     getVideoByID: async (id: string): Promise<EndpointVideo> =>
-      await request(`${apiURL}/${Collections.Videos}/id/${id}`),
+      await request(getSDKEndpoint.getVideoByIDEndpoint(id)),
     getRecorderByID: async (id: string): Promise<EndpointRecorder> =>
-      await request(`${apiURL}/${Collections.Recorders}/id/${id}`),
-    getAllPaths: async (): Promise<EndpointAllPaths> => await request(`${apiURL}/all-paths`),
-    request: async (url: string): Promise<any> => await request(url),
+      await request(getSDKEndpoint.getRecorderByIDEndpoint(id)),
+    getAllPaths: async (): Promise<EndpointAllPaths> =>
+      await request(getSDKEndpoint.getAllPathsEndpoint()),
+    request: async (pathname: string): Promise<any> => await request(pathname),
   };
 };

@@ -60,18 +60,23 @@ export const payload = getPayloadSDK({
   },
 });
 
-export const invalidateDataCache = async (id: string) => {
-  const responsesToInvalidate = idsCacheMap.get(id);
-  if (!responsesToInvalidate) return;
-  idsCacheMap.delete(id);
+export const invalidateDataCache = async (ids: string[], urls: string[]) => {
+  const urlsToInvalidate = new Set<string>(urls);
 
-  for (const url of responsesToInvalidate) {
+  ids.forEach((id) => {
+    const urlsForThisId = idsCacheMap.get(id);
+    if (!urlsForThisId) return;
+    idsCacheMap.delete(id);
+    [...urlsForThisId].forEach((url) => urlsToInvalidate.add(url));
+  });
+
+  for (const url of urlsToInvalidate) {
     responseCache.delete(url);
+    console.log("[ResponseCaching][Invalidation] Deleted cache for", url);
     try {
       await payload.request(url);
-      console.log("[ResponseCaching][Invalidation] Success for", url);
     } catch (e) {
-      console.log("[ResponseCaching][Invalidation] Failure for", url);
+      console.log("[ResponseCaching][Revalidation] Failure for", url);
     }
   }
 
@@ -116,44 +121,72 @@ export const initPayload = async () => {
     const result = await payload.getAllPaths();
 
     for (const slug of result.pages) {
-      await payload.getPage(slug);
+      try {
+        await payload.getPage(slug);
+      } catch (e) {
+        console.warn("[Precaching] Couldn't precache page", slug, e);
+      }
     }
 
     for (const slug of result.folders) {
-      await payload.getFolder(slug);
+      try {
+        await payload.getFolder(slug);
+      } catch (e) {
+        console.warn("[Precaching] Couldn't precache folder", slug, e);
+      }
     }
 
     for (const slug of result.collectibles) {
-      const collectible = await payload.getCollectible(slug);
-      if (collectible.scans) {
-        await payload.getCollectibleScans(slug);
-      }
-      if (collectible.gallery) {
-        await payload.getCollectibleGallery(slug);
+      try {
+        const collectible = await payload.getCollectible(slug);
+        if (collectible.scans) {
+          await payload.getCollectibleScans(slug);
+        }
+        if (collectible.gallery) {
+          await payload.getCollectibleGallery(slug);
+        }
+      } catch (e) {
+        console.warn("[Precaching] Couldn't precache collectible", slug, e);
       }
     }
 
     for (const id of result.recorders) {
-      await payload.getRecorderByID(id);
-    }
-
-    for (const id of result.recorders) {
-      await payload.getRecorderByID(id);
+      try {
+        await payload.getRecorderByID(id);
+      } catch (e) {
+        console.warn("[Precaching] Couldn't precache recorder", id, e);
+      }
     }
 
     for (const id of result.audios) {
-      await payload.getAudioByID(id);
+      try {
+        await payload.getAudioByID(id);
+      } catch (e) {
+        console.warn("[Precaching] Couldn't precache audio", id, e);
+      }
     }
 
     for (const id of result.videos) {
-      await payload.getVideoByID(id);
+      try {
+        await payload.getVideoByID(id);
+      } catch (e) {
+        console.warn("[Precaching] Couldn't precache video", id, e);
+      }
     }
 
     for (const id of result.images) {
-      await payload.getImageByID(id);
+      try {
+        await payload.getImageByID(id);
+      } catch (e) {
+        console.warn("[Precaching] Couldn't precache image", id, e);
+      }
     }
 
-    await payload.getChronologyEvents();
+    try {
+      await payload.getChronologyEvents();
+    } catch (e) {
+      console.warn("[Precaching] Couldn't precache chronology events", e);
+    }
 
     payloadInitialized = true;
     console.log("[ResponseCaching] Precaching completed!", responseCache.size, "responses cached");

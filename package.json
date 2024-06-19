@@ -1,6 +1,6 @@
 {
   "name": "v3.accords-library.com",
-  "version": "3.0.0-beta.4",
+  "version": "3.0.0-beta.5",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -20,9 +20,9 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.7.0",
-    "@astrojs/node": "^8.3.0",
+    "@astrojs/node": "^8.3.1",
     "accept-language": "^3.0.18",
-    "astro": "4.10.2",
+    "astro": "4.10.3",
     "astro-icon": "^1.1.0",
     "tippy.js": "^6.3.7",
     "ua-parser-js": "^1.0.38"

@@ -21,7 +21,7 @@ export default defineConfig({
       name: "on-server-start",
       hooks: {
         "astro:config:done": () => {
-          console.log("Running on startup script in 10s...")
+          console.log("Running on startup script in 10s...");
           setTimeout(() => fetch(`http://${ASTRO_HOST}:${ASTRO_PORT}/en/api/on-startup`), 10_000);
         },
       },

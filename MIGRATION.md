@@ -1,14 +1,15 @@
 ## DOD
 
-- Jugment
-  - Scans
-  - Gallery (add the magazine cover)
+- Jugment chapter 1
 - Magnitude negative
-  - Tags for Chapter 2 and up
-- Soundtrack
   - Missing tags
-  - Missing scans booklet / images
-  - Missing vol2 cd
+- Soundtrack vol1
+  - Missing scans
+  - booklet?
+- Soundtrack vol2
+  - Missing cd
+  - Missing scans
+  - booklet?
 - https://v3.accords-library.com/en/pages/song-of-fourteen-years
   - missing source to https://web.archive.org/web/20151104092843/http://kho-dazat.tumblr.com/post/73835598260/you-are-the-light-the-light-that-illuminates-my
   - missing parent collectible

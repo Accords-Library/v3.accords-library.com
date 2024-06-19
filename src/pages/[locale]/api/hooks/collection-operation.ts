@@ -1,16 +1,6 @@
 import type { APIRoute } from "astro";
-import {
-  Collections,
-  WebHookOperationType,
-  type WebHookMessage,
-} from "src/shared/payload/payload-sdk";
-import {
-  invalidateDataCache,
-  refreshCurrencies,
-  refreshLocales,
-  refreshWebsiteConfig,
-  refreshWordings,
-} from "src/utils/payload";
+import type { AfterOperationWebHookMessage } from "src/shared/payload/payload-sdk";
+import { invalidateDataCache } from "src/utils/payload";
 
 export const POST: APIRoute = async ({ request }) => {
   const auth = request.headers.get("Authorization");
@@ -19,30 +9,13 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(null, { status: 403, statusText: "Forbidden" });
   }
 
-  const { collection, operation, id } = (await request.json()) as WebHookMessage;
-  console.log("[Webhook] Received message from CMS:", { collection, Collections, id });
+  const message = (await request.json()) as AfterOperationWebHookMessage;
+  console.log("[Webhook] Received messages from CMS:", message);
 
-  if (id && operation !== WebHookOperationType.create) {
-    await invalidateDataCache(id);
-  }
+  await invalidateDataCache(
+    [...(message.id ? [message.id] : []), ...message.addedDependantIds],
+    message.urls
+  );
 
-  switch (collection) {
-    case Collections.Wordings:
-      await refreshWordings();
-      break;
-
-    case Collections.Currencies:
-      await refreshCurrencies();
-      break;
-
-    case Collections.Languages:
-      await refreshLocales();
-      break;
-
-    case Collections.WebsiteConfig:
-      await refreshWebsiteConfig();
-      break;
-  }
-
-  return new Response(null, { status: 200, statusText: "Ok" });
+  return new Response(null, { status: 202, statusText: "Accepted" });
 };
