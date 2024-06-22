@@ -11,6 +11,8 @@ let expiration: number | undefined = undefined;
 const responseCache = new Map<string, any>();
 const idsCacheMap = new Map<string, Set<string>>();
 
+const isPrecachingEnabled = import.meta.env.ENABLE_PRECACHING === "true";
+
 export const payload = getPayloadSDK({
   apiURL: import.meta.env.PAYLOAD_API_URL,
   email: import.meta.env.PAYLOAD_USER,
@@ -36,7 +38,7 @@ export const payload = getPayloadSDK({
       const cachedResponse = responseCache.get(url);
       if (cachedResponse) {
         console.log("[ResponseCaching] Retrieved cache response for", url);
-        return cachedResponse;
+        return structuredClone(cachedResponse);
       }
     },
     set: (url, response) => {
@@ -118,6 +120,11 @@ export const refreshWebsiteConfig = async () => {
 let payloadInitialized = false;
 export const initPayload = async () => {
   if (!payloadInitialized) {
+    if (!isPrecachingEnabled) {
+      payloadInitialized = true;
+      return;
+    }
+
     const result = await payload.getAllPaths();
 
     for (const slug of result.pages) {
@@ -179,6 +186,14 @@ export const initPayload = async () => {
         await payload.getImageByID(id);
       } catch (e) {
         console.warn("[Precaching] Couldn't precache image", id, e);
+      }
+    }
+
+    for (const id of result.files) {
+      try {
+        await payload.getFileByID(id);
+      } catch (e) {
+        console.warn("[Precaching] Couldn't precache file", id, e);
       }
     }
 

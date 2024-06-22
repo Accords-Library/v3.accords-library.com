@@ -1,0 +1,71 @@
+---
+import GenericPreview from "components/Previews/GenericPreview.astro";
+import { getI18n } from "src/i18n/i18n";
+import type { EndpointFilePreview } from "src/shared/payload/payload-sdk";
+import { getFileIcon } from "src/utils/attributes";
+
+interface Props {
+  file: EndpointFilePreview;
+}
+
+const { getLocalizedMatch, getLocalizedUrl, t, formatFilesize } = await getI18n(
+  Astro.locals.currentLocale
+);
+
+const {
+  file: { id, translations, attributes, filename, thumbnail, mimeType, filesize },
+} = Astro.props;
+
+const { pretitle, title, subtitle, language } =
+  translations.length > 0
+    ? getLocalizedMatch(translations)
+    : { pretitle: undefined, title: filename, subtitle: undefined, language: undefined };
+
+const hasTitle = title !== filename;
+
+const attributesWithMeta = [
+  ...attributes,
+  ...(hasTitle
+    ? [
+        {
+          title: t("global.media.attributes.filename"),
+          icon: "material-symbols:unknown-document",
+          values: [{ name: filename }],
+        },
+      ]
+    : []),
+  {
+    title: t("global.media.attributes.filesize"),
+    icon: "material-symbols:hard-drive",
+    values: [{ name: formatFilesize(filesize) }],
+  },
+];
+
+const getFileTypeLabel = (): string => {
+  switch (mimeType) {
+    case "application/zip":
+      return t("global.previewTypes.zip");
+
+    case "application/pdf":
+      return t("global.previewTypes.pdf");
+
+    default:
+      return mimeType;
+  }
+};
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<GenericPreview
+  pretitle={pretitle}
+  title={title}
+  subtitle={subtitle}
+  lang={language}
+  thumbnail={thumbnail}
+  href={getLocalizedUrl(`/files/${id}`)}
+  attributes={attributesWithMeta}
+  icon={getFileIcon(mimeType)}
+  iconHoverLabel={getFileTypeLabel()}
+  smallTitle={!hasTitle}
+/>

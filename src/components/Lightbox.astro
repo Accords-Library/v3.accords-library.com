@@ -108,7 +108,7 @@ const hasNavigation = previousImageHref || nextImageHref;
     {attributes.length > 0 && <Attributes attributes={attributes} />}
     {credits.length > 0 && <Credits credits={credits} />}
     {metaAttributes.length > 0 && <Attributes attributes={metaAttributes} />}
-    {filename && <DownloadButton href={url} filename={filename} />}
+    {filename && <DownloadButton href={url} filename={filename} useBlob />}
   </div>
 </div>
 

@@ -14,6 +14,7 @@ import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import { payload } from "src/utils/payload";
 import RichText from "components/RichText/RichText.astro";
+import FilePreview from "components/Previews/FilePreview.astro";
 
 const slug = Astro.params.slug!;
 
@@ -73,6 +74,9 @@ const meta = getLocalizedMatch(folder.translations);
 
             case Collections.Videos:
               return <VideoPreview video={value} />;
+
+            case Collections.Files:
+              return <FilePreview file={value} />;
 
             default:
               return (

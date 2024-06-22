@@ -9,6 +9,7 @@
 
 ## Short term
 
+- [Bugs] On android Chrome, the setting button in the header flashes for a few ms when the page is loading
 - [Feat] [caching] Use getURLs for precaching + precache everything
 - [Bugs] Make sure uploads name are slug-like and with an extension.
 - [Bugs] Nyupun can't upload subtitles files
@@ -42,6 +43,8 @@
 
 ## Long term
 
+- [Feat] Invalidate Back/Forward Cache when changing language/theme/currency
+- [Feat] Hovering on a preview card could give a more detailed summary/preview (with all attributes)
 - [Feat] Explore posibilities for View Transitions
 - [Feat] Revemp theme system using light-dark https://caniuse.com/mdn-css_types_color_light-dark
 - [Feat] Add reduce motion to element that zoom when hovering

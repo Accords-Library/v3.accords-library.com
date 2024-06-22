@@ -1,0 +1,52 @@
+---
+import FilePreview from "components/Previews/FilePreview.astro";
+import TitleIcon from "components/TitleIcon.astro";
+import { getI18n } from "src/i18n/i18n";
+import type { EndpointCollectible } from "src/shared/payload/payload-sdk";
+
+interface Props {
+  files: EndpointCollectible["files"];
+}
+
+const { files } = Astro.props;
+const { t } = await getI18n(Astro.locals.currentLocale);
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<div id="container">
+  <TitleIcon title={t("collectibles.files")} icon="material-symbols:file-save" />
+
+  <div id="values">
+    {files.map((file) => <FilePreview file={file} />)}
+  </div>
+</div>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  #container {
+    margin-top: 6em;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+
+    & > #values {
+      display: grid;
+      gap: clamp(6px, 2vmin, 16px);
+
+      grid-template-columns: repeat(auto-fill, 270px);
+
+      @media (max-width: 600.5px) {
+        grid-template-columns: 1fr 1fr;
+        row-gap: 12px;
+      }
+
+      @media (max-width: 24rem) {
+        grid-template-columns: 1fr;
+      }
+
+      align-items: start;
+    }
+  }
+</style>

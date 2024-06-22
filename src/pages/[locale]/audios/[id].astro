@@ -10,6 +10,7 @@ import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/utils/payload";
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
+import { getFileIcon } from "src/utils/attributes";
 
 const id = Astro.params.id!;
 const audio = await fetchOr404(() => payload.getAudioByID(id));
@@ -30,6 +31,7 @@ const {
   createdAt,
   updatedAt,
   thumbnail,
+  mimeType,
 } = audio;
 
 const { pretitle, title, subtitle, description, language } = getLocalizedMatch(translations);
@@ -39,7 +41,7 @@ const metaAttributes = [
     ? [
         {
           title: t("global.media.attributes.filename"),
-          icon: "material-symbols:audio-file",
+          icon: getFileIcon(mimeType),
           values: [{ name: filename }],
           withBorder: false,
         },

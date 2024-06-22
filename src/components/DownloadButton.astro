@@ -5,16 +5,21 @@ import Button from "./Button.astro";
 interface Props {
   href: string;
   filename: string;
+  useBlob?: boolean;
 }
 
-const { href, filename } = Astro.props;
+const { href, filename, useBlob = false } = Astro.props;
 
 const { t } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<download-button href={href} filename={filename} class="when-js when-no-print">
+<download-button
+  href={href}
+  filename={filename}
+  class="when-js when-no-print"
+  data-use-blob={useBlob}>
   <Button title={t("global.downloadButton")} icon="material-symbols:download" />
 </download-button>
 
@@ -26,17 +31,23 @@ const { t } = await getI18n(Astro.locals.currentLocale);
   customElement("download-button", (elem) => {
     const href = elem.getAttribute("href");
     const filename = elem.getAttribute("filename");
+    const useBlob = elem.hasAttribute("data-use-blob");
 
     if (!href || !filename) return;
 
     elem.addEventListener("click", async () => {
-      const res = await fetch(href);
-      const blob = await res.blob();
-      const blobURL = window.URL.createObjectURL(blob);
+      let url;
+      if (useBlob) {
+        const res = await fetch(href);
+        const blob = await res.blob();
+        url = window.URL.createObjectURL(blob);
+      } else {
+        url = href;
+      }
 
       var link = document.createElement("a");
       link.download = filename;
-      link.href = blobURL;
+      link.href = url;
       link.click();
       link.remove();
     });

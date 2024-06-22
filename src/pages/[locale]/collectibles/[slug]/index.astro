@@ -19,6 +19,7 @@ import type { Attribute } from "src/utils/attributes";
 import { payload } from "src/utils/payload";
 import { sizesToSrcset } from "src/utils/img";
 import RichText from "components/RichText/RichText.astro";
+import SubFilesSection from "./_components/SubFilesSection.astro";
 
 const slug = Astro.params.slug!;
 const { getLocalizedMatch, getLocalizedUrl, t, formatDate, formatPrice } = await getI18n(
@@ -43,6 +44,7 @@ const {
   gallery,
   scans,
   subitems,
+  files,
   parentPages,
   attributes,
   contents,
@@ -221,7 +223,7 @@ if (price) {
     </Fragment>
 
     {subitems.length > 0 && <SubitemSection subitems={subitems} />}
-
+    {files.length > 0 && <SubFilesSection files={files} />}
     {contents.length > 0 && <ContentsSection contents={contents} />}
   </AsideLayout>
 </AppLayout>

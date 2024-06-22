@@ -5,6 +5,7 @@ import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/utils/payload";
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
+import { getFileIcon } from "src/utils/attributes";
 
 const id = Astro.params.id!;
 const image = await fetchOr404(() => payload.getImageByID(id));
@@ -13,7 +14,7 @@ if (image instanceof Response) {
 }
 
 const { getLocalizedMatch, formatDate, t } = await getI18n(Astro.locals.currentLocale);
-const { filename, translations, attributes, credits, createdAt, updatedAt } = image;
+const { filename, translations, attributes, credits, createdAt, updatedAt, mimeType } = image;
 
 const { pretitle, title, subtitle, description, language } =
   translations.length > 0
@@ -31,7 +32,7 @@ const metaAttributes = [
     ? [
         {
           title: t("global.media.attributes.filename"),
-          icon: "material-symbols:unknown-document",
+          icon: getFileIcon(mimeType),
           values: [{ name: filename }],
           withBorder: false,
         },

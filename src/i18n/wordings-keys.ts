@@ -147,4 +147,7 @@ export type WordingKey =
   | "collectibles.nature"
   | "collectibles.languages"
   | "collectibles.nature.physical"
-  | "collectibles.nature.digital";
+  | "collectibles.nature.digital"
+  | "global.previewTypes.zip"
+  | "global.previewTypes.pdf"
+  | "collectibles.files";

@@ -5,15 +5,16 @@ import Attributes from "components/Attributes.astro";
 import Credits from "components/Credits.astro";
 import DownloadButton from "components/DownloadButton.astro";
 import RichText from "components/RichText/RichText.astro";
-import VideoPlayer from "components/VideoPlayer.astro";
 import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/utils/payload";
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
 import { getFileIcon } from "src/utils/attributes";
+import { Icon } from "astro-icon/components";
+import { sizesToSrcset } from "src/utils/img";
 
 const id = Astro.params.id!;
-const video = await fetchOr404(() => payload.getVideoByID(id));
+const video = await fetchOr404(() => payload.getFileByID(id));
 if (video instanceof Response) {
   return video;
 }
@@ -27,17 +28,26 @@ const {
   filename,
   url,
   credits,
+  mimeType,
   filesize,
   updatedAt,
   createdAt,
   thumbnail,
-  mimeType,
 } = video;
 
-const { pretitle, title, subtitle, description, language } = getLocalizedMatch(translations);
+const { pretitle, title, subtitle, description, language } =
+  translations.length > 0
+    ? getLocalizedMatch(translations)
+    : {
+        pretitle: undefined,
+        title: filename,
+        subtitle: undefined,
+        description: undefined,
+        language: undefined,
+      };
 
 const metaAttributes = [
-  ...(filename && title !== filename
+  ...(filename && title !== filename && thumbnail
     ? [
         {
           title: t("global.media.attributes.filename"),
@@ -66,6 +76,8 @@ const metaAttributes = [
     withBorder: false,
   },
 ];
+
+const smallTitle = title === filename;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -75,18 +87,46 @@ const metaAttributes = [
     title: formatInlineTitle({ pretitle, title, subtitle }),
     description: description && formatRichTextToString(description),
     thumbnail,
-    video,
   }}>
   <div id="container">
-    <VideoPlayer class="video_id-video-player" video={video} />
+    {
+      thumbnail ? (
+        <a
+          id="image-anchor"
+          href={url}
+          target="_blank"
+          style={`aspect-ratio:${thumbnail.width}/${thumbnail.height};`}>
+          <img
+            src={url}
+            srcset={sizesToSrcset(thumbnail.sizes)}
+            sizes={`(max-aspect-ratio: ${thumbnail.width / 0.9}/${thumbnail.height / 0.7}) 90vw, ${(thumbnail.width / thumbnail.height) * 70}vh`}
+            width={thumbnail.width}
+            height={thumbnail.height}
+          />
+        </a>
+      ) : (
+        <a href={url} id="icon-container">
+          <Icon name={getFileIcon(mimeType)} width={32} height={32} />
+          <p>{filename}</p>
+        </a>
+      )
+    }
 
     <div id="info">
-      <AppLayoutTitle pretitle={pretitle} title={title} subtitle={subtitle} lang={language} />
+      {
+        smallTitle ? (
+          <h1 class="font-4xl" lang={language}>
+            {title}
+          </h1>
+        ) : (
+          <AppLayoutTitle pretitle={pretitle} title={title} subtitle={subtitle} lang={language} />
+        )
+      }
       {description && <RichText content={description} context={{ lang: language }} />}
       {attributes.length > 0 && <Attributes attributes={attributes} />}
       {credits.length > 0 && <Credits credits={credits} />}
       {metaAttributes.length > 0 && <Attributes attributes={metaAttributes} />}
-      <DownloadButton href={url} filename={filename} />
+      {filename && <DownloadButton href={url} filename={filename} />}
     </div>
   </div>
 </AppLayout>
@@ -104,9 +144,46 @@ const metaAttributes = [
       max-width: 35em;
     }
 
-    & > .video_id-video-player {
-      max-height: 60vh;
-      width: auto;
+    & > #image-anchor {
+      transition: 100ms scale;
+      box-shadow: 0 5px 20px -10px var(--color-shadow-0);
+
+      &:hover,
+      &:focus-visible {
+        scale: 102%;
+      }
+
+      max-height: 70vh;
+    }
+
+    & > #icon-container {
+      display: grid;
+      place-content: center;
+      place-items: center;
+      gap: 0.5em;
+      border-radius: 0.7em;
+
+      padding: 3em;
+      box-sizing: border-box;
+      margin: 0.4em;
+      max-width: 35em;
+      width: 100%;
+      aspect-ratio: 3/2;
+      background-color: var(--color-elevation-2);
+      color: var(--color-base-400);
+      text-align: center;
+
+      & > svg {
+        width: clamp(16px, 25vw, 96px);
+        height: clamp(16px, 25vw, 96px);
+      }
+
+      transition: 100ms scale;
+
+      &:hover,
+      &:focus-visible {
+        scale: 102%;
+      }
     }
 
     & > #info {
