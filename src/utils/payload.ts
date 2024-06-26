@@ -125,85 +125,16 @@ export const initPayload = async () => {
       return;
     }
 
-    const result = await payload.getAllPaths();
-
-    for (const slug of result.pages) {
+    const { urls } = await payload.getAllSdkUrls();
+    for (const url of urls) {
       try {
-        await payload.getPage(slug);
-      } catch (e) {
-        console.warn("[Precaching] Couldn't precache page", slug, e);
+        await payload.request(url);
+      } catch {
+        console.warn("[ResponseCaching] Precaching failed for url", url);
       }
     }
-
-    for (const slug of result.folders) {
-      try {
-        await payload.getFolder(slug);
-      } catch (e) {
-        console.warn("[Precaching] Couldn't precache folder", slug, e);
-      }
-    }
-
-    for (const slug of result.collectibles) {
-      try {
-        const collectible = await payload.getCollectible(slug);
-        if (collectible.scans) {
-          await payload.getCollectibleScans(slug);
-        }
-        if (collectible.gallery) {
-          await payload.getCollectibleGallery(slug);
-        }
-      } catch (e) {
-        console.warn("[Precaching] Couldn't precache collectible", slug, e);
-      }
-    }
-
-    for (const id of result.recorders) {
-      try {
-        await payload.getRecorderByID(id);
-      } catch (e) {
-        console.warn("[Precaching] Couldn't precache recorder", id, e);
-      }
-    }
-
-    for (const id of result.audios) {
-      try {
-        await payload.getAudioByID(id);
-      } catch (e) {
-        console.warn("[Precaching] Couldn't precache audio", id, e);
-      }
-    }
-
-    for (const id of result.videos) {
-      try {
-        await payload.getVideoByID(id);
-      } catch (e) {
-        console.warn("[Precaching] Couldn't precache video", id, e);
-      }
-    }
-
-    for (const id of result.images) {
-      try {
-        await payload.getImageByID(id);
-      } catch (e) {
-        console.warn("[Precaching] Couldn't precache image", id, e);
-      }
-    }
-
-    for (const id of result.files) {
-      try {
-        await payload.getFileByID(id);
-      } catch (e) {
-        console.warn("[Precaching] Couldn't precache file", id, e);
-      }
-    }
-
-    try {
-      await payload.getChronologyEvents();
-    } catch (e) {
-      console.warn("[Precaching] Couldn't precache chronology events", e);
-    }
+    console.log("[ResponseCaching] Precaching completed!", responseCache.size, "responses cached");
 
     payloadInitialized = true;
-    console.log("[ResponseCaching] Precaching completed!", responseCache.size, "responses cached");
   }
 };

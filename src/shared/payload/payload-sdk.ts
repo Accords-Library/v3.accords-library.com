@@ -2076,16 +2076,8 @@ export type PayloadImage = PayloadMedia & {
   height: number;
 };
 
-export type EndpointAllPaths = {
-  collectibles: string[];
-  pages: string[];
-  folders: string[];
-  videos: string[];
-  audios: string[];
-  images: string[];
-  files: string[];
-  recorders: string[];
-  chronologyEvents: string[];
+export type EndpointAllSDKUrls = {
+  urls: string[];
 };
 
 // SDK
@@ -2128,7 +2120,7 @@ export const getSDKEndpoint = {
   getVideoByIDEndpoint: (id: string) => `/${Collections.Videos}/id/${id}`,
   getFileByIDEndpoint: (id: string) => `/${Collections.Files}/id/${id}`,
   getRecorderByIDEndpoint: (id: string) => `/${Collections.Recorders}/id/${id}`,
-  getAllPathsEndpoint: () => `/all-paths`,
+  getAllSDKUrlsEndpoint: () => `/all-sdk-urls`,
   getLoginEndpoint: () => `/${Collections.Recorders}/login`,
 };
 
@@ -2225,8 +2217,8 @@ export const getPayloadSDK = ({
       await request(getSDKEndpoint.getFileByIDEndpoint(id)),
     getRecorderByID: async (id: string): Promise<EndpointRecorder> =>
       await request(getSDKEndpoint.getRecorderByIDEndpoint(id)),
-    getAllPaths: async (): Promise<EndpointAllPaths> =>
-      await request(getSDKEndpoint.getAllPathsEndpoint()),
+    getAllSdkUrls: async (): Promise<EndpointAllSDKUrls> =>
+      await request(getSDKEndpoint.getAllSDKUrlsEndpoint()),
     request: async (pathname: string): Promise<any> => await request(pathname),
   };
 };
