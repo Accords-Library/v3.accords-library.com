@@ -161,7 +161,7 @@ const smallTitle = title === filename;
       place-content: center;
       place-items: center;
       gap: 0.5em;
-      border-radius: 0.7em;
+      border-radius: 16px;
 
       padding: 3em;
       box-sizing: border-box;
@@ -170,12 +170,16 @@ const smallTitle = title === filename;
       width: 100%;
       aspect-ratio: 3/2;
       background-color: var(--color-elevation-2);
-      color: var(--color-base-400);
       text-align: center;
 
       & > svg {
         width: clamp(16px, 25vw, 96px);
         height: clamp(16px, 25vw, 96px);
+        color: var(--color-base-400);
+      }
+
+      & > p {
+        color: var(--color-base-600);
       }
 
       transition: 100ms scale;

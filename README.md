@@ -1,5 +1,7 @@
 # Accord's Library
 
+Accord's Library v3.0 (shorten to AL3.0)
+
 ## Tech overview
 
 - Client-side framework: None
@@ -7,17 +9,19 @@
 - Content management system: [Payload](https://payloadcms.com)
 - Database: MongoDB
 
-## Core
-
-- https://resilientwebdesign.com/
-
-Accord's Library v3.0 (shorten to AL3.0) follows the Metamodernist Web model described by Frédéric Bonnet in his article [From Classicism to Metamodernism — A Short History of Web Development](https://dev.to/fredericbonnet/the-third-age-of-web-development-kgj#the-metamodernist-period).
+## Core principles
 
 - Embrace web standards instead of reinventing the wheel
-- [Progressive enhancement](https://en.wikipedia.org/wiki/Progressive_enhancement): SSG or SSR for noscript clients. SPA-like enhancements such as partial page updates and view transitions for clients with JS support.
+- [Progressive enhancement](https://en.wikipedia.org/wiki/Progressive_enhancement). Ensure all users can access and use AL3.0's core functionalities.
+- End-user preferences are respected.
 - Mimimal dependencies. Dependencies can be self-hosted or loaded directly from CDNs instead of being bundled up.
 - Accessible, fast, lightweight, substainable
 - Complexity is moved away from client devices
+
+Read more:
+
+- [Resilient web design](https://resilientwebdesign.com)
+- [From Classicism to Metamodernism — A Short History of Web Development](https://dev.to/fredericbonnet/the-third-age-of-web-development-kgj#the-metamodernist-period)
 
 ## Focal points
 
@@ -73,14 +77,12 @@ Accord's Library v3.0 (shorten to AL3.0) follows the Metamodernist Web model des
     - Reduced client-side complexity
     - Would require edge computing to reduce latency
     - Data caching to speed up response time
-  - Astro built-in View transitions and client-side navigation
-  - Some data caching between the web server and CMS (to be improved)
 
 - SEO
 
   - Good defaults for the metadata and OpenGraph properties
   - Each page can provide a custom title, description, thumbnail, video, audio to be used
-  - Each language variants are indexes seperately.
+  - Each language variants are indexed seperately.
 
 - Complexity
   - The complexity should be moved away from public-facing parts of the codebase
@@ -93,7 +95,6 @@ Accord's Library v3.0 (shorten to AL3.0) follows the Metamodernist Web model des
     - Handle user interactions
   - On the client device, there should be minimal complexity
     - Handle responsiveness
-    - Handle view transitions (if JS is available)
     - Use of web standards: let the browser handle most of the client-side complexity
 
 ## Enhancement provided with JavaScript
@@ -128,13 +129,6 @@ A dotted texture is displayed on the page background. It uses `background-blend-
 - Replacing the image with a transparent image (no need for blending)
 - Replacing the image with a non-transparent image where the blending is baked-in
 - Check if there are ways to make the blending work on iOS
-
-### Parallax effect
-
-A parallax effect is applied on the webpages' background image. This effect can be a bit demanding, it is disabled on mobiles and tablets to lessen the impact. Other alternatives could include:
-
-- Removing the effet entirely
-- Moving away from JavaScript and using CSS parallax tricks (transform 3D, sticky)
 
 ## CSS Utility classes
 

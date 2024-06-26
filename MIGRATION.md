@@ -12,7 +12,6 @@
   - booklet?
 - https://v3.accords-library.com/en/pages/song-of-fourteen-years
   - missing source to https://web.archive.org/web/20151104092843/http://kho-dazat.tumblr.com/post/73835598260/you-are-the-light-the-light-that-illuminates-my
-  - missing parent collectible
 - Character novellas, The content originate -> The content originates
 - https://v3.accords-library.com/en/folders/drakengard-magnitude-negative add previous/follow-up links to chapters
 
@@ -20,33 +19,19 @@
 
   - https://v3.accords-library.com/en/folders/drakengard-promotional-videos
   - https://v3.accords-library.com/en/videos/663354cb12807e2ec1b33924
-  - https://v3.accords-library.com/en/collectibles/dod-scenario-script
-  - https://v3.accords-library.com/en/collectibles/dod-window-script
-  - https://v3.accords-library.com/en/pages/dod1-questions-and-answers
-  - https://v3.accords-library.com/en/pages/looking-back-1
-  - https://v3.accords-library.com/en/pages/song-of-fourteen-years
 
 - Missing collectibles
 
-  - https://accords-library.com/library/dod-the-archive-of
-  - https://accords-library.com/library/dod-reservation-promo-dvd
-  - https://accords-library.com/library/dod-promo-dvd
   - Games
     - https://accords-library.com/library/dod-java
     - https://accords-library.com/library/dod-demo
 
 - Missing pages
-  - https://accords-library.com/contents/super-space-time-character-exchange-roundtable-in-shinjuku
   - https://accords-library.com/contents/dod-history
 
 ## DOD1.3
 
-- Drag-on Dragoon - Shi ni Itaru Aka
-- Basic Knowledge of Drakengard
-
-- Missing parent collectible
-
-  - https://v3.accords-library.com/en/folders/drakengard-1-3
+- Drag-on Dragoon - Fatal Crimson
 
 - Missing footnotes
   - https://v3.accords-library.com/en/pages/dod1-3-a-2040-battle-with-the-empire
@@ -56,23 +41,19 @@
 ## DOD 2
 
 - Missing pages
+
   - https://accords-library.com/contents/folder/dod2-promotional-materials
-  - https://accords-library.com/contents/super-space-time-character-exchange-roundtable-in-shinjuku
   - https://accords-library.com/contents/dod-history
+
 - Missing collectibles
 
-  - Games
-  - https://accords-library.com/library/dod2-demo
   - Soundtrack
     - https://accords-library.com/library/hitori-mika-nakashima
     - https://accords-library.com/library/sirius-eir-aoi
-    - https://accords-library.com/library/dod2-original-soundtrack
-  - https://accords-library.com/library/dod2-scenario-script-a
-  - https://accords-library.com/library/dod2-scenario-script-b
-  - https://accords-library.com/library/dod2-story-side
-  - https://accords-library.com/library/dod2-the-archive-of
-  - https://accords-library.com/library/dod2-web-material
-  - https://accords-library.com/library/dod2-strategy-guidebook
+
+- Missing content
+
+  - https://v3.accords-library.com/en/collectibles/dod2-web-material-disc
 
 - Missing footnotes
 
@@ -101,16 +82,12 @@
 
   - https://accords-library.com/contents/prophecy
   - https://accords-library.com/contents/dod3-complete-guide-epilogue
-  - https://accords-library.com/contents/super-space-time-character-exchange-roundtable-in-shinjuku
   - https://accords-library.com/contents/dod-history
 
 - Missing parent page
 
   - Novellas
-    - https://accords-library.com/contents/folder/dod3-prelude-novellas
     - https://accords-library.com/contents/folder/dod3-dlc-short-stories
-  - Story side
-    - https://accords-library.com/contents/folder/dod3-story-side
 
 - Missing scans
 
@@ -119,3 +96,7 @@
   - https://v3.accords-library.com/en/collectibles/dod10-dlc-code
 
 - Check release data for https://v3.accords-library.com/en/collectibles/dod10th-anniversary-box and its subitems
+
+- Missing footnotes
+  - https://v3.accords-library.com/en/pages/super-space-time-character-exchange-roundtable-in-shinjuku
+  - *Like mother, like daughter. I think that's just it… Why I must protect Yonah for the rest of my life! So we can always, always be together… *The proverb here in Japanese directly translates to “You can’t fight blood.”, a likely prod at Furiae’s lust for Caim.
