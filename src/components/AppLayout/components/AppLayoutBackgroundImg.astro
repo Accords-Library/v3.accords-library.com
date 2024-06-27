@@ -100,6 +100,7 @@ const uniqueId = getRandomId();
   const img = document.getElementById(uniqueId);
   const parent = img.parentElement;
   if (!parent || !img) return;
+  if (img.complete) return;
 
   parent.style.animationPlayState = "paused";
   img.addEventListener(
