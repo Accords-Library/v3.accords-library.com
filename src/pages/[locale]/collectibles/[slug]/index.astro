@@ -13,16 +13,16 @@ import SubitemSection from "./_components/SubitemSection.astro";
 import ContentsSection from "./_components/ContentsSection/ContentsSection.astro";
 import { formatInlineTitle, formatLocale, formatRichTextToString } from "src/utils/format";
 import AsideLayout from "components/AppLayout/AsideLayout.astro";
-import { convert } from "src/utils/currencies";
 import Attributes from "components/Attributes.astro";
 import type { Attribute } from "src/utils/attributes";
 import { payload } from "src/utils/payload";
 import { sizesToSrcset } from "src/utils/img";
 import RichText from "components/RichText/RichText.astro";
 import SubFilesSection from "./_components/SubFilesSection.astro";
+import PriceInfo from "./_components/PriceInfo.astro";
 
 const slug = Astro.params.slug!;
-const { getLocalizedMatch, getLocalizedUrl, t, formatDate, formatPrice } = await getI18n(
+const { getLocalizedMatch, getLocalizedUrl, t, formatDate } = await getI18n(
   Astro.locals.currentLocale
 );
 
@@ -116,28 +116,6 @@ if (languages.length > 0) {
     withBorder: true,
   });
 }
-
-if (price) {
-  const preferredCurrency = Astro.locals.currentCurrency;
-
-  const convertedPrice = {
-    amount: convert(price.currency, preferredCurrency, price.amount),
-    currency: preferredCurrency,
-  };
-
-  let priceText = price.amount === 0 ? t("collectibles.price.free") : formatPrice(price);
-
-  if (price.amount > 0 && price.currency !== convertedPrice.currency) {
-    priceText += ` (${formatPrice(convertedPrice)})`;
-  }
-
-  additionalAttributes.push({
-    title: t("collectibles.price"),
-    icon: "material-symbols:sell-outline",
-    values: [{ name: priceText }],
-    withBorder: false,
-  });
-}
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -211,6 +189,8 @@ if (price) {
 
       <div id="attributes">
         <Attributes attributes={[...attributes, ...additionalAttributes]}>
+          {price && <PriceInfo price={price} />}
+
           <AvailabilityInfo urls={urls} price={price !== undefined} releaseDate={releaseDate} />
 
           {size && <SizeInfo size={size} />}

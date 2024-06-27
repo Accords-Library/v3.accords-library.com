@@ -54,20 +54,15 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 
 <style>
   #container {
-    display: grid;
-    grid-template-columns: auto 1fr;
+    display: flex;
     gap: 0.5em 1em;
-    align-items: start;
-
-    @media (max-width: 35em) {
-      grid-template-columns: 1fr;
-    }
+    flex-wrap: wrap;
 
     & > #values {
       display: flex;
       flex-direction: column;
-      gap: 0.5em;
-      margin-top: 0.5em;
+      gap: 6px;
+      translate: 0px 6px;
     }
   }
 </style>

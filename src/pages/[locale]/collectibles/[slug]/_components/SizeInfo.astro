@@ -47,14 +47,10 @@ const { formatInches, formatMillimeters, t } = await getI18n(Astro.locals.curren
 
 <style>
   #size {
-    display: grid;
-    grid-template-columns: auto 1fr;
+    display: flex;
+    gap: 0.5em 1em;
+    flex-wrap: wrap;
     gap: 1em 2em;
-    align-items: start;
-
-    @media (max-width: 35em) {
-      grid-template-columns: 1fr;
-    }
 
     & > #values {
       display: flex;
