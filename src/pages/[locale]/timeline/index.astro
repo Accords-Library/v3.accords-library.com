@@ -6,7 +6,7 @@ import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import Card from "components/Card.astro";
 import { getI18n } from "src/i18n/i18n";
-import { cache } from "src/utils/payload";
+import { contextCache } from "src/cache/contextCache";
 import type { WordingKey } from "src/i18n/wordings-keys";
 
 const events = await payload.getChronologyEvents();
@@ -16,7 +16,7 @@ const { getLocalizedUrl, t, formatTimelineDate } = await getI18n(Astro.locals.cu
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppLayout backgroundImage={cache.config.timeline.backgroundImage} class="app">
+<AppLayout backgroundImage={contextCache.config.timeline.backgroundImage} class="app">
   <AppLayoutTitle title={t("timeline.title")} />
   <p class="prose" set:html={t("timeline.description")} />
 
@@ -54,7 +54,7 @@ const { getLocalizedUrl, t, formatTimelineDate } = await getI18n(Astro.locals.cu
         <h3>{t("timeline.jumpTo")}</h3>
 
         {
-          cache.config.timeline.eras.map(({ name, startingYear, endingYear }) => (
+          contextCache.config.timeline.eras.map(({ name, startingYear, endingYear }) => (
             <p
               set:html={t(name as WordingKey, {
                 start: `<a href="#${startingYear}">${formatTimelineDate({ year: startingYear })}</a>`,

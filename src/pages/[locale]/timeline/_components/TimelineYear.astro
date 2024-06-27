@@ -2,7 +2,7 @@
 import type { EndpointChronologyEvent } from "src/shared/payload/payload-sdk";
 import TimelineEvent from "./TimelineEvent.astro";
 import { getI18n } from "src/i18n/i18n";
-import { cache } from "src/utils/payload";
+import { contextCache } from "src/cache/contextCache";
 
 interface Props {
   year: number;
@@ -25,7 +25,7 @@ if (year === 856) {
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-{cache.config.timeline.breaks.includes(year) && <hr id={`hr-${year}`} />}
+{contextCache.config.timeline.breaks.includes(year) && <hr id={`hr-${year}`} />}
 
 <div>
   <h2 class="font-2xl" class:list={{ multiple }} id={year.toString()}>

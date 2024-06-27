@@ -1,7 +1,7 @@
 import type { APIRoute } from "astro";
-import { initPayload } from "src/utils/payload";
+import { dataCache } from "src/cache/dataCache";
 
 export const GET: APIRoute = async () => {
-  await initPayload();
+  await dataCache.init();
   return new Response(null, { status: 200, statusText: "Ok" });
 };

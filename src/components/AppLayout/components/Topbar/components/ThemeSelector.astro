@@ -3,7 +3,7 @@ import Button from "components/Button.astro";
 import Tooltip from "components/Tooltip.astro";
 import { getI18n } from "src/i18n/i18n";
 
-const { currentLocale, currentTheme } = Astro.locals;
+const { currentLocale } = Astro.locals;
 const { t } = await getI18n(currentLocale);
 ---
 
@@ -11,19 +11,13 @@ const { t } = await getI18n(currentLocale);
 
 <Tooltip trigger="click">
   <div id="content" slot="tooltip-content">
-    <a
-      class:list={{ current: currentTheme === "dark", "pressable-link": true }}
-      href="?action-theme=dark">
+    <a class="pressable-link underline-when-dark" href="?action-theme=dark">
       {t("global.theme.dark")}
     </a>
-    <a
-      class:list={{ current: currentTheme === "auto", "pressable-link": true }}
-      href="?action-theme=auto">
+    <a class="pressable-link underline-when-auto" href="?action-theme=auto">
       {t("global.theme.auto")}
     </a>
-    <a
-      class:list={{ current: currentTheme === "light", "pressable-link": true }}
-      href="?action-theme=light">
+    <a class="pressable-link underline-when-light" href="?action-theme=light">
       {t("global.theme.light")}
     </a>
   </div>
@@ -45,10 +39,12 @@ const { t } = await getI18n(currentLocale);
   #content {
     display: grid;
     gap: 0.5em;
+  }
 
-    & > .current {
-      color: var(--color-base-750);
-      text-decoration: underline 0.08em var(--color-base-650);
-    }
+  :global(html.light-theme) a.underline-when-light,
+  :global(html.dark-theme) a.underline-when-dark,
+  :global(html:not(.light-theme, .dark-theme)) a.underline-when-auto {
+    color: var(--color-base-750);
+    text-decoration: underline 0.08em var(--color-base-650);
   }
 </style>

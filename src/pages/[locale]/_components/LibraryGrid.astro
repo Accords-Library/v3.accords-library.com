@@ -1,7 +1,7 @@
 ---
 import LibraryCard from "./LibraryCard.astro";
 import { getI18n } from "src/i18n/i18n";
-import { cache } from "src/utils/payload";
+import { contextCache } from "src/cache/contextCache";
 
 const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 ---
@@ -9,7 +9,7 @@ const { getLocalizedUrl, getLocalizedMatch } = await getI18n(Astro.locals.curren
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 {
-  cache.config.home.folders.map(({ slug, translations, darkThumbnail, lightThumbnail }) => (
+  contextCache.config.home.folders.map(({ slug, translations, darkThumbnail, lightThumbnail }) => (
     <LibraryCard
       img={
         darkThumbnail && lightThumbnail ? { dark: darkThumbnail, light: lightThumbnail } : undefined

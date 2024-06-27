@@ -1,6 +1,6 @@
 import type { WordingKey } from "src/i18n/wordings-keys";
 import type { ChronologyEvent, EndpointSource } from "src/shared/payload/payload-sdk";
-import { cache } from "src/utils/payload";
+import { contextCache } from "src/cache/contextCache";
 import { capitalize, formatInlineTitle } from "src/utils/format";
 
 export const defaultLocale = "en";
@@ -113,7 +113,7 @@ export const getI18n = async (locale: string) => {
     options[0]!; // We will consider that there will always be at least one option.
 
   const t = (key: WordingKey, values: Record<string, any> = {}): string => {
-    const wording = cache.wordings.find(({ name }) => name === key);
+    const wording = contextCache.wordings.find(({ name }) => name === key);
     const fallbackString = `«${key}»`;
 
     if (!wording) {

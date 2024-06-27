@@ -2,7 +2,7 @@
 import Button from "components/Button.astro";
 import Tooltip from "components/Tooltip.astro";
 import { getI18n } from "src/i18n/i18n";
-import { cache } from "src/utils/payload";
+import { contextCache } from "src/cache/contextCache";
 import { formatCurrency } from "src/utils/currencies";
 
 interface Props {
@@ -21,14 +21,13 @@ const { currentCurrency } = Astro.locals;
 <Tooltip trigger="click" {...otherProps.class ? otherProps : {}}>
   <div id="content" slot="tooltip-content">
     {
-      cache.currencies.map((id) => (
+      contextCache.currencies.map((id) => (
         <a
           class:list={{
             current: currentCurrency === id,
             "pressable-link": true,
           }}
-          href={`?action-currency=${id}`}
-          data-astro-prefetch="tap">
+          href={`?action-currency=${id}`}>
           {`${id} (${formatCurrency(id)})`}
         </a>
       ))

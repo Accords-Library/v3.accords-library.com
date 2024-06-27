@@ -1,10 +1,10 @@
 import { defineMiddleware, sequence } from "astro:middleware";
-import { cache } from "src/utils/payload";
 import acceptLanguage from "accept-language";
 import type { AstroCookies } from "astro";
 import { z } from "astro:content";
 import { trackRequest, trackEvent } from "src/shared/analytics/analytics";
 import { defaultLocale } from "src/i18n/i18n";
+import { contextCache } from "src/cache/contextCache";
 
 const ninetyDaysInSeconds = 60 * 60 * 24 * 90;
 
@@ -141,20 +141,22 @@ const refreshCookiesMaxAge = defineMiddleware(async ({ cookies }, next) => {
   return response;
 });
 
-const addContentLanguageResponseHeader = defineMiddleware(async ({ url }, next) => {
+const addCommonHeaders = defineMiddleware(async ({ url }, next) => {
   const currentLocale = getCurrentLocale(url.pathname);
 
   const response = await next();
-  if (response.status === 200 && currentLocale) {
+  if (response.ok && currentLocale) {
     response.headers.set("Content-Language", currentLocale);
   }
+
+  response.headers.set("Vary", "Cookie");
+
   return response;
 });
 
 const provideLocalsToRequest = defineMiddleware(async ({ url, locals, cookies }, next) => {
   locals.currentLocale = getCurrentLocale(url.pathname) ?? "en";
   locals.currentCurrency = getCookieCurrency(cookies) ?? "USD";
-  locals.currentTheme = getCookieTheme(cookies) ?? "auto";
   return next();
 });
 
@@ -165,19 +167,40 @@ const analytics = defineMiddleware(async (context, next) => {
   return response;
 });
 
+const postProcess = defineMiddleware(async ({ cookies }, next) => {
+  const response = await next();
+  if (!response.ok) {
+    return response;
+  }
+
+  let html = await response.text();
+
+  const currentTheme = getCookieTheme(cookies) ?? "auto";
+  html = html.replace(
+    "POST_PROCESS_HTML_CLASS",
+    currentTheme === "dark" ? "dark-theme" : currentTheme === "light" ? "light-theme" : ""
+  );
+  return new Response(html, response);
+});
+
 export const onRequest = sequence(
-  addContentLanguageResponseHeader,
+  // Possible redirect
   handleActionsSearchParams,
-  refreshCookiesMaxAge,
   localeNegotiator,
+
+  addCommonHeaders,
+
+  // Get a response
+  analytics,
+  refreshCookiesMaxAge,
   provideLocalsToRequest,
-  analytics
+  postProcess
 );
 
 /* LOCALE */
 
 const getCurrentLocale = (pathname: string): string | undefined => {
-  for (const locale of cache.locales) {
+  for (const locale of contextCache.locales) {
     if (pathname.split("/")[1] === locale.id) {
       return locale.id;
     }
@@ -189,7 +212,7 @@ const getBestAcceptedLanguage = (request: Request): string | undefined => {
   const header = request.headers.get("Accept-Language");
   if (!header) return;
 
-  acceptLanguage.languages(cache.locales.map(({ id }) => id));
+  acceptLanguage.languages(contextCache.locales.map(({ id }) => id));
 
   return acceptLanguage.get(request.headers.get("Accept-Language")) ?? undefined;
 };
@@ -220,10 +243,12 @@ export const getCookieTheme = (cookies: AstroCookies): z.infer<typeof themeSchem
 };
 
 export const isValidCurrency = (currency: string | null | undefined): currency is string =>
-  currency !== null && currency != undefined && cache.currencies.includes(currency);
+  currency !== null && currency != undefined && contextCache.currencies.includes(currency);
 
 export const isValidLocale = (locale: string | null | undefined): locale is string =>
-  locale !== null && locale != undefined && cache.locales.map(({ id }) => id).includes(locale);
+  locale !== null &&
+  locale != undefined &&
+  contextCache.locales.map(({ id }) => id).includes(locale);
 
 export const isValidTheme = (
   theme: string | null | undefined

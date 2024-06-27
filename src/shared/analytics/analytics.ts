@@ -1,7 +1,7 @@
-import { cache } from "src/utils/payload";
+import { contextCache } from "src/cache/contextCache";
 
 const getUnlocalizedPathname = (pathname: string): string => {
-  for (const locale of cache.locales) {
+  for (const locale of contextCache.locales) {
     if (pathname.startsWith(`/${locale.id}`)) {
       return pathname.substring(`/${locale.id}`.length) || "/";
     }
@@ -30,7 +30,6 @@ export const trackRequest = (request: Request, { clientAddress, locals }: TrackR
         attributes: {
           locale: locals.currentLocale,
           currency: locals.currentCurrency,
-          theme: locals.currentTheme,
         },
       },
       request: {

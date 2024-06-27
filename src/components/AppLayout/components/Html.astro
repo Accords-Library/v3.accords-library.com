@@ -7,7 +7,7 @@ import type {
   EndpointPayloadImage,
   EndpointVideo,
 } from "src/shared/payload/payload-sdk";
-import { cache } from "src/utils/payload";
+import { contextCache } from "src/cache/contextCache";
 
 interface Props {
   openGraph?:
@@ -28,7 +28,9 @@ const { openGraph = {} } = Astro.props;
 const { description = t("global.meta.description"), audio, video } = openGraph;
 
 const thumbnail =
-  openGraph.thumbnail?.openGraph ?? openGraph.thumbnail ?? cache.config.defaultOpenGraphImage;
+  openGraph.thumbnail?.openGraph ??
+  openGraph.thumbnail ??
+  contextCache.config.defaultOpenGraphImage;
 
 const title = openGraph.title
   ? `${openGraph.title} – ${t("global.siteName")}`
@@ -38,8 +40,6 @@ const userAgent = Astro.request.headers.get("user-agent") ?? "";
 const parser = new UAParser(userAgent);
 const isIOS = parser.getOS().name === "iOS";
 
-const { currentTheme } = Astro.locals;
-
 /* Keep that separator here or else it breaks the HTML 
 ----------------------------------------------- HTML -------------------------------------------- */
 ---
@@ -47,9 +47,7 @@ const { currentTheme } = Astro.locals;
 <html
   lang={currentLocale}
   class:list={{
-    "manual-theme": currentTheme !== "auto",
-    "light-theme": currentTheme === "light",
-    "dark-theme": currentTheme === "dark",
+    POST_PROCESS_HTML_CLASS: true,
     "texture-dots": !isIOS,
     "font-m": true,
     "debug-lang": false,
@@ -310,7 +308,7 @@ const { currentTheme } = Astro.locals;
       color: var(--color-base-1000);
     }
 
-    html:not(.manual-theme) {
+    html:not(.light-theme, .dark-theme) {
       @media (prefers-color-scheme: light) {
         & .when-dark-theme {
           display: none !important;

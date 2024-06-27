@@ -6,10 +6,10 @@ import {
   type RichTextContent,
   type RichTextNode,
 } from "src/shared/payload/payload-sdk";
-import { cache } from "src/utils/payload";
+import { contextCache } from "src/cache/contextCache";
 
 export const formatLocale = (code: string): string =>
-  cache.locales.find(({ id }) => id === code)?.name ?? code;
+  contextCache.locales.find(({ id }) => id === code)?.name ?? code;
 
 export const formatInlineTitle = ({
   pretitle,

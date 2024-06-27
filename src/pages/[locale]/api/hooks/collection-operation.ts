@@ -1,12 +1,7 @@
 import type { APIRoute } from "astro";
+import { contextCache } from "src/cache/contextCache";
+import { dataCache } from "src/cache/dataCache";
 import { Collections, type AfterOperationWebHookMessage } from "src/shared/payload/payload-sdk";
-import {
-  invalidateDataCache,
-  refreshCurrencies,
-  refreshLocales,
-  refreshWebsiteConfig,
-  refreshWordings,
-} from "src/utils/payload";
 
 export const POST: APIRoute = async ({ request }) => {
   const auth = request.headers.get("Authorization");
@@ -30,23 +25,23 @@ const handleWebHookMessage = async ({
   urls,
   id,
 }: AfterOperationWebHookMessage) => {
-  await invalidateDataCache([...(id ? [id] : []), ...addedDependantIds], urls);
+  await dataCache.invalidate([...(id ? [id] : []), ...addedDependantIds], urls);
 
   switch (collection) {
     case Collections.Wordings:
-      await refreshWordings();
+      await contextCache.refreshWordings();
       break;
 
     case Collections.Currencies:
-      await refreshCurrencies();
+      await contextCache.refreshCurrencies();
       break;
 
     case Collections.Languages:
-      await refreshLocales();
+      await contextCache.refreshLocales();
       break;
 
     case Collections.WebsiteConfig:
-      await refreshWebsiteConfig();
+      await contextCache.refreshWebsiteConfig();
       break;
   }
 };

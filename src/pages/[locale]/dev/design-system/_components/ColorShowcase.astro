@@ -9,7 +9,7 @@ interface Props {
 const { baseColors, theme } = Astro.props;
 ---
 
-<div id="container" class:list={[theme, "manual-theme"]}>
+<div id="container" class:list={theme}>
   <h4 class="font-xl">Base colors</h4>
   <div class="colors">
     {
