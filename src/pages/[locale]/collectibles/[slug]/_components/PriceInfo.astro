@@ -1,7 +1,7 @@
 ---
 import Metadata from "components/Metadata.astro";
 import { getI18n } from "src/i18n/i18n";
-import { convert } from "src/utils/currencies";
+import { formatPriceForPostProcessing } from "src/middleware/postProcessing";
 
 interface Props {
   price: {
@@ -11,20 +11,7 @@ interface Props {
 }
 
 const { price } = Astro.props;
-const { formatPrice, t } = await getI18n(Astro.locals.currentLocale);
-
-const preferredCurrency = Astro.locals.currentCurrency;
-
-const convertedPrice = {
-  amount: convert(price.currency, preferredCurrency, price.amount),
-  currency: preferredCurrency,
-};
-
-let priceText = price.amount === 0 ? t("collectibles.price.free") : formatPrice(price);
-
-if (price.amount > 0 && price.currency !== convertedPrice.currency) {
-  priceText += ` (${formatPrice(convertedPrice)})`;
-}
+const { t } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -32,6 +19,10 @@ if (price.amount > 0 && price.currency !== convertedPrice.currency) {
 <Metadata
   icon="material-symbols:sell-outline"
   title={t("collectibles.price")}
-  values={[{ name: priceText }]}
+  values={[
+    {
+      name: formatPriceForPostProcessing(price, "long"),
+    },
+  ]}
   withBorder={false}
 />

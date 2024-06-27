@@ -4,7 +4,6 @@
 declare namespace App {
   interface Locals {
     currentLocale: string;
-    currentCurrency: string;
     notFound: boolean;
   }
 }

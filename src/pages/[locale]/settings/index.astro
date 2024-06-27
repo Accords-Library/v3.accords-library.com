@@ -5,8 +5,9 @@ import { getI18n } from "src/i18n/i18n";
 import { contextCache } from "src/cache/contextCache";
 import { formatCurrency } from "src/utils/currencies";
 import { formatLocale } from "src/utils/format";
+import { prepareClassForSelectedCurrencyPostProcessing } from "src/middleware/postProcessing";
 
-const { currentLocale, currentCurrency } = Astro.locals;
+const { currentLocale } = Astro.locals;
 const { t } = await getI18n(currentLocale);
 ---
 
@@ -50,7 +51,10 @@ const { t } = await getI18n(currentLocale);
       {
         contextCache.currencies.map((id) => (
           <a
-            class:list={{ current: currentCurrency === id, "pressable-link": true }}
+            class:list={[
+              "pressable-link",
+              prepareClassForSelectedCurrencyPostProcessing({ currency: id }),
+            ]}
             href={`?action-currency=${id}`}>
             {`${id} (${formatCurrency(id)})`}
           </a>

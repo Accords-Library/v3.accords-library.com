@@ -29,7 +29,6 @@ export const trackRequest = (request: Request, { clientAddress, locals }: TrackR
         address: clientAddress,
         attributes: {
           locale: locals.currentLocale,
-          currency: locals.currentCurrency,
         },
       },
       request: {

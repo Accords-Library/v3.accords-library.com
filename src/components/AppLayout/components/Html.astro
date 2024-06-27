@@ -8,6 +8,7 @@ import type {
   EndpointVideo,
 } from "src/shared/payload/payload-sdk";
 import { contextCache } from "src/cache/contextCache";
+import { PostProcessingTags } from "src/middleware/postProcessing";
 
 interface Props {
   openGraph?:
@@ -47,7 +48,7 @@ const isIOS = parser.getOS().name === "iOS";
 <html
   lang={currentLocale}
   class:list={{
-    POST_PROCESS_HTML_CLASS: true,
+    [PostProcessingTags.HTML_CLASS]: true,
     "texture-dots": !isIOS,
     "font-m": true,
     "debug-lang": false,

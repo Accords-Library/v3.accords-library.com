@@ -4,6 +4,10 @@ import Tooltip from "components/Tooltip.astro";
 import { getI18n } from "src/i18n/i18n";
 import { contextCache } from "src/cache/contextCache";
 import { formatCurrency } from "src/utils/currencies";
+import {
+  PostProcessingTags,
+  prepareClassForSelectedCurrencyPostProcessing,
+} from "src/middleware/postProcessing";
 
 interface Props {
   withTitle?: boolean | undefined;
@@ -12,8 +16,6 @@ interface Props {
 
 const { withTitle, ...otherProps } = Astro.props;
 const { t } = await getI18n(Astro.locals.currentLocale);
-
-const { currentCurrency } = Astro.locals;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -23,10 +25,10 @@ const { currentCurrency } = Astro.locals;
     {
       contextCache.currencies.map((id) => (
         <a
-          class:list={{
-            current: currentCurrency === id,
-            "pressable-link": true,
-          }}
+          class:list={[
+            "pressable-link",
+            prepareClassForSelectedCurrencyPostProcessing({ currency: id }),
+          ]}
           href={`?action-currency=${id}`}>
           {`${id} (${formatCurrency(id)})`}
         </a>
@@ -35,7 +37,7 @@ const { currentCurrency } = Astro.locals;
   </div>
   <Button
     icon="material-symbols:currency-exchange"
-    title={withTitle ? currentCurrency.toUpperCase() : undefined}
+    title={withTitle ? PostProcessingTags.PREFERRED_CURRENCY : undefined}
     ariaLabel={t("header.topbar.currency.tooltip")}
   />
 </Tooltip>
