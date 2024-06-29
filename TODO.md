@@ -26,7 +26,6 @@
 - [Feat] Improve page load speed by using
   - streaming https://docs.astro.build/en/recipes/streaming-improve-page-performance/
   - https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API
-- [Feat] Persistant cache system
 - [Feat] History replace instead of push when browsing scans and gallery
 - [Feat] Use subgrid to align the generic previews
 - [Bugs] [Timeline] Error if collectible not published?

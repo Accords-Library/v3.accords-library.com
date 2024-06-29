@@ -9,6 +9,8 @@ export const addCommonHeadersMiddleware = defineMiddleware(async ({ url }, next)
     response.headers.set("Content-Language", currentLocale);
   }
 
+  // TODO: Remove when in production
+  response.headers.set("X-Robots-Tag", "none");
   response.headers.set("Vary", "Cookie");
   response.headers.set("Cache-Control", "max-age=3600, stale-while-revalidate=3600");
 

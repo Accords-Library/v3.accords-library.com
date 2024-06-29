@@ -1,12 +1,23 @@
 import type { PayloadSDK } from "src/shared/payload/payload-sdk";
 import { getLogger } from "src/utils/logger";
+import { writeFile, mkdir, readFile } from "fs/promises";
+import { existsSync } from "fs";
+import {
+  deserializeResponse,
+  serializeResponse,
+  type SerializableResponse,
+} from "src/utils/responses";
+
+const ON_DISK_ROOT = `.cache/pageCache`;
+const ON_DISK_RESPONSE_CACHE_FILE = `${ON_DISK_ROOT}/responseCache.json`;
+const ON_DISK_INVALIDATION_MAP_FILE = `${ON_DISK_ROOT}/invalidationMap.json`;
 
 export class PageCache {
   private readonly logger = getLogger("[PageCache]");
   private initialized = false;
 
-  private readonly responseCache = new Map<string, Response>();
-  private readonly invalidationMap = new Map<string, Set<string>>();
+  private responseCache = new Map<string, Response>();
+  private invalidationMap = new Map<string, Set<string>>();
 
   constructor(private readonly payload: PayloadSDK) {}
 
@@ -21,26 +32,53 @@ export class PageCache {
   }
 
   private async precacheAll() {
-    const { data: languages } = await this.payload.getLanguages();
-    const locales = languages.map(({ id }) => id);
+    if (existsSync(ON_DISK_RESPONSE_CACHE_FILE) && existsSync(ON_DISK_INVALIDATION_MAP_FILE)) {
+      this.logger.log("Loading cache from disk...");
+      // Handle RESPONSE_CACHE_FILE
+      {
+        const buffer = await readFile(ON_DISK_RESPONSE_CACHE_FILE);
+        const data = JSON.parse(buffer.toString()) as [string, SerializableResponse][];
+        const deserializedData = data.map<[string, Response]>(([key, value]) => [
+          key,
+          deserializeResponse(value),
+        ]);
+        this.responseCache = new Map(deserializedData);
+      }
 
-    await this.precache("/", locales);
-    await this.precache("/settings", locales);
-    await this.precache("/timeline", locales);
+      // Handle INVALIDATION_MAP_FILE
+      {
+        const buffer = await readFile(ON_DISK_INVALIDATION_MAP_FILE);
+        const data = JSON.parse(buffer.toString()) as [string, string[]][];
+        const deserialize = data.map<[string, Set<string>]>(([key, value]) => [
+          key,
+          new Set(value),
+        ]);
+        this.invalidationMap = new Map(deserialize);
+      }
+    } else {
+      const { data: languages } = await this.payload.getLanguages();
+      const locales = languages.map(({ id }) => id);
 
-    const { data: folders } = await this.payload.getFolderSlugs();
-    for (const slug of folders) {
-      await this.precache(`/folders/${slug}`, locales);
-    }
+      await this.precache("/", locales);
+      await this.precache("/settings", locales);
+      await this.precache("/timeline", locales);
 
-    const { data: pages } = await this.payload.getPageSlugs();
-    for (const slug of pages) {
-      await this.precache(`/pages/${slug}`, locales);
-    }
+      const { data: folders } = await this.payload.getFolderSlugs();
+      for (const slug of folders) {
+        await this.precache(`/folders/${slug}`, locales);
+      }
 
-    const { data: collectibles } = await this.payload.getCollectibleSlugs();
-    for (const slug of collectibles) {
-      await this.precache(`/collectibles/${slug}`, locales);
+      const { data: pages } = await this.payload.getPageSlugs();
+      for (const slug of pages) {
+        await this.precache(`/pages/${slug}`, locales);
+      }
+
+      const { data: collectibles } = await this.payload.getCollectibleSlugs();
+      for (const slug of collectibles) {
+        await this.precache(`/collectibles/${slug}`, locales);
+      }
+
+      await this.save();
     }
 
     this.logger.log("Precaching completed!", this.responseCache.size, "responses cached");
@@ -80,6 +118,9 @@ export class PageCache {
 
     this.responseCache.set(url, response.clone());
     this.logger.log("Cached response for", url);
+    if (this.initialized) {
+      this.save();
+    }
   }
 
   async invalidate(sdkUrls: string[]) {
@@ -103,5 +144,31 @@ export class PageCache {
     }
 
     this.logger.log("There are currently", this.responseCache.size, "responses in cache.");
+    if (this.initialized) {
+      this.save();
+    }
+  }
+
+  private async save() {
+    if (!existsSync(ON_DISK_ROOT)) {
+      await mkdir(ON_DISK_ROOT, { recursive: true });
+    }
+
+    const serializedResponses = await Promise.all(
+      [...this.responseCache].map(async ([key, value]) => [key, await serializeResponse(value)])
+    );
+    const serializedResponseCache = JSON.stringify(serializedResponses);
+    await writeFile(ON_DISK_RESPONSE_CACHE_FILE, serializedResponseCache, {
+      encoding: "utf-8",
+    });
+    this.logger.log("Saved", ON_DISK_RESPONSE_CACHE_FILE);
+
+    const serializedIdsCache = JSON.stringify(
+      [...this.invalidationMap].map(([key, value]) => [key, [...value]])
+    );
+    await writeFile(ON_DISK_INVALIDATION_MAP_FILE, serializedIdsCache, {
+      encoding: "utf-8",
+    });
+    this.logger.log("Saved", ON_DISK_INVALIDATION_MAP_FILE);
   }
 }
