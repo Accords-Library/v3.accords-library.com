@@ -1,7 +1,9 @@
 import { defineMiddleware } from "astro:middleware";
-import { pageCache } from "src/cache/pageCache";
+import { pageCache } from "src/utils/payload";
 
-export const pageCachingMiddleware = defineMiddleware(async ({ url, request }, next) => {
+const blacklist = ["/en/api/hooks/collection-operation", "/en/api/on-startup"];
+
+export const pageCachingMiddleware = defineMiddleware(async ({ url, request, locals }, next) => {
   const pathname = url.pathname;
   const cachedPage = pageCache.get(pathname);
 
@@ -20,7 +22,10 @@ export const pageCachingMiddleware = defineMiddleware(async ({ url, request }, n
 
   if (response.ok) {
     response.headers.set("Last-Modified", new Date().toUTCString());
-    pageCache.set(pathname, response);
+
+    if (!blacklist.includes(pathname)) {
+      pageCache.set(pathname, response, [...locals.sdkCalls]);
+    }
   }
 
   return response;

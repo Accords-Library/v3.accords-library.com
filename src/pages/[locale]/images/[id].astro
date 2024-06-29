@@ -8,13 +8,15 @@ import { fetchOr404 } from "src/utils/responses";
 import { getFileIcon } from "src/utils/attributes";
 
 const id = Astro.params.id!;
-const image = await fetchOr404(() => payload.getImageByID(id));
-if (image instanceof Response) {
-  return image;
+const response = await fetchOr404(() => payload.getImageByID(id));
+if (response instanceof Response) {
+  return response;
 }
+Astro.locals.sdkCalls.add(response.endpointCalled);
+const image = response.data;
+const { filename, translations, attributes, credits, createdAt, updatedAt, mimeType } = image;
 
 const { getLocalizedMatch, formatDate, t } = await getI18n(Astro.locals.currentLocale);
-const { filename, translations, attributes, credits, createdAt, updatedAt, mimeType } = image;
 
 const { pretitle, title, subtitle, description, language } =
   translations.length > 0

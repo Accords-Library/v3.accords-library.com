@@ -18,36 +18,38 @@ import FilePreview from "components/Previews/FilePreview.astro";
 
 const slug = Astro.params.slug!;
 
-const folder = await fetchOr404(() => payload.getFolder(slug));
-if (folder instanceof Response) {
-  return folder;
+const response = await fetchOr404(() => payload.getFolder(slug));
+if (response instanceof Response) {
+  return response;
 }
+Astro.locals.sdkCalls.add(response.endpointCalled);
+const { files, parentPages, sections, translations } = response.data;
 
 const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
-const meta = getLocalizedMatch(folder.translations);
+const { language, title, description } = getLocalizedMatch(translations);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <AppLayout
   openGraph={{
-    title: meta.title,
-    description: meta.description && formatRichTextToString(meta.description),
+    title: title,
+    description: description && formatRichTextToString(description),
   }}
-  parentPages={folder.parentPages}
+  parentPages={parentPages}
   class="app">
-  <AppLayoutTitle title={meta.title} lang={meta.language} />
-  {meta.description && <RichText content={meta.description} context={{ lang: meta.language }} />}
+  <AppLayoutTitle title={title} lang={language} />
+  {description && <RichText content={description} context={{ lang: language }} />}
 
-  <div id="main" class:list={{ complex: folder.sections.type === "multiple" }}>
+  <div id="main" class:list={{ complex: sections.type === "multiple" }}>
     {
-      folder.sections.type === "single" && folder.sections.subfolders.length > 0 ? (
-        <FoldersSection folders={folder.sections.subfolders} />
+      sections.type === "single" && sections.subfolders.length > 0 ? (
+        <FoldersSection folders={sections.subfolders} />
       ) : (
-        folder.sections.type === "multiple" &&
-        folder.sections.sections.length > 0 && (
+        sections.type === "multiple" &&
+        sections.sections.length > 0 && (
           <div id="sections">
-            {folder.sections.sections.map(({ subfolders, translations }) => {
+            {sections.sections.map(({ subfolders, translations }) => {
               const { language, name } = getLocalizedMatch(translations);
               return <FoldersSection folders={subfolders} title={name} lang={language} />;
             })}
@@ -58,7 +60,7 @@ const meta = getLocalizedMatch(folder.translations);
 
     <div id="files">
       {
-        folder.files.map(({ relationTo, value }) => {
+        files.map(({ relationTo, value }) => {
           switch (relationTo) {
             case Collections.Collectibles:
               return <CollectiblePreview collectible={value} />;

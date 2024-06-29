@@ -1,6 +1,6 @@
 import type { AstroCookies } from "astro";
 import { z } from "astro:content";
-import { contextCache } from "src/cache/contextCache";
+import { contextCache } from "src/utils/payload";
 import acceptLanguage from "accept-language";
 
 export const getAbsoluteLocaleUrl = (locale: string, url: string) => `/${locale}${url}`;
@@ -26,7 +26,7 @@ export const getCurrentLocale = (pathname: string): string | undefined => {
 
 export const getBestAcceptedLanguage = (request: Request): string | undefined => {
   const header = request.headers.get("Accept-Language");
-  if (!header) return;
+  if (!header || header === "*") return;
 
   acceptLanguage.languages(contextCache.locales.map(({ id }) => id));
 

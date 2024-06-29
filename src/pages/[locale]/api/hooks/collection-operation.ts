@@ -1,6 +1,5 @@
 import type { APIRoute } from "astro";
-import { contextCache } from "src/cache/contextCache";
-import { dataCache } from "src/cache/dataCache";
+import { contextCache, dataCache } from "src/utils/payload.ts";
 import { Collections, type AfterOperationWebHookMessage } from "src/shared/payload/payload-sdk";
 
 export const POST: APIRoute = async ({ request }) => {

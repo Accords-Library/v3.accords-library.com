@@ -26,10 +26,12 @@ const { getLocalizedMatch, getLocalizedUrl, t, formatDate } = await getI18n(
   Astro.locals.currentLocale
 );
 
-const collectible = await fetchOr404(() => payload.getCollectible(slug));
-if (collectible instanceof Response) {
-  return collectible;
+const response = await fetchOr404(() => payload.getCollectible(slug));
+if (response instanceof Response) {
+  return response;
 }
+Astro.locals.sdkCalls.add(response.endpointCalled);
+const collectible = response.data;
 
 const {
   translations,

@@ -1,4 +1,4 @@
-import { contextCache } from "src/cache/contextCache";
+import { contextCache } from "src/utils/payload";
 
 const getUnlocalizedPathname = (pathname: string): string => {
   for (const locale of contextCache.locales) {

@@ -8,11 +8,12 @@ import { fetchOr404 } from "src/utils/responses";
 
 const slug = Astro.params.slug!;
 
-const page = await fetchOr404(() => payload.getPage(slug));
-if (page instanceof Response) {
-  return page;
+const response = await fetchOr404(() => payload.getPage(slug));
+if (response instanceof Response) {
+  return response;
 }
-
+Astro.locals.sdkCalls.add(response.endpointCalled);
+const page = response.data;
 const { parentPages, thumbnail, translations, backgroundImage } = page;
 
 const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);

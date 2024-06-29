@@ -24,8 +24,14 @@ interface Props {
 const reqUrl = new URL(Astro.request.url);
 const lang = Astro.props.lang ?? reqUrl.searchParams.get("lang")!;
 const slug = Astro.props.slug ?? reqUrl.searchParams.get("slug")!;
+
 const { translations, thumbnail, createdAt, updatedAt, updatedBy, attributes } =
-  Astro.props.page ?? (await payload.getPage(slug));
+  await (async () => {
+    if (Astro.props.page) return Astro.props.page;
+    const response = await payload.getPage(slug);
+    Astro.locals.sdkCalls.add(response.endpointCalled);
+    return response.data;
+  })();
 
 const { getLocalizedUrl, t, formatDate } = await getI18n(Astro.locals.currentLocale);
 const { getLocalizedMatch } = await getI18n(lang);

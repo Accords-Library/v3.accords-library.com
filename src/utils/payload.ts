@@ -1,28 +1,20 @@
-import { dataCache } from "src/cache/dataCache";
-import { getPayloadSDK } from "src/shared/payload/payload-sdk";
+import { ContextCache } from "src/cache/contextCache";
+import { DataCache } from "src/cache/dataCache";
+import { PageCache } from "src/cache/pageCache";
+import { TokenCache } from "src/cache/tokenCache";
+import { PayloadSDK } from "src/shared/payload/payload-sdk";
 
-let token: string | undefined = undefined;
-let expiration: number | undefined = undefined;
+const payload = new PayloadSDK(
+  import.meta.env.PAYLOAD_API_URL,
+  import.meta.env.PAYLOAD_USER,
+  import.meta.env.PAYLOAD_PASSWORD
+);
 
-export const payload = getPayloadSDK({
-  apiURL: import.meta.env.PAYLOAD_API_URL,
-  email: import.meta.env.PAYLOAD_USER,
-  password: import.meta.env.PAYLOAD_PASSWORD,
-  tokenCache: {
-    get: () => {
-      if (!token) return undefined;
-      if (!expiration || expiration < Date.now()) {
-        console.log("[PayloadSDK] No token to be retrieved or the token expired");
-        return undefined;
-      }
-      return token;
-    },
-    set: (newToken, newExpiration) => {
-      token = newToken;
-      expiration = newExpiration * 1000;
-      const diffInMinutes = Math.floor((expiration - Date.now()) / 1000 / 60);
-      console.log("[PayloadSDK] New token set. TTL is", diffInMinutes, "minutes.");
-    },
-  },
-  responseCache: dataCache,
-});
+const contextCache = new ContextCache(payload);
+const pageCache = new PageCache(payload);
+const dataCache = new DataCache(payload, (urls) => pageCache.invalidate(urls));
+
+payload.addTokenCache(new TokenCache());
+payload.addDataCache(dataCache);
+
+export { payload, contextCache, pageCache, dataCache };

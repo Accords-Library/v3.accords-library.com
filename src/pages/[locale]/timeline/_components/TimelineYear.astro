@@ -2,7 +2,7 @@
 import type { EndpointChronologyEvent } from "src/shared/payload/payload-sdk";
 import TimelineEvent from "./TimelineEvent.astro";
 import { getI18n } from "src/i18n/i18n";
-import { contextCache } from "src/cache/contextCache";
+import { contextCache } from "src/utils/payload";
 
 interface Props {
   year: number;
@@ -17,10 +17,6 @@ const eventsHaveDifferentDates = events.some(
 );
 const date = eventsHaveDifferentDates ? { year } : events[0]!.date;
 const multiple = events.flatMap(({ events }) => events).length > 1;
-
-if (year === 856) {
-  console.log({ eventsHaveDifferentDates, events: events.map(({ date }) => date) });
-}
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}

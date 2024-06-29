@@ -2082,30 +2082,17 @@ export type EndpointAllSDKUrls = {
 
 // SDK
 
-type GetPayloadSDKParams = {
-  apiURL: string;
-  email: string;
-  password: string;
-  tokenCache?: {
-    set: (token: string, expirationTimestamp: number) => void;
-    get: () => string | undefined;
-  };
-  responseCache?: {
-    set: (url: string, response: any) => void;
-    get: (url: string) => any | undefined;
-  };
-};
-
-const logResponse = (res: Response) => console.log(res.status, res.statusText, res.url);
-
 export const getSDKEndpoint = {
   getConfigEndpoint: () => `/globals/${Collections.WebsiteConfig}/config`,
   getFolderEndpoint: (slug: string) => `/${Collections.Folders}/slug/${slug}`,
+  getFolderSlugsEndpoint: () => `/${Collections.Folders}/slugs`,
   getLanguagesEndpoint: () => `/${Collections.Languages}/all`,
   getCurrenciesEndpoint: () => `/${Collections.Currencies}/all`,
   getWordingsEndpoint: () => `/${Collections.Wordings}/all`,
   getPageEndpoint: (slug: string) => `/${Collections.Pages}/slug/${slug}`,
+  getPageSlugsEndpoint: () => `/${Collections.Pages}/slugs`,
   getCollectibleEndpoint: (slug: string) => `/${Collections.Collectibles}/slug/${slug}`,
+  getCollectibleSlugsEndpoint: () => `/${Collections.Collectibles}/slugs`,
   getCollectibleScansEndpoint: (slug: string) => `/${Collections.Collectibles}/slug/${slug}/scans`,
   getCollectibleScanPageEndpoint: (slug: string, index: string) =>
     `/${Collections.Collectibles}/slug/${slug}/scans/${index}`,
@@ -2124,21 +2111,51 @@ export const getSDKEndpoint = {
   getLoginEndpoint: () => `/${Collections.Recorders}/login`,
 };
 
-export const getPayloadSDK = ({
-  apiURL,
-  email,
-  password,
-  tokenCache,
-  responseCache,
-}: GetPayloadSDKParams) => {
-  const refreshToken = async () => {
-    const loginUrl = `${apiURL}${getSDKEndpoint.getLoginEndpoint()}`;
+type PayloadSDKResponse<T> = {
+  data: T;
+  endpointCalled: string;
+};
+
+type PayloadTokenCache = {
+  set: (token: string, expirationTimestamp: number) => void;
+  get: () => string | undefined;
+};
+
+type PayloadDataCache = {
+  set: (url: string, response: any) => void;
+  get: (url: string) => any | undefined;
+};
+
+export class PayloadSDK {
+  private tokenCache: PayloadTokenCache | undefined;
+  private dataCache: PayloadDataCache | undefined;
+
+  constructor(
+    private readonly apiURL: string,
+    private readonly email: string,
+    private readonly password: string
+  ) {}
+
+  addTokenCache(tokenCache: PayloadTokenCache) {
+    this.tokenCache = tokenCache;
+  }
+
+  addDataCache(dataCache: PayloadDataCache) {
+    this.dataCache = dataCache;
+  }
+
+  private logResponse(res: Response) {
+    console.log(res.status, res.statusText, res.url);
+  }
+
+  private async refreshToken() {
+    const loginUrl = `${this.apiURL}${getSDKEndpoint.getLoginEndpoint()}`;
     const loginResult = await fetch(loginUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email: this.email, password: this.password }),
     });
-    logResponse(loginResult);
+    this.logResponse(loginResult);
 
     if (loginResult.status !== 200) {
       throw new Error("Unable to login");
@@ -2148,77 +2165,104 @@ export const getPayloadSDK = ({
       token: string;
       exp: number;
     };
-    tokenCache?.set(token, exp);
+    this.tokenCache?.set(token, exp);
     return token;
-  };
+  }
 
-  const request = async (endpoint: string): Promise<any> => {
-    const cachedResponse = responseCache?.get(endpoint);
+  async request<T>(endpoint: string): Promise<PayloadSDKResponse<T>> {
+    const cachedResponse = this.dataCache?.get(endpoint);
     if (cachedResponse) {
       return cachedResponse;
     }
 
-    const result = await fetch(`${apiURL}${endpoint}`, {
+    const result = await fetch(`${this.apiURL}${endpoint}`, {
       headers: {
-        Authorization: `JWT ${tokenCache?.get() ?? (await refreshToken())}`,
+        Authorization: `JWT ${this.tokenCache?.get() ?? (await this.refreshToken())}`,
       },
     });
-    logResponse(result);
+    this.logResponse(result);
 
     if (!result.ok) {
       throw new Error("Unhandled fetch error");
     }
 
-    const data = await result.json();
-    responseCache?.set(endpoint, data);
-    return data;
-  };
+    const response = { data: await result.json(), endpointCalled: endpoint };
+    this.dataCache?.set(endpoint, response);
+    return response;
+  }
 
-  return {
-    getConfig: async (): Promise<EndpointWebsiteConfig> =>
-      await request(getSDKEndpoint.getConfigEndpoint()),
-    getFolder: async (slug: string): Promise<EndpointFolder> =>
-      await request(getSDKEndpoint.getFolderEndpoint(slug)),
-    getLanguages: async (): Promise<Language[]> =>
-      await request(getSDKEndpoint.getLanguagesEndpoint()),
-    getCurrencies: async (): Promise<Currency[]> =>
-      await request(getSDKEndpoint.getCurrenciesEndpoint()),
-    getWordings: async (): Promise<EndpointWording[]> =>
-      await request(getSDKEndpoint.getWordingsEndpoint()),
-    getPage: async (slug: string): Promise<EndpointPage> =>
-      await request(getSDKEndpoint.getPageEndpoint(slug)),
-    getCollectible: async (slug: string): Promise<EndpointCollectible> =>
-      await request(getSDKEndpoint.getCollectibleEndpoint(slug)),
-    getCollectibleScans: async (slug: string): Promise<EndpointCollectibleScans> =>
-      await request(getSDKEndpoint.getCollectibleScansEndpoint(slug)),
-    getCollectibleScanPage: async (
-      slug: string,
-      index: string
-    ): Promise<EndpointCollectibleScanPage> =>
-      await request(getSDKEndpoint.getCollectibleScanPageEndpoint(slug, index)),
-    getCollectibleGallery: async (slug: string): Promise<EndpointCollectibleGallery> =>
-      await request(getSDKEndpoint.getCollectibleGalleryEndpoint(slug)),
-    getCollectibleGalleryImage: async (
-      slug: string,
-      index: string
-    ): Promise<EndpointCollectibleGalleryImage> =>
-      await request(getSDKEndpoint.getCollectibleGalleryImageEndpoint(slug, index)),
-    getChronologyEvents: async (): Promise<EndpointChronologyEvent[]> =>
-      await request(getSDKEndpoint.getChronologyEventsEndpoint()),
-    getChronologyEventByID: async (id: string): Promise<EndpointChronologyEvent> =>
-      await request(getSDKEndpoint.getChronologyEventByIDEndpoint(id)),
-    getImageByID: async (id: string): Promise<EndpointImage> =>
-      await request(getSDKEndpoint.getImageByIDEndpoint(id)),
-    getAudioByID: async (id: string): Promise<EndpointAudio> =>
-      await request(getSDKEndpoint.getAudioByIDEndpoint(id)),
-    getVideoByID: async (id: string): Promise<EndpointVideo> =>
-      await request(getSDKEndpoint.getVideoByIDEndpoint(id)),
-    getFileByID: async (id: string): Promise<EndpointFile> =>
-      await request(getSDKEndpoint.getFileByIDEndpoint(id)),
-    getRecorderByID: async (id: string): Promise<EndpointRecorder> =>
-      await request(getSDKEndpoint.getRecorderByIDEndpoint(id)),
-    getAllSdkUrls: async (): Promise<EndpointAllSDKUrls> =>
-      await request(getSDKEndpoint.getAllSDKUrlsEndpoint()),
-    request: async (pathname: string): Promise<any> => await request(pathname),
-  };
-};
+  async getConfig(): Promise<PayloadSDKResponse<EndpointWebsiteConfig>> {
+    return await this.request(getSDKEndpoint.getConfigEndpoint());
+  }
+  async getFolder(slug: string): Promise<PayloadSDKResponse<EndpointFolder>> {
+    return await this.request(getSDKEndpoint.getFolderEndpoint(slug));
+  }
+  async getFolderSlugs(): Promise<PayloadSDKResponse<string[]>> {
+    return await this.request(getSDKEndpoint.getFolderSlugsEndpoint());
+  }
+  async getLanguages(): Promise<PayloadSDKResponse<Language[]>> {
+    return await this.request(getSDKEndpoint.getLanguagesEndpoint());
+  }
+  async getCurrencies(): Promise<PayloadSDKResponse<Currency[]>> {
+    return await this.request(getSDKEndpoint.getCurrenciesEndpoint());
+  }
+  async getWordings(): Promise<PayloadSDKResponse<EndpointWording[]>> {
+    return await this.request(getSDKEndpoint.getWordingsEndpoint());
+  }
+  async getPage(slug: string): Promise<PayloadSDKResponse<EndpointPage>> {
+    return await this.request(getSDKEndpoint.getPageEndpoint(slug));
+  }
+  async getPageSlugs(): Promise<PayloadSDKResponse<string[]>> {
+    return await this.request(getSDKEndpoint.getPageSlugsEndpoint());
+  }
+  async getCollectible(slug: string): Promise<PayloadSDKResponse<EndpointCollectible>> {
+    return await this.request(getSDKEndpoint.getCollectibleEndpoint(slug));
+  }
+  async getCollectibleSlugs(): Promise<PayloadSDKResponse<string[]>> {
+    return await this.request(getSDKEndpoint.getCollectibleSlugsEndpoint());
+  }
+  async getCollectibleScans(slug: string): Promise<PayloadSDKResponse<EndpointCollectibleScans>> {
+    return await this.request(getSDKEndpoint.getCollectibleScansEndpoint(slug));
+  }
+  async getCollectibleScanPage(
+    slug: string,
+    index: string
+  ): Promise<PayloadSDKResponse<EndpointCollectibleScanPage>> {
+    return await this.request(getSDKEndpoint.getCollectibleScanPageEndpoint(slug, index));
+  }
+  async getCollectibleGallery(
+    slug: string
+  ): Promise<PayloadSDKResponse<EndpointCollectibleGallery>> {
+    return await this.request(getSDKEndpoint.getCollectibleGalleryEndpoint(slug));
+  }
+  async getCollectibleGalleryImage(
+    slug: string,
+    index: string
+  ): Promise<PayloadSDKResponse<EndpointCollectibleGalleryImage>> {
+    return await this.request(getSDKEndpoint.getCollectibleGalleryImageEndpoint(slug, index));
+  }
+  async getChronologyEvents(): Promise<PayloadSDKResponse<EndpointChronologyEvent[]>> {
+    return await this.request(getSDKEndpoint.getChronologyEventsEndpoint());
+  }
+  async getChronologyEventByID(id: string): Promise<PayloadSDKResponse<EndpointChronologyEvent>> {
+    return await this.request(getSDKEndpoint.getChronologyEventByIDEndpoint(id));
+  }
+  async getImageByID(id: string): Promise<PayloadSDKResponse<EndpointImage>> {
+    return await this.request(getSDKEndpoint.getImageByIDEndpoint(id));
+  }
+  async getAudioByID(id: string): Promise<PayloadSDKResponse<EndpointAudio>> {
+    return await this.request(getSDKEndpoint.getAudioByIDEndpoint(id));
+  }
+  async getVideoByID(id: string): Promise<PayloadSDKResponse<EndpointVideo>> {
+    return await this.request(getSDKEndpoint.getVideoByIDEndpoint(id));
+  }
+  async getFileByID(id: string): Promise<PayloadSDKResponse<EndpointFile>> {
+    return await this.request(getSDKEndpoint.getFileByIDEndpoint(id));
+  }
+  async getRecorderByID(id: string): Promise<PayloadSDKResponse<EndpointRecorder>> {
+    return await this.request(getSDKEndpoint.getRecorderByIDEndpoint(id));
+  }
+  async getAllSdkUrls(): Promise<PayloadSDKResponse<EndpointAllSDKUrls>> {
+    return await this.request(getSDKEndpoint.getAllSDKUrlsEndpoint());
+  }
+}

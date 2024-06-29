@@ -2,13 +2,15 @@ import type {
   EndpointWebsiteConfig,
   EndpointWording,
   Language,
+  PayloadSDK,
 } from "src/shared/payload/payload-sdk";
 import { getLogger } from "src/utils/logger";
-import { payload } from "src/utils/payload";
 
-class ContextCache {
+export class ContextCache {
   private initialized = false;
   private logger = getLogger("[ContextCache]");
+
+  constructor(private readonly payload: PayloadSDK) {}
 
   locales: Language[] = [];
   currencies: string[] = [];
@@ -33,26 +35,22 @@ class ContextCache {
   }
 
   async refreshWordings() {
-    this.wordings = await payload.getWordings();
+    this.wordings = (await this.payload.getWordings()).data;
     this.logger.log("Wordings refreshed");
   }
 
   async refreshCurrencies() {
-    contextCache.currencies = (await payload.getCurrencies()).map(({ id }) => id);
+    this.currencies = (await this.payload.getCurrencies()).data.map(({ id }) => id);
     this.logger.log("Currencies refreshed");
   }
 
   async refreshLocales() {
-    contextCache.locales = await payload.getLanguages();
+    this.locales = (await this.payload.getLanguages()).data;
     this.logger.log("Locales refreshed");
   }
 
   async refreshWebsiteConfig() {
-    contextCache.config = await payload.getConfig();
+    this.config = (await this.payload.getConfig()).data;
     this.logger.log("WebsiteConfig refreshed");
   }
 }
-
-const contextCache = new ContextCache();
-await contextCache.init();
-export { contextCache };

@@ -53,8 +53,6 @@ export const postProcessingMiddleware = defineMiddleware(async ({ cookies, local
 
   let html = await response.text();
 
-  const t0 = performance.now();
-
   // HTML CLASS
   const currentTheme = getCookieTheme(cookies) ?? "auto";
   html = html.replace(
@@ -101,8 +99,6 @@ export const postProcessingMiddleware = defineMiddleware(async ({ cookies, local
       return "";
     }
   });
-
-  console.log("Post-processing:", performance.now() - t0, "ms");
 
   return new Response(html, response);
 });

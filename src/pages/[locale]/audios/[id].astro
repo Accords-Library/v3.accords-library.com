@@ -13,10 +13,12 @@ import { fetchOr404 } from "src/utils/responses";
 import { getFileIcon } from "src/utils/attributes";
 
 const id = Astro.params.id!;
-const audio = await fetchOr404(() => payload.getAudioByID(id));
-if (audio instanceof Response) {
-  return audio;
+const response = await fetchOr404(() => payload.getAudioByID(id));
+if (response instanceof Response) {
+  return response;
 }
+Astro.locals.sdkCalls.add(response.endpointCalled);
+const audio = response.data;
 
 const { getLocalizedMatch, t, formatFilesize, formatDate } = await getI18n(
   Astro.locals.currentLocale

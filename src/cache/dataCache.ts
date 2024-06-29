@@ -1,12 +1,17 @@
+import type { PayloadSDK } from "src/shared/payload/payload-sdk";
 import { getLogger } from "src/utils/logger";
-import { payload } from "src/utils/payload";
 
-class DataCache {
+export class DataCache {
   private readonly logger = getLogger("[DataCache]");
   private initialized = false;
 
   private readonly responseCache = new Map<string, any>();
   private readonly idsCacheMap = new Map<string, Set<string>>();
+
+  constructor(
+    private readonly payload: PayloadSDK,
+    private readonly onInvalidate: (urls: string[]) => Promise<void>
+  ) {}
 
   async init() {
     if (this.initialized) return;
@@ -19,10 +24,10 @@ class DataCache {
   }
 
   private async precache() {
-    const { urls } = await payload.getAllSdkUrls();
-    for (const url of urls) {
+    const { data } = await this.payload.getAllSdkUrls();
+    for (const url of data.urls) {
       try {
-        await payload.request(url);
+        await this.payload.request(url);
       } catch {
         this.logger.warn("Precaching failed for url", url);
       }
@@ -71,14 +76,13 @@ class DataCache {
       this.responseCache.delete(url);
       this.logger.log("Invalidated cache for", url);
       try {
-        await payload.request(url);
+        await this.payload.request(url);
       } catch (e) {
         this.logger.log("Revalidation fails for", url);
       }
     }
 
+    this.onInvalidate([...urlsToInvalidate]);
     this.logger.log("There are currently", this.responseCache.size, "responses in cache.");
   }
 }
-
-export const dataCache = new DataCache();

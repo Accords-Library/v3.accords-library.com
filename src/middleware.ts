@@ -8,8 +8,6 @@ import { requestTrackingMiddleware } from "src/middleware/requestTracking";
 import { pageCachingMiddleware } from "src/middleware/pageCaching";
 import { setAstroLocalsMiddleware } from "src/middleware/setAstroLocals";
 
-
-
 export const onRequest = sequence(
   // Possible redirect
   actionsHandlingMiddleware,

@@ -12,12 +12,13 @@ import RichText from "components/RichText/RichText.astro";
 const slug = Astro.params.slug!;
 const { getLocalizedMatch, t } = await getI18n(Astro.locals.currentLocale);
 
-const scans = await fetchOr404(() => payload.getCollectibleScans(slug));
-if (scans instanceof Response) {
-  return scans;
+const response = await fetchOr404(() => payload.getCollectibleScans(slug));
+if (response instanceof Response) {
+  return response;
 }
-
-const { translations, credits, cover, pages, dustjacket, obi, parentPages, thumbnail } = scans;
+Astro.locals.sdkCalls.add(response.endpointCalled);
+const { translations, credits, cover, pages, dustjacket, obi, parentPages, thumbnail } =
+  response.data;
 
 const translation = getLocalizedMatch(translations);
 

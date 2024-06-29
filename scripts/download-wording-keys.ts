@@ -1,10 +1,16 @@
 import { writeFileSync } from "fs";
-import { payload } from "src/utils/payload";
+import { PayloadSDK } from "src/shared/payload/payload-sdk";
 
 const TRANSLATION_FOLDER = `${process.cwd()}/src/i18n`;
 
+const payload = new PayloadSDK(
+  import.meta.env.PAYLOAD_API_URL,
+  import.meta.env.PAYLOAD_USER,
+  import.meta.env.PAYLOAD_PASSWORD
+);
+
 try {
-  const wordings = await payload.getWordings();
+  const { data: wordings } = await payload.getWordings();
   const keys = wordings.map(({ name }) => name);
 
   let result = "";

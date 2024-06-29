@@ -12,14 +12,14 @@ import { fetchOr404 } from "src/utils/responses";
 import { sizesToSrcset } from "src/utils/img";
 
 const id = Astro.params.id!;
-const recorder = await fetchOr404(() => payload.getRecorderByID(id));
-if (recorder instanceof Response) {
-  return recorder;
+const response = await fetchOr404(() => payload.getRecorderByID(id));
+if (response instanceof Response) {
+  return response;
 }
+Astro.locals.sdkCalls.add(response.endpointCalled);
+const { username, languages, avatar, translations } = response.data;
 
 const { t, getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
-
-const { username, languages, avatar, translations } = recorder;
 
 const { biography, language } =
   translations.length > 0

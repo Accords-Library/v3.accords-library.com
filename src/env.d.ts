@@ -5,5 +5,6 @@ declare namespace App {
   interface Locals {
     currentLocale: string;
     notFound: boolean;
+    sdkCalls: Set<string>;
   }
 }

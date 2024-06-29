@@ -12,17 +12,22 @@ import { payload } from "src/utils/payload";
 export const partial = true;
 
 interface Props {
-  lang: string;
-  event: EndpointChronologyEvent;
-  id: string;
-  index: number;
+  lang?: string;
+  event?: EndpointChronologyEvent;
+  id?: string;
+  index?: number;
 }
 
 const reqUrl = new URL(Astro.request.url);
 const lang = Astro.props.lang ?? reqUrl.searchParams.get("lang")!;
 const id = Astro.props.id ?? reqUrl.searchParams.get("id")!;
 const index = Astro.props.index ?? parseInt(reqUrl.searchParams.get("index")!);
-const event = Astro.props.event ?? (await payload.getChronologyEventByID(id));
+const event = await (async () => {
+  if (Astro.props.event) return Astro.props.event;
+  const response = await payload.getChronologyEventByID(id);
+  Astro.locals.sdkCalls.add(response.endpointCalled);
+  return response.data;
+})();
 const { sources, translations } = event.events[index]!;
 
 const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
