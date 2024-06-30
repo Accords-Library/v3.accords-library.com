@@ -5,17 +5,19 @@ import { existsSync } from "fs";
 
 const ON_DISK_ROOT = `.cache/dataCache`;
 const ON_DISK_RESPONSE_CACHE_FILE = `${ON_DISK_ROOT}/responseCache.json`;
-const ON_DISK_INVALIDATION_MAP_FILE = `${ON_DISK_ROOT}/invalidationMap.json`;
 
 export class DataCache {
   private readonly logger = getLogger("[DataCache]");
   private initialized = false;
 
-  private responseCache = new Map<string, any>();
-  private invalidationMap = new Map<string, Set<string>>();
+  private readonly responseCache = new Map<string, any>();
+  private readonly invalidationMap = new Map<string, Set<string>>();
+
+  private scheduleSaveTimeout: NodeJS.Timeout | undefined;
 
   constructor(
     private readonly payload: PayloadSDK,
+    private readonly uncachedPayload: PayloadSDK,
     private readonly onInvalidate: (urls: string[]) => Promise<void>
   ) {}
 
@@ -30,38 +32,37 @@ export class DataCache {
   }
 
   private async precache() {
-    if (existsSync(ON_DISK_RESPONSE_CACHE_FILE) && existsSync(ON_DISK_INVALIDATION_MAP_FILE)) {
+    // Get all keys from CMS
+    const allSDKUrls = (await this.uncachedPayload.getAllSdkUrls()).data.urls;
+
+    // Load cache from disk if available
+    if (existsSync(ON_DISK_RESPONSE_CACHE_FILE)) {
       this.logger.log("Loading cache from disk...");
-      // Handle RESPONSE_CACHE_FILE
-      {
-        const buffer = await readFile(ON_DISK_RESPONSE_CACHE_FILE);
-        const data = JSON.parse(buffer.toString());
-        this.responseCache = new Map(data);
+      const buffer = await readFile(ON_DISK_RESPONSE_CACHE_FILE);
+      const data = JSON.parse(buffer.toString()) as [string, any][];
+      for (const [key, value] of data) {
+        // Do not include cache where the key is no longer in the CMS
+        if (!allSDKUrls.includes(key)) continue;
+        this.set(key, value);
       }
-
-      // Handle INVALIDATION_MAP_FILE
-      {
-        const buffer = await readFile(ON_DISK_INVALIDATION_MAP_FILE);
-        const data = JSON.parse(buffer.toString()) as [string, string[]][];
-        const deserialize = data.map<[string, Set<string>]>(([key, value]) => [
-          key,
-          new Set(value),
-        ]);
-        this.invalidationMap = new Map(deserialize);
-      }
-    } else {
-      const { data } = await this.payload.getAllSdkUrls();
-
-      for (const url of data.urls) {
-        try {
-          await this.payload.request(url);
-        } catch {
-          this.logger.warn("Precaching failed for url", url);
-        }
-      }
-
-      await this.save();
     }
+
+    const cacheSizeBeforePrecaching = this.responseCache.size;
+
+    for (const url of allSDKUrls) {
+      // Do not precache response if already included in the loaded cache from disk
+      if (this.responseCache.has(url)) continue;
+      try {
+        await this.payload.request(url);
+      } catch {
+        this.logger.warn("Precaching failed for url", url);
+      }
+    }
+
+    if (cacheSizeBeforePrecaching !== this.responseCache.size) {
+      this.scheduleSave();
+    }
+
     this.logger.log("Precaching completed!", this.responseCache.size, "responses cached");
   }
 
@@ -91,7 +92,7 @@ export class DataCache {
     this.responseCache.set(url, response);
     this.logger.log("Cached response for", url);
     if (this.initialized) {
-      this.save();
+      this.scheduleSave();
     }
   }
 
@@ -118,8 +119,17 @@ export class DataCache {
     this.onInvalidate([...urlsToInvalidate]);
     this.logger.log("There are currently", this.responseCache.size, "responses in cache.");
     if (this.initialized) {
-      this.save();
+      this.scheduleSave();
     }
+  }
+
+  private scheduleSave() {
+    if (this.scheduleSaveTimeout) {
+      clearTimeout(this.scheduleSaveTimeout);
+    }
+    this.scheduleSaveTimeout = setTimeout(() => {
+      this.save();
+    }, 10_000);
   }
 
   private async save() {
@@ -132,13 +142,5 @@ export class DataCache {
       encoding: "utf-8",
     });
     this.logger.log("Saved", ON_DISK_RESPONSE_CACHE_FILE);
-
-    const serializedIdsCache = JSON.stringify(
-      [...this.invalidationMap].map(([key, value]) => [key, [...value]])
-    );
-    await writeFile(ON_DISK_INVALIDATION_MAP_FILE, serializedIdsCache, {
-      encoding: "utf-8",
-    });
-    this.logger.log("Saved", ON_DISK_INVALIDATION_MAP_FILE);
   }
 }

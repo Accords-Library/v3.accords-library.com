@@ -4,17 +4,28 @@ import { PageCache } from "src/cache/pageCache";
 import { TokenCache } from "src/cache/tokenCache";
 import { PayloadSDK } from "src/shared/payload/payload-sdk";
 
+const tokenCache = new TokenCache();
+
 const payload = new PayloadSDK(
   import.meta.env.PAYLOAD_API_URL,
   import.meta.env.PAYLOAD_USER,
   import.meta.env.PAYLOAD_PASSWORD
 );
+payload.addTokenCache(tokenCache);
 
+const uncachedPayload = new PayloadSDK(
+  import.meta.env.PAYLOAD_API_URL,
+  import.meta.env.PAYLOAD_USER,
+  import.meta.env.PAYLOAD_PASSWORD
+);
+uncachedPayload.addTokenCache(tokenCache);
+const pageCache = new PageCache(uncachedPayload);
+
+// Loading context cache first so that the server can still serve responses while precaching.
 const contextCache = new ContextCache(payload);
-const pageCache = new PageCache(payload);
-const dataCache = new DataCache(payload, (urls) => pageCache.invalidate(urls));
+await contextCache.init();
 
-payload.addTokenCache(new TokenCache());
+const dataCache = new DataCache(payload, uncachedPayload, (urls) => pageCache.invalidate(urls));
 payload.addDataCache(dataCache);
 
 export { payload, contextCache, pageCache, dataCache };

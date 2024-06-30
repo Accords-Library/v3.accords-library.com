@@ -19,7 +19,9 @@ export class PageCache {
   private responseCache = new Map<string, Response>();
   private invalidationMap = new Map<string, Set<string>>();
 
-  constructor(private readonly payload: PayloadSDK) {}
+  private scheduleSaveTimeout: NodeJS.Timeout | undefined;
+
+  constructor(private readonly uncachedPayload: PayloadSDK) {}
 
   async init() {
     if (this.initialized) return;
@@ -32,16 +34,36 @@ export class PageCache {
   }
 
   private async precacheAll() {
+    const { data: languages } = await this.uncachedPayload.getLanguages();
+    const locales = languages.map(({ id }) => id);
+
+    // Get all pages urls from CMS
+    const allPagesUrls = [
+      "/",
+      "/settings",
+      "/timeline",
+      ...(await this.uncachedPayload.getFolderSlugs()).data.map((slug) => `/folders/${slug}`),
+      ...(await this.uncachedPayload.getPageSlugs()).data.map((slug) => `/pages/${slug}`),
+      ...(await this.uncachedPayload.getCollectibleSlugs()).data.map(
+        (slug) => `/collectibles/${slug}`
+      ),
+    ].flatMap((url) => locales.map((id) => `/${id}${url}`));
+
+    // Load cache from disk if available
     if (existsSync(ON_DISK_RESPONSE_CACHE_FILE) && existsSync(ON_DISK_INVALIDATION_MAP_FILE)) {
       this.logger.log("Loading cache from disk...");
       // Handle RESPONSE_CACHE_FILE
       {
         const buffer = await readFile(ON_DISK_RESPONSE_CACHE_FILE);
         const data = JSON.parse(buffer.toString()) as [string, SerializableResponse][];
-        const deserializedData = data.map<[string, Response]>(([key, value]) => [
+        let deserializedData = data.map<[string, Response]>(([key, value]) => [
           key,
           deserializeResponse(value),
         ]);
+
+        // Do not include cache where the key is no longer in the CMS
+        deserializedData = deserializedData.filter(([key]) => allPagesUrls.includes(key));
+
         this.responseCache = new Map(deserializedData);
       }
 
@@ -55,46 +77,25 @@ export class PageCache {
         ]);
         this.invalidationMap = new Map(deserialize);
       }
-    } else {
-      const { data: languages } = await this.payload.getLanguages();
-      const locales = languages.map(({ id }) => id);
+    }
 
-      await this.precache("/", locales);
-      await this.precache("/settings", locales);
-      await this.precache("/timeline", locales);
+    const cacheSizeBeforePrecaching = this.responseCache.size;
 
-      const { data: folders } = await this.payload.getFolderSlugs();
-      for (const slug of folders) {
-        await this.precache(`/folders/${slug}`, locales);
+    for (const url of allPagesUrls) {
+      // Do not precache response if already included in the loaded cache from disk
+      if (this.responseCache.has(url)) continue;
+      try {
+        await fetch(`http://${import.meta.env.ASTRO_HOST}:${import.meta.env.ASTRO_PORT}${url}`);
+      } catch (e) {
+        this.logger.warn("Precaching failed for page", url);
       }
+    }
 
-      const { data: pages } = await this.payload.getPageSlugs();
-      for (const slug of pages) {
-        await this.precache(`/pages/${slug}`, locales);
-      }
-
-      const { data: collectibles } = await this.payload.getCollectibleSlugs();
-      for (const slug of collectibles) {
-        await this.precache(`/collectibles/${slug}`, locales);
-      }
-
-      await this.save();
+    if (cacheSizeBeforePrecaching !== this.responseCache.size) {
+      this.scheduleSave();
     }
 
     this.logger.log("Precaching completed!", this.responseCache.size, "responses cached");
-  }
-
-  private async precache(pathname: string, locales: string[]) {
-    try {
-      await Promise.all(
-        locales.map((locale) => {
-          const url = `http://${import.meta.env.ASTRO_HOST}:${import.meta.env.ASTRO_PORT}/${locale}${pathname}`;
-          return fetch(url);
-        })
-      );
-    } catch (e) {
-      this.logger.warn("Precaching failed for page", pathname);
-    }
   }
 
   get(url: string): Response | undefined {
@@ -119,7 +120,7 @@ export class PageCache {
     this.responseCache.set(url, response.clone());
     this.logger.log("Cached response for", url);
     if (this.initialized) {
-      this.save();
+      this.scheduleSave();
     }
   }
 
@@ -145,8 +146,17 @@ export class PageCache {
 
     this.logger.log("There are currently", this.responseCache.size, "responses in cache.");
     if (this.initialized) {
-      this.save();
+      this.scheduleSave();
     }
+  }
+
+  private scheduleSave() {
+    if (this.scheduleSaveTimeout) {
+      clearTimeout(this.scheduleSaveTimeout);
+    }
+    this.scheduleSaveTimeout = setTimeout(() => {
+      this.save();
+    }, 10_000);
   }
 
   private async save() {

@@ -75,8 +75,19 @@ Read more:
   - Server side rendered
     - Reduced data transfer
     - Reduced client-side complexity
-    - Would require edge computing to reduce latency
-    - Data caching to speed up response time
+  - Advanced caching
+    - Data caching
+      - Reponses from the CMS are cached to speed up response time.
+      - When there is a change on the CMS, the cache is alerted through webhooks.
+      - The impacted responses are then invalidated, fetched again, and cached
+      - All possible reponses from the CMS are precached when the server loads.
+      - The cache is also saved on disk after any change, and is loading at startup if available.
+    - Page caching
+      - The pages themselves are cached to further speed up response time.
+      - When responses in the Data caching are invalidated, cached pages that depend on those reponses are also invalidated. They are then regenerated and cached again.
+      - Similarly to the data cache, all pages are precached when the server loads and the cache is saved on disk and loaded at startup.
+    - The server use the `Last-Modified` header and serve a `304 Not Modified` response when appropriate.
+    - The pages themselves use the `Cache-Control` header to allow local caching on the visitors' web browsers.
 
 - SEO
 
