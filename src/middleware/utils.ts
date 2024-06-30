@@ -17,8 +17,8 @@ export const redirect = (redirectURL: string, headers: Record<string, string> = 
 
 export const getCurrentLocale = (pathname: string): string | undefined => {
   for (const locale of contextCache.locales) {
-    if (pathname.split("/")[1] === locale.id) {
-      return locale.id;
+    if (pathname.split("/")[1] === locale) {
+      return locale;
     }
   }
   return undefined;
@@ -28,7 +28,7 @@ export const getBestAcceptedLanguage = (request: Request): string | undefined =>
   const header = request.headers.get("Accept-Language");
   if (!header || header === "*") return;
 
-  acceptLanguage.languages(contextCache.locales.map(({ id }) => id));
+  acceptLanguage.languages(contextCache.locales);
 
   return acceptLanguage.get(request.headers.get("Accept-Language")) ?? undefined;
 };
@@ -62,9 +62,7 @@ export const isValidCurrency = (currency: string | null | undefined): currency i
   currency !== null && currency != undefined && contextCache.currencies.includes(currency);
 
 export const isValidLocale = (locale: string | null | undefined): locale is string =>
-  locale !== null &&
-  locale != undefined &&
-  contextCache.locales.map(({ id }) => id).includes(locale);
+  locale !== null && locale != undefined && contextCache.locales.includes(locale);
 
 export const isValidTheme = (
   theme: string | null | undefined

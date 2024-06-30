@@ -21,11 +21,11 @@ const { t } = await getI18n(currentLocale);
       <h2>{t("settings.language.title")}</h2>
       <p>{t("settings.language.description")}</p><br />
       {
-        contextCache.locales.map(({ id }) => (
+        contextCache.locales.map((locale) => (
           <a
-            class:list={{ current: currentLocale === id, "pressable-link": true }}
-            href={`?action-lang=${id}`}>
-            {formatLocale(id)}
+            class:list={{ current: currentLocale === locale, "pressable-link": true }}
+            href={`?action-lang=${locale}`}>
+            {formatLocale(locale)}
           </a>
         ))
       }

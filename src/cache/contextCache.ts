@@ -12,7 +12,8 @@ export class ContextCache {
 
   constructor(private readonly payload: PayloadSDK) {}
 
-  locales: Language[] = [];
+  languages: Language[] = [];
+  locales: string[] = [];
   currencies: string[] = [];
   wordings: EndpointWording[] = [];
   config: EndpointWebsiteConfig = {
@@ -45,7 +46,8 @@ export class ContextCache {
   }
 
   async refreshLocales() {
-    this.locales = (await this.payload.getLanguages()).data;
+    this.languages = (await this.payload.getLanguages()).data;
+    this.locales = this.languages.filter(({ selectable }) => selectable).map(({ id }) => id);
     this.logger.log("Locales refreshed");
   }
 

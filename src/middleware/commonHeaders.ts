@@ -12,7 +12,7 @@ export const addCommonHeadersMiddleware = defineMiddleware(async ({ url }, next)
   // TODO: Remove when in production
   response.headers.set("X-Robots-Tag", "none");
   response.headers.set("Vary", "Cookie");
-  response.headers.set("Cache-Control", "max-age=3600, stale-while-revalidate=3600");
+  response.headers.set("Cache-Control", "max-age=86400, stale-while-revalidate=86400");
 
   return response;
 });

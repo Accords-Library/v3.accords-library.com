@@ -26,16 +26,17 @@ export class PageCache {
   async init() {
     if (this.initialized) return;
 
-    if (import.meta.env.ENABLE_PRECACHING === "true") {
-      await this.precacheAll();
+    if (import.meta.env.PAGE_PRECACHING === "true") {
+      await this.precache();
     }
 
     this.initialized = true;
   }
 
-  private async precacheAll() {
+  private async precache() {
+    if (import.meta.env.DATA_CACHING !== "true") return;
     const { data: languages } = await this.uncachedPayload.getLanguages();
-    const locales = languages.map(({ id }) => id);
+    const locales = languages.filter(({ selectable }) => selectable).map(({ id }) => id);
 
     // Get all pages urls from CMS
     const allPagesUrls = [
@@ -99,6 +100,7 @@ export class PageCache {
   }
 
   get(url: string): Response | undefined {
+    if (import.meta.env.PAGE_CACHING !== "true") return;
     const cachedPage = this.responseCache.get(url);
     if (cachedPage) {
       this.logger.log("Retrieved cached page for", url);
@@ -108,6 +110,7 @@ export class PageCache {
   }
 
   set(url: string, response: Response, sdkCalls: string[]) {
+    if (import.meta.env.PAGE_CACHING !== "true") return;
     sdkCalls.forEach((id) => {
       const current = this.invalidationMap.get(id);
       if (current) {
@@ -125,6 +128,7 @@ export class PageCache {
   }
 
   async invalidate(sdkUrls: string[]) {
+    if (import.meta.env.PAGE_CACHING !== "true") return;
     const pagesToInvalidate = new Set<string>();
 
     sdkUrls.forEach((url) => {

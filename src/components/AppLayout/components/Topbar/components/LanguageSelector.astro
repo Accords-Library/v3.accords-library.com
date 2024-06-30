@@ -21,11 +21,11 @@ const { t } = await getI18n(currentLocale);
 <Tooltip trigger="click" {...otherProps.class ? otherProps : {}}>
   <div id="content" slot="tooltip-content">
     {
-      contextCache.locales.map(({ id }) => (
+      contextCache.locales.map((locale) => (
         <a
-          class:list={{ current: currentLocale === id, "pressable-link": true }}
-          href={`?action-lang=${id}`}>
-          {formatLocale(id)}
+          class:list={{ current: currentLocale === locale, "pressable-link": true }}
+          href={`?action-lang=${locale}`}>
+          {formatLocale(locale)}
         </a>
       ))
     }

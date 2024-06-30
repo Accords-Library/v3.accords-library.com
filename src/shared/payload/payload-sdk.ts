@@ -227,6 +227,7 @@ export interface Image {
 export interface Language {
   id: string;
   name: string;
+  selectable: boolean;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

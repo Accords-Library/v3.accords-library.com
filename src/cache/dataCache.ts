@@ -24,7 +24,7 @@ export class DataCache {
   async init() {
     if (this.initialized) return;
 
-    if (import.meta.env.ENABLE_PRECACHING === "true") {
+    if (import.meta.env.DATA_PRECACHING === "true") {
       await this.precache();
     }
 
@@ -67,6 +67,7 @@ export class DataCache {
   }
 
   get(url: string) {
+    if (import.meta.env.DATA_CACHING !== "true") return;
     const cachedResponse = this.responseCache.get(url);
     if (cachedResponse) {
       this.logger.log("Retrieved cached response for", url);
@@ -75,6 +76,7 @@ export class DataCache {
   }
 
   set(url: string, response: any) {
+    if (import.meta.env.DATA_CACHING !== "true") return;
     const stringData = JSON.stringify(response);
     const regex = /[a-f0-9]{24}/g;
     const ids = [...stringData.matchAll(regex)].map((match) => match[0]);
@@ -97,6 +99,7 @@ export class DataCache {
   }
 
   async invalidate(ids: string[], urls: string[]) {
+    if (import.meta.env.DATA_CACHING !== "true") return;
     const urlsToInvalidate = new Set<string>(urls);
 
     ids.forEach((id) => {

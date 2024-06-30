@@ -9,7 +9,7 @@ import {
 import { contextCache } from "src/utils/payload";
 
 export const formatLocale = (code: string): string =>
-  contextCache.locales.find(({ id }) => id === code)?.name ?? code;
+  contextCache.languages.find(({ id }) => id === code)?.name ?? code;
 
 export const formatInlineTitle = ({
   pretitle,

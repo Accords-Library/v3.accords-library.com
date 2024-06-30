@@ -2,8 +2,8 @@ import { contextCache } from "src/utils/payload";
 
 const getUnlocalizedPathname = (pathname: string): string => {
   for (const locale of contextCache.locales) {
-    if (pathname.startsWith(`/${locale.id}`)) {
-      return pathname.substring(`/${locale.id}`.length) || "/";
+    if (pathname.startsWith(`/${locale}`)) {
+      return pathname.substring(`/${locale}`.length) || "/";
     }
   }
   return pathname;
