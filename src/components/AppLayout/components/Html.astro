@@ -130,16 +130,6 @@ const isIOS = parser.getOS().name === "iOS";
         </>
       )
     }
-
-    <noscript>
-      <style is:global>
-        .when-js {
-          display: none !important;
-          visibility: none !important;
-          opacity: 0 !important;
-        }
-      </style>
-    </noscript>
   </head>
 
   <body>
@@ -815,13 +805,25 @@ const isIOS = parser.getOS().name === "iOS";
       display: none !important;
     }
   }
+
+  @media (scripting: none) {
+    .when-js {
+      display: none !important;
+      visibility: none !important;
+      opacity: 0 !important;
+    }
+  }
+
+  @media (scripting: enabled) {
+    .when-no-js {
+      display: none !important;
+      visibility: none !important;
+      opacity: 0 !important;
+    }
+  }
 </style>
 
 {/* ------------------------------------------- JS --------------------------------------------- */}
-
-<script is:inline>
-  Array.from(document.querySelectorAll(".when-no-js")).forEach((node) => node.remove());
-</script>
 
 <script is:inline>
   document.querySelectorAll("a").forEach((element) => {
