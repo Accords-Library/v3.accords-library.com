@@ -29,11 +29,8 @@ const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
 
 <style>
   div {
-    display: grid;
-    gap: 2em;
-
-    @media (max-width: 35rem) {
-      gap: 3em;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
   }
 </style>

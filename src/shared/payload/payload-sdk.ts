@@ -1566,7 +1566,7 @@ export type EndpointFolderPreview = {
   }[];
 };
 
-export type EndpointFolder = EndpointFolderPreview & {
+export type EndpointFolder = Omit<EndpointFolderPreview, "translations"> & {
   translations: (EndpointFolderPreview["translations"][number] & {
     description?: RichTextContent;
   })[];
@@ -1719,7 +1719,7 @@ export type EndpointPagePreview = {
   updatedAt: string;
 };
 
-export type EndpointPage = EndpointPagePreview & {
+export type EndpointPage = Omit<EndpointPagePreview, "translations"> & {
   backgroundImage?: EndpointPayloadImage;
   translations: (EndpointPagePreview["translations"][number] & {
     sourceLanguage: string;
@@ -1752,7 +1752,7 @@ export type EndpointCollectiblePreview = {
   };
 };
 
-export type EndpointCollectible = EndpointCollectiblePreview & {
+export type EndpointCollectible = Omit<EndpointCollectiblePreview, "translations"> & {
   translations: (EndpointCollectiblePreview["translations"][number] & {
     description?: RichTextContent;
   })[];
@@ -1985,7 +1985,7 @@ export type EndpointMediaPreview = {
   }[];
 };
 
-export type EndpointMedia = EndpointMediaPreview & {
+export type EndpointMedia = Omit<EndpointMediaPreview, "translations"> & {
   filesize: number;
   updatedAt: string;
   createdAt: string;

@@ -4,14 +4,13 @@ import type { EndpointPage } from "src/shared/payload/payload-sdk";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import MasoTarget from "components/Maso/MasoTarget.astro";
 import TableOfContent from "components/TableOfContent/TableOfContent.astro";
-import LanguageOverride from "components/LanguageOverride.astro";
-import Credits from "components/Credits.astro";
 import { getI18n } from "src/i18n/i18n";
 import AsideLayout from "components/AppLayout/AsideLayout.astro";
 import Attributes from "components/Attributes.astro";
 import type { Attribute } from "src/utils/attributes";
 import { payload } from "src/utils/payload";
 import { sizesToSrcset } from "src/utils/img";
+import PageCredits from "./_components/PageCredits.astro";
 
 export const partial = true;
 
@@ -103,16 +102,15 @@ if (updatedBy) {
     </Fragment>
 
     <Fragment slot="aside">
-      <div id="credits">
-        <LanguageOverride
-          currentLanguage={language}
-          currentSourceLanguage={sourceLanguage}
-          availableLanguages={translations.map(({ language }) => language)}
-          getPartialUrl={(lang) => getLocalizedUrl(`/api/pages/partial?lang=${lang}&slug=${slug}`)}
-        />
-
-        {credits.length > 0 && <Credits credits={credits} />}
-      </div>
+      <PageCredits
+        slug={slug}
+        currentLocale={lang}
+        sourceLanguage={sourceLanguage}
+        credits={credits}
+        otherTranslations={translations.filter(
+          (otherTranslation) => otherTranslation.language !== language
+        )}
+      />
 
       {metaAttributes.length > 0 && <Attributes attributes={metaAttributes} />}
 
@@ -134,16 +132,6 @@ if (updatedBy) {
     border-top: 3px dotted var(--color-base-500);
     margin-block: 24px;
     width: min(100%, 35rem);
-  }
-
-  #credits {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-
-    @media (max-width: 35rem) {
-      gap: 32px;
-    }
   }
 
   #summary {

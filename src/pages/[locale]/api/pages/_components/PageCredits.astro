@@ -1,0 +1,147 @@
+---
+import Card from "components/Card.astro";
+import Credits from "components/Credits.astro";
+import InlineCredits from "components/InlineCredits.astro";
+import MasoActor from "components/Maso/MasoActor.astro";
+import { getI18n } from "src/i18n/i18n";
+import type { EndpointCredit, EndpointPage } from "src/shared/payload/payload-sdk";
+import { formatLocale } from "src/utils/format";
+
+interface Props {
+  slug: string;
+  currentLocale: string;
+  sourceLanguage: string;
+  credits: EndpointCredit[];
+  otherTranslations: EndpointPage["translations"];
+}
+
+const { slug, currentLocale, sourceLanguage, credits, otherTranslations } = Astro.props;
+
+const { t, getLocalizedUrl } = await getI18n(currentLocale);
+---
+
+<div id="credits">
+  <Card class="partial_page-card">
+    <p>{t("pages.credits.currentLocale")}</p>
+    <p class="font-2xl">
+      {formatLocale(currentLocale)}
+      {
+        sourceLanguage !== currentLocale && (
+          <span class="font-m">
+            {t("pages.credits.translationLabel", {
+              locale: formatLocale(sourceLanguage),
+            })}
+          </span>
+        )
+      }
+    </p>
+
+    <div>
+      {credits.length > 0 && <Credits credits={credits} />}
+    </div>
+  </Card>
+
+  {
+    otherTranslations.length > 0 && (
+      <div id="translations">
+        <p>{t("pages.credits.availableLanguages", { count: otherTranslations.length })}</p>
+
+        {otherTranslations.map((translation) => (
+          <MasoActor
+            href={getLocalizedUrl(`/api/pages/partial?lang=${translation.language}&slug=${slug}`)}>
+            <Card class="partial_page-card-other">
+              <p class="font-xl">
+                {formatLocale(translation.language)}
+                {translation.sourceLanguage !== translation.language && (
+                  <span class="font-m">
+                    {t("pages.credits.translationLabel", {
+                      locale: formatLocale(translation.sourceLanguage),
+                    })}
+                  </span>
+                )}
+              </p>
+
+              {translation.credits.length > 0 && <InlineCredits credits={translation.credits} />}
+            </Card>
+          </MasoActor>
+        ))}
+      </div>
+    )
+  }
+</div>
+
+<style>
+  #credits {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @media (max-width: 35rem) {
+      gap: 32px;
+    }
+
+    .partial_page-card {
+      padding: 1.5em;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+      max-width: 35em;
+
+      p > span {
+        margin-left: 0.2em;
+      }
+
+      div {
+        margin-top: 1.5em;
+      }
+    }
+
+    .partial_page-card-other {
+      padding: 1.5em;
+      padding-top: 1.75em;
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      max-width: 35em;
+
+      @media (scripting: enabled) {
+        transition-duration: 150ms;
+        transition-property: border-color, box-shadow, background-color;
+
+        & > p {
+          transition: 150ms color;
+        }
+
+        &:hover,
+        &:focus-visible {
+          border-color: var(--color-base-650);
+          outline-color: var(--color-base-650);
+          box-shadow: 0 2px 2px var(--color-shadow-2);
+          background-color: color-mix(in srgb, var(--color-elevation-2) 80%, transparent);
+
+          & > p {
+            color: var(--color-base-750);
+          }
+        }
+
+        &:active {
+          border-color: var(--color-base-1000);
+          box-shadow: 0 6px 12px 2px var(--color-shadow-2);
+          background-color: var(--color-elevation-2);
+          outline-color: var(--color-base-1000);
+
+          & > p {
+            color: var(--color-base-1000);
+          }
+        }
+      }
+    }
+
+    & > #translations {
+      margin-top: 2em;
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+  }
+</style>

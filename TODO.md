@@ -9,15 +9,12 @@
 
 ## Short term
 
-- [Bugs] On android Chrome, the setting button in the header flashes for a few ms when the page is loading
 - [Bugs] Make sure uploads name are slug-like and with an extension.
 - [Bugs] Nyupun can't upload subtitles files
 - [Bugs] https://v3.accords-library.com/en/collectibles/dod-original-soundtrack/scans obi is way too big
 - [Feat] 404, 500 pages
 - [Feat] [RichTextContent] Handle relationship
 - [Feat] [Timeline] Improve layout/spacing on mobile
-- [Feat] Display if a content has a source language
-- [Feat] [JSLess] Display if a content is available in more than one language
 - [Bugs] Number of audio players seems limited (on Chrome and Firefox)
 - [Feat] [RichTextContent] Add autolink block support
 
