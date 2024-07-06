@@ -46,11 +46,6 @@ export const postProcessingMiddleware = defineMiddleware(async ({ cookies, local
   const currentCurrency = getCookieCurrency(cookies) ?? "USD";
 
   const response = await next();
-
-  if (!response.ok) {
-    return response;
-  }
-
   let html = await response.text();
 
   // HTML CLASS
