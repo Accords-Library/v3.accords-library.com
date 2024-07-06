@@ -2,8 +2,7 @@
 
 ## Ongoing
 
-- [Bugs] No post processing on the 404 page
-
+- [Bugs] It's possible to save a page with empty Line or Cue
 - [Bugs] Keziah reported some lag spikes when scrolling on the home page (Firefox on Windows)
 - [Feat] [Analytics] Add analytics
 - [Bugs] [Tooltips] Tooltip in under next element (example in timeline)
