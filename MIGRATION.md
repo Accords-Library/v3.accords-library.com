@@ -87,7 +87,7 @@
 - Missing parent page
 
   - Novellas
-    - https://accords-library.com/contents/folder/dod3-dlc-short-stories
+  - https://accords-library.com/contents/folder/dod3-dlc-short-stories
 
 - Missing scans
 

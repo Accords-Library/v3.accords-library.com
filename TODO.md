@@ -2,6 +2,8 @@
 
 ## Ongoing
 
+- [Bugs] No post processing on the 404 page
+
 - [Bugs] Keziah reported some lag spikes when scrolling on the home page (Firefox on Windows)
 - [Feat] [Analytics] Add analytics
 - [Bugs] [Tooltips] Tooltip in under next element (example in timeline)

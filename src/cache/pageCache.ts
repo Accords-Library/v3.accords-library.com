@@ -39,15 +39,20 @@ export class PageCache {
     const locales = languages.filter(({ selectable }) => selectable).map(({ id }) => id);
 
     // Get all pages urls from CMS
+    const allIds = (await this.uncachedPayload.getAllIds()).data;
+
     const allPagesUrls = [
       "/",
+      ...allIds.audios.ids.map((id) => `/audios/${id}`),
+      ...allIds.collectibles.slugs.map((slug) => `/collectibles/${slug}`),
+      ...allIds.files.ids.map((id) => `/files/${id}`),
+      ...allIds.folders.slugs.map((slug) => `/folders/${slug}`),
+      ...allIds.images.ids.map((id) => `/images/${id}`),
+      ...allIds.pages.slugs.map((slug) => `/pages/${slug}`),
+      ...allIds.recorders.ids.map((id) => `/recorders/${id}`),
       "/settings",
       "/timeline",
-      ...(await this.uncachedPayload.getFolderSlugs()).data.map((slug) => `/folders/${slug}`),
-      ...(await this.uncachedPayload.getPageSlugs()).data.map((slug) => `/pages/${slug}`),
-      ...(await this.uncachedPayload.getCollectibleSlugs()).data.map(
-        (slug) => `/collectibles/${slug}`
-      ),
+      ...allIds.videos.ids.map((id) => `/videos/${id}`),
     ].flatMap((url) => locales.map((id) => `/${id}${url}`));
 
     // Load cache from disk if available
