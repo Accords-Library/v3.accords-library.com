@@ -14,9 +14,22 @@ if (response instanceof Response) {
 }
 Astro.locals.sdkCalls.add(response.endpointCalled);
 const image = response.data;
-const { filename, translations, attributes, credits, createdAt, updatedAt, mimeType } = image;
+const {
+  filename,
+  translations,
+  attributes,
+  credits,
+  createdAt,
+  updatedAt,
+  mimeType,
+  filesize,
+  width,
+  height,
+} = image;
 
-const { getLocalizedMatch, formatDate, t } = await getI18n(Astro.locals.currentLocale);
+const { getLocalizedMatch, formatDate, t, formatFilesize } = await getI18n(
+  Astro.locals.currentLocale
+);
 
 const { pretitle, title, subtitle, description, language } =
   translations.length > 0
@@ -40,6 +53,18 @@ const metaAttributes = [
         },
       ]
     : []),
+  {
+    title: t("global.media.attributes.resolution"),
+    icon: "material-symbols:photo-size-select-large",
+    values: [{ name: `${width} x ${height}` }],
+    withBorder: false,
+  },
+  {
+    title: t("global.media.attributes.filesize"),
+    icon: "material-symbols:hard-drive",
+    values: [{ name: formatFilesize(filesize) }],
+    withBorder: false,
+  },
   {
     title: t("global.media.attributes.createdAt"),
     icon: "material-symbols:calendar-add-on",

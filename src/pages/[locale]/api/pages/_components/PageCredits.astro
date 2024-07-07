@@ -36,9 +36,13 @@ const { t, getLocalizedUrl } = await getI18n(currentLocale);
       }
     </p>
 
-    <div>
-      {credits.length > 0 && <Credits credits={credits} />}
-    </div>
+    {
+      credits.length > 0 && (
+        <div>
+          <Credits credits={credits} />
+        </div>
+      )
+    }
   </Card>
 
   {
