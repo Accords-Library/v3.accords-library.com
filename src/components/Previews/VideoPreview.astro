@@ -41,6 +41,6 @@ const attributesWithMeta = [
   href={getLocalizedUrl(`/videos/${id}`)}
   attributes={attributesWithMeta}
   icon="material-symbols:smart-display"
-  iconHoverLabel={t("global.previewTypes.video")}
+  iconHoverLabel={t("global.collections.videos", { count: 1 })}
   smallTitle={title === filename}
 />

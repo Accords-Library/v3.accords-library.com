@@ -31,6 +31,6 @@ const { pretitle, title, subtitle, language } =
   href={getLocalizedUrl(`/images/${id}`)}
   attributes={attributes}
   icon="material-symbols:imagesmode"
-  iconHoverLabel={t("global.previewTypes.image")}
+  iconHoverLabel={t("global.collections.images", { count: 1 })}
   smallTitle={title === filename}
 />

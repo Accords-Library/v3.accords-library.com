@@ -41,6 +41,6 @@ const attributesWithMeta = [
   href={getLocalizedUrl(`/audios/${id}`)}
   attributes={attributesWithMeta}
   icon="material-symbols:music-note"
-  iconHoverLabel={t("global.previewTypes.audio")}
+  iconHoverLabel={t("global.collections.audios", { count: 1 })}
   smallTitle={title === filename}
 />

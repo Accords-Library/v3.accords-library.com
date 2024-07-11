@@ -65,6 +65,6 @@ if (price) {
   href={getLocalizedUrl(`/collectibles/${slug}`)}
   attributes={[...attributes, ...additionalAttributes]}
   icon="material-symbols:category"
-  iconHoverLabel={t("global.previewTypes.collectible")}
+  iconHoverLabel={t("global.collections.collectibles", { count: 1 })}
   disableRoundedTop
 />

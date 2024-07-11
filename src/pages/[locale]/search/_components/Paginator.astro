@@ -1,0 +1,116 @@
+---
+import { Icon } from "astro-icon/components";
+import { getI18n } from "src/i18n/i18n";
+
+interface Props {
+  currentPage: number;
+  pageCount: number;
+  getUrl: (newPage: number) => string;
+}
+
+const { currentPage, getUrl, pageCount } = Astro.props;
+const { t, formatNumber } = await getI18n(Astro.locals.currentLocale);
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+{
+  pageCount > 1 && (
+    <div class="pagination">
+      <a
+        id="first-page-button"
+        class="pressable"
+        aria-disabled={currentPage <= 1}
+        href={getUrl(1)}
+        title={t("paginator.goFirstPageButton")}>
+        <Icon name="material-symbols:keyboard-double-arrow-left" />
+      </a>
+      <a
+        id="previous-page-button"
+        class="pressable"
+        aria-disabled={currentPage <= 1}
+        href={getUrl(currentPage - 1)}
+        title={t("paginator.goPreviousPageButton")}>
+        <Icon name="material-symbols:chevron-left" />
+      </a>
+      <p class="font-l">{`${formatNumber(currentPage)} / ${formatNumber(pageCount)}`}</p>
+      <a
+        id="next-page-button"
+        class="pressable"
+        aria-disabled={currentPage >= pageCount}
+        href={getUrl(currentPage + 1)}
+        title={t("paginator.goNextPageButton")}>
+        <Icon name="material-symbols:chevron-right" />
+      </a>
+      <a
+        id="last-page-button"
+        class="pressable"
+        aria-disabled={currentPage >= pageCount}
+        href={getUrl(pageCount)}
+        title={t("paginator.goLastPageButton")}>
+        <Icon name="material-symbols:double-arrow-rounded" />
+      </a>
+    </div>
+  )
+}
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    place-items: center;
+
+    & > p {
+      margin-inline: 12px;
+    }
+
+    & > a {
+      border: 2px solid var(--color-base-500);
+      border-radius: 6px;
+      padding: 0.5em;
+      place-content: center;
+
+      > svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      &.active {
+        background-color: var(--color-elevation-2);
+        border-color: var(--color-base-1000);
+      }
+
+      &[aria-disabled] {
+        pointer-events: none;
+        touch-action: none;
+        border-color: var(--color-base-1000);
+        color: var(--color-base-1000);
+        opacity: 0.2;
+      }
+    }
+  }
+</style>
+
+{/* ------------------------------------------- JS --------------------------------------------- */}
+
+<script>
+  document.addEventListener("keydown", async (e) => {
+    const previousPageButton = document.getElementById("previous-page-button");
+    const nextPageButton = document.getElementById("next-page-button");
+
+    if (!previousPageButton) return;
+    if (!nextPageButton) return;
+
+    switch (e.key) {
+      case "ArrowLeft":
+        if (!previousPageButton.hasAttribute("aria-disabled")) previousPageButton.click();
+        break;
+      case "ArrowRight":
+        if (!nextPageButton.hasAttribute("aria-disabled")) nextPageButton.click();
+        break;
+    }
+  });
+</script>

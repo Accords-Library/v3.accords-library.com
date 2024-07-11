@@ -11,9 +11,10 @@ import type { EndpointSource } from "src/shared/payload/payload-sdk";
 interface Props {
   parentPages?: EndpointSource[] | undefined;
   hideHomeButton?: boolean;
+  hideSearchButton?: boolean;
 }
 
-const { parentPages = [], hideHomeButton = false } = Astro.props;
+const { parentPages = [], hideHomeButton = false, hideSearchButton = false } = Astro.props;
 
 const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
@@ -35,10 +36,16 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
   }
 
   <div id="toolbar" class="hide-scrollbar">
-    <a href={getLocalizedUrl("/search")} aria-label={t("header.topbar.search.tooltip")} hidden>
-      <Button icon="material-symbols:search" />
-    </a>
-    <div class="separator" hidden></div>
+    {
+      !hideSearchButton && (
+        <>
+          <a href={getLocalizedUrl("/search")} title={t("header.topbar.search.tooltip")}>
+            <Button icon="material-symbols:search" />
+          </a>
+          <div class="separator" />
+        </>
+      )
+    }
 
     <div class="when-no-js">
       <a href="/settings">

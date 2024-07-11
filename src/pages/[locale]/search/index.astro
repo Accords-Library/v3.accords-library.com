@@ -1,0 +1,282 @@
+---
+import AppLayout from "components/AppLayout/AppLayout.astro";
+import ErrorMessage from "components/ErrorMessage.astro";
+import AudioPreview from "components/Previews/AudioPreview.astro";
+import FilePreview from "components/Previews/FilePreview.astro";
+import ImagePreview from "components/Previews/ImagePreview.astro";
+import PagePreview from "components/Previews/PagePreview.astro";
+import VideoPreview from "components/Previews/VideoPreview.astro";
+import { getI18n } from "src/i18n/i18n";
+import { Collections } from "src/shared/payload/payload-sdk";
+import { meilisearch } from "src/utils/meilisearch";
+import CollectiblePreview from "components/Previews/CollectiblePreview.astro";
+import Button from "components/Button.astro";
+import Paginator from "./_components/Paginator.astro";
+import { Icon } from "astro-icon/components";
+import HomeTitle from "../_components/HomeTitle.astro";
+
+type State = {
+  q: string;
+  page: number;
+  type?: string | undefined;
+};
+
+const { t, getLocalizedUrl, formatNumber } = await getI18n(Astro.locals.currentLocale);
+
+const reqUrl = new URL(Astro.request.url);
+
+const state: State = {
+  q: reqUrl.searchParams.get("q") ?? "",
+  page: parseInt(reqUrl.searchParams.get("page") ?? "1"),
+  type: reqUrl.searchParams.get("type") ?? undefined,
+};
+
+const { hits, page, query, totalHits, totalPages } = await meilisearch.search({
+  page: state.page,
+  q: state.q,
+  types: state.type,
+});
+
+const types: { type: Collections; title: string }[] = [
+  {
+    type: Collections.Collectibles,
+    title: t("global.collections.collectibles", { count: Infinity }),
+  },
+  { type: Collections.Pages, title: t("global.collections.pages", { count: Infinity }) },
+  { type: Collections.Folders, title: t("global.collections.folders", { count: Infinity }) },
+  {
+    type: Collections.Audios,
+    title: t("global.collections.audios", { count: Infinity }),
+  },
+  {
+    type: Collections.Images,
+    title: t("global.collections.images", { count: Infinity }),
+  },
+  {
+    type: Collections.Videos,
+    title: t("global.collections.videos", { count: Infinity }),
+  },
+  {
+    type: Collections.Files,
+    title: t("global.collections.files", { count: Infinity }),
+  },
+  { type: Collections.Recorders, title: t("global.collections.recorders", { count: Infinity }) },
+  {
+    type: Collections.ChronologyEvents,
+    title: t("global.collections.chronologyEvents"),
+  },
+];
+
+const getSearchUrl = (newState: State): string => {
+  const searchParams = new URLSearchParams();
+
+  if (newState.q !== "") searchParams.set("q", newState.q);
+  if (newState.page !== 1) searchParams.set("page", newState.page.toString());
+  if (newState.type) searchParams.set("type", newState.type);
+
+  return [getLocalizedUrl("/search"), searchParams.toString()].filter(Boolean).join("?");
+};
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<AppLayout hideSearchButton>
+  <div class="center">
+    <HomeTitle />
+
+    <form action={getLocalizedUrl("/search")} method="get">
+      <div class="select-wrapper">
+        <select name="type" title={t("search.collectionFilter.tooltip")}>
+          <option value="" selected={state.type === undefined}>
+            {t("global.collections.all")}
+          </option>
+          {
+            types.map(({ title, type }) => (
+              <option value={type} selected={type === state.type}>
+                {title}
+              </option>
+            ))
+          }
+        </select>
+        <Icon name="material-symbols:keyboard-arrow-down" />
+      </div>
+      <input
+        type="search"
+        class="pressable"
+        name="q"
+        placeholder={t("search.searchBar.placeholder")}
+        value={query}
+      />
+      <Button
+        class="submit"
+        icon="material-symbols:search"
+        ariaLabel={t("search.searchBar.submitButton.tooltip")}
+      />
+    </form>
+    <p id="advanced-link" class="font-s">
+      <!-- Looking for more <a href={getLocalizedUrl("/search/advanced")}>advanced search options</a> -->
+    </p>
+
+    {
+      totalPages > 1 && (
+        <>
+          <Paginator
+            currentPage={page}
+            pageCount={totalPages}
+            getUrl={(newPage) => getSearchUrl({ ...state, page: newPage })}
+          />
+          <p class="font-s">
+            {t("search.resultCount", {
+              results: formatNumber(hits.length),
+              totalResults: formatNumber(totalHits),
+            })}
+          </p>
+        </>
+      )
+    }
+  </div>
+
+  {
+    hits.length === 0 && (
+      <div class="center">
+        <p class="font-2xl font-serif">{t("search.noResult.title")}</p>
+        <p>{t("search.noResult.message", { query })}</p>
+        <img id="no-result" src={"/img/search-no-results.webp"} />
+      </div>
+    )
+  }
+
+  <div id="results">
+    {
+      hits.map(({ type, data }) => {
+        switch (type) {
+          case Collections.Collectibles:
+            return <CollectiblePreview collectible={data} />;
+
+          case Collections.Pages:
+            return <PagePreview page={data} />;
+
+          case Collections.Audios:
+            return <AudioPreview audio={data} />;
+
+          case Collections.Videos:
+            return <VideoPreview video={data} />;
+
+          case Collections.Files:
+            return <FilePreview file={data} />;
+
+          case Collections.Images:
+            return <ImagePreview image={data} />;
+
+          case Collections.Recorders:
+          case Collections.Folders:
+          case Collections.ChronologyEvents:
+          default:
+            return <ErrorMessage title={`Unsupported result type: ${type}`} />;
+        }
+      })
+    }
+  </div>
+  <div class="center">
+    <Paginator
+      currentPage={page}
+      pageCount={totalPages}
+      getUrl={(newPage) => getSearchUrl({ ...state, page: newPage })}
+    />
+  </div>
+</AppLayout>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
+
+<style>
+  form {
+    margin-top: 64px;
+    display: flex;
+    width: 100%;
+    max-width: 30rem;
+
+    & > * {
+      height: 3em;
+    }
+
+    & > .select-wrapper {
+      position: relative;
+
+      & > svg {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        translate: 0 -50%;
+        pointer-events: none;
+        touch-action: none;
+      }
+
+      & > select {
+        border-top-left-radius: 9999px;
+        border-bottom-left-radius: 9999px;
+        border: 2px solid var(--color-base-650);
+        border-right: unset;
+        padding-left: 24px;
+        padding-right: 32px;
+        background-color: var(--color-elevation-1);
+        appearance: none;
+        height: 3em;
+      }
+    }
+
+    & > input[type="search"] {
+      border-right: unset;
+      padding-inline: 1em;
+      padding-block: unset;
+      box-sizing: border-box;
+      flex: 1;
+      background-color: var(--color-elevation-0);
+      color: var(--color-base-800);
+
+      &:focus-visible {
+        outline: 3px solid var(--color-base-1000);
+      }
+    }
+
+    & > .submit {
+      border-top-left-radius: unset;
+      border-bottom-left-radius: unset;
+      padding-left: 0.75em;
+      flex-shrink: 0;
+    }
+  }
+
+  #advanced-link {
+    margin-bottom: 98px;
+    text-align: center;
+  }
+
+  #results {
+    margin-top: 5em;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: clamp(6px, 2vmin, 16px);
+    align-items: start;
+
+    @media (max-width: 40rem) {
+      grid-template-columns: 1fr 1fr;
+      row-gap: 12px;
+    }
+
+    @media (max-width: 24rem) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .center {
+    display: grid;
+    flex-direction: column;
+    justify-items: center;
+    gap: 12px;
+    margin-block: 64px;
+  }
+
+  #no-result {
+    max-height: 70vh;
+  }
+</style>

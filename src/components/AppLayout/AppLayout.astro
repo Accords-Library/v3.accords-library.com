@@ -12,6 +12,7 @@ interface Props {
   backgroundImage?: ComponentProps<typeof AppLayoutBackgroundImg>["img"] | undefined;
   hideFooterLinks?: boolean;
   hideHomeButton?: boolean;
+  hideSearchButton?: boolean;
   class?: string | undefined;
 }
 
@@ -25,6 +26,7 @@ const {
   backgroundImage,
   hideFooterLinks = false,
   hideHomeButton = false,
+  hideSearchButton = false,
   ...otherProps
 } = Astro.props;
 ---
@@ -34,7 +36,11 @@ const {
 <Html openGraph={openGraph}>
   {backgroundImage && <AppLayoutBackgroundImg img={backgroundImage} />}
   <header>
-    <Topbar parentPages={parentPages} hideHomeButton={hideHomeButton} />
+    <Topbar
+      parentPages={parentPages}
+      hideHomeButton={hideHomeButton}
+      hideSearchButton={hideSearchButton}
+    />
   </header>
   <main {...otherProps.class ? otherProps : {}}><slot /></main>
   <Footer withLinks={!hideFooterLinks} />

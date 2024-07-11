@@ -29,7 +29,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     <section id="library">
       <h2 class="font-serif font-3xl">{t("home.librarySection.title")}</h2>
       <p set:html={t("home.librarySection.description")} />
-      <a href={getLocalizedUrl("/search")} hidden>
+      <a href={getLocalizedUrl("/search")}>
         <Button
           class="section-button"
           title={t("home.librarySection.button")}
@@ -152,6 +152,11 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     }
 
     &#library {
+      & > a {
+        display: block;
+        margin-bottom: 24px;
+      }
+
       & > .grid {
         @media (max-width: 40rem) {
           grid-template-columns: 1fr 1fr;

@@ -19,7 +19,11 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     <div id="text-container">
       <h1 class="font-serif font-5xl">500</h1>
       <h2 class="font-3xl">Server Error</h2>
-      <p>Please contact <a href={getLocalizedUrl("/discord")} target="_blank">website technical administrator</a>.</p>
+      <p>
+        Please contact <a href={getLocalizedUrl("/discord")} target="_blank">
+          website technical administrator
+        </a>.
+      </p>
       <a href={getLocalizedUrl("/")}>
         <Button icon="material-symbols:home" title={t("home.title")} />
       </a>
@@ -39,6 +43,8 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     )
   }
 </AppLayout>
+
+{/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   .app {

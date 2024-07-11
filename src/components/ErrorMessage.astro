@@ -22,7 +22,11 @@ const { title, description } = Astro.props;
       <p>{description}</p>
     ) : (
       <p>
-        Please contact <a href={getLocalizedUrl("/discord")} target="_blank">website technical administrator</a>.
+        Please contact{" "}
+        <a href={getLocalizedUrl("/discord")} target="_blank">
+          website technical administrator
+        </a>
+        .
       </p>
     )
   }

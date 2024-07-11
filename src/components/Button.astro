@@ -5,20 +5,21 @@ interface Props {
   id?: string;
   title?: string | undefined;
   icon?: string;
-  class?: string;
   ariaLabel?: string;
+  class?: string | undefined;
 }
 
-const { title, icon, class: className, ariaLabel, id } = Astro.props;
+const { title, icon, ariaLabel, id, ...otherProps } = Astro.props;
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <button
   id={id}
-  class:list={["pressable", { "with-title": !!title }, className]}
+  class:list={["pressable", { "with-title": !!title }, otherProps.class]}
   aria-label={ariaLabel}
-  title={ariaLabel}>
+  title={ariaLabel}
+  {...otherProps.class ? otherProps : {}}>
   {icon && <Icon name={icon} />}
   {title}
 </button>

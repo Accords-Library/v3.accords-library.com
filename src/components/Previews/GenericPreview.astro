@@ -167,21 +167,21 @@ for (const attribute of attributes) {
       height: auto;
 
       &.rounded-top {
-        border-top-left-radius: 1em;
-        border-top-right-radius: 1em;
+        border-top-left-radius: 14px;
+        border-top-right-radius: 14px;
       }
     }
 
     & > #icon-container {
       &.thumbnail-alt {
-        margin: 0.4em;
+        margin: 6px;
         margin-bottom: unset;
         aspect-ratio: 3/2;
         background-color: var(--color-elevation-2);
         color: var(--color-base-400);
         display: grid;
         place-content: center;
-        border-radius: 0.7em;
+        border-radius: 8px;
 
         & > svg {
           width: 64px;
@@ -191,18 +191,18 @@ for (const attribute of attributes) {
 
       &:not(.thumbnail-alt) {
         position: absolute;
-        top: 0.4em;
-        left: 0.4em;
-        padding: 0.5em;
+        top: 6px;
+        left: 6px;
+        padding: 8px;
         backdrop-filter: blur(5px);
         background-color: color-mix(in srgb, var(--color-elevation-2) 60%, transparent);
       }
 
       &.rounded-top {
-        border-radius: 0.7em;
+        border-radius: 8px;
       }
 
-      border-bottom-right-radius: 0.7em;
+      border-bottom-right-radius: 8px;
     }
 
     & > #footer {

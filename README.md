@@ -118,6 +118,7 @@ Read more:
 
   - Smooth scrolling when using anchor links
   - On image pages (scans, gallery, image files), allow the user to navigate to the previous or next image using keyboard arrows.
+  - On the search page, allow the user to navigate to the previous or next page using keyboard arrows.
 
 - On media pages (scans, images, audios, videos), provide a download button. This way, the user doesn't have to right-click -> "save media as..."
 
