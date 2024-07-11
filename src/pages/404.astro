@@ -1,12 +1,81 @@
 ---
 import AppLayout from "components/AppLayout/AppLayout.astro";
-import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
+import Button from "components/Button.astro";
+import { getI18n } from "src/i18n/i18n";
 
 Astro.locals.notFound = true;
+
+const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppLayout>
-  <AppLayoutTitle title="Oh nyo..." />
+<AppLayout class="app" hideHomeButton>
+  <div id="text-container">
+    <h1 class="font-serif font-5xl">404</h1>
+    <h2 class="font-4xl">Not found</h2>
+    <a href={getLocalizedUrl("/")}>
+      <Button icon="material-symbols:home" title={t("home.title")} />
+    </a>
+  </div>
+  <div id="img-container">
+    <img src={"/img/search-empty.webp"} width="1054" height="1100" />
+  </div>
 </AppLayout>
+
+<style>
+  .app {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    place-content: center;
+    gap: 64px;
+    padding-top: 128px;
+
+    @media (min-width: 1024px) {
+      place-items: start;
+      flex-direction: row;
+      gap: clamp(64px, 8vw, 256px);
+    }
+  }
+
+  #text-container {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+
+    & > h1 {
+      font-size: min(30vw, 256px);
+      margin-right: 0.12em;
+    }
+
+    & > h2 {
+      font-size: min(8vw, 68px);
+      margin-left: 0.12em;
+    }
+
+    & > a {
+      display: block;
+      margin-top: 32px;
+    }
+
+    @media (min-width: 1024px) {
+      place-items: end;
+
+      & > h1 {
+        margin-right: 0px;
+      }
+    }
+  }
+
+  #img-container {
+    aspect-ratio: 1054/1100;
+    max-width: 80%;
+    max-height: 50vh;
+
+    @media (min-width: 1024px) {
+      max-height: 60vh;
+      max-width: 40vw;
+    }
+  }
+</style>

@@ -13,7 +13,6 @@
 - [Bugs] Make sure uploads name are slug-like and with an extension.
 - [Bugs] Nyupun can't upload subtitles files
 - [Bugs] https://v3.accords-library.com/en/collectibles/dod-original-soundtrack/scans obi is way too big
-- [Feat] 404, 500 pages
 - [Feat] [RichTextContent] Handle relationship
 - [Feat] [Timeline] Improve layout/spacing on mobile
 - [Bugs] Number of audio players seems limited (on Chrome and Firefox)

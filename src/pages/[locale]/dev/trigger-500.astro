@@ -1,0 +1,14 @@
+---
+import FiveOFive from "src/pages/500.astro";
+import { payload } from "src/utils/payload";
+
+let error;
+
+try {
+  await payload.getAudioByID("bad-id");
+} catch (e) {
+  error = e;
+}
+---
+
+<FiveOFive error={error ?? new Error("Testing")} />

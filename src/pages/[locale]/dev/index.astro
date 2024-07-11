@@ -22,6 +22,14 @@ const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     <li>
       <a href={getLocalizedUrl("/dev/cjk")} class="pressable-link">CJK fonts Testing Ground</a>
     </li>
+    <li>
+      <a href={getLocalizedUrl("/dev/trigger-500")} class="pressable-link">
+        500: Internal Server Error
+      </a>
+    </li>
+    <li>
+      <a href={getLocalizedUrl("/dev/trigger-404")} class="pressable-link">404: Not Found</a>
+    </li>
   </ul>
 </AppLayout>
 
