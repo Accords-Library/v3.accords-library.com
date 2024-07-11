@@ -7,7 +7,7 @@ interface Props {
 }
 
 const { withLinks } = Astro.props;
-const { t } = await getI18n(Astro.locals.currentLocale);
+const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 
 const discordLabel = `${t("footer.socials.discord.title")} - ${t(
   "footer.socials.discord.subtitle"
@@ -30,7 +30,7 @@ const contactLabel = `${t("footer.socials.contact.title")} - ${t(
   {
     withLinks && (
       <div id="socials" class="when-no-print">
-        <a href="/discord" class="pressable-label" aria-label={discordLabel} title={discordLabel}>
+        <a href={getLocalizedUrl("/discord")} class="pressable-label" aria-label={discordLabel} title={discordLabel}>
           <Icon name="discord-brands" />
           <p class="font-s">{t("footer.socials.discord.title")}</p>
         </a>

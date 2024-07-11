@@ -67,12 +67,7 @@ const { getLocalizedMatch, getLocalizedUrl, formatNumber } = await getI18n(
           );
 
         default:
-          return (
-            <ErrorMessage
-              title={`Unknown attribute type: ${type}`}
-              description="Please contact website technical administrator."
-            />
-          );
+          return <ErrorMessage title={`Unknown attribute type: ${type}`} />;
       }
     })
   }

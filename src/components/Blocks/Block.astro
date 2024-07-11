@@ -25,9 +25,6 @@ const { block, lang } = Astro.props;
   ) : isBlockCueBlock(block) ? (
     <CueBlock block={block} lang={lang} />
   ) : (
-    <ErrorMessage
-      title={`Unknown block type: ${block.blockType}`}
-      description="Please contact website technical administrator."
-    />
+    <ErrorMessage title={`Unknown block type: ${block.blockType}`} />
   )
 }

@@ -34,9 +34,6 @@ const { node, context } = Astro.props;
       ))}
     </RTInternalLink>
   ) : (
-    <ErrorMessage
-      title={`Unknown link type: ${node.fields.linkType}`}
-      description="Please contact website technical administrator."
-    />
+    <ErrorMessage title={`Unknown link type: ${node.fields.linkType}`} />
   )
 }

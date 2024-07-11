@@ -29,9 +29,6 @@ const { node, context } = Astro.props;
   ) : isBlockNodeBreakBlock(node) ? (
     <RTBreak node={node} context={context} />
   ) : (
-    <ErrorMessage
-      title={`Unknown block type: ${node.fields.blockType}`}
-      description="Please contact website technical administrator."
-    />
+    <ErrorMessage title={`Unknown block type: ${node.fields.blockType}`} />
   )
 }

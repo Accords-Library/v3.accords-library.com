@@ -30,9 +30,6 @@ const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
       <slot />
     </a>
   ) : (
-    <ErrorMessage
-      title={`Unknown internal link: ${doc.relationTo}`}
-      description="Please contact website technical administrator."
-    />
+    <ErrorMessage title={`Unknown internal link: ${doc.relationTo}`} />
   )
 }

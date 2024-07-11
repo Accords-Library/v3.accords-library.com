@@ -40,9 +40,6 @@ const { node, context } = Astro.props;
       ))}
     </ul>
   ) : (
-    <ErrorMessage
-      title={`Unknown list link: ${node.listType}`}
-      description="Please contact website technical administrator."
-    />
+    <ErrorMessage title={`Unknown list link: ${node.listType}`} />
   )
 }

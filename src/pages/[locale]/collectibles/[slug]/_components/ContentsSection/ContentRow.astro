@@ -67,16 +67,7 @@ const { title, language } = (() => {
 
 <Card href={href} class="content_row-card">
   <div id="title">
-    {
-      title ? (
-        <p lang={language}>{title}</p>
-      ) : (
-        <ErrorMessage
-          title="Unknown content type"
-          description="Please contact website technical administrator."
-        />
-      )
-    }
+    {title ? <p lang={language}>{title}</p> : <ErrorMessage title="Unknown content type" />}
   </div>
 
   <div id="dots"></div>
@@ -94,10 +85,7 @@ const { title, language } = (() => {
               content={getLocalizedMatch(range.translations).note}
             /> /* TODO: Provide lang */
           ) : (
-            <ErrorMessage
-              title="Unknown range type"
-              description="Please contact website technical administrator."
-            />
+            <ErrorMessage title="Unknown range type" />
           )}
         </>
       )

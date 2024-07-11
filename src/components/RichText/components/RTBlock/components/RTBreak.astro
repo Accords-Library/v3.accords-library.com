@@ -29,10 +29,7 @@ const { node } = Astro.props;
   ) : node.fields.type === BreakBlockType.solidLine ? (
     <hr id={node.anchorHash} class="solid" />
   ) : (
-    <ErrorMessage
-      title={`Unknown break block type: ${node.fields.type}`}
-      description="Please contact website technical administrator."
-    />
+    <ErrorMessage title={`Unknown break block type: ${node.fields.type}`} />
   )
 }
 

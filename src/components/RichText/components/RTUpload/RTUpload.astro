@@ -29,9 +29,6 @@ const { node, context } = Astro.props;
   ) : isUploadNodeVideoNode(node) ? (
     <RTVideo node={node} context={context} />
   ) : (
-    <ErrorMessage
-      title={`Unknown upload collection: ${node.relationTo}`}
-      description="Please contact website technical administrator."
-    />
+    <ErrorMessage title={`Unknown upload collection: ${node.relationTo}`} />
   )
 }

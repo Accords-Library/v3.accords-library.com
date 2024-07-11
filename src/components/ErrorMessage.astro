@@ -1,10 +1,13 @@
 ---
 import { Icon } from "astro-icon/components";
+import { getI18n } from "src/i18n/i18n";
 
 interface Props {
   title: string;
   description?: string;
 }
+
+const { getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 
 const { title, description } = Astro.props;
 ---
@@ -14,7 +17,15 @@ const { title, description } = Astro.props;
 <div class="error-message">
   <Icon name="material-symbols:error-outline" width={32} height={32} />
   <p class="font-xl">{title}</p>
-  {description && <p>{description}</p>}
+  {
+    description ? (
+      <p>{description}</p>
+    ) : (
+      <p>
+        Please contact <a href={getLocalizedUrl("/discord")} target="_blank">website technical administrator</a>.
+      </p>
+    )
+  }
 </div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}

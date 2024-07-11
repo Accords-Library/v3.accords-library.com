@@ -81,12 +81,7 @@ const { language, title, description } = getLocalizedMatch(translations);
               return <FilePreview file={value} />;
 
             default:
-              return (
-                <ErrorMessage
-                  title={`Unknown file type: ${relationTo}`}
-                  description="Please contact website technical administrator."
-                />
-              );
+              return <ErrorMessage title={`Unknown file type: ${relationTo}`} />;
           }
         })
       }
