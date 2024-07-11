@@ -22,27 +22,34 @@ default slot
 
 interface Props {
   reducedAsideWidth?: boolean;
-  withAside?: boolean | undefined;
 }
 
-const { reducedAsideWidth = false, withAside = true } = Astro.props;
+const { reducedAsideWidth = false } = Astro.props;
 ---
 
 <div id="layout" class:list={{ "reduced-width": reducedAsideWidth }}>
   <div id="left">
     <slot name="header" />
-    <div class="when-not-large">
-      <slot name="header-aside" />
-      <slot name="meta" />
-      <slot name="aside" />
-    </div>
-    <div class="when-large">
-      <slot name="meta" />
-    </div>
+    {
+      (Astro.slots.has("header-aside") || Astro.slots.has("meta") || Astro.slots.has("aside")) && (
+        <div class="when-not-large">
+          <slot name="header-aside" />
+          <slot name="meta" />
+          <slot name="aside" />
+        </div>
+      )
+    }
+    {
+      Astro.slots.has("meta") && (
+        <div class="when-large">
+          <slot name="meta" />
+        </div>
+      )
+    }
     <slot />
   </div>
   {
-    withAside && (
+    (Astro.slots.has("header-aside") || Astro.slots.has("aside")) && (
       <Card class="when-large right">
         <slot name="header-aside" />
         <slot name="aside" />

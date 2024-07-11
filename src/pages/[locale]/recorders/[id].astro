@@ -40,15 +40,15 @@ if (languages.length > 0) {
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
-<AppLayout>
-  <AsideLayout withAside={avatar !== undefined && additionalAttributes.length > 0}>
+<AppLayout backgroundImage={avatar}>
+  <AsideLayout>
     <Fragment slot="header">
-      <AppLayoutTitle pretitle={`Recorder#${id.substring(0, 5)}`} title={username} />
+      <AppLayoutTitle pretitle={`Recorder#${id.substring(id.length - 5)}`} title={username} />
     </Fragment>
 
     {
       avatar && (
-        <Fragment slot="header-aside">
+        <Fragment slot={avatar && "header-aside"}>
           <a
             href={getLocalizedUrl(`/images/${avatar.id}`)}
             style={`aspect-ratio: ${avatar.width}/${avatar.height};`}>
@@ -66,20 +66,14 @@ if (languages.length > 0) {
 
     {
       avatar && additionalAttributes.length > 0 && (
-        <Fragment slot="aside">
+        <Fragment slot={avatar && additionalAttributes.length > 0 && "aside"}>
           <Attributes attributes={additionalAttributes} />
         </Fragment>
       )
     }
 
-    <div id="info">
-      {
-        !avatar && additionalAttributes.length > 0 && (
-          <Attributes attributes={additionalAttributes} />
-        )
-      }
-      {biography && <RichText content={biography} context={{ lang: language }} />}
-    </div>
+    {!avatar && additionalAttributes.length > 0 && <Attributes attributes={additionalAttributes} />}
+    {biography && <RichText content={biography} context={{ lang: language }} />}
   </AsideLayout>
 </AppLayout>
 
