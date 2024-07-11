@@ -16,6 +16,13 @@ interface Props {
 
 const { withTitle, ...otherProps } = Astro.props;
 const { t } = await getI18n(Astro.locals.currentLocale);
+
+const getActionCurrency = (value: string) => {
+  const requestSearchParams = new URL(Astro.request.url).searchParams;
+  const newSearchParams = new URLSearchParams(requestSearchParams);
+  newSearchParams.set("action-currency", value);
+  return `?${newSearchParams}`;
+};
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -29,7 +36,7 @@ const { t } = await getI18n(Astro.locals.currentLocale);
             "pressable-link",
             prepareClassForSelectedCurrencyPostProcessing({ currency: id }),
           ]}
-          href={`?action-currency=${id}`}>
+          href={getActionCurrency(id)}>
           {`${id} (${formatCurrency(id)})`}
         </a>
       ))

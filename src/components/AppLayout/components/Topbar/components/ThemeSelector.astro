@@ -5,19 +5,26 @@ import { getI18n } from "src/i18n/i18n";
 
 const { currentLocale } = Astro.locals;
 const { t } = await getI18n(currentLocale);
+
+const getActionThemeUrl = (value: "dark" | "light" | "auto") => {
+  const requestSearchParams = new URL(Astro.request.url).searchParams;
+  const newSearchParams = new URLSearchParams(requestSearchParams);
+  newSearchParams.set("action-theme", value);
+  return `?${newSearchParams}`;
+};
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <Tooltip trigger="click">
   <div id="content" slot="tooltip-content">
-    <a class="pressable-link underline-when-dark" href="?action-theme=dark">
+    <a class="pressable-link underline-when-dark" href={getActionThemeUrl("dark")}>
       {t("global.theme.dark")}
     </a>
-    <a class="pressable-link underline-when-auto" href="?action-theme=auto">
+    <a class="pressable-link underline-when-auto" href={getActionThemeUrl("auto")}>
       {t("global.theme.auto")}
     </a>
-    <a class="pressable-link underline-when-light" href="?action-theme=light">
+    <a class="pressable-link underline-when-light" href={getActionThemeUrl("light")}>
       {t("global.theme.light")}
     </a>
   </div>

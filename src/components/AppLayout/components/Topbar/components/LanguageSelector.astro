@@ -14,6 +14,13 @@ const { withTitle, ...otherProps } = Astro.props;
 
 const { currentLocale } = Astro.locals;
 const { t } = await getI18n(currentLocale);
+
+const getActionLanguage = (value: string) => {
+  const requestSearchParams = new URL(Astro.request.url).searchParams;
+  const newSearchParams = new URLSearchParams(requestSearchParams);
+  newSearchParams.set("action-lang", value);
+  return `?${newSearchParams}`;
+};
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -24,7 +31,7 @@ const { t } = await getI18n(currentLocale);
       contextCache.locales.map((locale) => (
         <a
           class:list={{ current: currentLocale === locale, "pressable-link": true }}
-          href={`?action-lang=${locale}`}>
+          href={getActionLanguage(locale)}>
           {formatLocale(locale)}
         </a>
       ))
