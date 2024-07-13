@@ -1,5 +1,5 @@
 // @ts-check
-import { writeFileSync, readFileSync, existsSync } from "fs";
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from "fs";
 
 const OPEN_EXCHANGE_FOLDER = `${process.cwd()}/src/dist/openExchange`;
 const RATE_JSON_PATH = `${OPEN_EXCHANGE_FOLDER}/rates.json`;
@@ -28,6 +28,10 @@ const currenciesUrl = `https://openexchangerates.org/api/currencies.json?app_id=
 }`;
 
 const rates = await fetch(ratesUrl);
+
+if (!existsSync(OPEN_EXCHANGE_FOLDER)) {
+  mkdirSync(OPEN_EXCHANGE_FOLDER, { recursive: true });
+}
 
 if (rates.ok) {
   writeFileSync(RATE_JSON_PATH, await rates.text(), {
