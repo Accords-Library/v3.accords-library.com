@@ -11,7 +11,14 @@ export const meilisearch = new MeilisearchSDK(
   import.meta.env.MEILISEARCH_MASTER_KEY
 );
 
-export const analytics = new AnalyticsSDK(import.meta.env.ANALYTICS_URL);
+const mockedAnalytics = {
+  trackRequest: () => {},
+  trackEvent: () => {},
+};
+
+export const analytics = import.meta.env.ANALYTICS_URL
+  ? new AnalyticsSDK(import.meta.env.ANALYTICS_URL)
+  : mockedAnalytics;
 
 const tokenCache = new TokenCache();
 
