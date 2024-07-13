@@ -1,6 +1,6 @@
 {
   "name": "v3.accords-library.com",
-  "version": "3.0.0-beta.7",
+  "version": "3.0.0-beta.8",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -8,7 +8,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "upgrade": "ncu",
-    "fetch-submodules": "git submodule update --recursive --remote",
+    "fetch-submodules": "cd src/shared && git pull && cd ../..",
     "script:download-currencies": "node --env-file=.env scripts/download-currencies.mjs",
     "script:download-wording-keys": "npm run scripts/download-wording-keys.ts",
     "prettier": "prettier --write --list-different --plugin=prettier-plugin-astro .",
