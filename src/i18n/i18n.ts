@@ -1,5 +1,5 @@
 import type { WordingKey } from "src/i18n/wordings-keys";
-import { contextCache } from "src/utils/payload";
+import { contextCache } from "src/services";
 import { capitalize, formatInlineTitle } from "src/utils/format";
 import type { EndpointChronologyEvent, EndpointSource } from "src/shared/payload/endpoint-types";
 

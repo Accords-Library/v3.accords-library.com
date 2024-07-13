@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { dataCache, pageCache } from "src/utils/payload";
+import { dataCache, pageCache } from "src/services";
 
 export const GET: APIRoute = async () => {
   await dataCache.init();

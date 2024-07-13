@@ -7,7 +7,7 @@ import {
   type RichTextContent,
   type RichTextNode,
 } from "src/shared/payload/rich-text";
-import { contextCache } from "src/utils/payload";
+import { contextCache } from "src/services";
 
 export const formatLocale = (code: string): string =>
   contextCache.languages.find(({ id }) => id === code)?.name ?? code;

@@ -1,12 +1,12 @@
 ---
-import { payload } from "src/utils/payload";
+import { payload } from "src/services";
 import { groupBy } from "src/utils/array";
 import TimelineYear from "./_components/TimelineYear.astro";
 import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import Card from "components/Card.astro";
 import { getI18n } from "src/i18n/i18n";
-import { contextCache } from "src/utils/payload";
+import { contextCache } from "src/services";
 import type { WordingKey } from "src/i18n/wordings-keys";
 import { fetchOr404 } from "src/utils/responses";
 

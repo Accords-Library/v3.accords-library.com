@@ -1,6 +1,6 @@
 import type { AstroCookies } from "astro";
 import { z } from "astro:content";
-import { contextCache } from "src/utils/payload";
+import { contextCache } from "src/services";
 import acceptLanguage from "accept-language";
 
 export const getAbsoluteLocaleUrl = (locale: string, url: string) => `/${locale}${url}`;

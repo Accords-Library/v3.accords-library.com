@@ -1,5 +1,5 @@
 import { defineMiddleware } from "astro:middleware";
-import { pageCache } from "src/utils/payload";
+import { pageCache } from "src/services";
 
 export const pageCachingMiddleware = defineMiddleware(async ({ url, request, locals }, next) => {
   const pathname = url.pathname;
