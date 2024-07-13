@@ -1,5 +1,5 @@
-import currencies from "src/shared/openExchange/currencies.json";
-import { rates } from "src/shared/openExchange/rates.json";
+import currencies from "src/dist/openExchange/currencies.json";
+import { rates } from "src/dist/openExchange/rates.json";
 
 type CurrencyCode = keyof typeof rates;
 
