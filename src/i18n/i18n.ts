@@ -1,5 +1,5 @@
 import type { WordingKey } from "src/i18n/wordings-keys";
-import type { ChronologyEvent, EndpointSource } from "src/shared/payload/payload-sdk";
+import type { EndpointChronologyEvent, EndpointSource } from "src/shared/payload/payload-sdk";
 import { contextCache } from "src/utils/payload";
 import { capitalize, formatInlineTitle } from "src/utils/format";
 
@@ -177,7 +177,7 @@ export const getI18n = async (locale: string) => {
     return number.toLocaleString(locale, options);
   };
 
-  const formatTimelineDate = ({ year, month, day }: ChronologyEvent["date"]): string => {
+  const formatTimelineDate = ({ year, month, day }: EndpointChronologyEvent["date"]): string => {
     const date = new Date(0);
     date.setFullYear(year);
     if (month) date.setMonth(month - 1);

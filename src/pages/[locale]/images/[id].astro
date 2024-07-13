@@ -27,7 +27,7 @@ const {
   height,
 } = image;
 
-const { getLocalizedMatch, formatDate, t, formatFilesize } = await getI18n(
+const { getLocalizedMatch, formatDate, t, formatFilesize, formatNumber } = await getI18n(
   Astro.locals.currentLocale
 );
 
@@ -56,7 +56,7 @@ const metaAttributes = [
   {
     title: t("global.media.attributes.resolution"),
     icon: "material-symbols:photo-size-select-large",
-    values: [{ name: `${width} x ${height}` }],
+    values: [{ name: `${formatNumber(width)} x ${formatNumber(height)}` }],
     withBorder: false,
   },
   {

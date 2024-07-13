@@ -143,19 +143,25 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     margin-top: 64px;
   }
 
-  section {
+  section:not([hidden]) {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    
+    & > h2 {
+      margin-bottom: -12px;
+    }
+
+    & > a {
+      width: fit-content
+    }
+
     & > p {
       max-width: 35em;
       line-height: 1.5;
-      margin-top: 12px;
-      margin-bottom: 24px;
     }
 
     &#library {
-      & > a {
-        display: block;
-        margin-bottom: 24px;
-      }
 
       & > .grid {
         @media (max-width: 40rem) {

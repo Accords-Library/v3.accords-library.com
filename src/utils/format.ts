@@ -3,6 +3,7 @@ import {
   isNodeListNode,
   isNodeParagraphNode,
   isNodeTextNode,
+  type EndpointChronologyEvent,
   type RichTextContent,
   type RichTextNode,
 } from "src/shared/payload/payload-sdk";
@@ -52,4 +53,11 @@ export const capitalize = (string: string): string => {
   const [firstLetter, ...otherLetters] = string;
   if (firstLetter === undefined) return "";
   return [firstLetter.toUpperCase(), ...otherLetters].join("");
+};
+
+export const formatTimelineDateToId = (date: EndpointChronologyEvent["date"]): string => {
+  let result = date.year.toString();
+  if (date.month) result += `-${date.month.toString().padStart(2, "0")}`;
+  if (date.day) result += `-${date.day.toString().padStart(2, "0")}`;
+  return result;
 };
