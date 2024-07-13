@@ -173,4 +173,7 @@ export type WordingKey =
   | "paginator.goFirstPageButton"
   | "paginator.goPreviousPageButton"
   | "paginator.goNextPageButton"
-  | "paginator.goLastPageButton";
+  | "paginator.goLastPageButton"
+  | "global.folders.attributes.content.label"
+  | "global.folders.attributes.content.value"
+  | "global.folders.attributes.parent";

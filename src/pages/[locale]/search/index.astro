@@ -14,6 +14,9 @@ import Button from "components/Button.astro";
 import Paginator from "./_components/Paginator.astro";
 import { Icon } from "astro-icon/components";
 import HomeTitle from "../_components/HomeTitle.astro";
+import RecorderPreview from "components/Previews/RecorderPreview.astro";
+import FolderPreview from "components/Previews/FolderPreview.astro";
+import ChronologyEventPreview from "components/Previews/ChronologyEventPreview.astro";
 
 type State = {
   q: string;
@@ -169,8 +172,14 @@ const getSearchUrl = (newState: State): string => {
             return <ImagePreview image={data} />;
 
           case Collections.Recorders:
+            return <RecorderPreview recorder={data} />;
+
           case Collections.Folders:
+            return <FolderPreview folder={data} />;
+
           case Collections.ChronologyEvents:
+            return <ChronologyEventPreview event={data.event} date={data.date} />;
+
           default:
             return <ErrorMessage title={`Unsupported result type: ${type}`} />;
         }

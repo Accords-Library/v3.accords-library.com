@@ -1,0 +1,56 @@
+---
+import GenericPreview from "components/Previews/GenericPreview.astro";
+import { getI18n } from "src/i18n/i18n";
+import type { EndpointFolder } from "src/shared/payload/payload-sdk";
+import type { Attribute } from "src/utils/attributes";
+
+interface Props {
+  folder: EndpointFolder;
+}
+
+const { getLocalizedUrl, getLocalizedMatch, t } = await getI18n(
+  Astro.locals.currentLocale
+);
+
+const {
+  folder: { translations, slug, files, sections, parentPages },
+} = Astro.props;
+
+const { language, title } = getLocalizedMatch(translations);
+
+const fileCount = files.length;
+
+const subfolderCount =
+  sections.type === "single"
+    ? sections.subfolders.length
+    : sections.sections.reduce((acc, section) => acc + section.subfolders.length, 0);
+
+const attributes: Attribute[] = [
+  {
+    icon: "material-symbols:box",
+    title: t("global.folders.attributes.content.label"),
+    values: [{ name: t("global.folders.attributes.content.value", { fileCount, subfolderCount }) }],
+  },
+  {
+    icon: "material-symbols:keyboard-return",
+    title: t("global.folders.attributes.parent"),
+    values: parentPages.flatMap((parent) => {
+      if (parent.type !== "folder") return [];
+      const name = getLocalizedMatch(parent.folder.translations).title;
+      return { name };
+    }),
+  },
+];
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<GenericPreview
+  title={title}
+  lang={language}
+  href={getLocalizedUrl(`/folders/${slug}`)}
+  attributes={attributes}
+  icon="material-symbols:folder-open"
+  iconHoverLabel={t("global.collections.folders", { count: 1 })}
+  smallTitle
+/>

@@ -1,0 +1,48 @@
+---
+import GenericPreview from "components/Previews/GenericPreview.astro";
+import { getI18n } from "src/i18n/i18n";
+import type { EndpointChronologyEvent } from "src/shared/payload/payload-sdk";
+import { formatRichTextToString, formatTimelineDateToId } from "src/utils/format";
+
+interface Props {
+  event: EndpointChronologyEvent["events"][number];
+  date: EndpointChronologyEvent["date"];
+}
+
+const { getLocalizedUrl, getLocalizedMatch, t, formatTimelineDate } = await getI18n(
+  Astro.locals.currentLocale
+);
+
+const {
+  date,
+  event: { translations },
+} = Astro.props;
+
+const { title, description, language } = getLocalizedMatch(translations);
+
+const getTruncatedText = () => {
+  const getTextContent = () => {
+    if (title) return title;
+    if (description) return formatRichTextToString(description);
+    return "";
+  };
+
+  const text = getTextContent();
+  const limit = 45;
+  const truncationMark = "...";
+  if (text.length < limit) return text;
+  return text.substring(0, limit - truncationMark.length) + truncationMark;
+};
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<GenericPreview
+  lang={language}
+  pretitle={formatTimelineDate(date)}
+  title={getTruncatedText()}
+  href={getLocalizedUrl(`/timeline#${formatTimelineDateToId(date)}`)}
+  icon="material-symbols:calendar-month"
+  iconHoverLabel={t("global.collections.chronologyEvents", { count: 1 })}
+  smallTitle
+/>

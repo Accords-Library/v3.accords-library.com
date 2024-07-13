@@ -147,13 +147,13 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     display: flex;
     flex-direction: column;
     gap: 24px;
-    
+
     & > h2 {
       margin-bottom: -12px;
     }
 
     & > a {
-      width: fit-content
+      width: fit-content;
     }
 
     & > p {
@@ -162,7 +162,6 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
     }
 
     &#library {
-
       & > .grid {
         @media (max-width: 40rem) {
           grid-template-columns: 1fr 1fr;

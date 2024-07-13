@@ -113,8 +113,18 @@ for (const attribute of attributes) {
   <div id="footer">
     {
       smallTitle ? (
-        <p class="font-l" lang={lang}>
-          {title}
+        <p lang={lang}>
+          {pretitle && (
+            <span id="pretitle" class="font-s">
+              {pretitle}
+            </span>
+          )}
+          <span class="font-l">{title}</span>
+          {subtitle && (
+            <span id="subtitle" class="font-m">
+              {subtitle}
+            </span>
+          )}
         </p>
       ) : (
         <p lang={lang}>
@@ -137,9 +147,7 @@ for (const attribute of attributes) {
       clippedAttributes.length > 0 && (
         <>
           {subtitle && <hr />}
-          <div id="tags">
-            <InlineAttributes attributes={clippedAttributes} />
-          </div>
+          <InlineAttributes attributes={clippedAttributes} />
         </>
       )
     }

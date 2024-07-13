@@ -1,0 +1,36 @@
+---
+import GenericPreview from "components/Previews/GenericPreview.astro";
+import { getI18n } from "src/i18n/i18n";
+import type { EndpointRecorder } from "src/shared/payload/payload-sdk";
+import type { Attribute } from "src/utils/attributes";
+import { formatLocale } from "src/utils/format";
+
+interface Props {
+  recorder: EndpointRecorder;
+}
+
+const { getLocalizedUrl, t } = await getI18n(Astro.locals.currentLocale);
+
+const {
+  recorder: { id, languages, username, avatar },
+} = Astro.props;
+
+const attributes: Attribute[] = [
+  {
+    icon: "material-symbols:translate",
+    title: t("collectibles.languages"),
+    values: languages.map((id) => ({ name: formatLocale(id) })),
+  },
+];
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<GenericPreview
+  title={username}
+  thumbnail={avatar}
+  href={getLocalizedUrl(`/recorders/${id}`)}
+  attributes={attributes}
+  icon="material-symbols:person"
+  iconHoverLabel={t("global.collections.recorders", { count: 1 })}
+/>

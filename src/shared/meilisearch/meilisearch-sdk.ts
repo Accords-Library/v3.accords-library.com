@@ -55,9 +55,12 @@ export type MeiliDocument = {
       data: EndpointRecorder;
     }
   | {
-      type: Collections.ChronologyEvents;
-      data: EndpointChronologyEvent;
-    }
+    type: Collections.ChronologyEvents;
+    data: {
+      date: EndpointChronologyEvent["date"];
+      event: EndpointChronologyEvent["events"][number];
+    };
+  }
 );
 
 export type SearchResponse<T> = {
