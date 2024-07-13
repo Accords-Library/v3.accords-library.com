@@ -8,7 +8,7 @@ import {
   isValidTheme,
   redirect,
 } from "src/middleware/utils";
-import { trackEvent } from "src/shared/analytics/analytics";
+import { analytics } from "src/services";
 
 const ninetyDaysInSeconds = 60 * 60 * 24 * 90;
 
@@ -21,7 +21,7 @@ export const actionsHandlingMiddleware = defineMiddleware(async ({ url, cookies 
       : url.pathname;
     url.pathname = getAbsoluteLocaleUrl(language, pathnameWithoutLocale);
     url.searchParams.delete("action-lang");
-    trackEvent("action-lang");
+    analytics.trackEvent("action-lang");
     cookies.set(CookieKeys.Language, language, {
       maxAge: ninetyDaysInSeconds,
       path: "/",
@@ -32,7 +32,7 @@ export const actionsHandlingMiddleware = defineMiddleware(async ({ url, cookies 
 
   const currency = url.searchParams.get("action-currency");
   if (isValidCurrency(currency)) {
-    trackEvent("action-currency");
+    analytics.trackEvent("action-currency");
     cookies.set(CookieKeys.Currency, currency, {
       maxAge: ninetyDaysInSeconds,
       path: "/",
@@ -44,7 +44,7 @@ export const actionsHandlingMiddleware = defineMiddleware(async ({ url, cookies 
 
   const theme = url.searchParams.get("action-theme");
   if (isValidTheme(theme)) {
-    trackEvent("action-theme");
+    analytics.trackEvent("action-theme");
     cookies.set(CookieKeys.Theme, theme, {
       maxAge: theme === "auto" ? 0 : ninetyDaysInSeconds,
       path: "/",

@@ -1,11 +1,4 @@
 ---
-import {
-  type EndpointCredit,
-  type EndpointImage,
-  type EndpointPayloadImage,
-  type EndpointScanImage,
-  type RichTextContent,
-} from "src/shared/payload/payload-sdk";
 import Credits from "./Credits.astro";
 import DownloadButton from "./DownloadButton.astro";
 import AppLayoutTitle from "./AppLayout/components/AppLayoutTitle.astro";
@@ -14,6 +7,13 @@ import Attributes from "./Attributes.astro";
 import { sizesToSrcset } from "src/utils/img";
 import { Icon } from "astro-icon/components";
 import RichText from "./RichText/RichText.astro";
+import type {
+  EndpointImage,
+  EndpointScanImage,
+  EndpointPayloadImage,
+  EndpointCredit,
+} from "src/shared/payload/endpoint-types";
+import type { RichTextContent } from "src/shared/payload/rich-text";
 
 interface Props {
   previousImageHref?: string | undefined;

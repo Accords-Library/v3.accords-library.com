@@ -2,12 +2,13 @@
 import ErrorMessage from "components/ErrorMessage.astro";
 import RichText from "components/RichText/RichText.astro";
 import { getI18n } from "src/i18n/i18n";
-import { Collections, type EndpointCollectible } from "src/shared/payload/payload-sdk";
 import Card from "components/Card.astro";
 import AudioPlayer from "components/AudioPlayer.astro";
 import VideoPlayer from "components/VideoPlayer.astro";
 import InlineAttributes from "components/InlineAttributes.astro";
 import { formatInlineTitle } from "src/utils/format";
+import { Collections } from "src/shared/payload/constants";
+import type { EndpointCollectible } from "src/shared/payload/endpoint-types";
 
 interface Props {
   content: EndpointCollectible["contents"][number];

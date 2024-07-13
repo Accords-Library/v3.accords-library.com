@@ -1,11 +1,11 @@
 ---
-import { type RichTextUploadImageNode } from "src/shared/payload/payload-sdk";
 import type { RichTextContext } from "src/utils/richText";
 import OpenMediaPageButton from "./OpenMediaPageButton.astro";
 import { getI18n } from "src/i18n/i18n";
 import HeaderTitle from "components/HeaderTitle.astro";
 import { Icon } from "astro-icon/components";
 import { sizesToSrcset } from "src/utils/img";
+import type { RichTextUploadImageNode } from "src/shared/payload/rich-text";
 
 interface Props {
   node: RichTextUploadImageNode;

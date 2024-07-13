@@ -1,4 +1,4 @@
-import type { PayloadImage } from "src/shared/payload/payload-sdk";
+import type { PayloadImage } from "src/shared/payload/endpoint-types";
 
 export const sizesToSrcset = (sizes: PayloadImage[]): string =>
   sizes.map(({ url, width }) => `${encodeURI(url)} ${width}w`).join(", ");

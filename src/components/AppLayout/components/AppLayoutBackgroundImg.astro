@@ -1,11 +1,11 @@
 ---
+import { getRandomId } from "src/utils/random";
+import { sizesToSrcset } from "src/utils/img";
 import type {
   EndpointImage,
   EndpointPayloadImage,
   EndpointScanImage,
-} from "src/shared/payload/payload-sdk";
-import { getRandomId } from "src/utils/random";
-import { sizesToSrcset } from "src/utils/img";
+} from "src/shared/payload/endpoint-types";
 
 interface Props {
   img: EndpointImage | EndpointPayloadImage | EndpointScanImage;

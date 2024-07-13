@@ -1,9 +1,10 @@
 ---
-import { AttributeTypes, type EndpointAttribute } from "src/shared/payload/payload-sdk";
 import InlineMetadata from "./InlineMetadata.astro";
 import { getI18n } from "src/i18n/i18n";
 import ErrorMessage from "./ErrorMessage.astro";
 import type { Attribute } from "src/utils/attributes";
+import { AttributeTypes } from "src/shared/payload/constants";
+import type { EndpointAttribute } from "src/shared/payload/endpoint-types";
 
 interface Props {
   attributes: (EndpointAttribute | Attribute)[];

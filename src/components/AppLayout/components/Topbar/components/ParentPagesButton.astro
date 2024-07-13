@@ -3,8 +3,8 @@ import Tooltip from "components/Tooltip.astro";
 import { Icon } from "astro-icon/components";
 import { getI18n } from "src/i18n/i18n";
 import ReturnToButton from "./ReturnToButton.astro";
-import type { EndpointSource } from "src/shared/payload/payload-sdk";
 import SourceRow from "components/SourceRow.astro";
+import type { EndpointSource } from "src/shared/payload/endpoint-types";
 
 interface Props {
   parentPages: EndpointSource[];

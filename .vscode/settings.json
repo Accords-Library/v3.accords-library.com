@@ -4,7 +4,7 @@
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.patterns": {
-    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, .ncurc.*, .nvmrc, *.config.cjs, *.config.js, *.config.ts, *config.json, .*ignore",
+    "package.json": ".git*, package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, .ncurc.*, .nvmrc, *.config.cjs, *.config.js, *.config.ts, *config.json, .*ignore",
     ".env": ".env.*",
     "README.md": "*.md"
   }

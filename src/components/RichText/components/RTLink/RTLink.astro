@@ -3,12 +3,12 @@ import type { RichTextContext } from "src/utils/richText";
 import RTNode from "../RTNode.astro";
 import RTCustomLink from "./components/RTCustomLink.astro";
 import RTInternalLink from "./components/RTInternalLink.astro";
+import ErrorMessage from "components/ErrorMessage.astro";
 import {
   isLinkNodeCustomLinkNode,
   isLinkNodeInternalLinkNode,
   type RichTextLinkNode,
-} from "src/shared/payload/payload-sdk";
-import ErrorMessage from "components/ErrorMessage.astro";
+} from "src/shared/payload/rich-text";
 
 interface Props {
   node: RichTextLinkNode;

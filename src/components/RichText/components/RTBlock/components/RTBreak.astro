@@ -1,7 +1,8 @@
 ---
 import type { RichTextContext } from "src/utils/richText";
-import { BreakBlockType, type RichTextBreakBlock } from "src/shared/payload/payload-sdk";
 import ErrorMessage from "components/ErrorMessage.astro";
+import { BreakBlockType } from "src/shared/payload/constants";
+import type { RichTextBreakBlock } from "src/shared/payload/rich-text";
 
 interface Props {
   node: RichTextBreakBlock;

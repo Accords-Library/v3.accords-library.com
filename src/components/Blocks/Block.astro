@@ -1,13 +1,8 @@
 ---
-import {
-  isBlockLineBlock,
-  type GenericBlock,
-  isBlockCueBlock,
-} from "src/shared/payload/payload-sdk";
-
 import LineBlock from "./components/LineBlock.astro";
 import CueBlock from "./components/CueBlock.astro";
 import ErrorMessage from "components/ErrorMessage.astro";
+import { type GenericBlock, isBlockLineBlock, isBlockCueBlock } from "src/shared/payload/blocks";
 
 interface Props {
   block: GenericBlock;

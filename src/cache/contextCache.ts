@@ -1,9 +1,9 @@
 import type {
+  EndpointLanguage,
   EndpointWebsiteConfig,
   EndpointWording,
-  Language,
-  PayloadSDK,
-} from "src/shared/payload/payload-sdk";
+} from "src/shared/payload/endpoint-types";
+import type { PayloadSDK } from "src/shared/payload/sdk";
 import { getLogger } from "src/utils/logger";
 
 export class ContextCache {
@@ -12,7 +12,7 @@ export class ContextCache {
 
   constructor(private readonly payload: PayloadSDK) {}
 
-  languages: Language[] = [];
+  languages: EndpointLanguage[] = [];
   locales: string[] = [];
   currencies: string[] = [];
   wordings: EndpointWording[] = [];

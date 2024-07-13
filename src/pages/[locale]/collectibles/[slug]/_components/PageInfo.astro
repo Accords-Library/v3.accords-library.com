@@ -1,11 +1,8 @@
 ---
 import TitleIcon from "components/TitleIcon.astro";
 import { getI18n } from "src/i18n/i18n";
-import {
-  CollectibleBindingTypes,
-  CollectiblePageOrders,
-  type EndpointCollectible,
-} from "src/shared/payload/payload-sdk";
+import { CollectibleBindingTypes, CollectiblePageOrders } from "src/shared/payload/constants";
+import type { EndpointCollectible } from "src/shared/payload/endpoint-types";
 
 interface Props {
   pageInfo: NonNullable<EndpointCollectible["pageInfo"]>;

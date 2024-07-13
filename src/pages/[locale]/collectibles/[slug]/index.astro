@@ -2,7 +2,6 @@
 import AppLayout from "components/AppLayout/AppLayout.astro";
 import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import { getI18n } from "src/i18n/i18n";
-import { CollectibleNature } from "src/shared/payload/payload-sdk";
 import { fetchOr404 } from "src/utils/responses";
 import ImageTile from "./_components/ImageTile.astro";
 import SizeInfo from "./_components/SizeInfo.astro";
@@ -20,6 +19,7 @@ import { sizesToSrcset } from "src/utils/img";
 import RichText from "components/RichText/RichText.astro";
 import SubFilesSection from "./_components/SubFilesSection.astro";
 import PriceInfo from "./_components/PriceInfo.astro";
+import { CollectibleNature } from "src/shared/payload/constants";
 
 const slug = Astro.params.slug!;
 const { getLocalizedMatch, getLocalizedUrl, t, formatDate } = await getI18n(

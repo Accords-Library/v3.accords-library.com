@@ -1,8 +1,8 @@
 ---
-import type { TableOfContentEntry } from "src/shared/payload/payload-sdk";
 import TableOfContentItem from "./components/TableOfContentItem.astro";
 import { getI18n } from "src/i18n/i18n";
 import TitleIcon from "components/TitleIcon.astro";
+import type { TableOfContentEntry } from "src/shared/payload/endpoint-types";
 
 interface Props {
   toc: TableOfContentEntry[];

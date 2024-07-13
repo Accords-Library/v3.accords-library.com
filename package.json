@@ -8,10 +8,11 @@
     "preview": "astro preview",
     "astro": "astro",
     "upgrade": "ncu",
+    "fetch-submodules": "git submodule update --recursive --remote",
     "script:download-currencies": "node --env-file=.env scripts/download-currencies.mjs",
     "script:download-wording-keys": "npm run scripts/download-wording-keys.ts",
     "prettier": "prettier --write --list-different --plugin=prettier-plugin-astro .",
-    "precommit": "npm run script:download-currencies && npm run script:download-wording-keys && npm run prettier && npm run astro check"
+    "precommit": "npm run fetch-submodules && npm run script:download-currencies && npm run script:download-wording-keys && npm run prettier && npm run astro check"
   },
   "engines": {
     "npm": ">=10.0.0",

@@ -1,15 +1,15 @@
 ---
-import {
-  isUploadNodeAudioNode,
-  isUploadNodeImageNode,
-  isUploadNodeVideoNode,
-  type RichTextUploadNode,
-} from "src/shared/payload/payload-sdk";
 import type { RichTextContext } from "src/utils/richText";
 import RTImage from "./components/RTImage.astro";
 import ErrorMessage from "components/ErrorMessage.astro";
 import RTAudio from "./components/RTAudio.astro";
 import RTVideo from "./components/RTVideo.astro";
+import {
+  type RichTextUploadNode,
+  isUploadNodeImageNode,
+  isUploadNodeAudioNode,
+  isUploadNodeVideoNode,
+} from "src/shared/payload/rich-text";
 
 interface Props {
   node: RichTextUploadNode;

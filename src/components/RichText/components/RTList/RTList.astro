@@ -2,13 +2,13 @@
 import type { RichTextContext } from "src/utils/richText";
 import RTBasicListItem from "./components/RTBasicListItem.astro";
 import RTCheckListItem from "./components/RTCheckListItem.astro";
+import ErrorMessage from "components/ErrorMessage.astro";
 import {
+  type RichTextListNode,
+  isListNodeNumberListNode,
   isListNodeBulletListNode,
   isListNodeCheckListNode,
-  isListNodeNumberListNode,
-  type RichTextListNode,
-} from "src/shared/payload/payload-sdk";
-import ErrorMessage from "components/ErrorMessage.astro";
+} from "src/shared/payload/rich-text";
 
 interface Props {
   node: RichTextListNode;

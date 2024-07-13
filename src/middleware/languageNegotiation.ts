@@ -1,5 +1,4 @@
 import { defineMiddleware } from "astro:middleware";
-import { trackEvent } from "src/shared/analytics/analytics";
 import { defaultLocale } from "src/i18n/i18n";
 import {
   getAbsoluteLocaleUrl,
@@ -8,6 +7,7 @@ import {
   getCurrentLocale,
   redirect,
 } from "src/middleware/utils";
+import { analytics } from "src/services";
 
 const localeAgnosticPaths = ["/api/"];
 
@@ -23,14 +23,14 @@ export const localeNegotiationMiddleware = defineMiddleware(({ cookies, url, req
 
   if (!currentLocale) {
     const redirectURL = getAbsoluteLocaleUrl(bestMatchingLocale, url.pathname);
-    trackEvent("locale-redirect");
+    analytics.trackEvent("locale-redirect");
     return redirect(redirectURL);
   }
 
   if (currentLocale !== bestMatchingLocale) {
     const pathnameWithoutLocale = url.pathname.substring(currentLocale.length + 1);
     const redirectURL = getAbsoluteLocaleUrl(bestMatchingLocale, pathnameWithoutLocale);
-    trackEvent("locale-redirect");
+    analytics.trackEvent("locale-redirect");
     return redirect(redirectURL);
   }
 

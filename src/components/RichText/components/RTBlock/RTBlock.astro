@@ -2,14 +2,14 @@
 import type { RichTextContext } from "src/utils/richText";
 import RTSection from "./components/RTSection.astro";
 import RTTranscript from "./components/RTTranscript.astro";
-import {
-  isBlockNodeBreakBlock,
-  isBlockNodeSectionBlock,
-  isBlockNodeTranscriptBlock,
-  type RichTextBlockNode,
-} from "src/shared/payload/payload-sdk";
 import ErrorMessage from "components/ErrorMessage.astro";
 import RTBreak from "./components/RTBreak.astro";
+import {
+  type RichTextBlockNode,
+  isBlockNodeSectionBlock,
+  isBlockNodeTranscriptBlock,
+  isBlockNodeBreakBlock,
+} from "src/shared/payload/rich-text";
 
 interface Props {
   node: RichTextBlockNode;

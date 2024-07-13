@@ -1,12 +1,12 @@
+import type { EndpointChronologyEvent } from "src/shared/payload/endpoint-types";
 import {
   isNodeLinkNode,
   isNodeListNode,
   isNodeParagraphNode,
   isNodeTextNode,
-  type EndpointChronologyEvent,
   type RichTextContent,
   type RichTextNode,
-} from "src/shared/payload/payload-sdk";
+} from "src/shared/payload/rich-text";
 import { contextCache } from "src/utils/payload";
 
 export const formatLocale = (code: string): string =>

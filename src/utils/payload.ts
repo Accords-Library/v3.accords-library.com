@@ -2,7 +2,7 @@ import { ContextCache } from "src/cache/contextCache";
 import { DataCache } from "src/cache/dataCache";
 import { PageCache } from "src/cache/pageCache";
 import { TokenCache } from "src/cache/tokenCache";
-import { PayloadSDK } from "src/shared/payload/payload-sdk";
+import { PayloadSDK } from "src/shared/payload/sdk";
 
 const tokenCache = new TokenCache();
 

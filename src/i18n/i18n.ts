@@ -1,7 +1,7 @@
 import type { WordingKey } from "src/i18n/wordings-keys";
-import type { EndpointChronologyEvent, EndpointSource } from "src/shared/payload/payload-sdk";
 import { contextCache } from "src/utils/payload";
 import { capitalize, formatInlineTitle } from "src/utils/format";
+import type { EndpointChronologyEvent, EndpointSource } from "src/shared/payload/endpoint-types";
 
 export const defaultLocale = "en";
 

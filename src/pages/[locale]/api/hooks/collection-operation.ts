@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
+import { Collections } from "src/shared/payload/constants";
+import type { AfterOperationWebHookMessage } from "src/shared/payload/webhooks";
 import { contextCache, dataCache } from "src/utils/payload.ts";
-import { Collections, type AfterOperationWebHookMessage } from "src/shared/payload/payload-sdk";
 
 export const POST: APIRoute = async ({ request }) => {
   const auth = request.headers.get("Authorization");

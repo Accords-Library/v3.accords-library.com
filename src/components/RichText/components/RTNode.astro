@@ -5,21 +5,21 @@ import RTText from "./RTText/RTText.astro";
 import RTLink from "./RTLink/RTLink.astro";
 import RTBlock from "./RTBlock/RTBlock.astro";
 import type { RichTextContext } from "src/utils/richText";
-import {
-  isNodeBlockNode,
-  isNodeLinebreakNode,
-  isNodeLinkNode,
-  isNodeListNode,
-  isNodeParagraphNode,
-  isNodeTabNode,
-  isNodeTextNode,
-  isNodeUploadNode,
-  type RichTextNode,
-} from "src/shared/payload/payload-sdk";
 import RTTab from "./RTTab.astro";
 import ErrorMessage from "components/ErrorMessage.astro";
 import RTLinebreak from "./RTLinebreak.astro";
 import RTUpload from "./RTUpload/RTUpload.astro";
+import {
+  type RichTextNode,
+  isNodeParagraphNode,
+  isNodeListNode,
+  isNodeTextNode,
+  isNodeLinebreakNode,
+  isNodeLinkNode,
+  isNodeBlockNode,
+  isNodeTabNode,
+  isNodeUploadNode,
+} from "src/shared/payload/rich-text";
 
 interface Props {
   node: RichTextNode;

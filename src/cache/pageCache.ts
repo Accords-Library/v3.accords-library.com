@@ -1,4 +1,3 @@
-import type { PayloadSDK } from "src/shared/payload/payload-sdk";
 import { getLogger } from "src/utils/logger";
 import { writeFile, mkdir, readFile } from "fs/promises";
 import { existsSync } from "fs";
@@ -7,6 +6,7 @@ import {
   serializeResponse,
   type SerializableResponse,
 } from "src/utils/responses";
+import type { PayloadSDK } from "src/shared/payload/sdk";
 
 const ON_DISK_ROOT = `.cache/pageCache`;
 const ON_DISK_RESPONSE_CACHE_FILE = `${ON_DISK_ROOT}/responseCache.json`;
