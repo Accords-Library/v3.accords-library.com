@@ -1,2 +1,2 @@
 src/shared/*
-!src/shared/analytics
+dist

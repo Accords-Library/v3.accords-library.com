@@ -8,9 +8,7 @@ interface Props {
   folder: EndpointFolder;
 }
 
-const { getLocalizedUrl, getLocalizedMatch, t } = await getI18n(
-  Astro.locals.currentLocale
-);
+const { getLocalizedUrl, getLocalizedMatch, t } = await getI18n(Astro.locals.currentLocale);
 
 const {
   folder: { translations, slug, files, sections, parentPages },

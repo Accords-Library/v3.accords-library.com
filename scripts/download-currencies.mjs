@@ -1,6 +1,7 @@
+// @ts-check
 import { writeFileSync, readFileSync, existsSync } from "fs";
 
-const OPEN_EXCHANGE_FOLDER = `${process.cwd()}/src/shared/openExchange`;
+const OPEN_EXCHANGE_FOLDER = `${process.cwd()}/src/dist/openExchange`;
 const RATE_JSON_PATH = `${OPEN_EXCHANGE_FOLDER}/rates.json`;
 const CURRENCIES_JSON_PATH = `${OPEN_EXCHANGE_FOLDER}/currencies.json`;
 const ONE_DAY_IN_MS = 1_000 * 60 * 60 * 24;
@@ -17,11 +18,13 @@ if (existsSync(RATE_JSON_PATH)) {
   }
 }
 
-const ratesUrl = `https://openexchangerates.org/api/latest.json?app_id=${
-  import.meta.env.OER_APP_ID
-}`;
+if (!process.env.OER_APP_ID) {
+  throw new Error("Missing OER_APP_ID env variable");
+}
+
+const ratesUrl = `https://openexchangerates.org/api/latest.json?app_id=${process.env.OER_APP_ID}`;
 const currenciesUrl = `https://openexchangerates.org/api/currencies.json?app_id=${
-  import.meta.env.OER_APP_ID
+  process.env.OER_APP_ID
 }`;
 
 const rates = await fetch(ratesUrl);
