@@ -13,6 +13,7 @@ import PageCredits from "./_components/PageCredits.astro";
 import type { EndpointPage } from "src/shared/payload/endpoint-types";
 
 export const partial = true;
+Astro.locals.pageCaching = false;
 
 interface Props {
   lang?: string;

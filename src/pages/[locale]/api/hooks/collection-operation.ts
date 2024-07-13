@@ -3,9 +3,10 @@ import { Collections } from "src/shared/payload/constants";
 import type { AfterOperationWebHookMessage } from "src/shared/payload/webhooks";
 import { contextCache, dataCache } from "src/services.ts";
 
-export const POST: APIRoute = async ({ request }) => {
-  const auth = request.headers.get("Authorization");
+export const POST: APIRoute = async ({ request, locals }) => {
+  locals.pageCaching = false;
 
+  const auth = request.headers.get("Authorization");
   if (auth !== `Bearer ${import.meta.env.WEB_HOOK_TOKEN}`) {
     return new Response(null, { status: 403, statusText: "Forbidden" });
   }

@@ -18,6 +18,8 @@ import ChronologyEventPreview from "components/Previews/ChronologyEventPreview.a
 import { Collections } from "src/shared/payload/constants";
 import { meilisearch } from "src/services";
 
+Astro.locals.pageCaching = false;
+
 type State = {
   q: string;
   page: number;
