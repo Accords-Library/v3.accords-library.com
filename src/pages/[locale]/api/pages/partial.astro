@@ -13,12 +13,15 @@ import PageCredits from "./_components/PageCredits.astro";
 import type { EndpointPage } from "src/shared/payload/endpoint-types";
 
 export const partial = true;
-Astro.locals.pageCaching = false;
 
 interface Props {
   lang?: string;
   slug?: string;
   page?: EndpointPage;
+}
+
+if (!Astro.props.page) {
+  Astro.locals.pageCaching = false;
 }
 
 const reqUrl = new URL(Astro.request.url);

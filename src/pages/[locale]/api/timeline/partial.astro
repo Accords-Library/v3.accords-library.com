@@ -10,13 +10,16 @@ import type { EndpointChronologyEvent } from "src/shared/payload/endpoint-types"
 import { payload } from "src/services";
 
 export const partial = true;
-Astro.locals.pageCaching = false;
 
 interface Props {
   lang?: string;
   event?: EndpointChronologyEvent;
   id?: string;
   index?: number;
+}
+
+if (!Astro.props.event) {
+  Astro.locals.pageCaching = false;
 }
 
 const reqUrl = new URL(Astro.request.url);
