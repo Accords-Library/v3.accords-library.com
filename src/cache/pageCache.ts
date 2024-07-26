@@ -6,22 +6,25 @@ import {
   serializeResponse,
   type SerializableResponse,
 } from "src/utils/responses";
-import type { PayloadSDK } from "src/shared/payload/sdk";
+import { SDKEndpointNames, type PayloadSDK } from "src/shared/payload/sdk";
+import type { EndpointChange } from "src/shared/payload/webhooks";
+import type { ContextCache } from "src/cache/contextCache";
 
 const ON_DISK_ROOT = `.cache/pageCache`;
 const ON_DISK_RESPONSE_CACHE_FILE = `${ON_DISK_ROOT}/responseCache.json`;
-const ON_DISK_INVALIDATION_MAP_FILE = `${ON_DISK_ROOT}/invalidationMap.json`;
 
 export class PageCache {
   private readonly logger = getLogger("[PageCache]");
   private initialized = false;
 
   private responseCache = new Map<string, Response>();
-  private invalidationMap = new Map<string, Set<string>>();
 
   private scheduleSaveTimeout: NodeJS.Timeout | undefined;
 
-  constructor(private readonly uncachedPayload: PayloadSDK) {}
+  constructor(
+    private readonly uncachedPayload: PayloadSDK,
+    private readonly contextCache: ContextCache
+  ) {}
 
   async init() {
     if (this.initialized) return;
@@ -35,59 +38,32 @@ export class PageCache {
 
   private async precache() {
     if (import.meta.env.DATA_CACHING !== "true") return;
-    const { data: languages } = await this.uncachedPayload.getLanguages();
-    const locales = languages.filter(({ selectable }) => selectable).map(({ id }) => id);
 
     // Get all pages urls from CMS
-    const allIds = (await this.uncachedPayload.getAllIds()).data;
-
-    const allPagesUrls = [
-      "/",
-      ...allIds.audios.ids.map((id) => `/audios/${id}`),
-      ...allIds.collectibles.slugs.map((slug) => `/collectibles/${slug}`),
-      ...allIds.files.ids.map((id) => `/files/${id}`),
-      ...allIds.folders.slugs.map((slug) => `/folders/${slug}`),
-      ...allIds.images.ids.map((id) => `/images/${id}`),
-      ...allIds.pages.slugs.map((slug) => `/pages/${slug}`),
-      ...allIds.recorders.ids.map((id) => `/recorders/${id}`),
-      "/settings",
-      "/timeline",
-      ...allIds.videos.ids.map((id) => `/videos/${id}`),
-    ].flatMap((url) => locales.map((id) => `/${id}${url}`));
+    const allDocs = (await this.uncachedPayload.getAll()).data;
+    const allPageUrls = allDocs.flatMap((doc) => this.getUrlFromEndpointChange(doc));
+    // TODO: Add static pages likes "/" and "/settings"
 
     // Load cache from disk if available
-    if (existsSync(ON_DISK_RESPONSE_CACHE_FILE) && existsSync(ON_DISK_INVALIDATION_MAP_FILE)) {
+    if (existsSync(ON_DISK_RESPONSE_CACHE_FILE)) {
       this.logger.log("Loading cache from disk...");
-      // Handle RESPONSE_CACHE_FILE
-      {
-        const buffer = await readFile(ON_DISK_RESPONSE_CACHE_FILE);
-        const data = JSON.parse(buffer.toString()) as [string, SerializableResponse][];
-        let deserializedData = data.map<[string, Response]>(([key, value]) => [
-          key,
-          deserializeResponse(value),
-        ]);
 
-        // Do not include cache where the key is no longer in the CMS
-        deserializedData = deserializedData.filter(([key]) => allPagesUrls.includes(key));
+      const buffer = await readFile(ON_DISK_RESPONSE_CACHE_FILE);
+      const data = JSON.parse(buffer.toString()) as [string, SerializableResponse][];
+      let deserializedData = data.map<[string, Response]>(([key, value]) => [
+        key,
+        deserializeResponse(value),
+      ]);
 
-        this.responseCache = new Map(deserializedData);
-      }
+      // Do not include cache where the key is no longer in the CMS
+      deserializedData = deserializedData.filter(([key]) => allPageUrls.includes(key));
 
-      // Handle INVALIDATION_MAP_FILE
-      {
-        const buffer = await readFile(ON_DISK_INVALIDATION_MAP_FILE);
-        const data = JSON.parse(buffer.toString()) as [string, string[]][];
-        const deserialize = data.map<[string, Set<string>]>(([key, value]) => [
-          key,
-          new Set(value),
-        ]);
-        this.invalidationMap = new Map(deserialize);
-      }
+      this.responseCache = new Map(deserializedData);
     }
 
     const cacheSizeBeforePrecaching = this.responseCache.size;
 
-    for (const url of allPagesUrls) {
+    for (const url of allPageUrls) {
       // Do not precache response if already included in the loaded cache from disk
       if (this.responseCache.has(url)) continue;
       try {
@@ -114,17 +90,8 @@ export class PageCache {
     return;
   }
 
-  set(url: string, response: Response, sdkCalls: string[]) {
+  set(url: string, response: Response) {
     if (import.meta.env.PAGE_CACHING !== "true") return;
-    sdkCalls.forEach((id) => {
-      const current = this.invalidationMap.get(id);
-      if (current) {
-        current.add(url);
-      } else {
-        this.invalidationMap.set(id, new Set([url]));
-      }
-    });
-
     this.responseCache.set(url, response.clone());
     this.logger.log("Cached response for", url);
     if (this.initialized) {
@@ -132,16 +99,70 @@ export class PageCache {
     }
   }
 
-  async invalidate(sdkUrls: string[]) {
-    if (import.meta.env.PAGE_CACHING !== "true") return;
-    const pagesToInvalidate = new Set<string>();
+  private getUrlFromEndpointChange(change: EndpointChange): string[] {
+    const getUnlocalizedUrl = (): string[] => {
+      switch (change.type) {
+        case SDKEndpointNames.getFolder:
+          return [`/folders/${change.slug}`];
 
-    sdkUrls.forEach((url) => {
-      const pagesForThisSDKUrl = this.invalidationMap.get(url);
-      if (!pagesForThisSDKUrl) return;
-      this.invalidationMap.delete(url);
-      [...pagesForThisSDKUrl].forEach((page) => pagesToInvalidate.add(page));
-    });
+        case SDKEndpointNames.getCollectible:
+          return [`/collectibles/${change.slug}`];
+
+        case SDKEndpointNames.getCollectibleGallery:
+          return [`/collectibles/${change.slug}/gallery`];
+
+        case SDKEndpointNames.getCollectibleGalleryImage:
+          return [`/collectibles/${change.slug}/gallery/${change.index}`];
+
+        case SDKEndpointNames.getCollectibleScans:
+          return [`/collectibles/${change.slug}/scans`];
+
+        case SDKEndpointNames.getCollectibleScanPage:
+          return [`/collectibles/${change.slug}/scans/${change.index}`];
+
+        case SDKEndpointNames.getPage:
+          return [`/pages/${change.slug}`];
+
+        case SDKEndpointNames.getAudioByID:
+          return [`/audios/${change.id}`];
+
+        case SDKEndpointNames.getImageByID:
+          return [`/images/${change.id}`];
+
+        case SDKEndpointNames.getVideoByID:
+          return [`/videos/${change.id}`];
+
+        case SDKEndpointNames.getFileByID:
+          return [`/files/${change.id}`];
+
+        case SDKEndpointNames.getRecorderByID:
+          return [`/recorders/${change.id}`];
+
+        case SDKEndpointNames.getChronologyEvents:
+        case SDKEndpointNames.getChronologyEventByID:
+          return [`/timeline`];
+
+        case SDKEndpointNames.getWebsiteConfig:
+        case SDKEndpointNames.getLanguages:
+        case SDKEndpointNames.getCurrencies:
+        case SDKEndpointNames.getWordings:
+          return [...this.responseCache.keys()];
+
+        default:
+          return [];
+      }
+    };
+
+    return getUnlocalizedUrl().flatMap((url) =>
+      this.contextCache.locales.map((id) => `/${id}${url}`)
+    );
+  }
+
+  async invalidate(changes: EndpointChange[]) {
+    if (import.meta.env.PAGE_CACHING !== "true") return;
+    const pagesToInvalidate = new Set<string>(
+      changes.flatMap((change) => this.getUrlFromEndpointChange(change))
+    );
 
     for (const url of pagesToInvalidate) {
       this.responseCache.delete(url);
@@ -181,13 +202,5 @@ export class PageCache {
       encoding: "utf-8",
     });
     this.logger.log("Saved", ON_DISK_RESPONSE_CACHE_FILE);
-
-    const serializedIdsCache = JSON.stringify(
-      [...this.invalidationMap].map(([key, value]) => [key, [...value]])
-    );
-    await writeFile(ON_DISK_INVALIDATION_MAP_FILE, serializedIdsCache, {
-      encoding: "utf-8",
-    });
-    this.logger.log("Saved", ON_DISK_INVALIDATION_MAP_FILE);
   }
 }

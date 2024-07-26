@@ -29,7 +29,6 @@ const index = Astro.props.index ?? parseInt(reqUrl.searchParams.get("index")!);
 const event = await (async () => {
   if (Astro.props.event) return Astro.props.event;
   const response = await payload.getChronologyEventByID(id);
-  Astro.locals.sdkCalls.add(response.endpointCalled);
   return response.data;
 })();
 const { sources, translations } = event.events[index]!;

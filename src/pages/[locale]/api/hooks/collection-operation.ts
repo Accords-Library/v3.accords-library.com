@@ -1,7 +1,6 @@
 import type { APIRoute } from "astro";
-import { Collections } from "src/shared/payload/constants";
-import type { AfterOperationWebHookMessage } from "src/shared/payload/webhooks";
-import { contextCache, dataCache } from "src/services.ts";
+import { contextCache, dataCache, pageCache } from "src/services.ts";
+import type { EndpointChange } from "src/shared/payload/webhooks";
 
 export const POST: APIRoute = async ({ request, locals }) => {
   locals.pageCaching = false;
@@ -11,38 +10,17 @@ export const POST: APIRoute = async ({ request, locals }) => {
     return new Response(null, { status: 403, statusText: "Forbidden" });
   }
 
-  const message = (await request.json()) as AfterOperationWebHookMessage;
-  console.log("[Webhook] Received messages from CMS:", message);
+  const changes = (await request.json()) as EndpointChange[];
+  console.log("[Webhook] Received messages from CMS:", changes);
 
   // Not awaiting on purpose to respond with a 202 and not block the CMS
-  handleWebHookMessage(message);
+  handleWebHookMessage(changes);
 
   return new Response(null, { status: 202, statusText: "Accepted" });
 };
 
-const handleWebHookMessage = async ({
-  addedDependantIds,
-  collection,
-  urls,
-  id,
-}: AfterOperationWebHookMessage) => {
-  await dataCache.invalidate([...(id ? [id] : []), ...addedDependantIds], urls);
-
-  switch (collection) {
-    case Collections.Wordings:
-      await contextCache.refreshWordings();
-      break;
-
-    case Collections.Currencies:
-      await contextCache.refreshCurrencies();
-      break;
-
-    case Collections.Languages:
-      await contextCache.refreshLocales();
-      break;
-
-    case Collections.WebsiteConfig:
-      await contextCache.refreshWebsiteConfig();
-      break;
-  }
+const handleWebHookMessage = async (changes: EndpointChange[]) => {
+  await dataCache.invalidate(changes);
+  await contextCache.invalidate(changes);
+  await pageCache.invalidate(changes);
 };

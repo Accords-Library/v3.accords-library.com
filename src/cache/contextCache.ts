@@ -3,7 +3,8 @@ import type {
   EndpointWebsiteConfig,
   EndpointWording,
 } from "src/shared/payload/endpoint-types";
-import type { PayloadSDK } from "src/shared/payload/sdk";
+import { SDKEndpointNames, type PayloadSDK } from "src/shared/payload/sdk";
+import type { EndpointChange } from "src/shared/payload/webhooks";
 import { getLogger } from "src/utils/logger";
 
 export class ContextCache {
@@ -35,24 +36,42 @@ export class ContextCache {
     await this.refreshWordings();
   }
 
-  async refreshWordings() {
+  async invalidate(changes: EndpointChange[]) {
+    for (const change of changes) {
+      switch (change.type) {
+        case SDKEndpointNames.getWordings:
+          return await this.refreshWordings();
+
+        case SDKEndpointNames.getLanguages:
+          return await this.refreshLocales();
+
+        case SDKEndpointNames.getCurrencies:
+          return await this.refreshCurrencies();
+
+        case SDKEndpointNames.getWebsiteConfig:
+          return await this.refreshWebsiteConfig();
+      }
+    }
+  }
+
+  private async refreshWordings() {
     this.wordings = (await this.payload.getWordings()).data;
     this.logger.log("Wordings refreshed");
   }
 
-  async refreshCurrencies() {
+  private async refreshCurrencies() {
     this.currencies = (await this.payload.getCurrencies()).data.map(({ id }) => id);
     this.logger.log("Currencies refreshed");
   }
 
-  async refreshLocales() {
+  private async refreshLocales() {
     this.languages = (await this.payload.getLanguages()).data;
     this.locales = this.languages.filter(({ selectable }) => selectable).map(({ id }) => id);
     this.logger.log("Locales refreshed");
   }
 
-  async refreshWebsiteConfig() {
-    this.config = (await this.payload.getConfig()).data;
+  private async refreshWebsiteConfig() {
+    this.config = (await this.payload.getWebsiteConfig()).data;
     this.logger.log("WebsiteConfig refreshed");
   }
 }

@@ -17,7 +17,6 @@ const response = await fetchOr404(() => payload.getAudioByID(id));
 if (response instanceof Response) {
   return response;
 }
-Astro.locals.sdkCalls.add(response.endpointCalled);
 const audio = response.data;
 
 const { getLocalizedMatch, t, formatFilesize, formatDate } = await getI18n(
@@ -34,6 +33,7 @@ const {
   updatedAt,
   thumbnail,
   mimeType,
+  backlinks,
 } = audio;
 
 const { pretitle, title, subtitle, description, language } = getLocalizedMatch(translations);
@@ -73,6 +73,7 @@ const metaAttributes = [
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <AppLayout
+  backlinks={backlinks}
   openGraph={{
     title: formatInlineTitle({ pretitle, title, subtitle }),
     description: description && formatRichTextToString(description),

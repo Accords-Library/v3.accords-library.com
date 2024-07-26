@@ -16,8 +16,7 @@ const response = await fetchOr404(() => payload.getCollectibleScanPage(slug, ind
 if (response instanceof Response) {
   return response;
 }
-Astro.locals.sdkCalls.add(response.endpointCalled);
-const { parentPages, previousIndex, nextIndex, image, translations } = response.data;
+const { backlinks, previousIndex, nextIndex, image, translations } = response.data;
 
 const translation = getLocalizedMatch(translations);
 ---
@@ -29,7 +28,7 @@ const translation = getLocalizedMatch(translations);
     title: `${formatInlineTitle(translation)} (${index})`,
     description: translation.description && formatRichTextToString(translation.description),
   }}
-  parentPages={parentPages}>
+  backlinks={backlinks}>
   <Lightbox
     image={image}
     title={formatScanIndexShort(index)}

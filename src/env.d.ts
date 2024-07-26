@@ -4,7 +4,6 @@
 declare namespace App {
   interface Locals {
     currentLocale: string;
-    sdkCalls: Set<string>;
     pageCaching: boolean;
   }
 }

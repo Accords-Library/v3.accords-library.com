@@ -4,12 +4,11 @@ import Topbar from "./components/Topbar/Topbar.astro";
 import Footer from "./components/Footer.astro";
 import AppLayoutBackgroundImg from "./components/AppLayoutBackgroundImg.astro";
 import type { ComponentProps } from "astro/types";
-import type { EndpointSource } from "src/shared/payload/endpoint-types";
-import { getSDKEndpoint } from "src/shared/payload/sdk";
+import type { EndpointRelation } from "src/shared/payload/endpoint-types";
 
 interface Props {
   openGraph?: ComponentProps<typeof Html>["openGraph"];
-  parentPages?: EndpointSource[];
+  backlinks?: EndpointRelation[];
   backgroundImage?: ComponentProps<typeof AppLayoutBackgroundImg>["img"] | undefined;
   hideFooterLinks?: boolean;
   hideHomeButton?: boolean;
@@ -17,13 +16,9 @@ interface Props {
   class?: string | undefined;
 }
 
-Astro.locals.sdkCalls.add(getSDKEndpoint.getCurrenciesEndpoint());
-Astro.locals.sdkCalls.add(getSDKEndpoint.getLanguagesEndpoint());
-Astro.locals.sdkCalls.add(getSDKEndpoint.getWordingsEndpoint());
-
 const {
   openGraph,
-  parentPages,
+  backlinks,
   backgroundImage,
   hideFooterLinks = false,
   hideHomeButton = false,
@@ -38,7 +33,7 @@ const {
   {backgroundImage && <AppLayoutBackgroundImg img={backgroundImage} />}
   <header>
     <Topbar
-      parentPages={parentPages}
+      backlinks={backlinks}
       hideHomeButton={hideHomeButton}
       hideSearchButton={hideSearchButton}
     />

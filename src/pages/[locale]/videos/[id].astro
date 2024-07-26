@@ -17,7 +17,6 @@ const response = await fetchOr404(() => payload.getVideoByID(id));
 if (response instanceof Response) {
   return response;
 }
-Astro.locals.sdkCalls.add(response.endpointCalled);
 const video = response.data;
 const {
   translations,
@@ -30,6 +29,7 @@ const {
   createdAt,
   thumbnail,
   mimeType,
+  backlinks,
 } = video;
 
 const { getLocalizedMatch, t, formatFilesize, formatDate } = await getI18n(
@@ -73,6 +73,7 @@ const metaAttributes = [
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <AppLayout
+  backlinks={backlinks}
   openGraph={{
     title: formatInlineTitle({ pretitle, title, subtitle }),
     description: description && formatRichTextToString(description),

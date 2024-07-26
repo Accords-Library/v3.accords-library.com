@@ -32,7 +32,6 @@ const { translations, thumbnail, createdAt, updatedAt, updatedBy, attributes } =
   await (async () => {
     if (Astro.props.page) return Astro.props.page;
     const response = await payload.getPage(slug);
-    Astro.locals.sdkCalls.add(response.endpointCalled);
     return response.data;
   })();
 

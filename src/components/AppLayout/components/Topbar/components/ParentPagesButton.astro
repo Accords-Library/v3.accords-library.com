@@ -3,14 +3,14 @@ import Tooltip from "components/Tooltip.astro";
 import { Icon } from "astro-icon/components";
 import { getI18n } from "src/i18n/i18n";
 import ReturnToButton from "./ReturnToButton.astro";
-import SourceRow from "components/SourceRow.astro";
-import type { EndpointSource } from "src/shared/payload/endpoint-types";
+import RelationRow from "components/RelationRow.astro";
+import type { EndpointRelation } from "src/shared/payload/endpoint-types";
 
 interface Props {
-  parentPages: EndpointSource[];
+  backlinks: EndpointRelation[];
 }
 
-const { parentPages } = Astro.props;
+const { backlinks } = Astro.props;
 
 const { t } = await getI18n(Astro.locals.currentLocale);
 ---
@@ -18,15 +18,15 @@ const { t } = await getI18n(Astro.locals.currentLocale);
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 {
-  parentPages.length === 1 && parentPages[0] ? (
-    <ReturnToButton parentPage={parentPages[0]} />
+  backlinks.length === 1 && backlinks[0] ? (
+    <ReturnToButton relation={backlinks[0]} />
   ) : (
     <Tooltip trigger="click" class="when-js">
       <div id="tooltip-content" slot="tooltip-content">
         <p>{t("header.nav.parentPages.tooltip")}</p>
         <div>
-          {parentPages.map((parentPage) => (
-            <SourceRow source={parentPage} />
+          {backlinks.map((relation) => (
+            <RelationRow relation={relation} />
           ))}
         </div>
       </div>
@@ -34,7 +34,7 @@ const { t } = await getI18n(Astro.locals.currentLocale);
         <Icon name="material-symbols:keyboard-return" />
         <p>
           {t("header.nav.parentPages.label", {
-            count: parentPages.length,
+            count: backlinks.length,
           })}
         </p>
       </button>

@@ -1,13 +1,13 @@
 ---
 import { getI18n } from "src/i18n/i18n";
-import type { EndpointSource } from "src/shared/payload/endpoint-types";
+import type { EndpointRelation } from "src/shared/payload/endpoint-types";
 
 interface Props {
-  source: EndpointSource;
+  relation: EndpointRelation;
 }
 
-const { source } = Astro.props;
-const { formatEndpointSource } = await getI18n(Astro.locals.currentLocale);
+const { relation } = Astro.props;
+const { formatEndpointRelation } = await getI18n(Astro.locals.currentLocale);
 
 const {
   href,
@@ -16,7 +16,7 @@ const {
   target = undefined,
   rel = undefined,
   lang,
-} = formatEndpointSource(source);
+} = formatEndpointRelation(relation);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}

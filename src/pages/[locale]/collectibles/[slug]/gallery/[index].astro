@@ -17,8 +17,7 @@ const response = await fetchOr404(() => payload.getCollectibleGalleryImage(slug,
 if (response instanceof Response) {
   return response;
 }
-Astro.locals.sdkCalls.add(response.endpointCalled);
-const { parentPages, previousIndex, nextIndex, image } = response.data;
+const { backlinks, previousIndex, nextIndex, image } = response.data;
 
 const { filename, translations, createdAt, updatedAt, credits, attributes, mimeType } = image;
 
@@ -67,7 +66,7 @@ const metaAttributes = [
     description: description && formatRichTextToString(description),
     thumbnail: image,
   }}
-  parentPages={parentPages}>
+  backlinks={backlinks}>
   <Lightbox
     image={image}
     pretitle={pretitle}

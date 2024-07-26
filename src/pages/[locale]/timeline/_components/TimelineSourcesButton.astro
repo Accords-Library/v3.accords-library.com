@@ -1,12 +1,12 @@
 ---
 import { Icon } from "astro-icon/components";
-import SourceRow from "components/SourceRow.astro";
+import RelationRow from "components/RelationRow.astro";
 import Tooltip from "components/Tooltip.astro";
 import { getI18n } from "src/i18n/i18n";
-import type { EndpointSource } from "src/shared/payload/endpoint-types";
+import type { EndpointRelation } from "src/shared/payload/endpoint-types";
 
 interface Props {
-  sources: EndpointSource[];
+  sources: EndpointRelation[];
 }
 
 const { sources } = Astro.props;
@@ -26,7 +26,7 @@ const { t } = await getI18n(Astro.locals.currentLocale);
     <Tooltip trigger="click">
       <div id="tooltip-content" slot="tooltip-content">
         {sources.map((source) => (
-          <SourceRow source={source} />
+          <RelationRow relation={source} />
         ))}
       </div>
       <button class="pressable-label">

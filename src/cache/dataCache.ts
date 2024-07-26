@@ -2,6 +2,7 @@ import { getLogger } from "src/utils/logger";
 import { writeFile, mkdir, readFile } from "fs/promises";
 import { existsSync } from "fs";
 import type { PayloadSDK } from "src/shared/payload/sdk";
+import type { EndpointChange } from "src/shared/payload/webhooks";
 
 const ON_DISK_ROOT = `.cache/dataCache`;
 const ON_DISK_RESPONSE_CACHE_FILE = `${ON_DISK_ROOT}/responseCache.json`;
@@ -11,14 +12,12 @@ export class DataCache {
   private initialized = false;
 
   private readonly responseCache = new Map<string, any>();
-  private readonly invalidationMap = new Map<string, Set<string>>();
 
   private scheduleSaveTimeout: NodeJS.Timeout | undefined;
 
   constructor(
     private readonly payload: PayloadSDK,
-    private readonly uncachedPayload: PayloadSDK,
-    private readonly onInvalidate: (urls: string[]) => Promise<void>
+    private readonly uncachedPayload: PayloadSDK
   ) {}
 
   async init() {
@@ -32,8 +31,8 @@ export class DataCache {
   }
 
   private async precache() {
-    // Get all keys from CMS
-    const allSDKUrls = (await this.uncachedPayload.getAllSdkUrls()).data.urls;
+    // Get all documents from CMS
+    const allDocs = (await this.uncachedPayload.getAll()).data;
 
     // Load cache from disk if available
     if (existsSync(ON_DISK_RESPONSE_CACHE_FILE)) {
@@ -42,20 +41,20 @@ export class DataCache {
       const data = JSON.parse(buffer.toString()) as [string, any][];
       for (const [key, value] of data) {
         // Do not include cache where the key is no longer in the CMS
-        if (!allSDKUrls.includes(key)) continue;
+        if (!allDocs.find(({ url }) => url === key)) continue;
         this.set(key, value);
       }
     }
 
     const cacheSizeBeforePrecaching = this.responseCache.size;
 
-    for (const url of allSDKUrls) {
+    for (const doc of allDocs) {
       // Do not precache response if already included in the loaded cache from disk
-      if (this.responseCache.has(url)) continue;
+      if (this.responseCache.has(doc.url)) continue;
       try {
-        await this.payload.request(url);
+        await this.payload.request(doc.url);
       } catch {
-        this.logger.warn("Precaching failed for url", url);
+        this.logger.warn("Precaching failed for url", doc.url);
       }
     }
 
@@ -77,20 +76,6 @@ export class DataCache {
 
   set(url: string, response: any) {
     if (import.meta.env.DATA_CACHING !== "true") return;
-    const stringData = JSON.stringify(response);
-    const regex = /[a-f0-9]{24}/g;
-    const ids = [...stringData.matchAll(regex)].map((match) => match[0]);
-    const uniqueIds = [...new Set(ids)];
-
-    uniqueIds.forEach((id) => {
-      const current = this.invalidationMap.get(id);
-      if (current) {
-        current.add(url);
-      } else {
-        this.invalidationMap.set(id, new Set([url]));
-      }
-    });
-
     this.responseCache.set(url, response);
     this.logger.log("Cached response for", url);
     if (this.initialized) {
@@ -98,18 +83,11 @@ export class DataCache {
     }
   }
 
-  async invalidate(ids: string[], urls: string[]) {
+  async invalidate(changes: EndpointChange[]) {
     if (import.meta.env.DATA_CACHING !== "true") return;
-    const urlsToInvalidate = new Set<string>(urls);
 
-    ids.forEach((id) => {
-      const urlsForThisId = this.invalidationMap.get(id);
-      if (!urlsForThisId) return;
-      this.invalidationMap.delete(id);
-      [...urlsForThisId].forEach((url) => urlsToInvalidate.add(url));
-    });
-
-    for (const url of urlsToInvalidate) {
+    const urls = changes.map(({ url }) => url);
+    for (const url of urls) {
       this.responseCache.delete(url);
       this.logger.log("Invalidated cache for", url);
       try {
@@ -118,8 +96,6 @@ export class DataCache {
         this.logger.log("Revalidation fails for", url);
       }
     }
-
-    this.onInvalidate([...urlsToInvalidate]);
     this.logger.log("There are currently", this.responseCache.size, "responses in cache.");
     if (this.initialized) {
       this.scheduleSave();

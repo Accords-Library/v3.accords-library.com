@@ -12,7 +12,6 @@ const response = await fetchOr404(() => payload.getImageByID(id));
 if (response instanceof Response) {
   return response;
 }
-Astro.locals.sdkCalls.add(response.endpointCalled);
 const image = response.data;
 const {
   filename,
@@ -25,6 +24,7 @@ const {
   filesize,
   width,
   height,
+  backlinks,
 } = image;
 
 const { getLocalizedMatch, formatDate, t, formatFilesize, formatNumber } = await getI18n(
@@ -83,6 +83,7 @@ const metaAttributes = [
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <AppLayout
+  backlinks={backlinks}
   openGraph={{
     title: formatInlineTitle({ pretitle, title, subtitle }),
     description: description && formatRichTextToString(description),

@@ -1,6 +1,7 @@
 ---
 import GenericPreview from "components/Previews/GenericPreview.astro";
 import { getI18n } from "src/i18n/i18n";
+import { Collections } from "src/shared/payload/constants";
 import type { EndpointFolder } from "src/shared/payload/endpoint-types";
 import type { Attribute } from "src/utils/attributes";
 
@@ -11,7 +12,7 @@ interface Props {
 const { getLocalizedUrl, getLocalizedMatch, t } = await getI18n(Astro.locals.currentLocale);
 
 const {
-  folder: { translations, slug, files, sections, parentPages },
+  folder: { translations, slug, files, sections, backlinks },
 } = Astro.props;
 
 const { language, title } = getLocalizedMatch(translations);
@@ -32,9 +33,9 @@ const attributes: Attribute[] = [
   {
     icon: "material-symbols:keyboard-return",
     title: t("global.folders.attributes.parent"),
-    values: parentPages.flatMap((parent) => {
-      if (parent.type !== "folder") return [];
-      const name = getLocalizedMatch(parent.folder.translations).title;
+    values: backlinks.flatMap((link) => {
+      if (link.type !== Collections.Folders) return [];
+      const name = getLocalizedMatch(link.value.translations).title;
       return { name };
     }),
   },

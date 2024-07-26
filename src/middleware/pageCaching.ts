@@ -26,7 +26,7 @@ export const pageCachingMiddleware = defineMiddleware(async ({ url, request, loc
     response.headers.set("Last-Modified", new Date().toUTCString());
 
     if (locals.pageCaching) {
-      pageCache.set(pathname, response, [...locals.sdkCalls]);
+      pageCache.set(pathname, response);
     }
   }
 
