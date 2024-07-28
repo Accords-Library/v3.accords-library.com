@@ -7,11 +7,13 @@ import { actionsHandlingMiddleware } from "src/middleware/actionsHandling";
 import { requestTrackingMiddleware } from "src/middleware/requestTracking";
 import { pageCachingMiddleware } from "src/middleware/pageCaching";
 import { setAstroLocalsMiddleware } from "src/middleware/setAstroLocals";
+import { removeTrailingSlashMiddleware } from "src/middleware/removeTrailingSlash";
 
 export const onRequest = sequence(
   // Possible redirect
   actionsHandlingMiddleware,
   localeNegotiationMiddleware,
+  removeTrailingSlashMiddleware,
 
   addCommonHeadersMiddleware,
 

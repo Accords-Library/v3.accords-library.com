@@ -11,6 +11,7 @@ export default defineConfig({
   srcDir: "./src",
   publicDir: "./public",
   outDir: "./dist",
+  trailingSlash: "never",
   adapter: node({
     mode: "standalone",
   }),
