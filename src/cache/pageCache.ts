@@ -26,6 +26,25 @@ export class PageCache {
     private readonly contextCache: ContextCache
   ) {}
 
+  get(url: string): Response | undefined {
+    if (import.meta.env.PAGE_CACHING !== "true") return;
+    const cachedPage = this.responseCache.get(url);
+    if (cachedPage) {
+      this.logger.log("Retrieved cached page for", url);
+      return cachedPage?.clone();
+    }
+    return;
+  }
+
+  set(url: string, response: Response) {
+    if (import.meta.env.PAGE_CACHING !== "true") return;
+    this.responseCache.set(url, response.clone());
+    this.logger.log("Cached response for", url);
+    if (this.initialized) {
+      this.scheduleSave();
+    }
+  }
+
   async init() {
     if (this.initialized) return;
 
@@ -39,10 +58,7 @@ export class PageCache {
   private async precache() {
     if (import.meta.env.DATA_CACHING !== "true") return;
 
-    // Get all pages urls from CMS
-    const allDocs = (await this.uncachedPayload.getAll()).data;
-    const allPageUrls = allDocs.flatMap((doc) => this.getUrlFromEndpointChange(doc));
-    // TODO: Add static pages likes "/" and "/settings"
+    const allPageUrls = await this.getAllUrls();
 
     // Load cache from disk if available
     if (existsSync(ON_DISK_RESPONSE_CACHE_FILE)) {
@@ -56,7 +72,7 @@ export class PageCache {
       ]);
 
       // Do not include cache where the key is no longer in the CMS
-      deserializedData = deserializedData.filter(([key]) => allPageUrls.includes(key));
+      deserializedData = deserializedData.filter(([key]) => allPageUrls.has(key));
 
       this.responseCache = new Map(deserializedData);
     }
@@ -80,23 +96,96 @@ export class PageCache {
     this.logger.log("Precaching completed!", this.responseCache.size, "responses cached");
   }
 
-  get(url: string): Response | undefined {
+  async invalidate(changes: EndpointChange[]) {
     if (import.meta.env.PAGE_CACHING !== "true") return;
-    const cachedPage = this.responseCache.get(url);
-    if (cachedPage) {
-      this.logger.log("Retrieved cached page for", url);
-      return cachedPage?.clone();
-    }
-    return;
-  }
 
-  set(url: string, response: Response) {
-    if (import.meta.env.PAGE_CACHING !== "true") return;
-    this.responseCache.set(url, response.clone());
-    this.logger.log("Cached response for", url);
+    if (
+      changes.some(({ type }) =>
+        [
+          SDKEndpointNames.getWebsiteConfig,
+          SDKEndpointNames.getLanguages,
+          SDKEndpointNames.getCurrencies,
+          SDKEndpointNames.getWordings,
+        ].includes(type)
+      )
+    ) {
+      await this.resetAllUrls();
+      return;
+    }
+
+    const pagesToInvalidate = new Set<string>(
+      changes.flatMap((change) => this.getUrlFromEndpointChange(change))
+    );
+
+    for (const url of pagesToInvalidate) {
+      this.responseCache.delete(url);
+      this.logger.log("Invalidated cache for", url);
+      try {
+        await fetch(`http://${import.meta.env.ASTRO_HOST}:${import.meta.env.ASTRO_PORT}${url}`);
+      } catch (e) {
+        this.logger.log("Revalidation fails for", url);
+      }
+    }
+
+    this.logger.log("There are currently", this.responseCache.size, "responses in cache.");
     if (this.initialized) {
       this.scheduleSave();
     }
+  }
+
+  private async resetAllUrls() {
+    const allUrls = await this.getAllUrls();
+    this.responseCache.clear();
+
+    for (const url of allUrls) {
+      try {
+        await fetch(`http://${import.meta.env.ASTRO_HOST}:${import.meta.env.ASTRO_PORT}${url}`);
+      } catch (e) {
+        this.logger.warn("Reset failed for page", url);
+      }
+    }
+
+    if (this.initialized) {
+      this.scheduleSave();
+    }
+  }
+
+  private scheduleSave() {
+    if (this.scheduleSaveTimeout) {
+      clearTimeout(this.scheduleSaveTimeout);
+    }
+    this.scheduleSaveTimeout = setTimeout(() => {
+      this.save();
+    }, 10_000);
+  }
+
+  private async save() {
+    if (!existsSync(ON_DISK_ROOT)) {
+      await mkdir(ON_DISK_ROOT, { recursive: true });
+    }
+
+    const serializedResponses = await Promise.all(
+      [...this.responseCache].map(async ([key, value]) => [key, await serializeResponse(value)])
+    );
+    const serializedResponseCache = JSON.stringify(serializedResponses);
+    await writeFile(ON_DISK_RESPONSE_CACHE_FILE, serializedResponseCache, {
+      encoding: "utf-8",
+    });
+    this.logger.log("Saved", ON_DISK_RESPONSE_CACHE_FILE);
+  }
+
+  /* -------------------------------------------------------------------------------------------- */
+
+  private getLocalizedUrlsFromUrl = (urls: string[]) => {
+    return urls.flatMap((url) => this.contextCache.locales.map((id) => `/${id}${url}`));
+  };
+
+  private async getAllUrls() {
+    const allChanges = (await this.uncachedPayload.getAll()).data;
+    return new Set<string>([
+      ...this.getLocalizedUrlsFromUrl(["", "/settings", "/search"]),
+      ...allChanges.flatMap((change) => this.getUrlFromEndpointChange(change)),
+    ]);
   }
 
   private getUrlFromEndpointChange(change: EndpointChange): string[] {
@@ -142,65 +231,11 @@ export class PageCache {
         case SDKEndpointNames.getChronologyEventByID:
           return [`/timeline`];
 
-        case SDKEndpointNames.getWebsiteConfig:
-        case SDKEndpointNames.getLanguages:
-        case SDKEndpointNames.getCurrencies:
-        case SDKEndpointNames.getWordings:
-          return [...this.responseCache.keys()];
-
         default:
           return [];
       }
     };
 
-    return getUnlocalizedUrl().flatMap((url) =>
-      this.contextCache.locales.map((id) => `/${id}${url}`)
-    );
-  }
-
-  async invalidate(changes: EndpointChange[]) {
-    if (import.meta.env.PAGE_CACHING !== "true") return;
-    const pagesToInvalidate = new Set<string>(
-      changes.flatMap((change) => this.getUrlFromEndpointChange(change))
-    );
-
-    for (const url of pagesToInvalidate) {
-      this.responseCache.delete(url);
-      this.logger.log("Invalidated cache for", url);
-      try {
-        await fetch(`http://${import.meta.env.ASTRO_HOST}:${import.meta.env.ASTRO_PORT}${url}`);
-      } catch (e) {
-        this.logger.log("Revalidation fails for", url);
-      }
-    }
-
-    this.logger.log("There are currently", this.responseCache.size, "responses in cache.");
-    if (this.initialized) {
-      this.scheduleSave();
-    }
-  }
-
-  private scheduleSave() {
-    if (this.scheduleSaveTimeout) {
-      clearTimeout(this.scheduleSaveTimeout);
-    }
-    this.scheduleSaveTimeout = setTimeout(() => {
-      this.save();
-    }, 10_000);
-  }
-
-  private async save() {
-    if (!existsSync(ON_DISK_ROOT)) {
-      await mkdir(ON_DISK_ROOT, { recursive: true });
-    }
-
-    const serializedResponses = await Promise.all(
-      [...this.responseCache].map(async ([key, value]) => [key, await serializeResponse(value)])
-    );
-    const serializedResponseCache = JSON.stringify(serializedResponses);
-    await writeFile(ON_DISK_RESPONSE_CACHE_FILE, serializedResponseCache, {
-      encoding: "utf-8",
-    });
-    this.logger.log("Saved", ON_DISK_RESPONSE_CACHE_FILE);
+    return this.getLocalizedUrlsFromUrl(getUnlocalizedUrl());
   }
 }
