@@ -7,6 +7,8 @@ import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
 import { getFileIcon } from "src/utils/attributes";
 
+Astro.locals.pageCaching = false;
+
 const slug = Astro.params.slug!;
 const index = Astro.params.index!;
 const { getLocalizedUrl, getLocalizedMatch, t, formatDate } = await getI18n(

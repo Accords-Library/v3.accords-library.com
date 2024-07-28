@@ -6,6 +6,8 @@ import { payload } from "src/services";
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
 import { fetchOr404 } from "src/utils/responses";
 
+Astro.locals.pageCaching = false;
+
 const slug = Astro.params.slug!;
 const index = Astro.params.index!;
 const { formatScanIndexShort, getLocalizedMatch, getLocalizedUrl } = await getI18n(

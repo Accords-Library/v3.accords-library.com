@@ -200,14 +200,14 @@ export class PageCache {
         case SDKEndpointNames.getCollectibleGallery:
           return [`/collectibles/${change.slug}/gallery`];
 
-        case SDKEndpointNames.getCollectibleGalleryImage:
-          return [`/collectibles/${change.slug}/gallery/${change.index}`];
+        // case SDKEndpointNames.getCollectibleGalleryImage:
+        //   return [`/collectibles/${change.slug}/gallery/${change.index}`];
 
         case SDKEndpointNames.getCollectibleScans:
           return [`/collectibles/${change.slug}/scans`];
 
-        case SDKEndpointNames.getCollectibleScanPage:
-          return [`/collectibles/${change.slug}/scans/${change.index}`];
+        // case SDKEndpointNames.getCollectibleScanPage:
+        //   return [`/collectibles/${change.slug}/scans/${change.index}`];
 
         case SDKEndpointNames.getPage:
           return [`/pages/${change.slug}`];
