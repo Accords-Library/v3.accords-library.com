@@ -19,6 +19,7 @@ import { Collections } from "src/shared/payload/constants";
 import { meilisearch } from "src/services";
 
 Astro.locals.pageCaching = false;
+Astro.response.headers.set("Cache-Control", "no-store");
 
 type State = {
   q: string;

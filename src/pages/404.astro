@@ -3,6 +3,8 @@ import AppLayout from "components/AppLayout/AppLayout.astro";
 import Button from "components/Button.astro";
 import { getI18n } from "src/i18n/i18n";
 
+Astro.response.headers.set("Cache-Control", "no-store");
+
 const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
 

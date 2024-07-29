@@ -4,6 +4,8 @@ import Button from "components/Button.astro";
 import Card from "components/Card.astro";
 import { getI18n } from "src/i18n/i18n";
 
+Astro.response.headers.set("Cache-Control", "no-store");
+
 interface Props {
   error: unknown;
 }
