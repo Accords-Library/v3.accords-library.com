@@ -12,7 +12,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
   <div id="text-container">
     <h1 class="font-serif font-5xl">404</h1>
     <h2 class="font-4xl">Not found</h2>
-    <a href={getLocalizedUrl("/")}>
+    <a href={getLocalizedUrl("")}>
       <Button icon="material-symbols:home" title={t("home.title")} />
     </a>
   </div>
