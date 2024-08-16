@@ -16,7 +16,7 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
   openGraph={{ title: t("home.title") }}
   backgroundImage={contextCache.config.home.backgroundImage}
   hideFooterLinks
-  hideHomeButton
+  topBar={{ hideHomeButton: true }}
   class="app">
   <HomeTitle />
   <p class="prose" set:html={t("home.description")} />

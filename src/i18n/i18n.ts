@@ -1,6 +1,11 @@
 import type { WordingKey } from "src/i18n/wordings-keys";
 import { contextCache } from "src/services";
-import { capitalize, formatInlineTitle } from "src/utils/format";
+import {
+  capitalize,
+  formatInlineTitle,
+  formatRichTextToString,
+  formatTimelineDateToId,
+} from "src/utils/format";
 import type { EndpointChronologyEvent, EndpointRelation } from "src/shared/payload/endpoint-types";
 import { Collections } from "src/shared/payload/constants";
 
@@ -281,9 +286,16 @@ export const getI18n = async (locale: string) => {
           }
         };
 
+        const suffix =
+          relation.subpage === "scans"
+            ? "/scans"
+            : relation.subpage === "gallery"
+              ? "/gallery"
+              : "";
+
         const translation = getLocalizedMatch(relation.value.translations);
         return {
-          href: getLocalizedUrl(`/collectibles/${relation.value.slug}`),
+          href: getLocalizedUrl(`/collectibles/${relation.value.slug}${suffix}`),
           typeLabel: t("global.sources.typeLabel.collectible"),
           label: formatInlineTitle(translation) + getRangeLabel(),
           lang: translation.language,
@@ -310,21 +322,37 @@ export const getI18n = async (locale: string) => {
         };
       }
 
+      case Collections.ChronologyEvents: {
+        if (!relation.value.events[0]) break;
+
+        const translation = getLocalizedMatch(relation.value.events[0].translations);
+        let label =
+          translation.title ??
+          (translation.description && formatRichTextToString(translation.description));
+        if (!label) break;
+
+        return {
+          href: getLocalizedUrl(`/timeline#${formatTimelineDateToId(relation.value.date)}`),
+          typeLabel: t("global.sources.typeLabel.timeline"),
+          label,
+        };
+      }
+
       /* TODO: Handle other types of relations */
       case Collections.Audios:
-      case Collections.ChronologyEvents:
       case Collections.Files:
       case Collections.Images:
       case Collections.Recorders:
       case Collections.Tags:
       case Collections.Videos:
       default:
-        return {
-          href: "/404",
-          label: `Invalid type ${relation["type"]}`,
-          typeLabel: "Error",
-        };
     }
+
+    return {
+      href: "/404",
+      label: `Invalid type ${relation["type"]}`,
+      typeLabel: "Error",
+    };
   };
 
   return {

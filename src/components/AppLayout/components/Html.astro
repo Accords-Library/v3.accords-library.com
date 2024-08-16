@@ -674,9 +674,13 @@ const isIOS = parser.getOS().name === "iOS";
     display: flex;
     place-items: center;
     gap: 0.4em;
-    padding: 0.7em 0.8em;
+    padding: 0.7em 1.1em;
     border-radius: 9999px;
     cursor: pointer;
+
+    &:has(svg) {
+      padding-left: 0.8em;
+    }
 
     transition: 150ms background-color;
 

@@ -73,13 +73,13 @@ const metaAttributes = [
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <AppLayout
-  backlinks={backlinks}
   openGraph={{
     title: formatInlineTitle({ pretitle, title, subtitle }),
     description: description && formatRichTextToString(description),
     thumbnail,
     audio,
-  }}>
+  }}
+  topBar={{ relations: backlinks }}>
   <div id="container">
     <AudioPlayer audio={audio} class="audio_id-audio-player" />
 

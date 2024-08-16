@@ -2,35 +2,38 @@
 import GenericPreview from "components/Previews/GenericPreview.astro";
 import { getI18n } from "src/i18n/i18n";
 import { Collections } from "src/shared/payload/constants";
-import type { EndpointFolder } from "src/shared/payload/endpoint-types";
+import type { EndpointFolder, EndpointFolderPreview } from "src/shared/payload/endpoint-types";
 import type { Attribute } from "src/utils/attributes";
 
 interface Props {
-  folder: EndpointFolder;
+  folder: EndpointFolder | EndpointFolderPreview;
 }
 
 const { getLocalizedUrl, getLocalizedMatch, t } = await getI18n(Astro.locals.currentLocale);
 
-const {
-  folder: { translations, slug, files, sections, backlinks },
-} = Astro.props;
+const { folder } = Astro.props;
 
-const { language, title } = getLocalizedMatch(translations);
+const { language, title } = getLocalizedMatch(folder.translations);
 
-const fileCount = files.length;
+const attributes: Attribute[] = [];
 
-const subfolderCount =
-  sections.type === "single"
-    ? sections.subfolders.length
-    : sections.sections.reduce((acc, section) => acc + section.subfolders.length, 0);
+if ("files" in folder) {
+  const { backlinks, files, sections } = folder;
 
-const attributes: Attribute[] = [
-  {
+  const fileCount = files.length;
+
+  const subfolderCount =
+    sections.type === "single"
+      ? sections.subfolders.length
+      : sections.sections.reduce((acc, section) => acc + section.subfolders.length, 0);
+
+  attributes.push({
     icon: "material-symbols:box",
     title: t("global.folders.attributes.content.label"),
     values: [{ name: t("global.folders.attributes.content.value", { fileCount, subfolderCount }) }],
-  },
-  {
+  });
+
+  attributes.push({
     icon: "material-symbols:keyboard-return",
     title: t("global.folders.attributes.parent"),
     values: backlinks.flatMap((link) => {
@@ -38,8 +41,8 @@ const attributes: Attribute[] = [
       const name = getLocalizedMatch(link.value.translations).title;
       return { name };
     }),
-  },
-];
+  });
+}
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -47,7 +50,7 @@ const attributes: Attribute[] = [
 <GenericPreview
   title={title}
   lang={language}
-  href={getLocalizedUrl(`/folders/${slug}`)}
+  href={getLocalizedUrl(`/folders/${folder.slug}`)}
   attributes={attributes}
   icon="material-symbols:folder-open"
   iconHoverLabel={t("global.collections.folders", { count: 1 })}

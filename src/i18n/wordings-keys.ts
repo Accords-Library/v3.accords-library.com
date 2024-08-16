@@ -176,4 +176,12 @@ export type WordingKey =
   | "paginator.goLastPageButton"
   | "global.folders.attributes.content.label"
   | "global.folders.attributes.content.value"
-  | "global.folders.attributes.parent";
+  | "global.folders.attributes.parent"
+  | "global.sources.typeLabel.timeline"
+  | "global.subpageCard.message"
+  | "global.subpageCard.returnButton"
+  | "header.nav.parentPages.tooltip.viewAll"
+  | "global.relationPage.folders"
+  | "global.relationPage.collectibles"
+  | "global.relationPage.timelineEvents"
+  | "global.relationPage.title";

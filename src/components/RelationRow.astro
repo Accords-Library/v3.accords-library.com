@@ -22,34 +22,45 @@ const {
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <a href={href} target={target} rel={rel}>
-  <div class="font-xs">{typeLabel}</div><p lang={lang}>{label}</p>
+  <p>
+    <span id="type" class="font-xs">{typeLabel}</span><span id="label" lang={lang}>{label}</span>
+  </p>
 </a>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
 
 <style>
   a {
-    display: flex;
-    flex-wrap: wrap;
-    place-items: center;
-    gap: 0.1em 0.3em;
-
-    & > p {
-      text-decoration: underline dotted 0.1em;
-      text-decoration-color: transparent;
-
-      transition-duration: 150ms;
-      transition-property: text-decoration-color, color;
-
-      line-height: 1.2;
-    }
-
     border-radius: 16px;
     padding: 4px 10px;
     margin: -4px -10px;
 
-    &:hover > p,
-    &:focus-visible > p {
+    & > p {
+      display: flex;
+      place-items: start;
+      gap: 0.1em 0.3em;
+
+      & > #label {
+        text-decoration: underline dotted 0.1em;
+        text-decoration-color: transparent;
+
+        transition-duration: 150ms;
+        transition-property: text-decoration-color, color;
+
+        line-height: 1.2;
+      }
+
+      & > #type {
+        background-color: var(--color-base-300);
+        border-radius: 9999px;
+        padding: 0.3em 0.6em;
+        flex-shrink: 0;
+        margin-left: -0.5em;
+      }
+    }
+
+    &:hover > p > #label,
+    &:focus-visible > p > #label {
       color: var(--color-base-750);
       text-decoration-color: var(--color-base-650);
     }
@@ -58,17 +69,9 @@ const {
       outline-width: 1.5 px;
     }
 
-    &:active > p {
+    &:active > p > #label {
       color: var(--color-base-650);
       text-decoration-color: var(--color-base-550);
-    }
-
-    & > div {
-      background-color: var(--color-base-300);
-      border-radius: 9999px;
-      padding: 0.3em 0.6em;
-      flex-shrink: 0;
-      margin-left: -0.5em;
     }
   }
 </style>

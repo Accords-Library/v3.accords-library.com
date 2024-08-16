@@ -30,7 +30,7 @@ const translation = getLocalizedMatch(translations);
     title: `${formatInlineTitle(translation)} (${index})`,
     description: translation.description && formatRichTextToString(translation.description),
   }}
-  backlinks={backlinks}>
+  topBar={{ relations: backlinks }}>
   <Lightbox
     image={image}
     title={formatScanIndexShort(index)}

@@ -84,12 +84,12 @@ const smallTitle = title === filename;
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <AppLayout
-  backlinks={backlinks}
   openGraph={{
     title: formatInlineTitle({ pretitle, title, subtitle }),
     description: description && formatRichTextToString(description),
     thumbnail,
-  }}>
+  }}
+  topBar={{ relations: backlinks }}>
   <div id="container">
     {
       thumbnail ? (

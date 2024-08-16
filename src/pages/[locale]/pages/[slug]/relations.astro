@@ -1,0 +1,19 @@
+---
+import RelationsPage from "components/RelationsPage.astro";
+import { payload } from "src/services";
+import { Collections } from "src/shared/payload/constants";
+import { fetchOr404 } from "src/utils/responses";
+
+const slug = Astro.params.slug!;
+
+const response = await fetchOr404(() => payload.getPage(slug));
+if (response instanceof Response) {
+  return response;
+}
+const collectible = response.data;
+const { backlinks } = collectible;
+---
+
+{/* ------------------------------------------- HTML ------------------------------------------- */}
+
+<RelationsPage parentPage={{ type: Collections.Pages, value: collectible }} backlinks={backlinks} />

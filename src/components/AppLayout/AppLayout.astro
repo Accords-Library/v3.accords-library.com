@@ -4,25 +4,20 @@ import Topbar from "./components/Topbar/Topbar.astro";
 import Footer from "./components/Footer.astro";
 import AppLayoutBackgroundImg from "./components/AppLayoutBackgroundImg.astro";
 import type { ComponentProps } from "astro/types";
-import type { EndpointRelation } from "src/shared/payload/endpoint-types";
 
 interface Props {
   openGraph?: ComponentProps<typeof Html>["openGraph"];
-  backlinks?: EndpointRelation[];
   backgroundImage?: ComponentProps<typeof AppLayoutBackgroundImg>["img"] | undefined;
   hideFooterLinks?: boolean;
-  hideHomeButton?: boolean;
-  hideSearchButton?: boolean;
   class?: string | undefined;
+  topBar?: ComponentProps<typeof Topbar>;
 }
 
 const {
   openGraph,
-  backlinks,
   backgroundImage,
   hideFooterLinks = false,
-  hideHomeButton = false,
-  hideSearchButton = false,
+  topBar = {},
   ...otherProps
 } = Astro.props;
 ---
@@ -32,11 +27,7 @@ const {
 <Html openGraph={openGraph}>
   {backgroundImage && <AppLayoutBackgroundImg img={backgroundImage} />}
   <header>
-    <Topbar
-      backlinks={backlinks}
-      hideHomeButton={hideHomeButton}
-      hideSearchButton={hideSearchButton}
-    />
+    <Topbar {...topBar} />
   </header>
   <main {...otherProps.class ? otherProps : {}}><slot /></main>
   <Footer withLinks={!hideFooterLinks} />

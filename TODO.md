@@ -6,10 +6,14 @@
 - [Bugs] Keziah reported some lag spikes when scrolling on the home page (Firefox on Windows)
 - [Feat] [Analytics] Add analytics
 - [Bugs] [Tooltips] Tooltip in under next element (example in timeline)
-- [Bugs] [Language override] Maso actor is not focusable with keyboard nav
+- [Bugs] [KeyboardNav]:
+  - Maso actor is not focusable with keyboard nav
+  - Parent pages not focusable
+  - Search button is double-focusable (once the link, and one the button)
 
 ## Short term
 
+- [Feat] Add links to all the timeline image and document on Timeline page
 - [Bugs] Make sure uploads name are slug-like and with an extension.
 - [Bugs] Nyupun can't upload subtitles files
 - [Bugs] https://v3.accords-library.com/en/collectibles/dod-original-soundtrack/scans obi is way too big

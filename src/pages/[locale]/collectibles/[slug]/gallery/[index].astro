@@ -68,7 +68,7 @@ const metaAttributes = [
     description: description && formatRichTextToString(description),
     thumbnail: image,
   }}
-  backlinks={backlinks}>
+  topBar={{ relations: backlinks }}>
   <Lightbox
     image={image}
     pretitle={pretitle}

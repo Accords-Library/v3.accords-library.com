@@ -73,13 +73,13 @@ const metaAttributes = [
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <AppLayout
-  backlinks={backlinks}
   openGraph={{
     title: formatInlineTitle({ pretitle, title, subtitle }),
     description: description && formatRichTextToString(description),
     thumbnail,
     video,
-  }}>
+  }}
+  topBar={{ relations: backlinks }}>
   <div id="container">
     <VideoPlayer class="video_id-video-player" video={video} />
 

@@ -195,22 +195,16 @@ export class PageCache {
           return [`/folders/${change.slug}`];
 
         case SDKEndpointNames.getCollectible:
-          return [`/collectibles/${change.slug}`];
+          return [`/collectibles/${change.slug}`, `/collectibles/${change.slug}/relations`];
 
         case SDKEndpointNames.getCollectibleGallery:
           return [`/collectibles/${change.slug}/gallery`];
 
-        // case SDKEndpointNames.getCollectibleGalleryImage:
-        //   return [`/collectibles/${change.slug}/gallery/${change.index}`];
-
         case SDKEndpointNames.getCollectibleScans:
           return [`/collectibles/${change.slug}/scans`];
 
-        // case SDKEndpointNames.getCollectibleScanPage:
-        //   return [`/collectibles/${change.slug}/scans/${change.index}`];
-
         case SDKEndpointNames.getPage:
-          return [`/pages/${change.slug}`];
+          return [`/pages/${change.slug}`, `/pages/${change.slug}/relations`];
 
         case SDKEndpointNames.getAudioByID:
           return [`/audios/${change.id}`];

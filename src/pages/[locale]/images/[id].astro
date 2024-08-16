@@ -83,12 +83,12 @@ const metaAttributes = [
 {/* ------------------------------------------- HTML ------------------------------------------- */}
 
 <AppLayout
-  backlinks={backlinks}
   openGraph={{
     title: formatInlineTitle({ pretitle, title, subtitle }),
     description: description && formatRichTextToString(description),
     thumbnail: image,
-  }}>
+  }}
+  topBar={{ relations: backlinks }}>
   <Lightbox
     image={image}
     pretitle={pretitle}

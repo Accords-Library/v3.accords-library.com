@@ -19,7 +19,8 @@ import { sizesToSrcset } from "src/utils/img";
 import RichText from "components/RichText/RichText.astro";
 import SubFilesSection from "./_components/SubFilesSection.astro";
 import PriceInfo from "./_components/PriceInfo.astro";
-import { CollectibleNature } from "src/shared/payload/constants";
+import { CollectibleNature, Collections } from "src/shared/payload/constants";
+import { sortBy } from "src/utils/array";
 
 const slug = Astro.params.slug!;
 const { getLocalizedMatch, getLocalizedUrl, t, formatDate } = await getI18n(
@@ -117,6 +118,8 @@ if (languages.length > 0) {
     withBorder: true,
   });
 }
+
+sortBy(backlinks, ({ type }) => type, [Collections.Collectibles, Collections.Folders] as const);
 ---
 
 {/* ------------------------------------------- HTML ------------------------------------------- */}
@@ -127,7 +130,10 @@ if (languages.length > 0) {
     description: description && formatRichTextToString(description),
     thumbnail,
   }}
-  backlinks={backlinks}
+  topBar={{
+    relations: backlinks,
+    relationPageUrl: getLocalizedUrl(`/collectibles/${slug}/relations`),
+  }}
   backgroundImage={backgroundImage ?? thumbnail}>
   <AsideLayout reducedAsideWidth>
     <Fragment slot="header">

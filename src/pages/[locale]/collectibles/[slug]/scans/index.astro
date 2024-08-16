@@ -1,13 +1,13 @@
 ---
 import AppLayout from "components/AppLayout/AppLayout.astro";
-import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
 import Credits from "components/Credits.astro";
 import { getI18n } from "src/i18n/i18n";
 import { payload } from "src/services";
 import { fetchOr404 } from "src/utils/responses";
 import ScanPreview from "./_components/ScanPreview.astro";
 import { formatInlineTitle, formatRichTextToString } from "src/utils/format";
-import RichText from "components/RichText/RichText.astro";
+import AppLayoutTitle from "components/AppLayout/components/AppLayoutTitle.astro";
+import ReturnToParentCard from "components/AppLayout/components/Topbar/components/ReturnToParentCard.astro";
 
 const slug = Astro.params.slug!;
 const { getLocalizedMatch, t } = await getI18n(Astro.locals.currentLocale);
@@ -16,7 +16,7 @@ const response = await fetchOr404(() => payload.getCollectibleScans(slug));
 if (response instanceof Response) {
   return response;
 }
-const { translations, credits, cover, pages, dustjacket, obi, backlinks, thumbnail } =
+const { translations, credits, cover, pages, dustjacket, obi, thumbnail, backlinks } =
   response.data;
 
 const translation = getLocalizedMatch(translations);
@@ -45,20 +45,9 @@ const hasOutsideObi = obi ? Object.keys(obi).some((value) => !value.includes("in
     description: translation.description && formatRichTextToString(translation.description),
     thumbnail,
   }}
-  backlinks={backlinks}
   class="app">
-  <AppLayoutTitle
-    title={translation.title}
-    pretitle={translation.pretitle}
-    subtitle={translation.subtitle}
-    lang={translation.language}
-  />
-
-  {
-    translation.description && (
-      <RichText content={translation.description} context={{ lang: translation.language }} />
-    )
-  }
+  <AppLayoutTitle title={t("collectibles.scans.title")} />
+  {backlinks[0] && <ReturnToParentCard parent={backlinks[0]} />}
 
   {credits.length > 0 && <Credits credits={credits} />}
 

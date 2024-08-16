@@ -15,7 +15,7 @@ if (response instanceof Response) {
 const page = response.data;
 const { backlinks, thumbnail, translations, backgroundImage } = page;
 
-const { getLocalizedMatch } = await getI18n(Astro.locals.currentLocale);
+const { getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 const meta = getLocalizedMatch(translations);
 ---
 
@@ -27,7 +27,7 @@ const meta = getLocalizedMatch(translations);
     description: meta.summary && formatRichTextToString(meta.summary),
     thumbnail: thumbnail,
   }}
-  backlinks={backlinks}
+  topBar={{ relations: backlinks, relationPageUrl: getLocalizedUrl(`/pages/${slug}/relations`) }}
   backgroundImage={backgroundImage ?? thumbnail}>
   <Page slug={slug} lang={Astro.locals.currentLocale} page={page} />
 </AppLayout>

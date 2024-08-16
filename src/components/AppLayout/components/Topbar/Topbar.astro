@@ -4,17 +4,23 @@ import Button from "components/Button.astro";
 import ThemeSelector from "./components/ThemeSelector.astro";
 import LanguageSelector from "./components/LanguageSelector.astro";
 import CurrencySelector from "./components/CurrencySelector.astro";
-import ParentPagesButton from "./components/ParentPagesButton.astro";
+import RelationsButton from "./components/RelationsButton.astro";
 import { getI18n } from "src/i18n/i18n";
 import type { EndpointRelation } from "src/shared/payload/endpoint-types";
 
 interface Props {
-  backlinks?: EndpointRelation[] | undefined;
-  hideHomeButton?: boolean;
-  hideSearchButton?: boolean;
+  relations?: EndpointRelation[] | undefined;
+  relationPageUrl?: string | undefined;
+  hideHomeButton?: boolean | undefined;
+  hideSearchButton?: boolean | undefined;
 }
 
-const { backlinks = [], hideHomeButton = false, hideSearchButton = false } = Astro.props;
+const {
+  relations = [],
+  relationPageUrl,
+  hideHomeButton = false,
+  hideSearchButton = false,
+} = Astro.props;
 
 const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 ---
@@ -23,14 +29,16 @@ const { t, getLocalizedUrl } = await getI18n(Astro.locals.currentLocale);
 
 <nav id="topbar" class="when-no-print">
   {
-    (!hideHomeButton || backlinks.length > 0) && (
+    (!hideHomeButton || relations.length > 0) && (
       <div id="left" class="hide-scrollbar">
         <a href={getLocalizedUrl("")} class="pressable-label">
           <Icon name="material-symbols:home" width={16} height={16} />
           <p>{t("home.title")}</p>
         </a>
 
-        {backlinks.length > 0 && <ParentPagesButton backlinks={backlinks} />}
+        {relations.length > 0 && (
+          <RelationsButton relations={relations} relationPageUrl={relationPageUrl} />
+        )}
       </div>
     )
   }

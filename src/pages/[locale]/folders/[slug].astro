@@ -35,7 +35,7 @@ const { language, title, description } = getLocalizedMatch(translations);
     title: title,
     description: description && formatRichTextToString(description),
   }}
-  backlinks={backlinks}
+  topBar={{ relations: backlinks }}
   class="app">
   <AppLayoutTitle title={title} lang={language} />
   {description && <RichText content={description} context={{ lang: language }} />}
