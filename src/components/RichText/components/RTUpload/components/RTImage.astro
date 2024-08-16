@@ -1,6 +1,5 @@
 ---
 import type { RichTextContext } from "src/utils/richText";
-import OpenMediaPageButton from "./OpenMediaPageButton.astro";
 import { getI18n } from "src/i18n/i18n";
 import HeaderTitle from "components/HeaderTitle.astro";
 import { Icon } from "astro-icon/components";
@@ -47,7 +46,6 @@ const mediaPage = getLocalizedUrl(`/images/${id}`);
       loading="lazy"
     />
   </a>
-  <OpenMediaPageButton url={mediaPage} />
 </div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
@@ -55,11 +53,13 @@ const mediaPage = getLocalizedUrl(`/images/${id}`);
 <style>
   div {
     margin-block: 4em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
   }
 
   a {
     line-height: 0;
-    margin-bottom: 0.5em;
     border-radius: 16px;
     box-shadow: 0 5px 20px -10px var(--color-shadow-0);
     border-radius: 16px;
@@ -71,7 +71,6 @@ const mediaPage = getLocalizedUrl(`/images/${id}`);
     &:hover,
     &:focus-visible {
       scale: 102%;
-      margin-bottom: 1em;
     }
 
     max-height: 70vh;
