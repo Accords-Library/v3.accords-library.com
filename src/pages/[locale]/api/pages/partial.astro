@@ -38,8 +38,9 @@ const { translations, thumbnail, createdAt, updatedAt, updatedBy, attributes } =
 const { getLocalizedUrl, t, formatDate } = await getI18n(Astro.locals.currentLocale);
 const { getLocalizedMatch } = await getI18n(lang);
 
-const { pretitle, title, subtitle, summary, content, credits, toc, language, sourceLanguage } =
-  getLocalizedMatch(translations);
+const activeTranslation = getLocalizedMatch(translations);
+
+const { pretitle, title, subtitle, summary, content, toc, language } = activeTranslation;
 
 const metaAttributes: Attribute[] = [
   {
@@ -107,9 +108,7 @@ if (updatedBy) {
     <Fragment slot="aside">
       <PageCredits
         slug={slug}
-        currentLocale={language}
-        sourceLanguage={sourceLanguage}
-        credits={credits}
+        activeTranslation={activeTranslation}
         otherTranslations={translations.filter(
           (otherTranslation) => otherTranslation.language !== language
         )}

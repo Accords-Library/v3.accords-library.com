@@ -1,6 +1,7 @@
 ---
 import type { Attribute } from "src/utils/attributes";
 import TitleIcon from "./TitleIcon.astro";
+import { isExternalLink } from "src/utils/urls";
 
 interface Props extends Attribute {}
 
@@ -15,15 +16,23 @@ if (values.length === 0) return;
   <TitleIcon title={title} icon={icon} lang={titleLang} />
   <div id="values" class:list={{ "with-border": withBorder }}>
     {
-      values.map(({ name, href, lang }) =>
-        href ? (
-          <a class="pressable" href={href} lang={lang}>
-            {name}
-          </a>
-        ) : (
-          <div lang={lang}>{name}</div>
-        )
-      )
+      values.map(({ name, href, lang }) => {
+        if (!href) {
+          return <div lang={lang}>{name}</div>;
+        } else {
+          const newTab = isExternalLink(href);
+          return (
+            <a
+              class="pressable"
+              href={href}
+              lang={lang}
+              target={newTab ? "_blank" : undefined}
+              rel={newTab ? "noopener noreferrer" : undefined}>
+              {name}
+            </a>
+          );
+        }
+      })
     }
   </div>
 </div>

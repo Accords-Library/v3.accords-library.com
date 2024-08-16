@@ -184,4 +184,6 @@ export type WordingKey =
   | "global.relationPage.folders"
   | "global.relationPage.collectibles"
   | "global.relationPage.timelineEvents"
-  | "global.relationPage.title";
+  | "global.relationPage.title"
+  | "pages.credits.sources";
+

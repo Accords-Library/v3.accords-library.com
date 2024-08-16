@@ -30,6 +30,7 @@ const { getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.curren
       );
     })
   }
+  <slot />
 </div>
 
 {/* ------------------------------------------- CSS -------------------------------------------- */}
@@ -37,6 +38,6 @@ const { getLocalizedMatch, getLocalizedUrl } = await getI18n(Astro.locals.curren
 <style>
   div {
     display: grid;
-    gap: 2em;
+    gap: 1.5em;
   }
 </style>

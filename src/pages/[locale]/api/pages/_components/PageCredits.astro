@@ -2,34 +2,34 @@
 import Card from "components/Card.astro";
 import Credits from "components/Credits.astro";
 import InlineCredits from "components/InlineCredits.astro";
+import InlineMetadata from "components/InlineMetadata.astro";
 import MasoActor from "components/Maso/MasoActor.astro";
+import Metadata from "components/Metadata.astro";
 import { getI18n } from "src/i18n/i18n";
-import type { EndpointCredit, EndpointPage } from "src/shared/payload/endpoint-types";
+import type { EndpointPage } from "src/shared/payload/endpoint-types";
 import { formatLocale } from "src/utils/format";
 
 interface Props {
   slug: string;
-  currentLocale: string;
-  sourceLanguage: string;
-  credits: EndpointCredit[];
+  activeTranslation: EndpointPage["translations"][number];
   otherTranslations: EndpointPage["translations"];
 }
 
-const { slug, currentLocale, sourceLanguage, credits, otherTranslations } = Astro.props;
+const { slug, activeTranslation, otherTranslations } = Astro.props;
 
-const { t, getLocalizedUrl } = await getI18n(currentLocale);
+const { t, getLocalizedUrl } = await getI18n(activeTranslation.language);
 ---
 
 <div id="credits">
   <Card class="partial_page-card">
     <p>{t("pages.credits.currentLocale")}</p>
     <p class="font-2xl">
-      {formatLocale(currentLocale)}
+      {formatLocale(activeTranslation.language)}
       {
-        sourceLanguage !== currentLocale && (
+        activeTranslation.sourceLanguage !== activeTranslation.language && (
           <span class="font-m">
             {t("pages.credits.translationLabel", {
-              locale: formatLocale(sourceLanguage),
+              locale: formatLocale(activeTranslation.sourceLanguage),
             })}
           </span>
         )
@@ -37,9 +37,18 @@ const { t, getLocalizedUrl } = await getI18n(currentLocale);
     </p>
 
     {
-      credits.length > 0 && (
+      (activeTranslation.credits.length > 0 || activeTranslation.sourceUrls.length > 0) && (
         <div>
-          <Credits credits={credits} />
+          <Credits credits={activeTranslation.credits}>
+            <Metadata
+              icon="material-symbols:web-traffic"
+              title={t("pages.credits.sources", { count: activeTranslation.sourceUrls.length })}
+              values={activeTranslation.sourceUrls.map(({ label, url }) => ({
+                name: label,
+                href: url,
+              }))}
+            />
+          </Credits>
         </div>
       )
     }
@@ -65,7 +74,18 @@ const { t, getLocalizedUrl } = await getI18n(currentLocale);
                 )}
               </p>
 
-              {translation.credits.length > 0 && <InlineCredits credits={translation.credits} />}
+              {(translation.credits.length > 0 || translation.sourceUrls.length > 0) && (
+                <InlineCredits credits={translation.credits}>
+                  <InlineMetadata
+                    icon="material-symbols:web-traffic"
+                    title={t("pages.credits.sources", { count: translation.sourceUrls.length })}
+                    values={translation.sourceUrls.map(({ label, url }) => ({
+                      name: label,
+                      href: url,
+                    }))}
+                  />
+                </InlineCredits>
+              )}
             </Card>
           </MasoActor>
         ))}

@@ -255,9 +255,9 @@ export const getI18n = async (locale: string) => {
     switch (relation.type) {
       case "url":
         return {
-          href: relation.url,
+          href: relation.value.url,
           typeLabel: t("global.sources.typeLabel.url"),
-          label: relation.label,
+          label: relation.value.label,
           target: "_blank",
           rel: "noopener noreferrer",
         };
