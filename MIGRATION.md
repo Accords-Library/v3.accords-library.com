@@ -100,3 +100,12 @@
 - Missing footnotes
   - https://v3.accords-library.com/en/pages/super-space-time-character-exchange-roundtable-in-shinjuku
   - *Like mother, like daughter. I think that's just it… Why I must protect Yonah for the rest of my life! So we can always, always be together… *The proverb here in Japanese directly translates to “You can’t fight blood.”, a likely prod at Furiae’s lust for Caim.
+
+# NieR
+
+- Novellas
+
+  - Add credits to wikia or SolemCube
+  - Add more tags
+
+- https://v3.accords-library.com/en/collectibles/grimoire-nier-revised-edition
